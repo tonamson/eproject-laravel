@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/demo/get', [\App\Http\Controllers\DemoController::class, 'testGet']);
-Route::get('/demo/example-data-get', [\App\Http\Controllers\DemoController::class, 'exampleDataGet']);
-Route::post('/demo/post', [\App\Http\Controllers\DemoController::class, 'post']);
+Route::get('/demo/get', 'DemoController@testGet');
+Route::get('/demo/example-data-get', 'DemoController@exampleDataGet');
+
