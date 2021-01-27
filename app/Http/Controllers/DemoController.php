@@ -40,7 +40,7 @@ class DemoController extends Controller
             'name' => 'Taylor',
             'page' => 1,
         ];
-        $response = Http::get('http://test.localhost/demo/example-data-get', $params);
+        $response = Http::get('http://localhost/eproject-laravel/public/demo/example-data-get', $params);
         $body = json_decode($response->body(), true);
         return view('demo', $body);
     }
