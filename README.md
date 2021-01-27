@@ -3,6 +3,9 @@
 - Vào file php.ini tìm dòng **curl.cainfo** thay thế bằng curl.cainfo = path_file_pem
 - Reset lại **xampp**
 
+## Khởi động server
+- Chạy lệnh sau: **php artisan serve**
+
 ## Cách dùng guzzle để gửi POST | GET
 - Tài liệu: https://laravel.com/docs/8.x/http-client#introduction
 
