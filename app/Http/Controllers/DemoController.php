@@ -17,7 +17,7 @@ class DemoController extends Controller
             'data' => [
                 [
                     'id' => 1,
-                    'name' => 'John1',
+                    'name' => 'John2',
                     'email' => 'john1@example.com',
                 ],
                 [
