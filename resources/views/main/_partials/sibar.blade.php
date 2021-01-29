@@ -41,15 +41,15 @@
 
                 <!-- Main -->
                 <li class="nav-item">
-                    <a href="../full/index.html" class="nav-link">
+                    <a href="/dashboard" class="nav-link">
                         <i class="icon-home4"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item nav-item-submenu nav-item-expanded nav-item-open">
+                <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Starter kit</span></a>
 
-                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit">
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                         <li class="nav-item"><a href="#" class="nav-link">Menu 1</a></li>
                         <li class="nav-item"><a href="#" class="nav-link active">Menu 2</a></li>
                         <li class="nav-item nav-item-submenu">

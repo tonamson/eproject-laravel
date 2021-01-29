@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>CMS</title>
+    <title>HR</title>
 
     <!-- Global stylesheets -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -23,9 +23,14 @@
     <!-- /core JS files -->
 
     <!-- Theme JS files -->
+    <script src="{{ asset('global_assets/js/plugins/visualization/d3/d3.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/visualization/c3/c3.min.js') }}"></script>
+
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <!-- /theme JS files -->
 
+    @yield('css')
+    @yield('js')
 </head>
 
 <body>
@@ -101,6 +106,6 @@
 
 </div>
 <!-- /page content -->
-@yield('script')
+@yield('scripts')
 </body>
 </html>
