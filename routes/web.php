@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 include 'tam.php';
+include 'son.php';
 include 'hoai.php';
 /*
 |--------------------------------------------------------------------------
