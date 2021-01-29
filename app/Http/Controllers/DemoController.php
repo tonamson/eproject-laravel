@@ -7,6 +7,25 @@ use Illuminate\Http\Request;
 
 class DemoController extends Controller
 {
+    public function viewIndex()
+    {
+        return view('main.demo.index', [
+            'message' => 'Hello World',
+        ]);
+    }
+
+    public function postAddUser()
+    {
+        $body = [
+            "id" => '4',
+            'name' => 'Taylor',
+            'email' => 'taylor@example.com',
+        ];
+        $response = Http::post('http://localhost:8888/demo/', $body);
+        $body = json_decode($response->body(), true);
+        return response($body);
+    }
+
     public function exampleDataGet(Request $request)
     {
         return response([
