@@ -1,3 +1,3 @@
-<p>{!! $message !!}</p>
-
-<p>Param name: {{ $param_name }}</p>
+@foreach ($items as $user)
+    <p>{{ $user['department'] }}</p>
+@endforeach
