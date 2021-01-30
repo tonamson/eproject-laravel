@@ -76,27 +76,72 @@
         </div>
     </div>
 
-    <div class="content p-0">
-        
-        <div class="card">
-            <div class="card-header header-elements-inline">
-                <h5 class="card-title">Tăng Trưởng Năm {{ $last_year }}</h5>
-                <div class="header-elements">
-                    <div class="list-icons">
-                        <a class="list-icons-item" data-action="collapse"></a>
-                        <a class="list-icons-item" data-action="reload"></a>
-                        <a class="list-icons-item" data-action="remove"></a>
+    <!-- Pies -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Học Vấn</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            <a class="list-icons-item" data-action="collapse"></a>
+                            <a class="list-icons-item" data-action="reload"></a>
+                            <a class="list-icons-item" data-action="remove"></a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card-body">
-                <div class="chart-container">
-                    <div class="chart has-fixed-height" id="columns_basic"></div>
+                <div class="card-body">
+                    <div class="chart-container text-center">
+                        <div class="d-inline-block" id="c3-pie-chart-education"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Thâm niên</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            <a class="list-icons-item" data-action="collapse"></a>
+                            <a class="list-icons-item" data-action="reload"></a>
+                            <a class="list-icons-item" data-action="remove"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="chart-container text-center">
+                        <div class="d-inline-block" id="c3-donut-chart-tn"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Tăng Trưởng Năm {{ $last_year }}</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            <a class="list-icons-item" data-action="collapse"></a>
+                            <a class="list-icons-item" data-action="reload"></a>
+                            <a class="list-icons-item" data-action="remove"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="chart-container">
+                        <div class="chart has-fixed-height" id="columns_basic"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div> 
     <!-- /content area -->
 
@@ -115,10 +160,8 @@
             // Define charts elements
             var pie_chart_element = document.getElementById('c3-pie-chart');
             var donut_chart_element = document.getElementById('c3-donut-chart');
-            var bar_chart_element = document.getElementById('c3-bar-chart');
-            var bar_stacked_chart_element = document.getElementById('c3-bar-stacked-chart');
-            var combined_chart_element = document.getElementById('c3-combined-chart');
-            var scatter_chart_element = document.getElementById('c3-scatter-chart');
+            var pie_chart_element_education = document.getElementById('c3-pie-chart-education');
+            var donut_chart_element_tn = document.getElementById('c3-donut-chart-tn');
             var sidebarToggle = document.querySelector('.sidebar-control');
         
         
@@ -157,7 +200,7 @@
                     pie_chart.resize();
                 });
             }
-        
+
             // Donut chart
             if(donut_chart_element) {
                 let staffs_gender = {!! $staffs_gender !!};
@@ -188,6 +231,76 @@
                     donut_chart.resize();
                 });
             }
+
+            // Pie chart
+            if(pie_chart_element_education) {
+                let staffs_education = {!! $staffs_education !!};
+
+                let arr_staffs_education = Object.entries(staffs_education);
+                arr_staffs_education[0][0] = "THPT";
+                arr_staffs_education[1][0] = "Trung Cấp";
+                arr_staffs_education[2][0] = "Cao Đẳng";
+                arr_staffs_education[3][0] = "Đại Học";
+                arr_staffs_education[4][0] = "Trên Đại Học";
+
+                // Generate chart
+                var pie_chart_education = c3.generate({
+                    bindto: pie_chart_element_education,
+                    size: { width: 350 },
+                    color: {
+                        pattern: ['#2ec7c9','#b6a2de','#5ab1ef','#ffb980','#d87a80']
+                    },
+                    data: {
+                        columns: [
+                            arr_staffs_education[0],
+                            arr_staffs_education[1],
+                            arr_staffs_education[2],
+                            arr_staffs_education[3],
+                            arr_staffs_education[4]
+                        ],
+                        type : 'pie'
+                    }
+                });
+        
+                // Resize chart on sidebar width change
+                sidebarToggle && sidebarToggle.addEventListener('click', function() {
+                    pie_chart_education.resize();
+                });
+            }
+        
+            // Donut chart
+            if(donut_chart_element_tn) {
+                let staffs_tn = {!! $staffs_tn !!};
+
+                let arr_staffs_tn = Object.entries(staffs_tn);    
+
+                // Generate chart
+                var donut_chart_tn = c3.generate({
+                    bindto: donut_chart_element_tn,
+                    size: { width: 350 },
+                    color: {
+                        pattern: ['#2ec7c9','#b6a2de','#5ab1ef','#ffb980','#d87a80']
+                    },
+                    data: {
+                        columns: [
+                            arr_staffs_tn[0],
+                            arr_staffs_tn[1],
+                            arr_staffs_tn[2],
+                            arr_staffs_tn[3]
+                        ],
+                        type : 'donut'
+                    },
+                    donut: {
+                        title: "Thâm niên"
+                    }
+                });
+        
+                // Resize chart on sidebar width change
+                sidebarToggle && sidebarToggle.addEventListener('click', function() {
+                    donut_chart_tn.resize();
+                });
+            }
+            
         };
         
         return {
