@@ -15,66 +15,28 @@
    
 @endsection
 
-@section('js')
-    <script></script>
+@section('js')    
+    <!-- Theme JS files -->
+    <link href="{{ asset('assets_chart/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets_chart/css/bootstrap_limitless.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets_chart/css/layout.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets_chart/css/components.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets_chart/css/colors.min.css') }}" rel="stylesheet" type="text/css">
+    
+    <script src="{{ asset('global_assets/js/plugins/visualization/d3/d3.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/visualization/c3/c3.min.js') }}"></script>
+
+    <script src="{{ asset('global_assets/js/plugins/visualization/echarts/echarts.min.js') }}"></script>
 @endsection
 
 @section('content')
 
-    <!-- Content area -->
-    <div class="content">
-
-        <!-- Pies -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header header-elements-inline">
-                        <h5 class="card-title">Độ Tuổi</h5>
-                        <div class="header-elements">
-                            <div class="list-icons">
-                                <a class="list-icons-item" data-action="collapse"></a>
-                                <a class="list-icons-item" data-action="reload"></a>
-                                <a class="list-icons-item" data-action="remove"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="chart-container text-center">
-                            <div class="d-inline-block" id="c3-pie-chart"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header header-elements-inline">
-                        <h5 class="card-title">Giới Tính</h5>
-                        <div class="header-elements">
-                            <div class="list-icons">
-                                <a class="list-icons-item" data-action="collapse"></a>
-                                <a class="list-icons-item" data-action="reload"></a>
-                                <a class="list-icons-item" data-action="remove"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="chart-container text-center">
-                            <div class="d-inline-block" id="c3-donut-chart"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /pies -->
-
-        <div class="content pt-0">
-            <!-- Axis tick rotation -->
+    <!-- Pies -->
+    <div class="row">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header header-elements-inline">
-                    <h5 class="card-title">Tăng Trưởng</h5>
+                    <h5 class="card-title">Độ Tuổi</h5>
                     <div class="header-elements">
                         <div class="list-icons">
                             <a class="list-icons-item" data-action="collapse"></a>
@@ -85,17 +47,58 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="chart-container">
-                        <div class="chart" id="c3-axis-tick-rotation"></div>
+                    <div class="chart-container text-center">
+                        <div class="d-inline-block" id="c3-pie-chart"></div>
                     </div>
                 </div>
             </div>
-            <!-- /axis tick rotation -->
         </div>
 
-    </div>
-    <!-- /content area -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Giới Tính</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            <a class="list-icons-item" data-action="collapse"></a>
+                            <a class="list-icons-item" data-action="reload"></a>
+                            <a class="list-icons-item" data-action="remove"></a>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="card-body">
+                    <div class="chart-container text-center">
+                        <div class="d-inline-block" id="c3-donut-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content p-0">
+        
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Tăng Trưởng Năm {{ $last_year }}</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <a class="list-icons-item" data-action="collapse"></a>
+                        <a class="list-icons-item" data-action="reload"></a>
+                        <a class="list-icons-item" data-action="remove"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-container">
+                    <div class="chart has-fixed-height" id="columns_basic"></div>
+                </div>
+            </div>
+        </div>
+
+    </div> 
+    <!-- /content area -->
 
 @endsection
 
@@ -193,75 +196,194 @@
             }
         }
     }();
+        
+    var EchartsColumnsBasicLight = function() {
 
-    var С3Axis = function() {
-
-        // Chart
-        var _axisExamples = function() {
-            if (typeof c3 == 'undefined') {
-                console.warn('Warning - c3.min.js is not loaded.');
+        var _columnsBasicLightExample = function() {
+            if (typeof echarts == 'undefined') {
+                console.warn('Warning - echarts.min.js is not loaded.');
                 return;
             }
 
-            // Define charts elements
-            var axis_tick_rotation_element = document.getElementById('c3-axis-tick-rotation');
-            var sidebarToggle = document.querySelector('.sidebar-control');
+            var columns_basic_element = document.getElementById('columns_basic');
 
-            // Text label rotation
-            if(axis_tick_rotation_element) {
+            if (columns_basic_element) {
+                
+                let staffs_month = {!! $staffs_month !!};
+                let staffs_off = {!! $staffs_off !!};
+                console.log(staffs_off);
 
-                // Generate chart
-                var axis_tick_rotation = c3.generate({
-                    bindto: axis_tick_rotation_element,
-                    size: { height: 400 },
-                    data: {
-                        x : 'x',
-                        columns: [
-                            ['x', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                            ['pv', 90, 100, 140, 200, 100, 400, 90, 100, 140, 200, 100, 400],
-                        ],
-                        type: 'bar'
+                // Initialize chart
+                var columns_basic = echarts.init(columns_basic_element);
+
+                // Options
+                columns_basic.setOption({
+
+                    // Define colors
+                    color: ['#2ec7c9','#b6a2de','#5ab1ef','#ffb980','#d87a80'],
+
+                    // Global text styles
+                    textStyle: {
+                        fontFamily: 'Roboto, Arial, Verdana, sans-serif',
+                        fontSize: 13
                     },
-                    color: {
-                        pattern: ['#5ab1ef']
-                    },
-                    axis: {
-                        x: {
-                            type: 'category',
-                            tick: {
-                                rotate: -90
-                            },
-                            height: 80
-                        }
-                    },
+
+                    // Chart animation duration
+                    animationDuration: 750,
+
+                    // Setup grid
                     grid: {
-                        x: {
-                            show: true
-                        }
-                    }
-                });
+                        left: 0,
+                        right: 40,
+                        top: 35,
+                        bottom: 0,
+                        containLabel: true
+                    },
 
-                // Resize chart on sidebar width change
-                sidebarToggle && sidebarToggle.addEventListener('click', function() {
-                    axis_tick_rotation.resize();
+                    // Add legend
+                    legend: {
+                        data: ['Số lượng Nhân viên', 'Số lượng Nghỉ việc'],
+                        itemHeight: 8,
+                        itemGap: 20,
+                        textStyle: {
+                            padding: [0, 5]
+                        }
+                    },
+
+                    // Add tooltip
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(0,0,0,0.75)',
+                        padding: [10, 15],
+                        textStyle: {
+                            fontSize: 13,
+                            fontFamily: 'Roboto, sans-serif'
+                        }
+                    },
+
+                    // Horizontal axis
+                    xAxis: [{
+                        type: 'category',
+                        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        axisLabel: {
+                            color: '#333'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#999'
+                            }
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#eee',
+                                type: 'dashed'
+                            }
+                        }
+                    }],
+
+                    // Vertical axis
+                    yAxis: [{
+                        type: 'value',
+                        axisLabel: {
+                            color: '#333'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#999'
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#eee']
+                            }
+                        },
+                        splitArea: {
+                            show: true,
+                            areaStyle: {
+                                color: ['rgba(250,250,250,0.1)', 'rgba(0,0,0,0.01)']
+                            }
+                        }
+                    }],
+
+                    // Add series
+                    series: [
+                        {
+                            name: 'Số lượng Nhân viên',
+                            type: 'bar',
+                            //import data
+                            data: staffs_month,
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        textStyle: {
+                                            fontWeight: 500
+                                        }
+                                    }
+                                }
+                            },
+                            markLine: {
+                                data: [{type: 'average', name: 'Average'}]
+                            }
+                        },
+                        {
+                            name: 'Số lượng Nghỉ việc',
+                            type: 'bar',
+                            //import data
+                            data: staffs_off,
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        textStyle: {
+                                            fontWeight: 500
+                                        }
+                                    }
+                                }
+                            },
+                            markLine: {
+                                data: [{type: 'average', name: 'Average'}]
+                            }
+                        }
+                    ]
                 });
             }
+
+            var triggerChartResize = function() {
+                columns_basic_element && columns_basic.resize();
+            };
+
+            // On sidebar width change
+            var sidebarToggle = document.querySelector('.sidebar-control');
+            sidebarToggle && sidebarToggle.addEventListener('click', triggerChartResize);
+
+            // On window resize
+            var resizeCharts;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeCharts);
+                resizeCharts = setTimeout(function () {
+                    triggerChartResize();
+                }, 200);
+            });
         };
 
         return {
             init: function() {
-                _axisExamples();
+                _columnsBasicLightExample();
             }
         }
     }();
 
     document.addEventListener('DOMContentLoaded', function() {
-        С3Axis.init();
-    });
-    
-    document.addEventListener('DOMContentLoaded', function() {
         С3BarsPies.init();
     });
-        
+
+    document.addEventListener('DOMContentLoaded', function() {
+        EchartsColumnsBasicLight.init();
+    });
+
 </script>
 @endsection

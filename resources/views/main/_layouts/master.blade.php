@@ -22,10 +22,6 @@
     <script src="{{ asset('global_assets/js/plugins/loaders/blockui.min.js') }}"></script>
     <!-- /core JS files -->
 
-    <!-- Theme JS files -->
-    <script src="{{ asset('global_assets/js/plugins/visualization/d3/d3.min.js') }}"></script>
-    <script src="{{ asset('global_assets/js/plugins/visualization/c3/c3.min.js') }}"></script>
-
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <!-- /theme JS files -->
 
