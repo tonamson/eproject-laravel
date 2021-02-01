@@ -33,7 +33,7 @@
 
     <!-- Pies -->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header header-elements-inline">
                     <h5 class="card-title">Độ Tuổi</h5>
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header header-elements-inline">
                     <h5 class="card-title">Giới Tính</h5>
@@ -78,7 +78,7 @@
 
     <!-- Pies -->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header header-elements-inline">
                     <h5 class="card-title">Học Vấn</h5>
@@ -99,7 +99,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header header-elements-inline">
                     <h5 class="card-title">Thâm niên</h5>
@@ -324,7 +324,6 @@
                 
                 let staffs_month = {!! $staffs_month !!};
                 let staffs_off = {!! $staffs_off !!};
-                console.log(staffs_off);
 
                 // Initialize chart
                 var columns_basic = echarts.init(columns_basic_element);
