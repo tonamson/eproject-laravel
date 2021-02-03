@@ -22,3 +22,12 @@
 - Copy .env.example và đổi tên thành **.env**
 - Tạo key cho app bằng lệnh: **php artisan key:generate**
 - Vì là webservice mọi thứ nên thực hiện bằng **JWT Token**
+
+## Database MySQL:
+- Sửa lại thông tin sau:
+***
+    APP_KEY=base64:UJ/EGDGpY6BzxlOg62xRznZkoBgrvFOBVEJs7clHhuU=
+    DB_DATABASE=hr
+    DB_USERNAME=root
+    DB_PASSWORD=root
+***
