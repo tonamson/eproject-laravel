@@ -7,6 +7,25 @@ use Illuminate\Http\Request;
 
 class DemoController extends Controller
 {
+    public function viewIndex()
+    {
+        return view('main.demo.index', [
+            'message' => 'Hello World',
+        ]);
+    }
+
+    public function postAddUser()
+    {
+        $body = [
+            "id" => '4',
+            'name' => 'Taylor',
+            'email' => 'taylor@example.com',
+        ];
+        $response = Http::post('http://localhost:8888/demo/', $body);
+        $body = json_decode($response->body(), true);
+        return response($body);
+    }
+
     public function exampleDataGet(Request $request)
     {
         return response([
@@ -17,7 +36,7 @@ class DemoController extends Controller
             'data' => [
                 [
                     'id' => 1,
-                    'name' => 'John1',
+                    'name' => 'John2',
                     'email' => 'john1@example.com',
                 ],
                 [
@@ -40,9 +59,11 @@ class DemoController extends Controller
             'name' => 'Taylor',
             'page' => 1,
         ];
-        $response = Http::get('http://test.localhost/demo/example-data-get', $params);
+        $response = Http::get('http://localhost:8888/staff/list');
         $body = json_decode($response->body(), true);
-        return view('demo', $body);
+        return view('demo', [
+            'items' => $body['data']
+        ]);
     }
 
     public function post()

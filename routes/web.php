@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+include 'tam.php';
+include 'son.php';
+include 'hoai.php';
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,9 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'DemoController@viewIndex');
+Route::get('/post', 'DemoController@postAddUser');
 
 Route::get('/demo/get', 'DemoController@testGet');
 Route::get('/demo/example-data-get', 'DemoController@exampleDataGet');
