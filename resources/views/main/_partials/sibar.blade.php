@@ -41,9 +41,21 @@
 
                 <!-- Main -->
                 <li class="nav-item">
-                    <a href="/dashboard" class="nav-link">
+                    <a href="{{ action('DashboardController@index') }}" class="nav-link">
                         <i class="icon-home4"></i>
                         <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ action('CheckInOutController@index') }}" class="nav-link">
+                        <i class="icon-home4"></i>
+                        <span>Chấm Công GPS</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ action('DashboardController@index') }}" class="nav-link">
+                        <i class="icon-home4"></i>
+                        <span>Công Phép Cá Nhân</span>
                     </a>
                 </li>
                 <li class="nav-item nav-item-submenu">

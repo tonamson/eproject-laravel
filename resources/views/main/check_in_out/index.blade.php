@@ -22,7 +22,7 @@
 @section('content')
     <div class="card">
         <h1 class="pt-3 pl-3 pr-3">Chấm công GPS</h1>
-        <form method="POST" action="/check-in-gps">
+        <form method="POST" action="{{ action('CheckInOutController@create') }}">
             @csrf
             <div class="row p-3">
                 @if (\Session::has('success'))

@@ -6,3 +6,5 @@ Route::get('/dashboard', 'DashboardController@index');
 Route::get('/check-in-gps', 'CheckInOutController@index');
 
 Route::post('/check-in-gps', 'CheckInOutController@create');
+
+Route::get('/staff-time', 'CheckInOutController@show');
