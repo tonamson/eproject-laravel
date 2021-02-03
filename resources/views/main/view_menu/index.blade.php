@@ -2,214 +2,335 @@
 
 @section('content')
 
-    <!-- Basic card -->
-    <div class="card">
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title">Basic card - {{ $message }}</h5>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>
+<style>
+    .content {
+        padding: 0px 10px
+    }
+    @media only screen and (min-width: 768px) {
+        p{
+            height:40px;
+        }
+
+        .back-link{
+            color:#046A38 ;
+            font-weight: bold;
+            font-size: 16px;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        .my-link{
+            text-align: center;
+            width: 100%;
+        }
+
+        .outer a{
+            padding: 20px;
+        }
+    }
+
+    .content_layout {
+        padding: 0px 10px;
+        margin-bottom: -65px;
+    }
+
+    .fluid-view-menu {
+        padding: 20px 10px;
+    }
+
+    .outer {
+        position: relative;
+        margin: 0 auto;
+        text-align: center;
+        border-radius: 10px;
+        color: #008B56;
+        box-shadow: 0 0 11px rgba(33,33,33,.2);
+        transition: box-shadow .3s;
+        background: #FFF;
+    }
+
+    .outer a{
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        max-height: 105%;
+    }
+    
+    .outer p{
+        padding-top: 10px;
+        color: #008B56;
+        cursor: pointer;
+        font-weight: bold;
+        margin-bottom: 0px;
+        font-size: 1.2vw;
+    }
+
+    .outer:hover {      
+        opacity: 0.9;   
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .no-tool{
+        width: 100%;
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        color: #008B56;
+    }
+
+    .icon-8x {
+        color: #046A38;
+        font-size: 9vw !important;
+    }
+
+    .col-max {
+        padding: 20px;
+    }
+
+    @media only screen and (max-width: 768px) {
+        #kt_header_mobile {
+            padding: 0px 20px;
+        }
+
+        .icon-8x {
+            font-size: 10vw !important;
+        }
+
+        .outer{
+            padding: 10px;
+        }
+        .back-link{
+            color:#046A38;
+            font-weight: bold;
+            font-size: 16px;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        .my-link{
+            width: 100%;
+            text-align: center;
+        }
+        .no-tool{
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .row {
+            margin: 0;
+        }
+
+        .col-max {
+            padding: 20px;
+        }
+
+        img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .outer p {
+            font-size: 1.6vw;
+        }
+
+        .outer a {
+            padding: 10px;
+            max-height: 110%;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .outer p {
+            font-size: 2.5vw;
+        }
+    }
+
+    @media only screen
+    and (min-width: 1024px)
+    and (max-width: 1365px) {
+
+        .col-max{
+            padding: 10px;
+        }
+
+        .fluid-view-menu {
+            padding: 10px 0px;
+        }
+
+        .icon-8x {
+            font-size: 7.5vw !important;
+        }
+
+        .outer a {
+            top: 48%;
+        }
+
+    }
+
+    @media only screen
+    and (min-width: 768px)
+    and (max-width: 1024px) {
+        
+        .fluid-view-menu {
+            padding: 10px 0px;
+        }
+
+        .main{
+            margin-top:10px ;
+        }
+        .back-link{
+            color:#046A38 ;
+            font-size: 16px;
+        }
+
+        .col-max, .outer {
+            padding: 10px;
+        }
+    }
+
+    @media only screen
+    and (min-width: 768px)
+    and (max-width: 991px) {
+        .outer p {
+            font-size: 1.6vw;
+        }
+    }
+
+    @media only screen
+    and (min-width: 1365px)
+    and (max-width: 1919px) {
+
+        .outer a {
+            top: 46%;
+        }
+    }
+
+    @media only screen and (max-width: 767px) {
+        .fluid-view-menu {
+            padding: 10px 0px;
+        }
+        .col-max {
+            padding: 10px;
+        }
+        .icon-8x {
+            font-size: 18vw !important;
+        }
+        .outer p {
+            font-size: 3.5vw;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .outer {
+            padding: 0;
+        }
+        .icon-8x {
+            font-size: 24vw !important;
+        }
+        .outer a {
+            max-height: 100%;
+            width: 100%;
+            height: 100%;
+        }
+        .outer p {
+            font-size: 3.2vw;
+        }
+    }
+
+    @media only screen and (max-width: 320px) {
+        .icon-8x {
+            font-size: 20vw !important;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .icon-8x {
+            font-size: 6vw !important;
+        }
+
+        .outer a {
+            max-height: 110%;
+        }
+
+        .outer p {
+            height: 70px;
+            font-size: 0.9vw;
+        }
+
+        .col-max {
+            position: relative;
+            width: 100%;
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 16.66667%;
+            flex: 0 0 16.66667%;
+            max-width: 16.66667%;
+        }
+    }
+
+    @media only screen and (min-width: 2560px){
+        .icon-8x {
+            font-size: 7vw !important;
+        }
+        .outer p {
+            font-size: 1vw;
+        }
+    }   
+
+    #loading-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: center no-repeat #fff;
+    }
+</style>
+
+<div class="container-fluid fluid-view-menu">
+    <div class="row text-center">
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('DashboardController@index') }}">
+                    <i class="icon-8x icon-stats-growth"></i>
+                    <p>Dashboard</p> 
+                </a>
             </div>
         </div>
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('DashboardController@index') }}">
+                    <i class="icon-8x icon-clipboard5"></i>
+                    <p>Chấm Công GPS</p> 
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('DashboardController@index') }}">
+                    <i class="icon-8x icon-clipboard6"></i>
+                    <p>Công Phép Cá Nhân</p> 
+                </a>
+            </div>
+        </div>
+        <div class="no-tool text-center">
+            <?php
 
-        <div class="card-body">
-            <h6 class="font-weight-semibold">Start your development with no hassle!</h6>
-            <p class="mb-3">Common problem of templates is that all code is deeply integrated into the core. This limits your freedom in decreasing amount of code, i.e. it becomes pretty difficult to remove unnecessary code from the project. Limitless allows you to remove unnecessary and extra code
-                easily just by removing the path to specific LESS file with component styling. All plugins and their options are also in separate files. Use only components you actually need!</p>
 
-            <h6 class="font-weight-semibold">What is this?</h6>
-            <p class="mb-3">Starter kit is a set of pages, useful for developers to start development process from scratch. Each layout includes base components only: layout, page kits, color system which is still optional, bootstrap files and bootstrap overrides. No extra CSS/JS files and markup.
-                CSS files are compiled without any plugins or components. Starter kit was moved to a separate folder for better accessibility.</p>
-
-            <h6 class="font-weight-semibold">How does it work?</h6>
-            <p>You open one of the starter pages, add necessary plugins, uncomment paths to files in components.less file, compile new CSS. That's it. I'd also recommend to open one of main pages with functionality you need and copy all paths/JS code from there to your new page, it's just faster and
-                easier.</p>
+            ?>
         </div>
     </div>
-    <!-- /basic card -->
+</div>
 
-
-    <!-- Basic table -->
-    <div class="card">
-        <div class="card-header header-elements-inline">
-            <h5 class="card-title">Basic table</h5>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-body">
-            Seed project includes the most basic components that can help you in development process - basic grid example, card, table and form layouts with standard components. Nothing extra. Easily turn on and off styles of different components in <code>_config.scss</code> file so that your CSS is
-            always as clean as possible. Bootstrap components are always enabled though.
-        </div>
-
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Eugene</td>
-                    <td>Kopyov</td>
-                    <td>@Kopyov</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Victoria</td>
-                    <td>Baker</td>
-                    <td>@Vicky</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>James</td>
-                    <td>Alexander</td>
-                    <td>@Alex</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Franklin</td>
-                    <td>Morrison</td>
-                    <td>@Frank</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <!-- /basic table -->
-
-
-    <!-- Form layouts -->
-    <div class="row">
-        <div class="col-md-6">
-
-            <!-- Horizontal form -->
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h5 class="card-title">Horizontal form</h5>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"></a>
-                            <a class="list-icons-item" data-action="reload"></a>
-                            <a class="list-icons-item" data-action="remove"></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <form action="#">
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">Text input</label>
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">Password</label>
-                            <div class="col-lg-9">
-                                <input type="password" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">Select</label>
-                            <div class="col-lg-9">
-                                <select name="select" class="form-control">
-                                    <option value="opt1">Basic select</option>
-                                    <option value="opt2">Option 2</option>
-                                    <option value="opt3">Option 3</option>
-                                    <option value="opt4">Option 4</option>
-                                    <option value="opt5">Option 5</option>
-                                    <option value="opt6">Option 6</option>
-                                    <option value="opt7">Option 7</option>
-                                    <option value="opt8">Option 8</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">Textarea</label>
-                            <div class="col-lg-9">
-                                <textarea rows="5" cols="5" class="form-control" placeholder="Default textarea"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-primary">Submit form <i class="icon-paperplane ml-2"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- /horizotal form -->
-
-        </div>
-
-        <div class="col-md-6">
-
-            <!-- Vertical form -->
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h5 class="card-title">Vertical form</h5>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"></a>
-                            <a class="list-icons-item" data-action="reload"></a>
-                            <a class="list-icons-item" data-action="remove"></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <form action="#">
-                        <div class="form-group">
-                            <label>Text input</label>
-                            <input type="text" class="form-control">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Select</label>
-                            <select name="select" class="form-control">
-                                <option value="opt1">Basic select</option>
-                                <option value="opt2">Option 2</option>
-                                <option value="opt3">Option 3</option>
-                                <option value="opt4">Option 4</option>
-                                <option value="opt5">Option 5</option>
-                                <option value="opt6">Option 6</option>
-                                <option value="opt7">Option 7</option>
-                                <option value="opt8">Option 8</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Textarea</label>
-                            <textarea rows="4" cols="4" class="form-control" placeholder="Default textarea"></textarea>
-                        </div>
-
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-primary">Submit form <i class="icon-paperplane ml-2"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- /vertical form -->
-
-        </div>
-    </div>
-    <!-- /form layouts -->
+<script>
+    $(document).ready(function () {
+        $( window ).resize(function() {
+            var cw = $('.outer').width();
+            $('.outer').css({'height':cw+'px'});
+        });
+        var cw = $('.outer').width();
+        $('.outer').css({'height':cw+'px'});
+    });
+</script>
 
 @endsection
 

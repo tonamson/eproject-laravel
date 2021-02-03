@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="media-body">
-                        <div class="media-title font-weight-semibold">Username</div>
+                        <div class="media-title font-weight-semibold"><?php echo auth()->user()->firstname . ' ' . auth()->user()->lastname ?></div>
                     </div>
 
                 </div>
@@ -41,20 +41,26 @@
 
                 <!-- Main -->
                 <li class="nav-item">
+                    <a href="{{ action('ViewmenuController@index') }}" class="nav-link">
+                        <i class="icon-home2"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ action('DashboardController@index') }}" class="nav-link">
-                        <i class="icon-home4"></i>
+                        <i class="icon-stats-growth"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ action('CheckInOutController@index') }}" class="nav-link">
-                        <i class="icon-home4"></i>
+                        <i class="icon-clipboard5"></i>
                         <span>Chấm Công GPS</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ action('CheckInOutController@show') }}" class="nav-link">
-                        <i class="icon-home4"></i>
+                        <i class="icon-clipboard6"></i>
                         <span>Công Phép Cá Nhân</span>
                     </a>
                 </li>

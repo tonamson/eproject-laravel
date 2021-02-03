@@ -11,6 +11,9 @@ class AuthenticateController extends Controller
 {
     public function getLogin()
     {
+        if(auth()->user()) {
+            return redirect('/');
+        }
         return view('auth.login');
     }
 

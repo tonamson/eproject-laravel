@@ -45,7 +45,7 @@
                         </select>
                     </div>
                     <div class="ml-2">
-                        <input class="form-control" type="number" value="2021" name="year" id="year">
+                        <input class="form-control" type="number" value="<?php echo $year ?>" name="year" id="year">
                     </div>
                     <div class="ml-3">
                         <input class="form-control btn btn-primary" type="submit" value="Search">
@@ -124,24 +124,7 @@
 
 @section('scripts')
     <script>
-        /* ------------------------------------------------------------------------------
-        *
-        *  # Basic datatables
-        *
-        *  Demo JS code for datatable_basic.html page
-        *
-        * ---------------------------------------------------------------------------- */
-
-
-        // Setup module
-        // ------------------------------
-
         var DatatableBasic = function() {
-
-
-            //
-            // Setup module components
-            //
 
             // Basic Datatable examples
             var _componentDatatableBasic = function() {
@@ -210,11 +193,6 @@
                 });
             };
 
-
-            //
-            // Return objects assigned to module
-            //
-
             return {
                 init: function() {
                     _componentDatatableBasic();
@@ -222,10 +200,6 @@
                 }
             }
         }();
-
-
-        // Initialize module
-        // ------------------------------
 
         document.addEventListener('DOMContentLoaded', function() {
             DatatableBasic.init();
