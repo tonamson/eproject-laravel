@@ -62,18 +62,44 @@
                     <th>Giờ ra</th>
                     <th>Tổng thời gian làm việc</th>
                     <th>Ngày công</th>
+                    <th>Ghi chú</th>
                     <th>Bổ sung</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $dat)
+                @foreach ($data as $check_in_out)
                 {{-- @dd($data) --}}
                     <tr>
-                        <td>{{ $dat['check_in_day'] }}</td>
-                        <td>{{ $dat['check_in'] }}</td>
-                        <td>{{ $dat['check_out'] }}</td>
-                        <td>{{ $dat['time'] }}</td>
-                        <td>{{ $dat['number_time'] }}</td>
+                        <td>{{ $check_in_out['check_in_day'] }}</td>
+                        <td>{{ $check_in_out['check_in'] }}</td>
+                        <td>{{ $check_in_out['check_out'] }}</td>
+                        <td>{{ $check_in_out['time'] }}</td>
+                        <td>{{ $check_in_out['number_time'] }}</td>
+                        <td style="min-width: 220px">
+                            <?php
+                                if($check_in_out['in_late']){
+                                    $date = date_create($check_in_out['in_late']);
+                                    echo 'Đi trễ: ' . date_format($date,"H") . ' giờ';
+                                    echo ' ' . date_format($date,"i") . ' phút';
+                                    echo ' ' . date_format($date,"s") . ' giây';
+                                    echo "<br>";
+                                }
+                                if($check_in_out['out_soon']){
+                                    $date = date_create($check_in_out['out_soon']);
+                                    echo 'Về sớm: ' . date_format($date,"H") . ' giờ';
+                                    echo ' ' . date_format($date,"i") . ' phút';
+                                    echo ' ' . date_format($date,"s") . ' giây';
+                                    echo "<br>";
+                                }
+                                if($check_in_out['ot']){
+                                    $date = date_create($check_in_out['ot']);
+                                    echo 'Tăng ca: ' . date_format($date,"H") . ' giờ';
+                                    echo ' ' . date_format($date,"i") . ' phút';
+                                    echo ' ' . date_format($date,"s") . ' giây';
+                                    echo "<br>";
+                                }
+                            ?>
+                        </td>
                         <td class="text-center">
                             <div class="list-icons">
                                 <div class="dropdown">

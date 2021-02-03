@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ action('DashboardController@index') }}" class="nav-link">
+                    <a href="{{ action('CheckInOutController@show') }}" class="nav-link">
                         <i class="icon-home4"></i>
                         <span>Công Phép Cá Nhân</span>
                     </a>
