@@ -66,6 +66,8 @@ class CheckInOutController extends Controller
 
     public function show(Request $request)
     {
+        $user = auth()->user();
+
         $month = $request->input('month');
         $year = $request->input('year');
         if(!$month) {
@@ -75,7 +77,7 @@ class CheckInOutController extends Controller
             $year = date("Y");
         }
         $date = $year . '-' . $month . '-' . '01';
-        $data_request = ['staff_id' => 2, 'y_m' => $date];
+        $data_request = ['staff_id' => $user->id, 'y_m' => $date];
 
         $response = Http::post('http://localhost:8888/check-in-out/get-staff-time', $data_request);
         $body = json_decode($response->body(), true);

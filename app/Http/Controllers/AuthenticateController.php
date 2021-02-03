@@ -31,9 +31,15 @@ class AuthenticateController extends Controller
         $auth = Auth::attempt(['id_number' => $id_number, 'password' => $password]);
         if ($auth) {
             // login thành công thì redirect tới trang nào đó tùy
-            return response(auth()->user()); // thông tin user
-//            return redirect()->route();
+            //return response(auth()->user()); // thông tin user
+            return redirect('/');
         }
         return redirect()->back()->with('authentication', 'Không tìm thấy thông tin tài khoản');
+    }
+
+    public function getLogout(Request $request){
+        Auth::logout();
+        $request->session()->flush();
+        return redirect('auth/login');
     }
 }

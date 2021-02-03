@@ -1,10 +1,19 @@
 <?php 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/dashboard', 'DashboardController@index');
+Route::middleware(['check_login'])->group(function () {
+    
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::get('index', 'DashboardController@index');
+    });
 
-Route::get('/check-in-gps', 'CheckInOutController@index');
+    Route::group(['prefix' => 'check-in-gps'], function () {
+        Route::get('/index', 'CheckInOutController@index');
 
-Route::post('/check-in-gps', 'CheckInOutController@create');
+        Route::post('/create', 'CheckInOutController@create');
+    });
 
-Route::get('/staff-time', 'CheckInOutController@show');
+    Route::group(['prefix' => 'staff-time'], function () {
+        Route::get('/index', 'CheckInOutController@show');
+    });
+});
