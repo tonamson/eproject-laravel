@@ -52,30 +52,27 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ action('CheckInOutController@index') }}" class="nav-link">
-                        <i class="icon-clipboard5"></i>
-                        <span>Chấm Công GPS</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ action('CheckInOutController@show') }}" class="nav-link">
-                        <i class="icon-clipboard6"></i>
-                        <span>Công Phép Cá Nhân</span>
-                    </a>
-                </li>
                 <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Starter kit</span></a>
+                    <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Công Phép</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                        <li class="nav-item"><a href="#" class="nav-link">Menu 1</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link active">Menu 2</a></li>
-                        <li class="nav-item nav-item-submenu">
-                            <a href="#" class="nav-link">Menu 3</a>
-                            <ul class="nav nav-group-sub">
-                                <li class="nav-item"><a href="#" class="nav-link">Menu 3.1</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link">Menu 3.2</a></li>
-                            </ul>
+                        <li class="nav-item">
+                            <a href="{{ action('CheckInOutController@index') }}" class="nav-link">
+                                <i class="icon-clipboard5"></i>
+                                <span>Chấm Công GPS</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ action('CheckInOutController@show') }}" class="nav-link">
+                                <i class="icon-clipboard6"></i>
+                                <span>Công Phép Cá Nhân</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ action('TimeleaveController@index') }}" class="nav-link">
+                                <i class="icon-clipboard6"></i>
+                                <span>Bổ Sung Công Phép</span>
+                            </a>
                         </li>
                     </ul>
                 </li>

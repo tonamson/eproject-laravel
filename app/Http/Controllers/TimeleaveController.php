@@ -7,6 +7,32 @@ use Illuminate\Http\Request;
 
 class TimeleaveController extends Controller
 {
+    public function index(Request $request)
+    {
+        $user = auth()->user();
+
+        $month = $request->input('month');
+        $year = $request->input('year');
+        if(!$month) {
+            $month = date("m");
+        }
+        if(!$year) {
+            $year = date("Y");
+        }
+
+        $date = $year . '-' . $month . '-' . '01';
+        $data_request = ['staff_id' => $user->id, 'day_time_leave' => $date];
+
+        $response = Http::post('http://localhost:8888/time-leave/list', $data_request);
+        $body = json_decode($response->body(), true);
+        //dd($body['data']);
+
+        return view('main.time_leave.index')
+            ->with('data', $body['data'])
+            ->with('year', $year)
+            ->with('month', $month);
+    }
+
     public function createTime(Request $request)
     {
         $user = auth()->user();

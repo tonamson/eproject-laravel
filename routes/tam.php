@@ -18,6 +18,8 @@ Route::middleware(['check_login'])->group(function () {
     });
 
     Route::group(['prefix' => 'time-leave'], function () {
+        Route::get('/index', 'TimeleaveController@index');
+
         Route::post('/create', 'TimeleaveController@createTime');
     });
 });
