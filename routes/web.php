@@ -15,9 +15,13 @@ include 'hoai.php';
 |
 */
 
-Route::get('/', 'DemoController@viewIndex');
-Route::get('/post', 'DemoController@postAddUser');
+Route::middleware(['check_login'])->group(function () {
+    Route::get('/', 'ViewmenuController@index');
 
-Route::get('/demo/get', 'DemoController@testGet');
-Route::get('/demo/example-data-get', 'DemoController@exampleDataGet');
+    //Route::get('/', 'DemoController@viewIndex');
+    Route::get('/post', 'DemoController@postAddUser');
+    
+    Route::get('/demo/get', 'DemoController@testGet');
+    Route::get('/demo/example-data-get', 'DemoController@exampleDataGet');
 
+});
