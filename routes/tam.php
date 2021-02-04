@@ -16,4 +16,8 @@ Route::middleware(['check_login'])->group(function () {
     Route::group(['prefix' => 'staff-time'], function () {
         Route::get('/index', 'CheckInOutController@show');
     });
+
+    Route::group(['prefix' => 'time-leave'], function () {
+        Route::post('/create', 'TimeleaveController@createTime');
+    });
 });

@@ -1,14 +1,8 @@
 @extends('main._layouts.master')
 
 <?php
-    // {{ }} <--- cac ky tu dac biet se duoc thay the
-    // {!! !!} <--- cac ky tu dac biet se khong thay the
-    // {{-- --}} <--- comment code trong blade
-    /**
-     * section('scripts') <--- coi o? master.blade.php <--- no' la @yield('scripts')
-     * section co' mo? la phai co' dong'
-     * neu ma soan code php thi nen de? tren dau` de? no' load tuan tu chinh xac hon giong nhu code php nam tren section('scripts') vay ok roi
-     * */
+    header("Access-Control-Allow-Origin: *");
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 ?>
 
 @section('css')
@@ -17,6 +11,12 @@
 
 @section('js')    
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/notifications/jgrowl.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/ui/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
+    <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
 @endsection
 
 @section('content')
@@ -34,6 +34,21 @@
             </div>
         </div>
         <div class="card-body">
+            @if (\Session::has('success'))
+                <div class="">
+                    <div class="alert alert-success">
+                        {!! \Session::get('success') !!}
+                    </div>
+                </div>
+            @endif
+
+            @if (\Session::has('error'))
+                <div class="">
+                    <div class="alert alert-danger">
+                        {!! \Session::get('error') !!}
+                    </div>
+                </div>
+            @endif
             <form action="{{ action('CheckInOutController@show') }}" method="GET">
                 @csrf
                 <div class="form-group d-flex">
@@ -52,6 +67,106 @@
                     </div>
                 </div>
             </form>
+
+            <div class="form-group d-flex">
+                <div class="">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Bổ Sung Công</button>
+                </div>
+                <div class="ml-1">
+                    <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2">Đăng Kí Phép</button>
+                </div>
+            </div>
+        </div>
+        <!-- Modal bsc -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form action="{{ action('TimeleaveController@createTime') }}" method="post">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Bổ Sung Công</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Ngày bổ sung:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control day_leave" name="day_leave" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Yêu cầu điều chỉnh:</label>
+                                <div class="col-lg-9">
+                                    <select class="form-control" name="number_day_leave" id="number_day_leave">
+                                        <option value="1">Một ngày</option>
+                                        <option value="0.5">Nửa ngày</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Lý do:</label>
+                                <div class="col-lg-9">
+                                    <textarea class="form-control" name="note_bsc" id="note_bsc" cols="20" rows="10" placeholder="VD: Quên check in, Quên check out, ..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal bsc -->
+        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form action="" method="post">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Đăng Kí Phép</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Ngày đăng kí phép:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control day_bsc" name="day_bsc" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Công đăng kí phép:</label>
+                                <div class="col-lg-9">
+                                    <select class="form-control" name="number_day_bsc" id="number_day_bsc">
+                                        <option value="1">Một ngày công</option>
+                                        <option value="0.5">Nửa ngày công</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Lý do nghỉ phép:</label>
+                                <div class="col-lg-9">
+                                    <textarea class="form-control" name="note_leave" id="note_leave" cols="20" rows="10" placeholder="VD: Bận việc gia đình, khám bệnh, ..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>
         </div>
 
         <table class="table datatable-basic">
@@ -63,7 +178,6 @@
                     <th>Tổng thời gian làm việc</th>
                     <th>Ngày công</th>
                     <th>Ghi chú</th>
-                    <th>Bổ sung</th>
                 </tr>
             </thead>
             <tbody>
@@ -100,20 +214,6 @@
                                 }
                             ?>
                         </td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-menu9"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a href="#" class="dropdown-item"><i class="icon-file-pdf"></i> Bổ sung công</a>
-                                        <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Đăng kí phép</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                 @endforeach       
             </tbody>
@@ -124,6 +224,34 @@
 
 @section('scripts')
     <script>
+        $('.day_bsc').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
+
+        $('.day_leave').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
+
+        $(document).ready(function(){
+            $('#register_leave').click(function(){
+                var request = new Request('http://localhost:8888/staff/updateDayOfLeave');
+
+                fetch(request, {mode: 'no-cors'}).then(function(response) {
+                    return response.json();
+                }).then(function(j) {
+                    console.log(JSON.stringify(j));
+                }).catch(function(error) {
+                    console.log('Request failed', error)
+                });
+            });
+        });
+
         var DatatableBasic = function() {
 
             // Basic Datatable examples
