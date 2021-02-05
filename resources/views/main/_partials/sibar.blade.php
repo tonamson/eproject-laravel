@@ -65,7 +65,7 @@
                         <li class="nav-item">
                             <a href="{{ action('CheckInOutController@show') }}" class="nav-link">
                                 <i class="icon-clipboard6"></i>
-                                <span>Công Phép Cá Nhân</span>
+                                <span>Lịch Sử Chấm Công</span>
                             </a>
                         </li>
                         <li class="nav-item">

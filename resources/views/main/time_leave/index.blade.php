@@ -7,6 +7,11 @@
 
 @section('css')
     <link href="{{ asset('assets/css/components_datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        #tb_dkp_wrapper {
+            display: none;
+        }
+    </style>
 @endsection
 
 @section('js')    
@@ -49,7 +54,7 @@
                     </div>
                 </div>
             @endif
-            <form action="{{ action('CheckInOutController@show') }}" method="GET">
+            <form action="{{ action('TimeleaveController@index') }}" method="GET">
                 @csrf
                 <div class="form-group d-flex">
                     <div class="">
@@ -76,6 +81,14 @@
                     <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2">Đăng Kí Phép</button>
                 </div>
             </div>
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <button class="nav-link active" id="btn_tb_bsc">Bổ sung công</button>
+                <li class="nav-item">
+                  <button class="nav-link" id="btn_tb_dkp">Đăng kí phép</button>
+                </li>
+            </ul>
         </div>
         <!-- Modal bsc -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -93,14 +106,14 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Ngày bổ sung:</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control day_leave" name="day_leave" value="">
+                                    <input type="text" class="form-control day_leave" name="day_leave" value="" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Yêu cầu điều chỉnh:</label>
                                 <div class="col-lg-9">
-                                    <select class="form-control" name="number_day_leave" id="number_day_leave">
+                                    <select class="form-control" name="number_day_leave" id="number_day_leave" required>
                                         <option value="1">Một ngày</option>
                                         <option value="0.5">Nửa ngày</option>
                                     </select>
@@ -110,7 +123,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Lý do:</label>
                                 <div class="col-lg-9">
-                                    <textarea class="form-control" name="note_bsc" id="note_bsc" cols="20" rows="10" placeholder="VD: Quên check in, Quên check out, ..."></textarea>
+                                    <textarea class="form-control" name="note_bsc" id="note_bsc" cols="20" rows="10" placeholder="VD: Quên check in, Quên check out, ..." required></textarea>
                                 </div>
                             </div>
                         </div>
@@ -123,8 +136,7 @@
             </div>
         </div>
   
-
-        <table class="table datatable-basic">
+        <table class="table datatable-basic" id="tb_bsc">
             <thead>
                 <tr>
                     <th>Ngày </th>
@@ -132,22 +144,76 @@
                     <th>Loại</th>
                     <th>Ghi chú</th>
                     <th>Phê duyệt</th>
+                    <th>Sửa / Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $time_leave)
+                    @if($time_leave['type'] == 0)
+                        <tr>
+                            <td>{{ $time_leave['dayTimeLeave'] }}</td>
+                            <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
+                            <td><?php echo $time_leave['type'] == 0 ? 'Bổ sung công' : 'Đăng kí phép' ?></td>
+                            <td>{{ $time_leave['note'] }}</td>
+                            <td><?php echo $time_leave['isApproved'] == 0 ? 'Chưa phê duyệt' : 'Đã phê duyệt' ?></td>
+                            <td>
+                                <div class="from-group d-flex">
+                                    <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                    <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                </div>
+                            </td>
+                        </tr>                        
+                    @endif
+                @endforeach       
+            </tbody>
+        </table>
+
+        <table class="table datatable-basic2" id="tb_dkp" style="display: none">
+            <thead>
+                <tr>
+                    <th>Ngày </th>
+                    <th>Ngày công</th>
+                    <th>Loại</th>
+                    <th>Ghi chú</th>
+                    <th>Phê duyệt</th>
+                    <th>Sửa / Xóa</th>
                 </tr>
                     
             </thead>
             <tbody>
                 @foreach ($data as $time_leave)
-                {{-- @dd($data) --}}
-                    <tr>
-                        <td>{{ $time_leave['dayTimeLeave'] }}</td>
-                        <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
-                        <td><?php echo $time_leave['type'] == 0 ? 'Bổ sung công' : 'Đăng kí phép' ?></td>
-                        <td>{{ $time_leave['note'] }}</td>
-                        <td><?php echo $time_leave['isApproved'] == 0 ? 'Chưa phê duyệt' : 'Đã phê duyệt' ?></td>                       
-                    </tr>
-                @endforeach       
+                    @if($time_leave['type'] == 1)
+                        <tr>
+                            <td>{{ $time_leave['dayTimeLeave'] }}</td>
+                            <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
+                            <td><?php echo $time_leave['type'] == 0 ? 'Bổ sung công' : 'Đăng kí phép' ?></td>
+                            <td>{{ $time_leave['note'] }}</td>
+                            <td><?php echo $time_leave['isApproved'] == 0 ? 'Chưa phê duyệt' : 'Đã phê duyệt' ?></td>
+                            <td>
+                                <div class="from-group d-flex">
+                                    <a class="btn btn-info" style="color: white; cursor: pointer;">Sửa</a>
+                                    <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                </div>
+                            </td>
+                        </tr>                        
+                    @endif
+                @endforeach         
             </tbody>
         </table>
+
+        <div id="office-modal" class="modal fade" role="dialog"> <!-- modal office -->
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form action="{{ action('TimeleaveController@updateTime') }}" method="post" class="form-horizontal">
+                    @csrf
+                    <div id="html_pending">
+                        
+                    </div>
+                </form> <!-- end form -->
+              </div>
+            </div>
+        </div> <!-- end modal office -->
+          
     </div>
     <!-- /basic datatable -->
 @endsection
@@ -166,6 +232,45 @@
             locale: {
                 format: 'YYYY-MM-DD'
             }
+        });
+
+        $( "#btn_tb_bsc" ).click(function() {
+            $('#tb_dkp').hide();
+            $('#tb_dkp_wrapper').hide();
+            $('#tb_bsc').show();
+            $('#tb_bsc_wrapper').show();
+            $(this).addClass('active');
+            $('#btn_tb_dkp').removeClass('active');
+        });
+
+        $( "#btn_tb_dkp" ).click(function() {
+            $('#tb_bsc').hide();
+            $('#tb_bsc_wrapper').hide();
+            $('#tb_dkp').show();
+            $('#tb_dkp_wrapper').show();
+            $(this).addClass('active');
+            $('#btn_tb_bsc').removeClass('active');
+        });
+
+        $('.open-detail-time-leave').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailTime') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending').empty().append(data);
+                    $('#office-modal').modal();
+                }
+            });
         });
 
         var DatatableBasic = function() {
@@ -196,6 +301,7 @@
 
                 // Basic datatable
                 $('.datatable-basic').DataTable();
+                $('.datatable-basic2').DataTable();
 
                 // Alternative pagination
                 $('.datatable-pagination').DataTable({

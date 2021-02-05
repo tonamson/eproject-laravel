@@ -21,5 +21,11 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/index', 'TimeleaveController@index');
 
         Route::post('/create', 'TimeleaveController@createTime');
+
+        Route::get('/delete', 'TimeleaveController@deleteTime');
+
+        Route::get('/detail', 'TimeleaveController@detailTime');
+
+        Route::post('/update', 'TimeleaveController@updateTime');
     });
 });

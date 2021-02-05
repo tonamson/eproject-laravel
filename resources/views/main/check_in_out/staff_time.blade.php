@@ -22,7 +22,7 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Công Phép</h1>
+        <h1 class="pt-3 pl-3 pr-3">Lịch Sử Chấm Công</h1>
         <div class="card-header header-elements-inline">
             <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Ngọc Anh Tâm - HR - Staff</h4>
             <div class="header-elements">
