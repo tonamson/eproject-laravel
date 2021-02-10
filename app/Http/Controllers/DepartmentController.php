@@ -15,7 +15,7 @@ class DepartmentController extends Controller
         $data_department = $body['data'];
 
         return view('main.department.index')
-        ->with('data_departmen', $data_department);
+        ->with('data_department', $data_department);
     
     }
 

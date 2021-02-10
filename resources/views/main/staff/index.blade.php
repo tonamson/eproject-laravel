@@ -22,9 +22,9 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Phòng ban</h1>
+        <h1 class="pt-3 pl-3 pr-3">Nhân viên</h1>
         <div class="card-header header-elements-inline">
-            <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Minh Hoài - HR - Department</h4>
+            <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Minh Hoài - HR - Staff</h4>
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
@@ -58,19 +58,47 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Name_VN</th>
-                    <th>DELETE</th>
+                    <th>Mã</th>
+                    <th>Tên</th>
+                    <th>Họ</th>
+                    <th>Phòng Ban</th>
+                    <th>Is_Manager</th>
+                    <th>Ngày vào</th>
+                    <th>Ngày nghỉ</th>
+                    <th>Ngày sinh</th>
+                    <th>Giới tính</th>
+                    <th>Khu vực</th>
+                    <th>Số điện thoại</th>
+                    <th>Mail</th>
+                    <th>Ảnh</th>
+                    <th>Mặt trước CMND</th>
+                    <th>Mặt sau CMND</th>
+                    <th>Ngày nghỉ</th>
+                    <th>Ghi chú</th>
+                    <th>Trạng thái</th>
+
                 </tr>
             </thead>
             <tbody>
-                    @foreach($data_department as $department)
-                    <tr>
-                        <td>{{ $department['id'] }}</td>
-                        <td>{{ $department['name'] }}</td>
-                        <td>{{ $department['nameVn'] }}</td>
-                        <td>{{ $department['del'] }}</td>
-                    </tr>
+                    @foreach($data_staff as $staff)
+                        <td>{{ $staff['id'] }}</td>
+                        <td>{{ $staff['code'] }}</td>
+                        <td>{{ $staff['firstname'] }}</td>
+                        <td>{{ $staff['lastname'] }}</td>
+                        <td>{{ $staff['department'] }}</td>
+                        <td>{{ $staff['isManager'] }}</td>
+                        <td>{{ $staff['joinedAt'] }}</td>
+                        <td>{{ $staff['offDate'] }}</td>
+                        <td>{{ $staff['dob'] }}</td>
+                        <td>{{ $staff['gender'] }}</td>
+                        <td>{{ $staff['regional'] }}</td>
+                        <td>{{ $staff['phoneNumber'] }}</td>
+                        <td>{{ $staff['email'] }}</td>
+                        <td>{{ $staff['idNumber'] }}</td>
+                        <td>{{ $staff['photo'] }}</td>
+                        <td>{{ $staff['status'] }}</td>
+
+
                     @endforeach
                         </td>
                         <td class="text-center">
