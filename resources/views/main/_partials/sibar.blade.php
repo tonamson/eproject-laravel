@@ -52,6 +52,18 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ action('DepartmentController@index') }}" class="nav-link">
+                        <i class="icon-home4"></i>
+                        <span>Phòng ban</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ action('StaffController@index') }}" class="nav-link">
+                        <i class="icon-home4"></i>
+                        <span>Nhân viên</span>
+                    </a>
+                </li>
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Công Phép</span></a>
 
