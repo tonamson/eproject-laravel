@@ -29,14 +29,14 @@
     <div class="card">
         <h1 class="pt-3 pl-3 pr-3">Bổ Sung Công / Đăng Kí Phép</h1>
         <div class="card-header header-elements-inline">
-            <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Ngọc Anh Tâm - HR - Staff</h4>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>
-            </div>
+            <h4 class="card-title font-weight-bold text-uppercase">
+                <?php echo auth()->user()->firstname . " " . auth()->user()->lastname ?> 
+                - <?php echo $staff[0][2] ?> 
+                - <?php echo auth()->user()->is_manager == 1 ? 'Quản lý' : 'Nhân viên' ?>
+            </h4>
+            <h4 class="card-title font-weight-bold text-uppercase">
+                Số ngày phép : <?php echo auth()->user()->day_of_leave ?> ngày 
+            </h4>
         </div>
         <div class="card-body">
             @if (\Session::has('success'))
@@ -135,6 +135,52 @@
                 </div>
             </div>
         </div>
+
+         <!-- Modal dkp -->
+        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form action="{{ action('TimeleaveController@createLeave') }}" method="post">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Đăng Kí Phép</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Ngày đăng kí phép:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control day_leave" name="day_leave" value="" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Yêu cầu phép:</label>
+                                <div class="col-lg-9">
+                                    <select class="form-control" name="number_day_leave" id="number_day_leave" required>
+                                        <option value="1">Một ngày</option>
+                                        <option value="0.5">Nửa ngày</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Lý do:</label>
+                                <div class="col-lg-9">
+                                    <textarea class="form-control" name="note_dkp" id="note_dkp" cols="20" rows="10" placeholder="VD: Bận việc gia đình, Đi học, ..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>
+        </div>
   
         <table class="table datatable-basic" id="tb_bsc">
             <thead>
@@ -156,12 +202,16 @@
                             <td><?php echo $time_leave['type'] == 0 ? 'Bổ sung công' : 'Đăng kí phép' ?></td>
                             <td>{{ $time_leave['note'] }}</td>
                             <td><?php echo $time_leave['isApproved'] == 0 ? 'Chưa phê duyệt' : 'Đã phê duyệt' ?></td>
-                            <td>
-                                <div class="from-group d-flex">
-                                    <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                    <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
-                                </div>
-                            </td>
+                            @if($time_leave['isApproved'] == 0)
+                                <td>
+                                    <div class="from-group d-flex">
+                                        <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                        <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                    </div>
+                                </td>
+                            @else
+                                <td>Quản lý đã phê duyệt, không thể chỉnh sửa!</td>
+                            @endif
                         </tr>                        
                     @endif
                 @endforeach       
@@ -189,19 +239,23 @@
                             <td><?php echo $time_leave['type'] == 0 ? 'Bổ sung công' : 'Đăng kí phép' ?></td>
                             <td>{{ $time_leave['note'] }}</td>
                             <td><?php echo $time_leave['isApproved'] == 0 ? 'Chưa phê duyệt' : 'Đã phê duyệt' ?></td>
-                            <td>
-                                <div class="from-group d-flex">
-                                    <a class="btn btn-info" style="color: white; cursor: pointer;">Sửa</a>
-                                    <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
-                                </div>
-                            </td>
+                            @if($time_leave['isApproved'] == 0)
+                                <td>
+                                    <div class="from-group d-flex">
+                                        <a class="btn btn-info open-detail-dkp" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                        <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                    </div>
+                                </td>
+                            @else
+                                <td>Quản lý đã phê duyệt, không thể chỉnh sửa!</td>
+                            @endif
                         </tr>                        
                     @endif
                 @endforeach         
             </tbody>
         </table>
 
-        <div id="office-modal" class="modal fade" role="dialog"> <!-- modal office -->
+        <div id="bsc-modal" class="modal fade" role="dialog"> <!-- modal bsc -->
             <div class="modal-dialog">
               <div class="modal-content">
                 <form action="{{ action('TimeleaveController@updateTime') }}" method="post" class="form-horizontal">
@@ -212,7 +266,20 @@
                 </form> <!-- end form -->
               </div>
             </div>
-        </div> <!-- end modal office -->
+        </div> <!-- end modal bsc -->
+
+        <div id="dkp-modal" class="modal fade" role="dialog"> <!-- modal dkp -->
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form action="{{ action('TimeleaveController@updateTime') }}" method="post" class="form-horizontal">
+                    @csrf
+                    <div id="html_pending">
+                        
+                    </div>
+                </form> <!-- end form -->
+              </div>
+            </div>
+        </div> <!-- end modal dkp -->
           
     </div>
     <!-- /basic datatable -->
@@ -268,7 +335,28 @@
                 {
                     console.log(data);
                     $('#html_pending').empty().append(data);
-                    $('#office-modal').modal();
+                    $('#bsc-modal').modal();
+                }
+            });
+        });
+
+        $('.open-detail-dkp').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailLeave') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending').empty().append(data);
+                    $('#bsc-modal').modal();
                 }
             });
         });

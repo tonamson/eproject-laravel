@@ -27,5 +27,11 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/detail', 'TimeleaveController@detailTime');
 
         Route::post('/update', 'TimeleaveController@updateTime');
+
+        // Phep
+
+        Route::post('/createLeave', 'TimeleaveController@createLeave');
+
+        Route::get('/detailLeave', 'TimeleaveController@detailLeave');
     });
 });
