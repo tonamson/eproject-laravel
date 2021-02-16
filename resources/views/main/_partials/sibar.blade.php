@@ -74,6 +74,14 @@
                                 <span>Bổ Sung Công Phép</span>
                             </a>
                         </li>
+                         <li class="nav-item">
+                            @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
+                                <a href="{{ action('TimeleaveController@approveTimeLeave') }}" class="nav-link">
+                                    <i class="icon-clipboard6"></i>
+                                    <span>Duyệt Công Phép</span>
+                                </a>
+                            @endif
+                        </li>
                     </ul>
                 </li>
                 <!-- /main -->

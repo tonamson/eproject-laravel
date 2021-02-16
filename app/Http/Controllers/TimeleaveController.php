@@ -31,7 +31,7 @@ class TimeleaveController extends Controller
 
         $response = Http::post('http://localhost:8888/time-leave/list', $data_request);
         $body = json_decode($response->body(), true);
-        //dd($body['data']);
+        //dd($body['data'][0]['time']);
 
         return view('main.time_leave.index')
             ->with('data', $body['data'])
@@ -304,5 +304,38 @@ class TimeleaveController extends Controller
        
         echo $html;
         die;
+    }
+
+    public function approveTimeLeave(Request $request)
+    {
+        $params_get_department = [
+            'id' => auth()->user()->id,
+        ];
+        $response_get_department = Http::get('http://localhost:8888/staff/findOneStaffDepartment', $params_get_department);
+        $body_get_department = json_decode($response_get_department->body(), true);
+
+        $user = auth()->user();
+
+        $month = $request->input('month');
+        $year = $request->input('year');
+        if(!$month) {
+            $month = date("m");
+        }
+        if(!$year) {
+            $year = date("Y");
+        }
+
+        $date = $year . '-' . $month . '-' . '01';
+        $data_request = ['department' => $user->department, 'day_time_leave' => $date];
+
+        $response = Http::post('http://localhost:8888/time-leave/get-staff-approve', $data_request);
+        $body = json_decode($response->body(), true);
+        //dd($body['data']);
+
+        return view('main.time_leave.approve')
+            ->with('data', $body['data'])
+            ->with('year', $year)
+            ->with('month', $month)
+            ->with('staff', $body_get_department['data']);
     }
 }

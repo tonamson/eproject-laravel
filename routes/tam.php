@@ -33,5 +33,11 @@ Route::middleware(['check_login'])->group(function () {
         Route::post('/createLeave', 'TimeleaveController@createLeave');
 
         Route::get('/detailLeave', 'TimeleaveController@detailLeave');
+
+        // Approve time leave
+
+        Route::middleware(['check_manager'])->group(function () {
+            Route::get('/approve-time-leave', 'TimeleaveController@approveTimeLeave');
+        });
     });
 });
