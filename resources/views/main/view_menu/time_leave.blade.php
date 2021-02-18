@@ -288,24 +288,40 @@
 
 <div class="container-fluid fluid-view-menu">
     <div class="row text-center">
-        @if(auth()->user()->department == 2)
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('CheckInOutController@index') }}">
+                    <i class="icon-8x icon-clipboard5"></i>
+                    <p>Chấm Công GPS</p> 
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('CheckInOutController@show') }}">
+                    <i class="icon-8x icon-clipboard6"></i>
+                    <p>Lịch Sử Chấm Công</p> 
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('TimeleaveController@index') }}">
+                    <i class="icon-8x icon-clipboard6"></i>
+                    <p>Bổ Sung Công Phép</p> 
+                </a>
+            </div>
+        </div>
+        @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
-                    <a href="{{ action('DashboardController@index') }}">
-                        <i class="icon-8x icon-stats-growth"></i>
-                        <p>Dashboard</p> 
+                    <a href="{{ action('TimeleaveController@approveTimeLeave') }}">
+                        <i class="icon-8x icon-clipboard6"></i>
+                        <p>Duyệt Công Phép</p> 
                     </a>
                 </div>
             </div>
         @endif
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ action('ViewmenuController@timeLeave') }}">
-                    <i class="icon-8x icon-stack"></i>
-                    <p>Công Phép</p> 
-                </a>
-            </div>
-        </div>
         <div class="no-tool text-center">
             <?php
 

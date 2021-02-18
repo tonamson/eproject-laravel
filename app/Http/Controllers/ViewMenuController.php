@@ -9,8 +9,11 @@ class ViewMenuController extends Controller
 {
     public function index()
     {
-        return view('main.view_menu.index', [
-            'message' => 'Hello World',
-        ]);
+        return view('main.view_menu.index');
+    }
+
+    public function timeLeave()
+    {
+        return view('main.view_menu.time_leave');
     }
 }

@@ -52,25 +52,19 @@
                     <div class="form-group">
                         <label class="font-weight-semibold" style="font-size: 0.9rem">Tên nhân viên:</label>
                         <div class="form-control-plaintext" style="font-size: 0.9rem">
-                            
+                            <?php echo auth()->user()->firstname . " " . auth()->user()->lastname ?>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-semibold" style="font-size: 0.9rem">Mã nhân viên:</label>
                         <div class="form-control-plaintext" style="font-size: 0.9rem">
-                            
+                            <?php echo auth()->user()->code ?>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-semibold" style="font-size: 0.9rem">Phòng ban:</label>
                         <div class="form-control-plaintext" style="font-size: 0.9rem">
-                            
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="font-weight-semibold" style="font-size: 0.9rem">Văn phòng:</label>
-                        <div class="form-control-plaintext" style="font-size: 0.9rem">
-                            
+                            <?php echo $staff[0][2] ?>
                         </div>
                     </div>
                     <div class="form-group">

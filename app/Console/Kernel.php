@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\UpdateDayOfLeave::class,
+        Commands\ResetDayOfLeave::class
     ];
 
     /**
@@ -24,7 +25,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        //Update day_of_leave + 1 lúc 1 giờ sáng ngày đầu tiên của tháng của tất cả nhân viên
+        $schedule->command('update:cron')
+                ->monthlyOn(1, '01:00')
+                //->everyMinute()
+                ->timezone('Asia/Ho_Chi_Minh');
+    
+        //Reset day_of_leave = 0 lúc 0 giờ sáng ngày đầu tiên của năm của tất cả nhân viên
+        $schedule->command('reset:cron')
+                ->yearly()
+                ->timezone('Asia/Ho_Chi_Minh');
     }
 
     /**

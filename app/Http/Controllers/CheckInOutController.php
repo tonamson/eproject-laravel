@@ -9,11 +9,19 @@ class CheckInOutController extends Controller
 {
     public function index()
     {
-        return view('main.check_in_out.index');
+        $params = [
+            'id' => auth()->user()->id,
+        ];
+        $response = Http::get('http://localhost:8888/staff/findOneStaffDepartment', $params);
+        $body = json_decode($response->body(), true);
+
+        return view('main.check_in_out.index')
+                ->with('staff', $body['data']);
     }
 
     public function create(Request $request)
     {
+        $user = auth()->user();
         $check_in_date = date('Y-m-d');
         $check_in_at = date('Y-m-d H:i:s');
         $latitude = $request->input('latitude1');
@@ -45,8 +53,8 @@ class CheckInOutController extends Controller
         }
 
         $body = [
-            "staff_id" => '2',
-            'staff_code' => 'Code',
+            "staff_id" => $user->id,
+            'staff_code' => $user->code,
             'check_in_day' => $check_in_date,
             'check_in_at' => $check_in_at
         ];

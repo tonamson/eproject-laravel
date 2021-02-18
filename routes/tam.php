@@ -2,9 +2,16 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['check_login'])->group(function () {
-    
+    Route::get('/', 'ViewmenuController@index');
+
+    Route::group(['prefix' => 'view-menu'], function () {
+        Route::get('/time-leave', 'ViewmenuController@timeLeave');
+    });
+
     Route::group(['prefix' => 'dashboard'], function () {
-        Route::get('index', 'DashboardController@index');
+        Route::middleware(['check_hr'])->group(function () {
+            Route::get('index', 'DashboardController@index');
+        });
     });
 
     Route::group(['prefix' => 'check-in-gps'], function () {
@@ -27,5 +34,20 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/detail', 'TimeleaveController@detailTime');
 
         Route::post('/update', 'TimeleaveController@updateTime');
+
+        // Phep
+        Route::post('/createLeave', 'TimeleaveController@createLeave');
+
+        Route::get('/detailLeave', 'TimeleaveController@detailLeave');
+
+        // Approve time leave
+        Route::middleware(['check_hr_or_manager'])->group(function () {
+            Route::get('/approve-time-leave', 'TimeleaveController@approveTimeLeave');
+
+            Route::get('/detail-staff-approve', 'TimeleaveController@detailStaffApprove');
+
+            Route::post('/approve-time-leave', 'TimeleaveController@approvedTimeLeave');
+
+        });
     });
 });
