@@ -16,7 +16,6 @@ include 'hoai.php';
 */
 
 Route::middleware(['check_login'])->group(function () {
-    Route::get('/', 'ViewmenuController@index');
 
     //Route::get('/', 'DemoController@viewIndex');
     Route::get('/post', 'DemoController@postAddUser');

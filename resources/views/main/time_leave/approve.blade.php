@@ -84,12 +84,11 @@
                 <tr>
                     <th>Tên nhân viên</th>
                     <th>Phòng ban</th>
-                    <th>Chức danh</th>
                     <th>Ngày </th>
                     <th>Ngày công</th>
-                    <th>Loại</th>
                     <th>Ghi chú</th>
                     <th>Phê duyệt</th>
+                    <th>Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -97,13 +96,23 @@
                     @if($time_leave['type'] == 0)
                         <tr>
                             <td>{{ $time_leave['firstname'] . ' ' . $time_leave['lastname'] }}</td>
-                            <td>{{ $time_leave['name_vn'] }}</td>
-                            <td><?php echo $time_leave['is_manager'] == 1 ? 'Quản lý' : 'Nhân viên'?></td>
+                            <td>{{ $time_leave['name'] }}</td>
                             <td>{{ $time_leave['day_time_leave'] }}</td>
                             <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
-                            <td><?php echo $time_leave['type'] == 0 ? 'Bổ sung công' : 'Đăng kí phép' ?></td>
-                            <td>{{ $time_leave['note'] }}</td>
-                            <td><?php echo $time_leave['is_approved'] == 0 ? 'Chưa phê duyệt' : 'Đã phê duyệt' ?></td>
+                            <td>
+                                <?php 
+                                    if(strlen($time_leave['note']) > 20) echo substr($time_leave['note'], 0, 30) . '...';
+                                    else echo $time_leave['note'];    
+                                ?>
+                            </td>
+                            <td>
+                                <?php echo $time_leave['is_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            </td>
+                            <td>
+                                <div class="from-group d-flex">
+                                    <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
+                                </div>
+                            </td>
                             {{-- @if($time_leave['is_approved'] == 0)
                                 <td>
                                     <div class="from-group d-flex">
@@ -125,12 +134,11 @@
                 <tr>
                     <th>Tên nhân viên</th>
                     <th>Phòng ban</th>
-                    <th>Chức danh</th>
                     <th>Ngày </th>
                     <th>Ngày công</th>
-                    <th>Loại</th>
                     <th>Ghi chú</th>
                     <th>Phê duyệt</th>
+                    <th>Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -138,28 +146,41 @@
                     @if($time_leave['type'] == 1)
                         <tr>
                             <td>{{ $time_leave['firstname'] . ' ' . $time_leave['lastname'] }}</td>
-                            <td>{{ $time_leave['name_vn'] }}</td>
-                            <td><?php echo $time_leave['is_manager'] == 1 ? 'Quản lý' : 'Nhân viên'?></td>
+                            <td>{{ $time_leave['name'] }}</td>
                             <td>{{ $time_leave['day_time_leave'] }}</td>
                             <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
-                            <td><?php echo $time_leave['type'] == 0 ? 'Bổ sung công' : 'Đăng kí phép' ?></td>
-                            <td>{{ $time_leave['note'] }}</td>
-                            <td><?php echo $time_leave['is_approved'] == 0 ? 'Chưa phê duyệt' : 'Đã phê duyệt' ?></td>
-                            {{-- @if($time_leave['is_approved'] == 0)
-                                <td>
-                                    <div class="from-group d-flex">
-                                        <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
-                                    </div>
-                                </td>
-                            @else
-                                <td>Quản lý đã phê duyệt, không thể chỉnh sửa!</td>
-                            @endif --}}
+                            <td>
+                                <?php 
+                                    if(strlen($time_leave['note']) > 20) echo substr($time_leave['note'], 0, 30) . '...';
+                                    else echo $time_leave['note'];    
+                                ?>
+                            </td>
+                            <td>
+                                <?php echo $time_leave['is_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            </td>
+                            <td>
+                                <div class="from-group d-flex">
+                                    <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
+                                </div>
+                            </td>
                         </tr>                        
                     @endif
                 @endforeach       
             </tbody>
         </table>
+
+        <div id="bsc-modal" class="modal fade" role="dialog"> <!-- modal bsc -->
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form action="{{ action('TimeleaveController@approvedTimeLeave') }}" method="post" class="form-horizontal">
+                    @csrf
+                    <div id="html_pending">
+                        
+                    </div>
+                </form> <!-- end form -->
+              </div>
+            </div>
+        </div> <!-- end modal bsc -->
           
     </div>
     <!-- /basic datatable -->
@@ -184,6 +205,29 @@
             $('#tb_dkp_wrapper').show();
             $(this).addClass('active');
             $('#btn_tb_bsc').removeClass('active');
+        });
+
+        $('.open-detail-time-leave').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailStaffApprove') }}',
+                Type: 'GET',
+                datatype: 'html',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    $('#html_pending').empty().append(data);
+                    $('#bsc-modal').modal();
+                },
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                }
+            });
         });
 
         var DatatableBasic = function() {

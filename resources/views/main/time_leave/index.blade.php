@@ -200,8 +200,15 @@
                             <td>{{ $time_leave['dayTimeLeave'] }}</td>
                             <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
                             <td><?php echo $time_leave['type'] == 0 ? 'Bổ sung công' : 'Đăng kí phép' ?></td>
-                            <td>{{ $time_leave['note'] }}</td>
-                            <td><?php echo $time_leave['isApproved'] == 0 ? 'Chưa phê duyệt' : 'Đã phê duyệt' ?></td>
+                            <td>
+                                <?php 
+                                    if(strlen($time_leave['note']) > 20) echo substr($time_leave['note'], 0, 30) . '...';
+                                    else echo $time_leave['note'];    
+                                ?>
+                            </td>
+                            <td>
+                                <?php echo $time_leave['isApproved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            </td>
                             @if($time_leave['isApproved'] == 0)
                                 <td>
                                     <div class="from-group d-flex">
@@ -237,8 +244,15 @@
                             <td>{{ $time_leave['dayTimeLeave'] }}</td>
                             <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
                             <td><?php echo $time_leave['type'] == 0 ? 'Bổ sung công' : 'Đăng kí phép' ?></td>
-                            <td>{{ $time_leave['note'] }}</td>
-                            <td><?php echo $time_leave['isApproved'] == 0 ? 'Chưa phê duyệt' : 'Đã phê duyệt' ?></td>
+                            <td>
+                                <?php 
+                                    if(strlen($time_leave['note']) > 20) echo substr($time_leave['note'], 0, 30) . '...';
+                                    else echo $time_leave['note'];    
+                                ?>
+                            </td>
+                            <td>
+                                <?php echo $time_leave['isApproved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            </td>
                             @if($time_leave['isApproved'] == 0)
                                 <td>
                                     <div class="from-group d-flex">

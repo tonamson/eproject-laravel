@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CheckManager
+class CheckHr
 {
     /**
      * Handle an incoming request.
@@ -15,8 +15,8 @@ class CheckManager
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->is_manager !== 1) {
-            echo "Bạn không có quyền truy cập vào chức năng này. Chức năng này chỉ dành cho Quản lý";die;
+        if (auth()->user()->department !== 2) {
+            echo "Bạn không có quyền truy cập vào chức năng này. Chức năng này chỉ dành cho phòng Nhân Sự";die;
         }
 
         return $next($request);
