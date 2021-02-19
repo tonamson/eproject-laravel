@@ -76,6 +76,12 @@ class CheckInOutController extends Controller
     {
         $user = auth()->user();
 
+        $params = [
+            'id' => auth()->user()->id,
+        ];
+        $response_staff = Http::get('http://localhost:8888/staff/findOneStaffDepartment', $params);
+        $body_staff = json_decode($response_staff->body(), true);
+
         $month = $request->input('month');
         $year = $request->input('year');
         if(!$month) {
@@ -90,9 +96,12 @@ class CheckInOutController extends Controller
         $response = Http::post('http://localhost:8888/check-in-out/get-staff-time', $data_request);
         $body = json_decode($response->body(), true);
 
+        // dd($body['data']);
+
         return view('main.check_in_out.staff_time')
             ->with('data', $body['data'])
             ->with('year', $year)
-            ->with('month', $month);
+            ->with('month', $month)
+            ->with('staff', $body_staff['data']);
     }
 }

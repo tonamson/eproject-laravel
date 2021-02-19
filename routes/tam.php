@@ -24,6 +24,20 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/index', 'CheckInOutController@show');
     });
 
+    Route::middleware(['check_hr'])->group(function () {
+        Route::group(['prefix' => 'special-date'], function () {
+            Route::get('/index', 'SpecialDateController@index');
+
+            Route::post('/create', 'SpecialDateController@createSpecialDate');
+
+            Route::get('/delete', 'SpecialDateController@deleteSpecialDate');
+
+            Route::get('/detail', 'SpecialDateController@detailSpecialDate');
+
+            Route::post('/update', 'SpecialDateController@updateSpecialDate');
+        });
+    });
+
     Route::group(['prefix' => 'time-leave'], function () {
         Route::get('/index', 'TimeleaveController@index');
 

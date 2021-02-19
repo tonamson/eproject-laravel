@@ -86,6 +86,14 @@
                         @endif
                     </ul>
                 </li>
+                <li class="nav-item">
+                    @if(auth()->user()->department == 2)
+                        <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
+                            <i class="icon-stats-growth"></i>
+                            <span>Quản Lý Ngày Lễ</span>
+                        </a>
+                    @endif
+                </li>
                 <!-- /main -->
 
             </ul>
