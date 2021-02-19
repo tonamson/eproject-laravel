@@ -64,4 +64,15 @@ Route::middleware(['check_login'])->group(function () {
 
         });
     });
+
+    Route::group(['prefix' => 'kpi'], function () {
+        Route::get('/set-kpi', 'KpiController@setKpi');
+
+        Route::get('/find-kpi-staff', 'KpiController@findKpiStaff');
+
+        Route::get('/find-kpi-department', 'KpiController@findKpiDepartment');
+
+        Route::get('/set-detail-kpi', 'KpiController@setDetailKpi');
+        
+    });
 });

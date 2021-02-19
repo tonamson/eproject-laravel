@@ -293,7 +293,7 @@
                 <div class="outer">
                     <a href="{{ action('DashboardController@index') }}">
                         <i class="icon-8x icon-stats-growth"></i>
-                        <p>Dashboard</p> 
+                        <p>Biểu Đồ</p> 
                     </a>
                 </div>
             </div>

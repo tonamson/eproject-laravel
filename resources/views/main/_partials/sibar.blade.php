@@ -43,14 +43,14 @@
                 <li class="nav-item">
                     <a href="{{ action('ViewmenuController@index') }}" class="nav-link">
                         <i class="icon-home2"></i>
-                        <span>Home</span>
+                        <span>Trang Chủ</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     @if(auth()->user()->department == 2)
                         <a href="{{ action('DashboardController@index') }}" class="nav-link">
                             <i class="icon-stats-growth"></i>
-                            <span>Dashboard</span>
+                            <span>Biểu Đồ</span>
                         </a>
                     @endif
                 </li>
@@ -93,6 +93,30 @@
                             <span>Quản Lý Ngày Lễ</span>
                         </a>
                     @endif
+                </li>
+                <li class="nav-item nav-item-submenu">
+                    <a href="#" class="nav-link"><i class="icon-stack"></i> <span>KPI</span></a>
+
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                        <li class="nav-item">
+                            <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
+                                <i class="icon-clipboard5"></i>
+                                <span>KPI Cá Nhân</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ action('KpiController@setKpi') }}" class="nav-link">
+                                <i class="icon-clipboard5"></i>
+                                <span>Thiết Lập KPI</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
+                                <i class="icon-clipboard5"></i>
+                                <span>Quản Lý KPI</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <!-- /main -->
 
