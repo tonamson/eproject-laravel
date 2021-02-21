@@ -19,5 +19,46 @@ class DepartmentController extends Controller
     
     }
 
+    public function delete(){
+        $id = $request->input('id');
+        
+        $data_request = [
+            "id" => $id
+        ];
+
+        Http::post('http://localhost:8888/department/delete', $data_request);
+        return redirect()->back()->with('success', 'Xóa thành công!');
+
+        
+    }
+
+    public function createDepartment(Request $request)
+    {
+        $name = $request->input('txtName');
+        $nameVn = $request->input('txtName1');
+        
+        $data_request = [
+            'name' => $name,
+            'nameVn' =>$nameVn,
+        ];
+
+        $response = Http::post('http://localhost:8888/department/add', $data_request);
+        $body = json_decode($response->body(), true);
+
+        if($body['message'] == "Save success") {
+            return redirect()->back()->with('success', 'Thêm thành công!');
+        } 
+        else {
+            return redirect()->back()->with('error', 'Thêm thất bại');
+        }
+    }
+
+    public function add() {
+        return view('main.department.add');
+    }
+    
+    
+
+
    
 }

@@ -1,104 +1,38 @@
 @extends('main._layouts.master')
 
-<?php
-    // {{ }} <--- cac ky tu dac biet se duoc thay the
-    // {!! !!} <--- cac ky tu dac biet se khong thay the
-    // {{-- --}} <--- comment code trong blade
-    /**
-     * section('scripts') <--- coi o? master.blade.php <--- no' la @yield('scripts')
-     * section co' mo? la phai co' dong'
-     * neu ma soan code php thi nen de? tren dau` de? no' load tuan tu chinh xac hon giong nhu code php nam tren section('scripts') vay ok roi
-     * */
-?>
-
-@section('css')
-    <link href="{{ asset('assets/css/components_datatables.min.css') }}" rel="stylesheet" type="text/css">
-@endsection
-
-@section('js')    
-    <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
-@endsection
 
 @section('content')
-    <!-- Basic datatable -->
-    <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Phòng ban</h1>
-        <div class="card-header header-elements-inline">
-            <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Minh Hoài - HR - Department</h4>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <h2>Chỉnh Sửa Phòng Ban</h2>
+            
+            <div class="col-lg-7" style="padding-bottom:120px">
+   <br>
+   <hr>
+                <form action="{{action('DepartmentController@CreateDepartment')}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                    <!-- <input type="hidden" name="_token" value="{{csrf_token()}}"/> -->
+                    <div class="form-group">
+                        <label>Tên Phòng Ban</label>
+                        <input class="form-control" name="txtName" placeholder="Nhập tên không dấu" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tên Tiếng Việt</label>
+                        <input class="form-control"  name="txtName1" placeholder="Nhập tên tiếng Việt"></input>
+                    </div>
+                    <button type="submit" class="btn btn-default">Thêm</button>
+                    <button type="reset" class="btn btn-default">Làm mới</button>
+                </form>
             </div>
         </div>
-        <div class="card-body">
-            <form action="#" method="GET">
-          
-                <div class="form-group d-flex">
-                    <div class="">
-                        <select class="form-control" name="month" id="month">
-               
-       
-                     
-                        </select>
-                    </div>
-                    <div class="ml-2">
-                        <input class="form-control" type="number" value="2021" name="year" id="year">
-                    </div>
-                    <div class="ml-3">
-                        <input class="form-control btn btn-primary" type="submit" value="Search">
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <table class="table datatable-basic">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Name_VN</th>
-                    <th>DELETE</th>
-                    <th>ACTION</th>
-                </tr>
-            </thead>
-            <tbody>
-                    @foreach($data_department as $department)
-                    <tr>
-                        <td>{{ $department['id'] }}</td>
-                        <td>{{ $department['name'] }}</td>
-                        <td>{{ $department['nameVn'] }}</td>
-                        <td>
-                            @if($department['del'] == 0)
-                                Hiện
-                            @else
-                                Ẩn
-                            @endif    
-                        </td>
-                        <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="#">Sửa</a>||
-                        <i class="fa fa-trash-o fa-fw"></i><a href="#"> Xóa</a></td>
-                        
-                    </tr>
-                    @endforeach
-                        </td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-menu9"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-          
-            </tbody>
-        </table>
+        <!-- /.row -->
     </div>
-    <!-- /basic datatable -->
+    <!-- /.container-fluid -->
+</div>
 @endsection
+
+
 
 @section('scripts')
     <script>
