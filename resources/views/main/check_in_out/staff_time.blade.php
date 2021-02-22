@@ -87,13 +87,13 @@
             <tbody>
                 @foreach ($data as $check_in_out)
                 {{-- @dd($data) --}}
-                    <tr>
-                        <td style="
+                    <tr style="
                         <?php 
-                            if($check_in_out['special_date_id'] !== null) echo "color: red";
-                            else if($check_in_out['day_of_week'] == 1 or $check_in_out['day_of_week'] == 7)  echo "color: #673AB7";
+                            if($check_in_out['special_date_id'] !== null) echo "background-color: #f0c757";
+                            else if($check_in_out['day_of_week'] == 1 or $check_in_out['day_of_week'] == 7)  echo "background-color: #84da86";
                         ?>
-                        ">
+                    ">
+                        <td>
                             ngày {{ $check_in_out['check_in_day'] }}, 
                             <?php 
                                 if($check_in_out['day_of_week'] == 1) {
