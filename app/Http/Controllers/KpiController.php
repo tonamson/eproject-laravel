@@ -88,17 +88,91 @@ class KpiController extends Controller
         echo $html;die;
     }
 
+    // Detail KPI
     public function setDetailKpi(Request $request)
     {
         $department_id = $request->input('department_id');
         $kpi_name = $request->input('kpi_name');
-        $kpi_id = $request->input('kpi_id');
+        $kpi_id = $request->input('kpi_id') ? $request->input('kpi_id') : 0;
         $staff_id = $request->input('staff_id');
+
+        $data_request = [
+            "kpi_id" => $kpi_id
+        ];
+
+        $response = Http::get('http://localhost:8888/kpi-detail/get-kpi-detail', $data_request);
+        $body = json_decode($response->body(), true);
+
+        $kpi_details = $body['data'];
 
         return view('main.kpi.set_detail_kpi')
                 ->with('department_id', $department_id)
                 ->with('kpi_id', $kpi_id)
                 ->with('kpi_name', $kpi_name)
-                ->with('staff_id', $staff_id);
+                ->with('staff_id', $staff_id)
+                ->with('kpi_details', $kpi_details);
+    }
+
+    public function createKpi(Request $request)
+    {
+        // data kpi
+        $department_id = $request->input('department_id');
+        $kpi_name = $request->input('kpi_name');
+        $kpi_id = $request->input('kpi_id');
+        $staff_id = $request->input('staff_id');
+
+        //data kpi detail
+        $target = $request->input('target');
+        $task_description = $request->input('task_description');
+        $duties_activities = $request->input('duties_activities');
+        $skill = $request->input('skill');
+        $ratio = $request->input('ratio');
+
+        $tasks = array();
+        for ($i=0; $i < count($target); $i++) { 
+            $task = array();
+            $task['target'] = $target[$i];
+            $task['task_description'] = $task_description[$i];
+            $task['duties_activities'] = $duties_activities[$i];
+            $task['skill'] = $skill[$i];
+            $task['ratio'] = $ratio[$i];
+            array_push($tasks, $task);
+        }
+
+        // echo json_encode($tasks);die;
+
+        if($kpi_id == 0) {
+            //create
+            $data_request = [
+                //kpi
+                'department_id' => $request->input('department_id'),
+                'kpi_name' => $request->input('kpi_name'),
+                'staff_id' => $request->input('staff_id'),
+                'created_at' => date('Y-m-d H:i:s'),
+
+                //kpi details
+                // 'target' => $target,
+                // 'task_description' => $task_description,
+                // 'duties_activities' => $duties_activities,
+                // 'skill' => $skill,
+                // 'ratio' => $ratio,
+                'tasks' => $tasks
+            ];
+
+            echo json_encode($data_request);die;
+
+        } else {
+            //update
+        }
+
+
+
+
+
+
+        var_dump($target);die;
+
+        return view('main.kpi.set_detail_kpi');
+
     }
 }

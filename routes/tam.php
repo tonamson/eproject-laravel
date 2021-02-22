@@ -73,6 +73,10 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/find-kpi-department', 'KpiController@findKpiDepartment');
 
         Route::get('/set-detail-kpi', 'KpiController@setDetailKpi');
+
+        Route::post('/create-kpi', 'KpiController@createKpi');
+
+        Route::get('/get-detail-kpi', 'KpiController@test');
         
     });
 });
