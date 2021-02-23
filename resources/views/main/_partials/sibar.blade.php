@@ -71,15 +71,27 @@
                                 <span>Thêm Phòng ban</span>
                             </a>
                         </li>
-                        
+
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ action('StaffController@index') }}" class="nav-link">
-                        <i class="icon-home4"></i>
-                        <span>Nhân viên</span>
-                    </a>
+                <li class="nav-item nav-item-submenu">
+
+                    <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span>Hợp đồng</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                        <li class="nav-item">
+                            <a href="{{ route('getListContract') }}" class="nav-link">
+                                <i class="icon-list"></i>
+                                <span>Danh sách</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('getCreateContract') }}" class="nav-link">
+                                <i class="icon-plus2"></i>
+                                <span>Tạo hợp đồng</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Công Phép</span></a>
