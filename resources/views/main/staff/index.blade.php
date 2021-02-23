@@ -37,13 +37,6 @@
             <form action="#" method="GET">
           
                 <div class="form-group d-flex">
-                    <div class="">
-                        <select class="form-control" name="month" id="month">
-               
-       
-                     
-                        </select>
-                    </div>
                     <div class="ml-2">
                         <input class="form-control" type="number" value="2021" name="year" id="year">
                     </div>
@@ -64,23 +57,13 @@
                     <th>Phòng Ban</th>
                     <th>Is_Manager</th>
                     <th>Ngày vào</th>
-                    <th>Ngày nghỉ</th>
-                    <th>Ngày sinh</th>
-                    <th>Giới tính</th>
-                    <th>Khu vực</th>
-                    <th>Số điện thoại</th>
-                    <th>Mail</th>
-                    <th>Ảnh</th>
-                    <th>Mặt trước CMND</th>
-                    <th>Mặt sau CMND</th>
-                    <th>Ngày nghỉ</th>
-                    <th>Ghi chú</th>
-                    <th>Trạng thái</th>
+                    
 
                 </tr>
             </thead>
             <tbody>
                     @foreach($data_staff as $staff)
+                    <tr>
                         <td>{{ $staff['id'] }}</td>
                         <td>{{ $staff['code'] }}</td>
                         <td>{{ $staff['firstname'] }}</td>
@@ -88,17 +71,7 @@
                         <td>{{ $staff['department'] }}</td>
                         <td>{{ $staff['isManager'] }}</td>
                         <td>{{ $staff['joinedAt'] }}</td>
-                        <td>{{ $staff['offDate'] }}</td>
-                        <td>{{ $staff['dob'] }}</td>
-                        <td>{{ $staff['gender'] }}</td>
-                        <td>{{ $staff['regional'] }}</td>
-                        <td>{{ $staff['phoneNumber'] }}</td>
-                        <td>{{ $staff['email'] }}</td>
-                        <td>{{ $staff['idNumber'] }}</td>
-                        <td>{{ $staff['photo'] }}</td>
-                        <td>{{ $staff['status'] }}</td>
-
-
+                    </tr>
                     @endforeach
                         </td>
                         <td class="text-center">
@@ -110,8 +83,6 @@
                                 </div>
                             </div>
                         </td>
-                    </tr>
-          
             </tbody>
         </table>
     </div>
@@ -120,24 +91,81 @@
 
 @section('scripts')
     <script>
-        /* ------------------------------------------------------------------------------
-        *
-        *  # Basic datatables
-        *
-        *  Demo JS code for datatable_basic.html page
-        *
-        * ---------------------------------------------------------------------------- */
+        $('.day_bsc').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
 
+        $('.day_leave').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
 
-        // Setup module
-        // ------------------------------
+        $( "#btn_tb_bsc" ).click(function() {
+            $('#tb_dkp').hide();
+            $('#tb_dkp_wrapper').hide();
+            $('#tb_bsc').show();
+            $('#tb_bsc_wrapper').show();
+            $(this).addClass('active');
+            $('#btn_tb_dkp').removeClass('active');
+        });
+
+        $( "#btn_tb_dkp" ).click(function() {
+            $('#tb_bsc').hide();
+            $('#tb_bsc_wrapper').hide();
+            $('#tb_dkp').show();
+            $('#tb_dkp_wrapper').show();
+            $(this).addClass('active');
+            $('#btn_tb_bsc').removeClass('active');
+        });
+
+        $('.open-detail-time-leave').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailTime') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending').empty().append(data);
+                    $('#bsc-modal').modal();
+                }
+            });
+        });
+
+        $('.open-detail-dkp').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailLeave') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending').empty().append(data);
+                    $('#bsc-modal').modal();
+                }
+            });
+        });
 
         var DatatableBasic = function() {
-
-
-            //
-            // Setup module components
-            //
 
             // Basic Datatable examples
             var _componentDatatableBasic = function() {
@@ -165,6 +193,7 @@
 
                 // Basic datatable
                 $('.datatable-basic').DataTable();
+                $('.datatable-basic2').DataTable();
 
                 // Alternative pagination
                 $('.datatable-pagination').DataTable({
@@ -206,11 +235,6 @@
                 });
             };
 
-
-            //
-            // Return objects assigned to module
-            //
-
             return {
                 init: function() {
                     _componentDatatableBasic();
@@ -218,10 +242,6 @@
                 }
             }
         }();
-
-
-        // Initialize module
-        // ------------------------------
 
         document.addEventListener('DOMContentLoaded', function() {
             DatatableBasic.init();

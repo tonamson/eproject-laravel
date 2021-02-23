@@ -24,7 +24,7 @@
     <div class="card">
         <h1 class="pt-3 pl-3 pr-3">Phòng ban</h1>
         <div class="card-header header-elements-inline">
-            <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Minh Hoài-HR-Department</h4>
+            <h4 class="card-title font-weight-bold text-uppercase">HR-Department</h4>
 
              <!-- Basic datatable -->
     
