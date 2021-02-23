@@ -5,7 +5,7 @@
 <div id="page-wrapper">
     <div class="container-fluid">
         <div class="row">
-            <h2>Thêm Phòng Ban</h2>
+            <h2>Chỉnh Sửa Phòng Ban</h2>
             
             <div class="col-lg-7" style="padding-bottom:120px">
    <br>
@@ -15,11 +15,11 @@
                     <!-- <input type="hidden" name="_token" value="{{csrf_token()}}"/> -->
                     <div class="form-group">
                         <label>Tên Phòng Ban</label>
-                        <input class="form-control" name="txtName" value="#" placeholder="Nhập tên không dấu" />
+                        <input class="form-control" name="txtName" value="{{$department->name}}" placeholder="Nhập tên không dấu" />
                     </div>
                     <div class="form-group">
                         <label>Tên Tiếng Việt</label>
-                        <input class="form-control"  name="txtName1" value="#" placeholder="Nhập tên tiếng Việt"></input>
+                        <input class="form-control"  name="txtName1" value="{{$department->nameVn}}" placeholder="Nhập tên tiếng Việt"></input>
                     </div>
                     <button type="submit" class="btn btn-default">Thêm</button>
                     <button type="reset" class="btn btn-default">Làm mới</button>

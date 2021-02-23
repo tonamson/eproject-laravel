@@ -1,120 +1,68 @@
 @extends('main._layouts.master')
 
 <?php
-    // {{ }} <--- cac ky tu dac biet se duoc thay the
-    // {!! !!} <--- cac ky tu dac biet se khong thay the
-    // {{-- --}} <--- comment code trong blade
-    /**
-     * section('scripts') <--- coi o? master.blade.php <--- no' la @yield('scripts')
-     * section co' mo? la phai co' dong'
-     * neu ma soan code php thi nen de? tren dau` de? no' load tuan tu chinh xac hon giong nhu code php nam tren section('scripts') vay ok roi
-     * */
+    header("Access-Control-Allow-Origin: *");
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 ?>
 
 @section('css')
     <link href="{{ asset('assets/css/components_datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        #tb_dkp_wrapper {
+            display: none;
+        }
+    </style>
 @endsection
 
 @section('js')    
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/notifications/jgrowl.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/ui/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
+    <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
 @endsection
 
 @section('content')
     <!-- Basic datatable -->
-    <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Phòng ban</h1>
-        <div class="card-header header-elements-inline">
-            <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Minh Hoài-HR-Department</h4>
-
-             <!-- Basic datatable -->
     
-                <div class="ml-1">
-                    <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2">THÊM MỚI PHÒNG BAN</button>
-                </div>
-     
-              <!--End Basic datatable -->
 
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
+
+
+            <div class="form-group d-flex">
+                <div class="ml-1">
+                    <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2">Đăng Kí Phép</button>
                 </div>
             </div>
-        </div>
-        <div class="card-body">
-            <form action="#" method="GET">
 
-            </form>
-        </div>
-
-        <table class="table datatable-basic">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Name_VN</th>
-                    <th>DELETE</th>
-                    <th>ACTION</th>
-                </tr>
-            </thead>
-            <tbody>
-                    @foreach($data_department as $department)
-                    <tr>
-                        <td>{{ $department['id'] }}</td>
-                        <td>{{ $department['name'] }}</td>
-                        <td>{{ $department['nameVn'] }}</td>
-                        <td>
-                            @if($department['del'] == 0)
-                                Hiện
-                            @else
-                                Ẩn
-                            @endif    
-                        </td>
-                        <td class="center"><i class="btn"></i><a href="{{ action('DepartmentController@getEditDep') }}">Sửa</a>||
-                        <i class="fa fa-trash-o fa-fw"></i><a href="#"> Xóa</a></td>
-                    </tr>
-                    @endforeach
-                        </td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-menu9"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
           
-            </tbody>
-        </table>
-    </div>
-    <!-- /basic datatable -->
+        </div>
+       
 
-     <!-- Modal Add Deparment -->
-     <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+         <!-- Modal dkp -->
+        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <form action="{{action('DepartmentController@CreateDepartment')}}" method="post">
                         @csrf
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">THÊM MỚI</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Đăng Kí Phép</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Tên Phòng Ban</label>
+                                <label class="col-lg-3 col-form-label">Ngày đăng kí phép:</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="txtName"  required>
+                                    <input type="text" class="form-control day_leave" name="txtName" value="" required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Tên Phòng Ban Tiếng Việt</label>
+                                <label class="col-lg-3 col-form-label">Lý do:</label>
                                 <div class="col-lg-9">
-                                <input type="text" class="form-control" name="txtName1"  required>
+                                    <textarea class="form-control" name="txtName1" id="note_dkp" cols="20" rows="10" placeholder="VD: Bận việc gia đình, Đi học, ..." required></textarea>
                                 </div>
                             </div>
                         </div>
@@ -126,30 +74,97 @@
                 </div>
             </div>
         </div>
+  
+            </thead>
+            <tbody>
+                       
+            </tbody>
+        </table>
 
+      
+
+    
+    </div>
     <!-- /basic datatable -->
 @endsection
 
 @section('scripts')
     <script>
-        /* ------------------------------------------------------------------------------
-        *
-        *  # Basic datatables
-        *
-        *  Demo JS code for datatable_basic.html page
-        *
-        * ---------------------------------------------------------------------------- */
+        $('.day_bsc').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
 
+        $('.day_leave').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
 
-        // Setup module
-        // ------------------------------
+        $( "#btn_tb_bsc" ).click(function() {
+            $('#tb_dkp').hide();
+            $('#tb_dkp_wrapper').hide();
+            $('#tb_bsc').show();
+            $('#tb_bsc_wrapper').show();
+            $(this).addClass('active');
+            $('#btn_tb_dkp').removeClass('active');
+        });
+
+        $( "#btn_tb_dkp" ).click(function() {
+            $('#tb_bsc').hide();
+            $('#tb_bsc_wrapper').hide();
+            $('#tb_dkp').show();
+            $('#tb_dkp_wrapper').show();
+            $(this).addClass('active');
+            $('#btn_tb_bsc').removeClass('active');
+        });
+
+        $('.open-detail-time-leave').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailTime') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending').empty().append(data);
+                    $('#bsc-modal').modal();
+                }
+            });
+        });
+
+        $('.open-detail-dkp').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailLeave') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending').empty().append(data);
+                    $('#bsc-modal').modal();
+                }
+            });
+        });
 
         var DatatableBasic = function() {
-
-
-            //
-            // Setup module components
-            //
 
             // Basic Datatable examples
             var _componentDatatableBasic = function() {
@@ -177,6 +192,7 @@
 
                 // Basic datatable
                 $('.datatable-basic').DataTable();
+                $('.datatable-basic2').DataTable();
 
                 // Alternative pagination
                 $('.datatable-pagination').DataTable({
@@ -218,11 +234,6 @@
                 });
             };
 
-
-            //
-            // Return objects assigned to module
-            //
-
             return {
                 init: function() {
                     _componentDatatableBasic();
@@ -230,10 +241,6 @@
                 }
             }
         }();
-
-
-        // Initialize module
-        // ------------------------------
 
         document.addEventListener('DOMContentLoaded', function() {
             DatatableBasic.init();

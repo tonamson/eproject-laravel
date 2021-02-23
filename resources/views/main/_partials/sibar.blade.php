@@ -56,30 +56,26 @@
                 </li>
 
                 <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Phòng Ban</span></a>
+                    <a href="{{ action('DepartmentController@index') }}" class="nav-link"><i class="icon-stack"></i> <span>Phòng Ban</span></a>
+                </li>
+
+                <li class="nav-item nav-item-submenu">
+                    <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Nhân viên</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                         <li class="nav-item">
-                            <a href="{{ action('DepartmentController@index') }}" class="nav-link">
+                            <a href="{{ action('StaffController@index') }}" class="nav-link">
                                 <i class="icon-clipboard5"></i>
                                 <span>Danh sách</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ action('DepartmentController@add') }}" class="nav-link">
+                            <a href="{{ action('StaffController@vaddStaff') }}" class="nav-link">
                                 <i class="icon-clipboard6"></i>
-                                <span>Thêm Phòng ban</span>
+                                <span>Thêm Nhân viên</span>
                             </a>
                         </li>
-                        
                     </ul>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ action('StaffController@index') }}" class="nav-link">
-                        <i class="icon-home4"></i>
-                        <span>Nhân viên</span>
-                    </a>
                 </li>
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Công Phép</span></a>
