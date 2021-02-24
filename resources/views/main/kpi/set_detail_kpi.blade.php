@@ -41,14 +41,41 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <h1 class="pt-3 pl-3 pr-3">
-                    Thiết Lập KPI 
-                    - {{ $kpi_name }}
-                    <?php 
-                        if($staff_id !== null) echo "- " . auth()->user()->firstname . ' ' . auth()->user()->lastname;
-                        else if($department_id !== null) echo "- " . auth()->user()->department;
-                    ?>
-                </h1>
+                @if($detail_of_kpi)
+                    <h1 class="pt-3 pl-3 pr-3">
+                        KPI -
+                        {{ $detail_of_kpi[0]['kpi_name'] }} {{ $detail_of_kpi[0]['staff_create'] ? '-' . $detail_of_kpi[0]['staff_create'] : '' }} 
+                        {{ $detail_of_kpi[0]['staff_create_is_manager'] == 1 ? '- Quản lý' : '' }} {{ $detail_of_kpi[0]['staff_create_is_manager'] == 0 && $detail_of_kpi[0]['staff_create_is_manager'] !== null ? '- Nhân viên' : '' }} 
+                        {{ $detail_of_kpi[0]['department_staff_create'] ? '- ' . $detail_of_kpi[0]['department_staff_create'] : '' }} 
+                        {{ $detail_of_kpi[0]['department_create'] ? 'Phòng ban: ' . $detail_of_kpi[0]['department_create'] : '' }}
+                    </h1>
+                    <h4 class="pt-3 pl-3 pr-3">
+                        Tạo lúc: {{ $detail_of_kpi[0]['created_at'] }}
+                    </h4>
+                    @if($detail_of_kpi[0]['update_at'])
+                        <h4 class="pt-3 pl-3 pr-3">
+                            Đã chỉnh sửa lúc: {{ $detail_of_kpi[0]['update_at'] }} - {{ $detail_of_kpi[0]['update_at'] }}
+                        </h4>
+                    @endif
+                    @if($detail_of_kpi[0]['is_approved'] == 3)
+                        <h4 class="pt-3 pl-3 pr-3">
+                            Đã được bị từ chối bởi {{ $detail_of_kpi[0]['staff_approve'] }} - {{ $detail_of_kpi[0]['staff_approve_is_manager'] == 1 ? 'Quản lý' : 'Nhân viên' }} - {{ $detail_of_kpi[0]['staff_approve_department'] }}
+                        </h4>
+                    @elseif($detail_of_kpi[0]['is_approved'] != 0)
+                        <h4 class="pt-3 pl-3 pr-3">
+                            Đã được phê duyệt bởi {{ $detail_of_kpi[0]['staff_approve'] }} - {{ $detail_of_kpi[0]['staff_approve_is_manager'] == 1 ? 'Quản lý' : 'Nhân viên' }} - {{ $detail_of_kpi[0]['staff_approve_department'] }}
+                        </h4>
+                    @endif
+                @else
+                    <h1 class="pt-3 pl-3 pr-3">
+                        Thiết Lập KPI 
+                        - {{ $kpi_name }}
+                        <?php 
+                            if($staff_id !== null) echo "- " . auth()->user()->firstname . ' ' . auth()->user()->lastname;
+                            else if($department_id !== null) echo "- Phòng ban: " . $staff[0][2];
+                        ?>
+                    </h1>
+                @endif
                 @if ($create_success)
                     <div class="pt-3 pl-3 pr-3">
                         <div class="alert alert-success">
@@ -86,6 +113,30 @@
                     </div>
                 @endif
 
+                @if($go_approve)
+                    <form class="pb-3" action="{{ action('KpiController@approveKpi') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="kpi_id" value="{{ $kpi_id }}">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="float-left">
+                                    <a href="{{ action('KpiController@listKpi') }}" class="btn btn-light" style="cursor: pointer">Trở về danh sách KPI</a>
+                                </div>
+
+                                @if(auth()->user()->department !== 2 && $detail_of_kpi[0]['is_approved'] != 2 && $detail_of_kpi[0]['is_approved'] != 1)
+                                    <div class="float-right">
+                                        <input class="btn btn-danger" type="submit" value="Từ chối" name="btn_reject" >
+                                    </div>
+                                                            
+                                    <div class="float-right">
+                                        <button id="" class="btn btn-success mr-2">Phê duyệt</button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </form>
+                @endif
+
             </div>
         </div>
     </div>
@@ -117,35 +168,35 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Mục tiêu Công việc:</label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control target" name="target[]" value="{{ $kpi_detail['taskTarget'] }}" placeholder="Vd: Tăng tỉ lệ chuyển đổi bán hàng của website lên 20%" <?php echo $readonly ? 'readonly' : 'required' ?>>
+                                    <input type="text" class="form-control target" name="target[]" value="{{ $kpi_detail['taskTarget'] }}" onkeyup=checkEmpty(this) placeholder="Vd: Tăng tỉ lệ chuyển đổi bán hàng của website lên 20%" <?php echo $readonly ? 'readonly' : 'required' ?>>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Chi tiết Công việc:</label>
                                 <div class="col-lg-8">
-                                    <textarea rows="3" cols="3" class="form-control task_description" name="task_description[]" placeholder="Vd: Tỷ lệ chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['taskDescription'] }}</textarea>
+                                    <textarea rows="3" cols="3" class="form-control task_description" name="task_description[]" onkeyup=checkEmpty(this) placeholder="Vd: Tỷ lệ chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['taskDescription'] }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Các bước thực hiện:</label>
                                 <div class="col-lg-8">
-                                    <textarea rows="3" cols="3" class="form-control duties_activities" name="duties_activities[]" placeholder="Vd: Tìm hiểu thị trường, chạy marketing, ..." <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['dutiesActivities'] }}</textarea>
+                                    <textarea rows="3" cols="3" class="form-control duties_activities" name="duties_activities[]" onkeyup=checkEmpty(this) placeholder="Vd: Tìm hiểu thị trường, chạy marketing, ..." <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['dutiesActivities'] }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Các kĩ năng cần có:</label>
                                 <div class="col-lg-8">
-                                    <textarea rows="3" cols="3" class="form-control skill" name="skill[]" placeholder="Vd: Tìm kiếm thông tin, ..." <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['skill'] }}</textarea>
+                                    <textarea rows="3" cols="3" class="form-control skill" name="skill[]" onkeyup=checkEmpty(this) placeholder="Vd: Tìm kiếm thông tin, ..." <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['skill'] }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Tỉ lệ trên tổng các Công việc:</label>
                                 <div class="col-lg-8">
-                                    <input id="ratio<?php echo $count ?>" type="number" name="ratio[]" class="form-control ratio" min="0" max="100" value="{{ $kpi_detail['ratio'] }}" placeholder="Vd: 20" <?php echo $readonly ? 'readonly' : 'required' ?>>
+                                    <input id="ratio<?php echo $count ?>" type="number" name="ratio[]" onkeyup=checkEmpty(this) class="form-control ratio" min="0" max="100" value="{{ $kpi_detail['ratio'] }}" placeholder="Vd: 20" <?php echo $readonly ? 'readonly' : 'required' ?>>
                                 </div>
                             </div>
 

@@ -77,6 +77,13 @@ Route::middleware(['check_login'])->group(function () {
         Route::post('/create-kpi', 'KpiController@createKpi');
 
         Route::get('/get-detail-kpi', 'KpiController@test');
-        
+
+        Route::middleware(['check_hr_or_manager'])->group(function () {
+         
+            Route::get('/get-list-kpi', 'KpiController@listKpi');
+
+            Route::post('/approve-kpi', 'KpiController@approveKpi');
+
+        });
     });
 });
