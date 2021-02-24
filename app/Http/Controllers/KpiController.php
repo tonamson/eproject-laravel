@@ -76,7 +76,7 @@ class KpiController extends Controller
             $html = '<div class="alert alert-info div_set_kpi">
                         <strong>Trạng thái:</strong>
                         <b class="status_kpi">Đã thiết lập</b>
-                        <a href="../kpi/set-detail-kpi?department_id='.$department_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào xem</a>
+                        <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'&readonly=1" class="go_set_kpi">Vào xem</a>
                     </div>';
         } else {
             $html = '<div class="alert alert-info div_set_kpi">
@@ -95,6 +95,8 @@ class KpiController extends Controller
         $kpi_name = $request->input('kpi_name');
         $kpi_id = $request->input('kpi_id') ? $request->input('kpi_id') : 0;
         $staff_id = $request->input('staff_id');
+        $create_success = $request->input('create_success');
+        $readonly = $request->input('readonly');
 
         $data_request = [
             "kpi_id" => $kpi_id
@@ -110,7 +112,9 @@ class KpiController extends Controller
                 ->with('kpi_id', $kpi_id)
                 ->with('kpi_name', $kpi_name)
                 ->with('staff_id', $staff_id)
-                ->with('kpi_details', $kpi_details);
+                ->with('kpi_details', $kpi_details)
+                ->with('create_success', $create_success)
+                ->with('readonly', $readonly);
     }
 
     public function createKpi(Request $request)
@@ -122,57 +126,91 @@ class KpiController extends Controller
         $staff_id = $request->input('staff_id');
 
         //data kpi detail
+        $kpi_detail_id = $request->input('kpi_detail_id');
         $target = $request->input('target');
         $task_description = $request->input('task_description');
         $duties_activities = $request->input('duties_activities');
         $skill = $request->input('skill');
         $ratio = $request->input('ratio');
-
-        $tasks = array();
-        for ($i=0; $i < count($target); $i++) { 
-            $task = array();
-            $task['target'] = $target[$i];
-            $task['task_description'] = $task_description[$i];
-            $task['duties_activities'] = $duties_activities[$i];
-            $task['skill'] = $skill[$i];
-            $task['ratio'] = $ratio[$i];
-            array_push($tasks, $task);
-        }
-
-        // echo json_encode($tasks);die;
+        $del = $request->input('del');
 
         if($kpi_id == 0) {
             //create
-            $data_request = [
+            $tasks = array();
+            for ($i=0; $i < count($target); $i++) { 
+                $task = array();
+                $task['target'] = $target[$i];
+                $task['task_description'] = $task_description[$i];
+                $task['duties_activities'] = $duties_activities[$i];
+                $task['skill'] = $skill[$i];
+                $task['ratio'] = $ratio[$i];
+                array_push($tasks, $task);
+            }
+
+            $data_request_create = [
                 //kpi
-                'department_id' => $request->input('department_id'),
-                'kpi_name' => $request->input('kpi_name'),
-                'staff_id' => $request->input('staff_id'),
+                'department_id' => $department_id,
+                'kpi_name' => $kpi_name,
+                'staff_id' => $staff_id,
                 'created_at' => date('Y-m-d H:i:s'),
 
                 //kpi details
-                // 'target' => $target,
-                // 'task_description' => $task_description,
-                // 'duties_activities' => $duties_activities,
-                // 'skill' => $skill,
-                // 'ratio' => $ratio,
                 'tasks' => $tasks
             ];
 
-            echo json_encode($data_request);die;
+            $response = Http::post('http://localhost:8888/kpi/save-kpi', $data_request_create);
+            $body = json_decode($response->body(), true);
+
+            if($body['message'] == "Save kpi, kpi details success") {
+                return redirect()->action(
+                    [KpiController::class, 'setDetailKpi'], ['department_id' => $department_id, 
+                                                            'staff_id' => $staff_id, 
+                                                            'kpi_id' => $body['data']['id'], 
+                                                            'kpi_name' => $kpi_name,
+                                                            'create_success' => 'Tạo KPI thành công, Vui lòng đợi phê duyệt!']
+                );
+            } 
+            else {
+                return redirect()->back()->with('error', 'Thêm KPI thất bại!');
+            }
 
         } else {
             //update
+            $tasks = array();
+            for ($i=0; $i < count($target); $i++) { 
+                $task = array();
+                $task['id'] = isset($kpi_detail_id[$i]) ? $kpi_detail_id[$i] : null;
+                $task['target'] = $target[$i];
+                $task['task_description'] = $task_description[$i];
+                $task['duties_activities'] = $duties_activities[$i];
+                $task['skill'] = $skill[$i];
+                $task['ratio'] = $ratio[$i];
+                $task['del'] = $del[$i];
+                array_push($tasks, $task);
+            }
+
+            $data_request_update = [
+                'kpi_id' => $kpi_id,
+                //kpi details update
+                'tasks' => $tasks
+            ];
+
+            $response = Http::post('http://localhost:8888/kpi/update-kpi-details', $data_request_update);
+            $body = json_decode($response->body(), true);
+
+            if($body['message'] == "Save kpi, kpi details success") {
+                return redirect()->action(
+                    [KpiController::class, 'setDetailKpi'], ['department_id' => $department_id, 
+                                                            'staff_id' => $staff_id, 
+                                                            'kpi_id' => $body['data']['id'], 
+                                                            'kpi_name' => $kpi_name,
+                                                            'create_success' => 'Chỉnh sửa KPI thành công, Vui lòng đợi phê duyệt!']
+                );
+            } 
+            else {
+                return redirect()->back()->with('error', 'Update KPI thất bại!');
+            }
+
         }
-
-
-
-
-
-
-        var_dump($target);die;
-
-        return view('main.kpi.set_detail_kpi');
-
     }
 }

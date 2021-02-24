@@ -11,6 +11,19 @@
         .border-red {
             border-color: red !important;
         }
+
+        .list-icons-item-remove::after {
+            cursor: pointer;
+            content: "";
+            font-size: .8125rem;
+            font-family: icomoon;
+            font-size: 1rem;
+            min-width: 1rem;
+            text-align: center;
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-font-smoothing: antialiased;
+        }
     </style>
 @endsection
 
@@ -36,8 +49,16 @@
                         else if($department_id !== null) echo "- " . auth()->user()->department;
                     ?>
                 </h1>
+                @if ($create_success)
+                    <div class="pt-3 pl-3 pr-3">
+                        <div class="alert alert-success">
+                            {{ $create_success }}
+                        </div>
+                    </div>
+                @endif
+
                 @if (\Session::has('success'))
-                    <div class="">
+                    <div class="pt-3 pl-3 pr-3">
                         <div class="alert alert-success">
                             {!! \Session::get('success') !!}
                         </div>
@@ -45,23 +66,25 @@
                 @endif
             
                 @if (\Session::has('error'))
-                    <div class="">
+                    <div class="pt-3 pl-3 pr-3">
                         <div class="alert alert-danger">
                             {!! \Session::get('error') !!}
                         </div>
                     </div>
                 @endif
 
-                <div class="card-body">
-                    <div class="form-group">
-                        <div class="float-left">
-                            <button id="btn_add_more" class="btn btn-info">Thêm Công Việc</button>
-                        </div>
-                        <div class="float-right">
-                            <button id="btn_submit_form" class="btn btn-success">Lưu</button>
+                @if(!$readonly)
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="float-left">
+                                <button id="btn_add_more" class="btn btn-info">Thêm Công Việc</button>
+                            </div>
+                            <div class="float-right">
+                                <button id="btn_submit_form" class="btn btn-success">Lưu</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
             </div>
         </div>
@@ -75,14 +98,17 @@
         <div class="row" id="row_kpi_detail">
             <?php $count = 1; ?>
             @foreach ($kpi_details as $kpi_detail)
-                <div class="col-md-6" id="one_row">
+                <input type="hidden" name="kpi_detail_id[]" value="{{ $kpi_detail['id'] }}">
+                <input id="input_del<?php echo $count ?>" type="hidden" name="del[]" value="false">
+                <div class="col-md-6 one_row" id="one_row<?php echo $count ?>">
                     <div class="card">
                         <div class="card-header header-elements-inline">
-                            <h6 class="card-title">Công việc <?php echo $count; $count++; ?></h6>
+                            <h6 class="card-title">Công việc <?php echo $count ?></h6>
                             <div class="header-elements">
                                 <div class="list-icons">
-                                    <a class="list-icons-item" data-action="collapse"></a>
-                                    <a class="list-icons-item list-icons-item-remove" data-action="remove"></a>
+                                    @if(!$readonly)
+                                        <a class="list-icons-item list-icons-item-remove" onclick="removeTask(<?php echo $count ?>)" ></a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -91,46 +117,46 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Mục tiêu Công việc:</label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control target" name="target[]" value="{{ $kpi_detail['taskTarget'] }}" placeholder="Vd: Tăng tỉ lệ chuyển đổi bán hàng của website lên 20%" required>
+                                    <input type="text" class="form-control target" name="target[]" value="{{ $kpi_detail['taskTarget'] }}" placeholder="Vd: Tăng tỉ lệ chuyển đổi bán hàng của website lên 20%" <?php echo $readonly ? 'readonly' : 'required' ?>>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Chi tiết Công việc:</label>
                                 <div class="col-lg-8">
-                                    <textarea rows="3" cols="3" class="form-control task_description" name="task_description[]" placeholder="Vd: Tỷ lệ chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" required>{{ $kpi_detail['taskDescription'] }}</textarea>
+                                    <textarea rows="3" cols="3" class="form-control task_description" name="task_description[]" placeholder="Vd: Tỷ lệ chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['taskDescription'] }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Các bước thực hiện:</label>
                                 <div class="col-lg-8">
-                                    <textarea rows="3" cols="3" class="form-control duties_activities" name="duties_activities[]" placeholder="Vd: Tìm hiểu thị trường, chạy marketing, ..." required>{{ $kpi_detail['dutiesActivities'] }}</textarea>
+                                    <textarea rows="3" cols="3" class="form-control duties_activities" name="duties_activities[]" placeholder="Vd: Tìm hiểu thị trường, chạy marketing, ..." <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['dutiesActivities'] }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Các kĩ năng cần có:</label>
                                 <div class="col-lg-8">
-                                    <textarea rows="3" cols="3" class="form-control skill" name="skill[]" placeholder="Vd: Tìm kiếm thông tin, ..." required>{{ $kpi_detail['skill'] }}</textarea>
+                                    <textarea rows="3" cols="3" class="form-control skill" name="skill[]" placeholder="Vd: Tìm kiếm thông tin, ..." <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['skill'] }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Tỉ lệ trên tổng các Công việc:</label>
                                 <div class="col-lg-8">
-                                    <input type="number" name="ratio[]" class="form-control ratio" min="0" max="100" value="{{ $kpi_detail['ratio'] }}" placeholder="Vd: 20" required>
+                                    <input id="ratio<?php echo $count ?>" type="number" name="ratio[]" class="form-control ratio" min="0" max="100" value="{{ $kpi_detail['ratio'] }}" placeholder="Vd: 20" <?php echo $readonly ? 'readonly' : 'required' ?>>
                                 </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
+                <?php $count++ ?>
             @endforeach   
             
         </div>
     </form>
-    <div id='test'></div>
 
 @endsection
 
@@ -143,16 +169,35 @@
             }
         });
 
+        function removeTask(row_number) {
+            if(confirm("Bạn có chắc chắn muốn xóa Công việc này?")){
+                document.getElementById("one_row"+row_number).style.display = "none";
+                document.getElementById("input_del"+row_number).value = 'true';
+                document.getElementById("ratio"+row_number).value = '0';
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function checkEmpty(e) {
+            if(e.value) {
+                e.classList.remove('border-red');
+            }else {
+                e.classList.add('border-red');
+            }
+        }
+
         $( document ).ready(function() {
             var count_job = <?php echo $count ?>;
             $("#btn_add_more").click(function() {
-                html = '<div class="col-md-6" id="one_row"><div class="card"><div class="card-header header-elements-inline"><h6 class="card-title">Công việc '+count_job+'</h6><div class="header-elements"><div class="list-icons"><a class="list-icons-item" data-action="collapse"></a><a class="list-icons-item list-icons-item-remove" data-action="remove"></a></div></div></div>'
+                html = '<div class="col-md-6" id="one_row<?php echo $count ?>"><input id="input_del<?php echo $count ?>" type="hidden" name="del[]" value="false"><div class="card"><div class="card-header header-elements-inline"><h6 class="card-title">Công việc '+count_job+'</h6><div class="header-elements"><div class="list-icons"><a class="list-icons-item list-icons-item-remove"  onclick="removeTask(<?php echo $count ?>)"></a></div></div></div>'
                 html += '<div class="card-body">';
-                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Mục tiêu Công việc:</label><div class="col-lg-8"><input type="text" class="form-control target" name="target[]" placeholder="Vd: Tăng tỉ lệ chuyển đổi bán hàng của website lên 20%" required></div></div>';
-                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Chi tiết Công việc:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control task_description" name="task_description[]" placeholder="Vd: Tỷ lệ chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" required></textarea></div></div>';
-                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Các bước thực hiện:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control duties_activities" name="duties_activities[]" placeholder="Vd: Tìm hiểu thị trường, chạy marketing, ..." required></textarea></div></div>';
-                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Các kĩ năng cần có:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control skill" name="skill[]" placeholder="Vd: Tìm kiếm thông tin, ..." required></textarea></div></div>';
-                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Tỉ lệ trên tổng các Công việc:</label><div class="col-lg-8"><input type="number" name="ratio[]" class="form-control ratio" min="0" max="100" placeholder="Vd: 20" required></div></div>';
+                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Mục tiêu Công việc:</label><div class="col-lg-8"><input type="text" class="form-control target" onkeyup=checkEmpty(this) name="target[]" placeholder="Vd: Tăng tỉ lệ chuyển đổi bán hàng của website lên 20%" required></div></div>';
+                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Chi tiết Công việc:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control task_description" onkeyup=checkEmpty(this) name="task_description[]" placeholder="Vd: Tỷ lệ chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" required></textarea></div></div>';
+                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Các bước thực hiện:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control duties_activities" onkeyup=checkEmpty(this) name="duties_activities[]" placeholder="Vd: Tìm hiểu thị trường, chạy marketing, ..." required></textarea></div></div>';
+                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Các kĩ năng cần có:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control skill" onkeyup=checkEmpty(this) name="skill[]" placeholder="Vd: Tìm kiếm thông tin, ..." required></textarea></div></div>';
+                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Tỉ lệ trên tổng các Công việc:</label><div class="col-lg-8"><input type="number" name="ratio[]" class="form-control ratio" onkeyup=checkEmpty(this) min="0" max="100" placeholder="Vd: 20" required></div></div>';
                 html += '</div></div></div>';
                 $("#row_kpi_detail").append(html);
                 count_job++;
@@ -161,46 +206,6 @@
 
             $("#btn_submit_form").click(function() {
                 $("#form_detail_kpi").submit();
-            });
-
-            $(".target").keyup(function(){
-                if(!$(this).val()) {
-                    $(this).addClass('border-red');
-                } else {
-                    $(this).removeClass('border-red');
-                }
-            });
-
-            $(".task_description").keyup(function(){
-                if(!$(this).val()) {
-                    $(this).addClass('border-red');
-                } else {
-                    $(this).removeClass('border-red');
-                }
-            });
-
-            $(".duties_activities").keyup(function(){
-                if(!$(this).val()) {
-                    $(this).addClass('border-red');
-                } else {
-                    $(this).removeClass('border-red');
-                }
-            });
-
-            $(".skill").keyup(function(){
-                if(!$(this).val()) {
-                    $(this).addClass('border-red');
-                } else {
-                    $(this).removeClass('border-red');
-                }
-            });
-
-            $(".ratio").keyup(function(){
-                if(!$(this).val()) {
-                    $(this).addClass('border-red');
-                } else {
-                    $(this).removeClass('border-red');
-                }
             });
 
             $("#form_detail_kpi").submit(function() {
