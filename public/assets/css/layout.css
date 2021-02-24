@@ -275,6 +275,9 @@ body {
 .sidebar-mobile-component .sidebar-component {
   display: block; }
 
+.sidebar-main-hidden .navbar-header {
+  display: none !important; }
+
 .nav-sidebar {
   -ms-flex-direction: column;
       flex-direction: column; }
@@ -368,6 +371,65 @@ body {
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg); }
 
+.nav-sidebar-icons-reverse .nav-link {
+  padding-right: 3.5rem; }
+  .nav-sidebar-icons-reverse .nav-link i {
+    position: absolute;
+    top: 0.75rem;
+    right: 1.25rem;
+    margin-right: 0; }
+
+.nav-sidebar-icons-reverse .nav-item-submenu .nav-link {
+  padding-right: 4.5rem; }
+  .nav-sidebar-icons-reverse .nav-item-submenu .nav-link:after {
+    right: 3.25rem; }
+
+.nav-sidebar-icons-reverse .nav-group-sub .nav-link {
+  padding-left: 2.5rem; }
+  .nav-sidebar-icons-reverse .nav-group-sub .nav-link i {
+    top: 0.625rem; }
+
+.nav-sidebar-icons-reverse .nav-group-sub .nav-group-sub .nav-link {
+  padding-left: 3.75rem; }
+
+.nav-sidebar-icons-reverse .nav-group-sub .nav-group-sub .nav-group-sub .nav-link {
+  padding-left: 5rem; }
+
+.nav-sidebar-bordered > .nav-item + .nav-item:not(.nav-item-divider) {
+  margin-bottom: 0; }
+
+.sidebar .card:first-child .nav-sidebar-bordered {
+  padding-top: 0; }
+  .sidebar .card:first-child .nav-sidebar-bordered > .nav-item:first-child,
+  .sidebar .card:first-child .nav-sidebar-bordered > .nav-item-header:first-child {
+    border-top: 0; }
+
+.sidebar .card:last-child .nav-sidebar-bordered {
+  padding-bottom: 0; }
+  .sidebar .card:last-child .nav-sidebar-bordered > .nav-item:last-child,
+  .sidebar .card:last-child .nav-sidebar-bordered > .nav-item-header:last-child {
+    border-bottom: 0; }
+
+.sidebar-dark .nav-sidebar-bordered > .nav-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.1); }
+  .sidebar-dark .nav-sidebar-bordered > .nav-item:last-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+
+.sidebar-dark .nav-sidebar-bordered > .nav-item-header {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0; }
+
+.sidebar-light .nav-sidebar-bordered > .nav-item {
+  border-top: 1px solid #eee; }
+  .sidebar-light .nav-sidebar-bordered > .nav-item:last-child {
+    border-bottom: 1px solid #eee; }
+
+.sidebar-light .nav-sidebar-bordered > .nav-item-header {
+  background-color: #fafafa;
+  border-top: 1px solid #eee;
+  margin: 0; }
+
 .sidebar-mobile-toggler {
   display: -ms-flexbox;
   display: flex;
@@ -398,13 +460,13 @@ body {
   display: inline-block; }
 
 .sidebar-dark {
-  background-color: #263238;
+  background-color: #2a3140;
   color: #fff; }
   .sidebar-dark .sidebar-mobile-toggler {
     color: rgba(255, 255, 255, 0.9);
     border-bottom-color: rgba(255, 255, 255, 0.1); }
     .sidebar-dark .sidebar-mobile-toggler:not([class*=bg-]) {
-      background-color: #1e272c; }
+      background-color: #222834; }
     .sidebar-dark .sidebar-mobile-toggler a {
       color: rgba(255, 255, 255, 0.9); }
       .sidebar-dark .sidebar-mobile-toggler a:hover {
@@ -612,7 +674,7 @@ body {
       color: #fff;
       background-color: rgba(255, 255, 255, 0.1); }
     .sidebar-xs .sidebar-main.sidebar-dark .nav-sidebar > .nav-item-submenu > .nav-group-sub {
-      background-color: #304047;
+      background-color: #343d4f;
       border-left: 1px solid rgba(255, 255, 255, 0.1); }
     .sidebar-xs .sidebar-main.sidebar-light .nav-sidebar > .nav-item:not(.nav-item-open):hover > .nav-link:not(.active):not(.disabled) {
       color: #333;
@@ -960,7 +1022,7 @@ body {
     border-bottom-color: transparent; }
 
 .sidebar-dark .nav-tabs {
-  background-color: #1e272c;
+  background-color: #222834;
   border-bottom-color: rgba(255, 255, 255, 0.1); }
   .sidebar-dark .nav-tabs .nav-link {
     color: rgba(255, 255, 255, 0.9); }
@@ -969,7 +1031,7 @@ body {
     .sidebar-dark .nav-tabs .nav-link.active {
       color: #fff; }
   .sidebar-dark .nav-tabs:not(.nav-tabs-bottom) .nav-link.active {
-    background-color: #263238;
+    background-color: #2a3140;
     border-color: rgba(255, 255, 255, 0.1); }
   .sidebar-dark .nav-tabs .nav-item.show .nav-link:not(.active) {
     color: #fff; }

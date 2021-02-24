@@ -24,7 +24,11 @@
     <div class="card">
         <h1 class="pt-3 pl-3 pr-3">Lịch Sử Chấm Công</h1>
         <div class="card-header header-elements-inline">
-            <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Ngọc Anh Tâm - HR - Staff</h4>
+            <h4 class="card-title font-weight-bold text-uppercase">
+                <?php echo auth()->user()->firstname . " " . auth()->user()->lastname ?> 
+                - <?php echo $staff[0][2] ?> 
+                - <?php echo auth()->user()->is_manager == 1 ? 'Quản lý' : 'Nhân viên' ?>
+            </h4>
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
@@ -83,8 +87,27 @@
             <tbody>
                 @foreach ($data as $check_in_out)
                 {{-- @dd($data) --}}
-                    <tr>
-                        <td>{{ $check_in_out['check_in_day'] }}</td>
+                    <tr style="
+                        <?php 
+                            if($check_in_out['special_date_id'] !== null) echo "background-color: #f0c757";
+                            else if($check_in_out['day_of_week'] == 1 or $check_in_out['day_of_week'] == 7)  echo "background-color: #84da86";
+                        ?>
+                    ">
+                        <td>
+                            ngày {{ $check_in_out['check_in_day'] }}, 
+                            <?php 
+                                if($check_in_out['day_of_week'] == 1) {
+                                    echo 'Chủ Nhật';
+                                } else {
+                                    echo 'Thứ ' . $check_in_out['day_of_week'];
+                                }
+                            ?>
+                            <?php 
+                                if($check_in_out['special_date_id'] !== null) {
+                                    echo '(Ngày lễ)';
+                                }
+                            ?>
+                        </td>
                         <td>{{ $check_in_out['check_in'] }}</td>
                         <td>{{ $check_in_out['check_out'] }}</td>
                         <td>{{ $check_in_out['time'] }}</td>

@@ -27,7 +27,7 @@
 
             <li class="nav-item dropdown dropdown-user">
                 <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                    <span><?php echo auth()->user()->firstname . ' ' . auth()->user()->lastname ?></span>
+                    <span>{{ auth()->user() ? auth()->user()->firstname . ' ' . auth()->user()->lastname : null }}</span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">

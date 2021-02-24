@@ -293,7 +293,7 @@
                 <div class="outer">
                     <a href="{{ action('DashboardController@index') }}">
                         <i class="icon-8x icon-stats-growth"></i>
-                        <p>Dashboard</p> 
+                        <p>Biểu Đồ</p> 
                     </a>
                 </div>
             </div>
@@ -306,6 +306,16 @@
                 </a>
             </div>
         </div>
+        @if(auth()->user()->department == 2)
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('SpecialDateController@index') }}">
+                        <i class="icon-8x icon-stats-growth"></i>
+                        <p>Quản Lý Ngày Lễ</p> 
+                    </a>
+                </div>
+            </div>
+        @endif
         <div class="no-tool text-center">
             <?php
 
