@@ -20,12 +20,14 @@ class StaffController extends Controller
 
     public function createStaff(Request $request)
     {
-        $name = $request->input('txtName');
-        $nameVn = $request->input('txtName1');
+        $code = $request->input('txtCode');
+        $firstname = $request->input('txtFname');
+        $lastname = $request->input('txtLname');
         
         $data_request = [
-            'name' => $name,
-            'nameVn' =>$nameVn,
+            'code' => $code,
+            'firstname' =>$firstname,
+            'lastname' =>$lastname,
         ];
 
         $response = Http::post('http://localhost:8888/staff/add', $data_request);

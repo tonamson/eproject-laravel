@@ -17,6 +17,7 @@
 
 @section('js')    
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
 @endsection
 
 @section('content')

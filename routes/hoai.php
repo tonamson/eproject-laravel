@@ -39,6 +39,6 @@ Route::group(['prefix' => 'staff'], function () {
 });
 
 Route::group(['prefix' => 'staff'], function () {
-    Route::post('/add1', 'StaffController@CreateDepartment');
+    Route::post('/add1', 'StaffController@CreateStaff');
 });
 
