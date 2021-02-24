@@ -17,6 +17,7 @@
 
 @section('js')    
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
 @endsection
 
 @section('content')
@@ -24,7 +25,16 @@
     <div class="card">
         <h1 class="pt-3 pl-3 pr-3">Phòng ban</h1>
         <div class="card-header header-elements-inline">
-            <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Minh Hoài - HR - Department</h4>
+            <h4 class="card-title font-weight-bold text-uppercase">HR-Department</h4>
+
+             <!-- Basic datatable -->
+    
+                <div class="ml-1">
+                    <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2">THÊM MỚI PHÒNG BAN</button>
+                </div>
+     
+              <!--End Basic datatable -->
+
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
@@ -35,22 +45,7 @@
         </div>
         <div class="card-body">
             <form action="#" method="GET">
-          
-                <div class="form-group d-flex">
-                    <div class="">
-                        <select class="form-control" name="month" id="month">
-               
-       
-                     
-                        </select>
-                    </div>
-                    <div class="ml-2">
-                        <input class="form-control" type="number" value="2021" name="year" id="year">
-                    </div>
-                    <div class="ml-3">
-                        <input class="form-control btn btn-primary" type="submit" value="Search">
-                    </div>
-                </div>
+
             </form>
         </div>
 
@@ -77,9 +72,8 @@
                                 Ẩn
                             @endif    
                         </td>
-                        <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="#">Sửa</a>||
+                        <td class="center"><i class="btn"></i><a href="{{ action('DepartmentController@getEditDep') }}">Sửa</a>||
                         <i class="fa fa-trash-o fa-fw"></i><a href="#"> Xóa</a></td>
-                        
                     </tr>
                     @endforeach
                         </td>
@@ -97,6 +91,43 @@
             </tbody>
         </table>
     </div>
+    <!-- /basic datatable -->
+
+     <!-- Modal Add Deparment -->
+     <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form action="{{action('DepartmentController@CreateDepartment')}}" method="post">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">THÊM MỚI</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Tên Phòng Ban</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="txtName"  required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Tên Phòng Ban Tiếng Việt</label>
+                                <div class="col-lg-9">
+                                <input type="text" class="form-control" name="txtName1"  required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Thêm mới</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>
+        </div>
+
     <!-- /basic datatable -->
 @endsection
 

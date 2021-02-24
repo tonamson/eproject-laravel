@@ -1,90 +1,86 @@
 @extends('main._layouts.master')
 
 <?php
-    // {{ }} <--- cac ky tu dac biet se duoc thay the
-    // {!! !!} <--- cac ky tu dac biet se khong thay the
-    // {{-- --}} <--- comment code trong blade
-    /**
-     * section('scripts') <--- coi o? master.blade.php <--- no' la @yield('scripts')
-     * section co' mo? la phai co' dong'
-     * neu ma soan code php thi nen de? tren dau` de? no' load tuan tu chinh xac hon giong nhu code php nam tren section('scripts') vay ok roi
-     * */
+    header("Access-Control-Allow-Origin: *");
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 ?>
 
 @section('css')
     <link href="{{ asset('assets/css/components_datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        #tb_dkp_wrapper {
+            display: none;
+        }
+    </style>
 @endsection
 
 @section('js')    
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/notifications/jgrowl.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/ui/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
+    <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
+    <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
 @endsection
+
 
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Nhân viên</h1>
+        <h1 class="pt-3 pl-3 pr-3">THÊM NHÂN VIÊN MỚI</h1>
         <div class="card-header header-elements-inline">
-            <h4 class="card-title font-weight-bold text-uppercase">Nguyễn Minh Hoài - HR - Staff</h4>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>
-            </div>
+ 
         </div>
         <div class="card-body">
-            <form action="#" method="GET">
-          
-                <div class="form-group d-flex">
-                    <div class="ml-2">
-                        <input class="form-control" type="number" value="2021" name="year" id="year">
+            @if (\Session::has('success'))
+                <div class="">
+                    <div class="alert alert-success">
+                        {!! \Session::get('success') !!}
                     </div>
+                </div>
+            @endif
+
+            @if (\Session::has('error'))
+                <div class="">
+                    <div class="alert alert-danger">
+                        {!! \Session::get('error') !!}
+                    </div>
+                </div>
+            @endif
+            <form action="{{ action('StaffController@CreateStaff') }}" method="POST">
+                @csrf
+                <div class="form-group d-flex">
+                  
                     <div class="ml-3">
                         <input class="form-control btn btn-primary" type="submit" value="Search">
                     </div>
                 </div>
-            </form>
-        </div>
-
-        <table class="table datatable-basic">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Mã</th>
-                    <th>Tên</th>
-                    <th>Họ</th>
-                    <th>Phòng Ban</th>
-                    <th>Is_Manager</th>
-                    <th>Ngày vào</th>
-                    
-
-                </tr>
-            </thead>
-            <tbody>
-                    @foreach($data_staff as $staff)
-                    <tr>
-                        <td>{{ $staff['id'] }}</td>
-                        <td>{{ $staff['code'] }}</td>
-                        <td>{{ $staff['firstname'] }}</td>
-                        <td>{{ $staff['lastname'] }}</td>
-                        <td>{{ $staff['department'] }}</td>
-                        <td>{{ $staff['isManager'] }}</td>
-                        <td>{{ $staff['joinedAt'] }}</td>
-                    </tr>
-                    @endforeach
-                        </td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-menu9"></i>
-                                    </a>
+                <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Code</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="txtCode"  required>
                                 </div>
                             </div>
-                        </td>
-            </tbody>
-        </table>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Tên</label>
+                                <div class="col-lg-9">
+                                <input type="text" class="form-control" name="txtFname"  required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Họ</label>
+                                <div class="col-lg-9">
+                                <input type="text" class="form-control" name="txtLname"  required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Thêm</button>
+                            <button type="reset" class="btn btn-info">Làm mới</button>
+                 </div>
+            </form>
+        </div>
     </div>
     <!-- /basic datatable -->
 @endsection

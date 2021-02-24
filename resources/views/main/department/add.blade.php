@@ -1,147 +1,59 @@
 @extends('main._layouts.master')
 
-
 @section('content')
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <h2>Chỉnh Sửa Phòng Ban</h2>
-            
-            <div class="col-lg-7" style="padding-bottom:120px">
-   <br>
-   <hr>
-                <form action="{{action('DepartmentController@CreateDepartment')}}" method="POST" enctype="multipart/form-data">
-                @csrf
-                    <!-- <input type="hidden" name="_token" value="{{csrf_token()}}"/> -->
-                    <div class="form-group">
-                        <label>Tên Phòng Ban</label>
-                        <input class="form-control" name="txtName" placeholder="Nhập tên không dấu" />
-                    </div>
-                    <div class="form-group">
-                        <label>Tên Tiếng Việt</label>
-                        <input class="form-control"  name="txtName1" placeholder="Nhập tên tiếng Việt"></input>
-                    </div>
-                    <button type="submit" class="btn btn-default">Thêm</button>
-                    <button type="reset" class="btn btn-default">Làm mới</button>
-                </form>
+    <!-- Basic datatable -->
+            <div class="form-group d-flex">
+                <div class="ml-1">
+                    <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2">Đăng Kí Phép</button>
+                </div>
             </div>
         </div>
-        <!-- /.row -->
+         <!-- Modal dkp -->
+        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form action="{{action('DepartmentController@CreateDepartment')}}" method="post">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">THÊM MỚI</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Tên Phòng Ban</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="txtName"  required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Tên Phòng Ban Tiếng Việt</label>
+                                <div class="col-lg-9">
+                                    <textarea class="form-control" name="txtName1" id="note_dkp" cols="20" rows="10" placeholder="VD: Bận việc gia đình, Đi học, ..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Thêm mới</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>
+        </div>
+            </thead>
+        </table>
     </div>
-    <!-- /.container-fluid -->
-</div>
+    <!-- /basic datatable -->
 @endsection
-
-
 
 @section('scripts')
     <script>
-        /* ------------------------------------------------------------------------------
-        *
-        *  # Basic datatables
-        *
-        *  Demo JS code for datatable_basic.html page
-        *
-        * ---------------------------------------------------------------------------- */
-
-
-        // Setup module
-        // ------------------------------
-
-        var DatatableBasic = function() {
-
-
-            //
-            // Setup module components
-            //
-
-            // Basic Datatable examples
-            var _componentDatatableBasic = function() {
-                if (!$().DataTable) {
-                    console.warn('Warning - datatables.min.js is not loaded.');
-                    return;
-                }
-
-                // Setting datatable defaults
-                $.extend( $.fn.dataTable.defaults, {
-                    autoWidth: false,
-                    columnDefs: [{ 
-                        orderable: false,
-                        width: 100,
-                        targets: [ 5 ]
-                    }],
-                    dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-                    language: {
-                        search: '<span>Filter:</span> _INPUT_',
-                        searchPlaceholder: 'Type to filter...',
-                        lengthMenu: '<span>Show:</span> _MENU_',
-                        paginate: { 'first': 'First', 'last': 'Last', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;' }
-                    }
-                });
-
-                // Basic datatable
-                $('.datatable-basic').DataTable();
-
-                // Alternative pagination
-                $('.datatable-pagination').DataTable({
-                    pagingType: "simple",
-                    language: {
-                        paginate: {'next': $('html').attr('dir') == 'rtl' ? 'Next &larr;' : 'Next &rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr; Prev' : '&larr; Prev'}
-                    }
-                });
-
-                // Datatable with saving state
-                $('.datatable-save-state').DataTable({
-                    stateSave: true
-                });
-
-                // Scrollable datatable
-                var table = $('.datatable-scroll-y').DataTable({
-                    autoWidth: true,
-                    scrollY: 300
-                });
-
-                // Resize scrollable table when sidebar width changes
-                $('.sidebar-control').on('click', function() {
-                    table.columns.adjust().draw();
-                });
-            };
-
-            // Select2 for length menu styling
-            var _componentSelect2 = function() {
-                if (!$().select2) {
-                    console.warn('Warning - select2.min.js is not loaded.');
-                    return;
-                }
-
-                // Initialize
-                $('.dataTables_length select').select2({
-                    minimumResultsForSearch: Infinity,
-                    dropdownAutoWidth: true,
-                    width: 'auto'
-                });
-            };
-
-
-            //
-            // Return objects assigned to module
-            //
-
-            return {
-                init: function() {
-                    _componentDatatableBasic();
-                    _componentSelect2();
-                }
-            }
-        }();
-
-
-        // Initialize module
-        // ------------------------------
-
-        document.addEventListener('DOMContentLoaded', function() {
-            DatatableBasic.init();
-        });
+        
+        
+       
+            
 
     </script>
 @endsection
