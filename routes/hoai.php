@@ -1,31 +1,17 @@
 <?php
 
 
+use Illuminate\Support\Facades\Route;
 
 //Department
-Route::group(['prefix' => 'department'], function () {
+
+Route::group(['prefix' => 'deparment'], function () {
     Route::get('/index', 'DepartmentController@index');
-});
-
-Route::group(['prefix' => 'deparment'], function () {
-    Route::get('/add', 'DepartmentController@add');
-});
-
-Route::group(['prefix' => 'deparment'], function () {
-    Route::post('/add1', 'DepartmentController@CreateDepartment');
-});
-
-Route::group(['prefix' => 'deparment'], function () {
-    Route::get('/edit', 'DepartmentController@getEditDep');
-});
-
-// Route::group(['prefix' => 'deparment'], function () {
-//     Route::get('/detail', 'DepartmentController@detailDep');
-// });
-
-
-Route::group(['prefix' => 'deparment'], function () {
     Route::get('/detail', 'DepartmentController@detailDep');
+    Route::get('/edit', 'DepartmentController@getEditDep');
+    Route::post('/add1', 'DepartmentController@CreateDepartment');
+    Route::get('/add', 'DepartmentController@add');
+    Route::post('/pedit', 'DepartmentController@postEditDep')->name('postEditDepartment');
 });
 
 //Staff
@@ -39,6 +25,17 @@ Route::group(['prefix' => 'staff'], function () {
 });
 
 Route::group(['prefix' => 'staff'], function () {
-    Route::post('/add1', 'StaffController@CreateStaff');
+    Route::post('/add', 'StaffController@CreateStaff')->name('postAddStaff');
 });
 
+Route::group(['prefix' => 'deparment'], function () {
+    Route::get('/detail', 'StaffController@getDetail');
+});
+
+Route::group(['prefix' => 'deparment'], function () {
+    Route::get('/gedit', 'StaffController@getEditStaff');
+});
+
+Route::group(['prefix' => 'deparment'], function () {
+    Route::post('/pedit', 'StaffController@postEditStaff');
+});

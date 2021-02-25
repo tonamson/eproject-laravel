@@ -1,4 +1,3 @@
-    
 @extends('main._layouts.master')
 
 <?php
@@ -39,10 +38,11 @@
 
 @endsection
 
+
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">Cập nhât Phòng Ban</h1>
+        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">THÊM NHÂN VIÊN MỚI</h1>
         <div class="card-header header-elements-inline">
  
         </div>
@@ -55,38 +55,94 @@
                 </div>
             @endif
 
-            @if (session('message'))
+            @if (\Session::has('error'))
                 <div class="">
-                    <div class="alert alert-primary">
-                        {!! session('message') !!}
+                    <div class="alert alert-danger">
+                        {!! \Session::get('error') !!}
                     </div>
                 </div>
             @endif
              
-            <form action="{{ route('postEditDepartment') }}" method="post">
+                <form action="{{ action('StaffController@postEditStaff') }}" method="post">
                 @csrf
             <div class="row">
                 <div class="col-md-3">
                         <div class="form-group">
-                            <label>Tên Phòng ban:</label>
-                            <input type="text" class="form-control" name="txtID" value="{{$data['id']}}" readonly/>
+                            <label>Mã Nhân viên:</label>
+                            <input type="text" class="form-control" name="txtCode" value="{{$data['code']}}">
                         </div>
                         <div class="form-group">
-                            <label>Tên Phòng ban:</label>
-                            <input type="text" class="form-control" name="txtName" value="{{$data['name']}}">
+                            <label>Tên Nhân viên:</label>
+                            <input type="text" class="form-control" name="txtFname" value="{{$data['firstname']}}">
                         </div>
                         <div class="form-group">
-                            <label>Tên Tiếng Việt:</label>
-                            <input type="text" class="form-control" name="txtName1" value="{{$data['nameVn']}}" >
+                            <label>Họ nhân viên:</label>
+                            <input type="text" class="form-control" name="txtLname" value="{{$data['lastname']}}"> 
                         </div>
                         <div class="form-group">
-                            <label>Trạng thái:</label>
-                            <select name="txtDel" color="red" >
-                                <option value="0">Hiện</option>
-                                <option value="1">Ẩn</option>
+                            <label>Phòng Ban:</label>
+                            <input type="text" class="form-control" name="txtDepartment" value="{{$data['department']}}"> 
+                        </div>
+                        <div class="form-group">
+                            <label>Phân Quyền:</label>
+                            <select name="txtisManager" color="red" >
+                                <option value="0">Nhân viên</option>
+                                <option value="1">Quản lý</option>
                             </select>
                         </div>
-                        <button class="btn btn-success" type="submit">Lưu</button>&nbsp;&nbsp;
+                        <div class="form-group">
+                            <label>Ngày Vào:</label>
+                            <input type="Date" class="form-control" name="txtJoinat" value="{{$data['joinedAt']}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày sinh:</label>
+                            <input type="Date" class="form-control" name="txtDob" value="{{$data['dob']}}">
+                        </div>
+                         <div class="form-group">
+                            <label>Giới tính:</label>
+                            <select name="txtGender" color="red" >
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            
+                            <input type="Date" class="form-control" name="txtRegional" value="{{$data['regional']}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Điện thoại:</label>
+                            <input type="text" class="form-control" name="txtPhone" value="{{$data['phoneNumber']}}">
+                        </div>
+                       <div class="form-group">
+                            <label>Email:</label>
+                            <input type="text" class="form-control" name="txtEmail" value="{{$data['email']}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Mật Khẩu:</label>
+                            <input type="text" class="form-control" name="txtPass" value="{{$data['password']}}">
+                        </div>
+                         <div class="form-group">
+                            <label>CMND:</label>
+                            <input type="text" class="form-control" name="txtIDNumber" value="{{$data['idNumber']}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Hình ảnh:</label>
+                            <input type="text" class="form-control" name="txtPhoto">
+                        </div>
+                        <div class="form-group">
+                            <label>Mặt trước CMND:</label>
+                            <input type="text" class="form-control" name="txtIDPhoto">
+                        </div>
+                        <div class="form-group">
+                            <label>Mặt sau CMND:</label>
+                            <input type="text" class="form-control" name="txtIDPhoto2">
+                        </div>
+                        <div class="form-group">
+                            <label>Ghi chú:</label>
+                            <input type="text" class="form-control" name="txtNote" value="{{$data['note']}}">
+                        </div>
+                    
+                        <button class="btn btn-success" type="submit">Lưu</button>
                         <button class="btn btn-success" type="reset">Reset</button>
                     </div>
                 </div>
