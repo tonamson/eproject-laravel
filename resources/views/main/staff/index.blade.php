@@ -80,7 +80,8 @@
                                 Nữ
                             @endif 
                         </td>
-                        <td class="center"><i class="btn-btn-success"></i><a href="{{ action('StaffController@getEditStaff') }}?id={{ $staff['id'] }}">Chi tiết</a>&nbsp;||&nbsp;
+                        <td class="center"><i class="btn-btn-success"></i><a href="{{ action('StaffController@getEditStaff') }}?id={{ $staff['id'] }}">Cập nhật</a>&nbsp;
+                        ||&nbsp;<a href="{{ action('StaffController@getDetail') }}?id={{ $staff['id'] }}">Chi tiết</a>&nbsp;||&nbsp;
                         <i class="fa fa-trash-o fa-fw"></i><a href="#"> Xóa</a></td>
                     </tr>
                     @endforeach

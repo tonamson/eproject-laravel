@@ -63,33 +63,28 @@
                 </div>
             @endif
              
-                <form action="{{ route('postAddStaff') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ action('StaffController@postEditStaff') }}" method="post">
                 @csrf
             <div class="row">
                 <div class="col-md-3">
                         <div class="form-group">
                             <label>Mã Nhân viên:</label>
-                            <input type="text" class="form-control" name="txtCode">
+                            <input type="text" class="form-control" name="txtCode" value="{{$data['code']}}">
                         </div>
                         <div class="form-group">
                             <label>Tên Nhân viên:</label>
-                            <input type="text" class="form-control" name="txtFname">
+                            <input type="text" class="form-control" name="txtFname" value="{{$data['firstname']}}">
                         </div>
                         <div class="form-group">
                             <label>Họ nhân viên:</label>
-                            <input type="text" class="form-control" name="txtLname">
+                            <input type="text" class="form-control" name="txtLname" value="{{$data['lastname']}}"> 
                         </div>
                         <div class="form-group">
                             <label>Phòng Ban:</label>
-                            <select name="txtDepartment" color="red" >
-                            @foreach($data_department as $dep)
-                            <option value="{{ $dep['id'] }}">{{ $dep['name'] }}</option>
-                            @endforeach
-                            </select>
+                            <input type="text" class="form-control" name="txtDepartment" value="{{$data['department']}}"> 
                         </div>
                         <div class="form-group">
                             <label>Phân Quyền:</label>
-                            <!-- <input type="text" class="form-control" name="txtGender"> -->
                             <select name="txtisManager" color="red" >
                                 <option value="0">Nhân viên</option>
                                 <option value="1">Quản lý</option>
@@ -97,11 +92,11 @@
                         </div>
                         <div class="form-group">
                             <label>Ngày Vào:</label>
-                            <input type="Date" class="form-control" name="txtJoinat">
+                            <input type="Date" class="form-control" name="txtJoinat" value="{{$data['joinedAt']}}">
                         </div>
                         <div class="form-group">
                             <label>Ngày sinh:</label>
-                            <input type="Date" class="form-control" name="txtDob">
+                            <input type="Date" class="form-control" name="txtDob" value="{{$data['dob']}}">
                         </div>
                          <div class="form-group">
                             <label>Giới tính:</label>
@@ -111,45 +106,40 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Khu vực:</label>
-                            <!-- <input type="text" class="form-control" name="txtGender"> -->
-                            <select name="txtRegional" color="red" >
-                            @foreach($data_reg as $reg)
-                            <option value="{{$reg['id']}}">{{ $reg['name'] }}</option>
-                            @endforeach
-                            </select>
+                            
+                            <input type="Date" class="form-control" name="txtRegional" value="{{$data['regional']}}">
                         </div>
                         <div class="form-group">
                             <label>Điện thoại:</label>
-                            <input type="text" class="form-control" name="txtPhone">
+                            <input type="text" class="form-control" name="txtPhone" value="{{$data['phoneNumber']}}">
                         </div>
                        <div class="form-group">
                             <label>Email:</label>
-                            <input type="text" class="form-control" name="txtEmail">
+                            <input type="text" class="form-control" name="txtEmail" value="{{$data['email']}}">
                         </div>
                         <div class="form-group">
                             <label>Mật Khẩu:</label>
-                            <input type="text" class="form-control" name="txtPass">
+                            <input type="text" class="form-control" name="txtPass" value="{{$data['password']}}">
                         </div>
                          <div class="form-group">
                             <label>CMND:</label>
-                            <input type="text" class="form-control" name="txtIDNumber">
+                            <input type="text" class="form-control" name="txtIDNumber" value="{{$data['idNumber']}}">
                         </div>
                         <div class="form-group">
                             <label>Hình ảnh:</label>
-                            <input type="file" class="form-control" name="txtPhoto">
+                            <input type="text" class="form-control" name="txtPhoto">
                         </div>
                         <div class="form-group">
                             <label>Mặt trước CMND:</label>
-                            <input type="file" class="form-control" name="txtIDPhoto">
+                            <input type="text" class="form-control" name="txtIDPhoto">
                         </div>
                         <div class="form-group">
                             <label>Mặt sau CMND:</label>
-                            <input type="file" class="form-control" name="txtIDPhoto2">
+                            <input type="text" class="form-control" name="txtIDPhoto2">
                         </div>
                         <div class="form-group">
                             <label>Ghi chú:</label>
-                            <input type="text" class="form-control" name="txtNote">
+                            <input type="text" class="form-control" name="txtNote" value="{{$data['note']}}">
                         </div>
                     
                         <button class="btn btn-success" type="submit">Lưu</button>

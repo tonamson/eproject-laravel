@@ -29,7 +29,7 @@ class StaffController extends Controller
 
     public function createStaff(Request $request)
     {
-        $authen->$user->$id;
+       // $authen->$user->$id;
         $code = $request->input('txtCode');
         $firstname = $request->input('txtFname');
         $lastname = $request->input('txtLname');
@@ -44,9 +44,9 @@ class StaffController extends Controller
         $password = $request->input('txtPass');
 
        $idNumber = $request->input('txtIDNumber');
-        $photo = $request->input('txtPhoto');
-        $idPhoto = $request->input('txtIDPhoto');
-        $idPhotoBack = $request->input('txtIDPhoto2');
+        $photo = $request->file('txtPhoto');
+        $idPhoto = $request->file('txtIDPhoto');
+        $idPhotoBack = $request->file('txtIDPhoto2');
         $note = $request->input('txtNote');
       //  $dayOfLeave =request(0);
 
@@ -74,8 +74,9 @@ class StaffController extends Controller
             "status" =>$status=0,
       
         ];
-
-        $response = Http::post('http://localhost:8888/staff/add', $data_request);
+        $response = Http::attach('attachment', file_get_contents($photo), 'photo.jpg')
+            ->post('http://localhost:8888/staff/add', $data_request);
+       // dd($response);
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Save success") {
@@ -109,7 +110,9 @@ class StaffController extends Controller
         return view('main.staff.add');
     }
 
-    public function getEditStaff(Request $request) {
+    // Get & Post Update Staff
+
+    public function getDetail(Request $request) {
         $data_request = $request->all();
 
         $response = Http::get('http://localhost:8888/staff/one', $data_request);
@@ -122,7 +125,80 @@ class StaffController extends Controller
 
             
         }
-        return redirect()->back()->with('message','Khong tim thay phong ban');
+        return redirect()->back()->with('message','Khong tim nhan vien');
+    }
+
+    public function getEditStaff(Request $request) {
+      
+        //chinh
+        $data_request = $request->all();
+
+        $response = Http::get('http://localhost:8888/staff/one', $data_request);
+        $body = json_decode($response->body(), true);
+        //dd($body);
+        if($body['isSuccess']){
+            return view('main/staff/edit', [
+                'data' => $body['data']
+            ]);
+        }
+        return redirect()->back()->with('message','Khong tim nhan vien');
+    }
+
+
+    public function postEditStaff(Request $request) {
+
+        $id =$request->input('txtID');
+        $code = $request->input('txtCode');
+        $firstname = $request->input('txtFname');
+        $lastname = $request->input('txtLname');
+        $department = $request->input('txtDepartment');
+        $isManager = $request->input('txtisManager');
+        $joinedAt = $request->input('txtJoinat');
+        $dob = $request->input('txtDob');
+        $gender = $request->input('txtGender');
+        $regional = $request->input('txtRegional');
+        $phoneNumber = $request->input('txtPhone');
+        $email = $request->input('txtEmail');
+        $password = $request->input('txtPass');
+
+       $idNumber = $request->input('txtIDNumber');
+        $photo = $request->input('txtPhoto');
+        $idPhoto = $request->input('txtIDPhoto');
+        $idPhotoBack = $request->input('txtIDPhoto2');
+        $note = $request->input('txtNote');
+        
+        $data_request = [
+            'id'=>$id,
+            'code' => $code,
+            'firstname' =>$firstname,
+            'lastname' =>$lastname,
+            'department' =>$department,
+            'isManager'=>$isManager,
+            'joinedAt' =>$joinedAt,
+            'dob'=>$dob,
+            'gender'=>$gender,
+            'regional' =>$regional,
+            'phoneNumber' =>$phoneNumber,
+            'email' =>$email,
+            'password' => bcrypt($password),
+
+           'idNumber' =>$idNumber,
+            'photo' =>$photo,
+            'idPhoto' =>$idPhoto,
+            'idPhotoBack' =>$idPhotoBack,
+            "dayOfLeave"==0,
+            'note' =>$note,
+            "status" =>$status=0,
+        ];
+       
+        $response = Http::post('http://localhost:8888/staff/update', $data_request);
+       // dd($response);
+        $body = json_decode($response->body(), true);
+        
+        if( $body['isSuccess'] == "Update success"){
+            return redirect()->back()->with('message', 'Cập nhật thành công!');
+        }
+        return redirect()->back()->with('message','Cập nhật thất bại');
     }
 
 }
