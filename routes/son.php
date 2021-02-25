@@ -13,4 +13,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'contract'], function () {
     Route::get('list','ContractController@getList')->name('getListContract');
     Route::get('create','ContractController@getCreate')->name('getCreateContract');
+    Route::get('edit/{id}','ContractController@getEdit')->name('getEditContract');
+    Route::post('save','ContractController@postSave')->name('postSaveContract');
+    Route::get('delete/{id}','ContractController@getDelete')->name('getDeleteContract');
 });
