@@ -288,42 +288,24 @@
 
 <div class="container-fluid fluid-view-menu">
     <div class="row text-center">
-        @if(auth()->user()->department == 2)
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('KpiController@setKpi') }}">
+                    <i class="icon-8x icon-clipboard5"></i>
+                    <p>Thiết Lập Kpi</p> 
+                </a>
+            </div>
+        </div>
+        @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
-                    <a href="{{ action('DashboardController@index') }}">
-                        <i class="icon-8x icon-stats-growth"></i>
-                        <p>Biểu Đồ</p> 
+                    <a href="{{ action('KpiController@listKpi') }}">
+                        <i class="icon-8x icon-clipboard6"></i>
+                        <p>Danh Sách KPI</p> 
                     </a>
                 </div>
             </div>
         @endif
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ action('ViewmenuController@timeLeave') }}">
-                    <i class="icon-8x icon-stack"></i>
-                    <p>Công Phép</p> 
-                </a>
-            </div>
-        </div>
-        @if(auth()->user()->department == 2)
-            <div class="col-6 col-md-3 text-center col-max">
-                <div class="outer">
-                    <a href="{{ action('SpecialDateController@index') }}">
-                        <i class="icon-8x icon-stats-growth"></i>
-                        <p>Quản Lý Ngày Lễ</p> 
-                    </a>
-                </div>
-            </div>
-        @endif
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ action('ViewmenuController@kpi') }}">
-                    <i class="icon-8x icon-stack"></i>
-                    <p>Kpi</p> 
-                </a>
-            </div>
-        </div>
         <div class="no-tool text-center">
             <?php
 

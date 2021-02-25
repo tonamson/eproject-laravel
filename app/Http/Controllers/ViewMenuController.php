@@ -16,4 +16,9 @@ class ViewMenuController extends Controller
     {
         return view('main.view_menu.time_leave');
     }
+    
+    public function kpi()
+    {
+        return view('main.view_menu.kpi');
+    }
 }

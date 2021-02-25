@@ -140,24 +140,26 @@
                     <a href="#" class="nav-link"><i class="icon-stack"></i> <span>KPI</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
                                 <i class="icon-clipboard5"></i>
                                 <span>KPI Cá Nhân</span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a href="{{ action('KpiController@setKpi') }}" class="nav-link">
                                 <i class="icon-clipboard5"></i>
                                 <span>Thiết Lập KPI</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
-                                <i class="icon-clipboard5"></i>
-                                <span>Quản Lý KPI</span>
-                            </a>
-                        </li>
+                        @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
+                            <li class="nav-item">
+                                <a href="{{ action('KpiController@listKpi') }}" class="nav-link">
+                                    <i class="icon-clipboard5"></i>
+                                    <span>Danh Sách KPI</span>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
                 <!-- /main -->

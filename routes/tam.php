@@ -6,6 +6,8 @@ Route::middleware(['check_login'])->group(function () {
 
     Route::group(['prefix' => 'view-menu'], function () {
         Route::get('/time-leave', 'ViewmenuController@timeLeave');
+
+        Route::get('/kpi', 'ViewmenuController@kpi');
     });
 
     Route::group(['prefix' => 'dashboard'], function () {
@@ -77,6 +79,13 @@ Route::middleware(['check_login'])->group(function () {
         Route::post('/create-kpi', 'KpiController@createKpi');
 
         Route::get('/get-detail-kpi', 'KpiController@test');
-        
+
+        Route::middleware(['check_hr_or_manager'])->group(function () {
+         
+            Route::get('/get-list-kpi', 'KpiController@listKpi');
+
+            Route::post('/approve-kpi', 'KpiController@approveKpi');
+
+        });
     });
 });
