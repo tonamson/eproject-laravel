@@ -6,6 +6,8 @@ Route::middleware(['check_login'])->group(function () {
 
     Route::group(['prefix' => 'view-menu'], function () {
         Route::get('/time-leave', 'ViewmenuController@timeLeave');
+
+        Route::get('/kpi', 'ViewmenuController@kpi');
     });
 
     Route::group(['prefix' => 'dashboard'], function () {

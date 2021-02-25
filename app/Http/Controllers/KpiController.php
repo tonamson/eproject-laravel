@@ -41,17 +41,33 @@ class KpiController extends Controller
                             <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&staff_id='.$staff_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào chỉnh sửa</a>
                         </div>';
             } else if($body['data']['isApproved'] == "2") {
-                $html = '<div class="alert alert-info div_set_kpi">
-                            <strong>Trạng thái:</strong>
-                            <b class="status_kpi">Quản lý đã phê duyệt</b>
-                            <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&staff_id='.$staff_id.'&kpi_name='.$kpi_name.'&readonly=1" class="go_set_kpi">Vào xem lại</a>
-                        </div>';
+                if(auth()->user()->is_manager == 1) {
+                    $html = '<div class="alert alert-info div_set_kpi">
+                                <strong>Trạng thái:</strong>
+                                <b class="status_kpi">Quản lý đã phê duyệt</b>
+                                <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&staff_id='.$staff_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào chỉnh sửa</a>
+                            </div>';
+                } else {
+                    $html = '<div class="alert alert-info div_set_kpi">
+                                <strong>Trạng thái:</strong>
+                                <b class="status_kpi">Quản lý đã phê duyệt</b>
+                                <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&staff_id='.$staff_id.'&kpi_name='.$kpi_name.'&readonly=1" class="go_set_kpi">Vào xem lại</a>
+                            </div>';
+                }
             } else {
-                $html = '<div class="alert alert-info div_set_kpi">
-                            <strong>Trạng thái:</strong>
-                            <b class="status_kpi">HR đã phê duyệt</b>
-                            <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&staff_id='.$staff_id.'&kpi_name='.$kpi_name.'&readonly=1" class="go_set_kpi">Vào xem lại</a>
-                        </div>';
+                if((auth()->user()->department == 2 && auth()->user()->is_manager == 1)) {
+                    $html = '<div class="alert alert-info div_set_kpi">
+                                <strong>Trạng thái:</strong>
+                                <b class="status_kpi">HR đã phê duyệt</b>
+                                <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&staff_id='.$staff_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào chỉnh sửa</a>
+                            </div>';
+                } else {
+                    $html = '<div class="alert alert-info div_set_kpi">
+                                <strong>Trạng thái:</strong>
+                                <b class="status_kpi">HR đã phê duyệt</b>
+                                <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&staff_id='.$staff_id.'&kpi_name='.$kpi_name.'&readonly=1" class="go_set_kpi">Vào xem lại</a>
+                            </div>';
+                }
             }
         } else {
             $html = '<div class="alert alert-info div_set_kpi">
@@ -80,35 +96,61 @@ class KpiController extends Controller
 
         if($kpi_name == null) {
             $html = '';
-        } else if($body['data'] !== null && $body['data']['isApproved'] !== "0") {
-            $html = '<div class="alert alert-info div_set_kpi">
-                        <strong>Trạng thái:</strong>
-                        <b class="status_kpi">Đã phê duyệt</b>
-                        <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'&readonly=1" class="go_set_kpi">Vào xem</a>
-                    </div>';
-        } else if($body['data'] !== null && $staff_manager == 1) {
-            $html = '<div class="alert alert-info div_set_kpi">
-                        <strong>Trạng thái:</strong>
-                        <b class="status_kpi">Đã thiết lập</b>
-                        <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào chỉnh sửa</a>
-                    </div>';
-        } else if($staff_manager == 1) {
-            $html = '<div class="alert alert-info div_set_kpi">
-                        <strong>Trạng thái:</strong>
-                        <b class="status_kpi">Chưa thiết lập</b>
-                        <a href="../kpi/set-detail-kpi?department_id='.$department_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào thiết lập</a>
-                    </div>';
         } else if($body['data'] !== null) {
-            $html = '<div class="alert alert-info div_set_kpi">
-                        <strong>Trạng thái:</strong>
-                        <b class="status_kpi">Đã thiết lập</b>
-                        <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'&readonly=1" class="go_set_kpi">Vào xem</a>
-                    </div>';
+            if($body['data']['isApproved'] == "0") {
+                $html = '<div class="alert alert-info div_set_kpi">
+                            <strong>Trạng thái:</strong>
+                            <b class="status_kpi">Đã thiết lập</b>
+                            <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào chỉnh sửa</a>
+                        </div>';
+            } else if($body['data']['isApproved'] == "3") {
+                $html = '<div class="alert alert-info div_set_kpi">
+                            <strong>Trạng thái:</strong>
+                            <b class="status_kpi">Đã bị từ chối</b>
+                            <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào chỉnh sửa</a>
+                        </div>';
+            } else if($body['data']['isApproved'] == "2") {
+                if(auth()->user()->is_manager == 1) {
+                    $html = '<div class="alert alert-info div_set_kpi">
+                                <strong>Trạng thái:</strong>
+                                <b class="status_kpi">Quản lý đã phê duyệt</b>
+                                <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào chỉnh sửa</a>
+                            </div>';
+                } else {
+                    $html = '<div class="alert alert-info div_set_kpi">
+                                <strong>Trạng thái:</strong>
+                                <b class="status_kpi">Quản lý đã phê duyệt</b>
+                                <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'&readonly=1" class="go_set_kpi">Vào xem</a>
+                            </div>';
+                }
+            } else {
+                if(auth()->user()->department == 2 && auth()->user()->is_manager == 1) {
+                    $html = '<div class="alert alert-info div_set_kpi">
+                                <strong>Trạng thái:</strong>
+                                <b class="status_kpi">HR đã phê duyệt</b>
+                                <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào chỉnh sửa</a>
+                            </div>';
+                } else {
+                    $html = '<div class="alert alert-info div_set_kpi">
+                                <strong>Trạng thái:</strong>
+                                <b class="status_kpi">HR đã phê duyệt</b>
+                                <a href="../kpi/set-detail-kpi?kpi_id='.$body['data']['id'].'&department_id='.$department_id.'&kpi_name='.$kpi_name.'&readonly=1" class="go_set_kpi">Vào xem lại</a>
+                            </div>';
+                }
+            }
         } else {
-            $html = '<div class="alert alert-info div_set_kpi">
-                        <strong>Trạng thái:</strong>
-                        <b class="status_kpi">Chưa thiết lập</b>
-                    </div>';
+            if(auth()->user()->is_manager != 1) {
+                $html = '<div class="alert alert-info div_set_kpi">
+                            <strong>Trạng thái:</strong>
+                            <b class="status_kpi">Chưa thiết lập</b>
+                        </div>';
+            } else {
+                $html = '<div class="alert alert-info div_set_kpi">
+                            <strong>Trạng thái:</strong>
+                            <b class="status_kpi">Chưa thiết lập</b>
+                            <a href="../kpi/set-detail-kpi?department_id='.$department_id.'&kpi_name='.$kpi_name.'" class="go_set_kpi">Vào thiết lập</a>
+                        </div>';
+            }
         }
 
         echo $html;die;
@@ -141,9 +183,9 @@ class KpiController extends Controller
         $response_detail = Http::get('http://localhost:8888/kpi/get-detail-of-kpi', $data_request);
         $body_detail = json_decode($response_detail->body(), true);
 
-        // dd($body_get_department['data']);
-
         $kpi_details = $body['data'];
+
+        // dd($body_detail['data']);
 
         return view('main.kpi.set_detail_kpi')
                 ->with('department_id', $department_id)
@@ -219,12 +261,17 @@ class KpiController extends Controller
             $body = json_decode($response->body(), true);
 
             if($body['message'] == "Save kpi, kpi details success") {
+                $alert_success = 'Tạo KPI thành công, Vui lòng đợi phê duyệt!';
+
+                if($user->department == 2 and $user->is_manager == 1) {
+                    $alert_success = 'Tạo KPI thành công!';
+                }
                 return redirect()->action(
                     [KpiController::class, 'setDetailKpi'], ['department_id' => $department_id, 
                                                             'staff_id' => $staff_id, 
                                                             'kpi_id' => $body['data']['id'], 
                                                             'kpi_name' => $kpi_name,
-                                                            'create_success' => 'Tạo KPI thành công, Vui lòng đợi phê duyệt!']
+                                                            'create_success' => $alert_success]
                 );
             } 
             else {
@@ -247,18 +294,22 @@ class KpiController extends Controller
             }
 
             $is_approved = '0';
+            $approved_by = null;
             if($user->department != 2 and $user->is_manager == 1) {
                 $is_approved = '2';
+                $approved_by = $user->id;
             }
 
             if($user->department == 2 and $user->is_manager == 1) {
                 $is_approved = '1';
+                $approved_by = $user->id;
             }
 
             $data_request_update = [
                 'kpi_id' => $kpi_id,
                 'is_approved' => $is_approved,
                 'update_at' => date('Y-m-d H:i:s'),
+                'approved_by' => $approved_by,
                 //kpi details update
                 'tasks' => $tasks
             ];
@@ -267,12 +318,17 @@ class KpiController extends Controller
             $body = json_decode($response->body(), true);
 
             if($body['message'] == "Save kpi, kpi details success") {
+                $alert_success = 'Chỉnh sửa KPI thành công, Vui lòng đợi phê duyệt!';
+
+                if($user->department == 2 and $user->is_manager == 1) {
+                    $alert_success = 'Chỉnh sửa KPI thành công!';
+                }
                 return redirect()->action(
                     [KpiController::class, 'setDetailKpi'], ['department_id' => $department_id, 
                                                             'staff_id' => $staff_id, 
                                                             'kpi_id' => $body['data']['id'], 
                                                             'kpi_name' => $kpi_name,
-                                                            'create_success' => 'Chỉnh sửa KPI thành công, Vui lòng đợi phê duyệt!']
+                                                            'create_success' => $alert_success]
                 );
             } 
             else {
