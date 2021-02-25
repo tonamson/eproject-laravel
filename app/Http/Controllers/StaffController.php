@@ -29,6 +29,7 @@ class StaffController extends Controller
 
     public function createStaff(Request $request)
     {
+        $authen->$user->$id;
         $code = $request->input('txtCode');
         $firstname = $request->input('txtFname');
         $lastname = $request->input('txtLname');
@@ -68,9 +69,8 @@ class StaffController extends Controller
             'photo' =>$photo,
             'idPhoto' =>$idPhoto,
             'idPhotoBack' =>$idPhotoBack,
-            "dayOfLeave"=>0,
+            "dayOfLeave"==0,
             'note' =>$note,
-          //  'createdAt' =>$createdAt::now(),
             "status" =>$status=0,
       
         ];
@@ -108,4 +108,21 @@ class StaffController extends Controller
         ]);
         return view('main.staff.add');
     }
+
+    public function getEditStaff(Request $request) {
+        $data_request = $request->all();
+
+        $response = Http::get('http://localhost:8888/staff/one', $data_request);
+        $body = json_decode($response->body(), true);
+        //dd($body);
+        if($body['isSuccess']){
+            return view('main/staff/detail', [
+                'data' => $body['data']
+            ]);
+
+            
+        }
+        return redirect()->back()->with('message','Khong tim thay phong ban');
+    }
+
 }

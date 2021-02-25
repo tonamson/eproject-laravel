@@ -84,10 +84,11 @@ class DepartmentController extends Controller
             'nameVn' =>$nameVn,
             'del'=>$del,
         ];
-
+       
         $response = Http::post('http://localhost:8888/department/update', $data_request);
+       // dd($response);
         $body = json_decode($response->body(), true);
-      //  dd($body);
+        
         if( $body['isSuccess'] == "Update success"){
             return redirect()->back()->with('message', 'Cập nhật thành công!');
         }

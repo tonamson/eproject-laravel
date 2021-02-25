@@ -72,7 +72,7 @@
                                 Ẩn
                             @endif    
                         </td> -->
-                        <td class="center"><i class="btn"></i><a href="{{ action('DepartmentController@getEditDep') }}?id={{ $department['id'] }}">Cập nhật</a>||
+                    <td class="center"><i class="btn-btn-success"></i><a href="{{ action('DepartmentController@getEditDep') }}?id={{ $department['id'] }}">Cập nhật</a>&nbsp;||&nbsp;
                         <i class="fa fa-trash-o fa-fw"></i><a href="#"> Xóa</a></td>
                     </tr>
                     @endforeach

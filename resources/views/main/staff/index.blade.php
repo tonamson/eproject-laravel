@@ -51,6 +51,7 @@
                     <th>Ngày vào</th>
                     <th>Ngày sinh</th>
                     <th>Giới tính</th>
+                    <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>          
@@ -79,6 +80,8 @@
                                 Nữ
                             @endif 
                         </td>
+                        <td class="center"><i class="btn-btn-success"></i><a href="{{ action('StaffController@getEditStaff') }}?id={{ $staff['id'] }}">Chi tiết</a>&nbsp;||&nbsp;
+                        <i class="fa fa-trash-o fa-fw"></i><a href="#"> Xóa</a></td>
                     </tr>
                     @endforeach
             </tbody>
