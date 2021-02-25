@@ -53,14 +53,18 @@
                     <th>Giới tính</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody>          
                     @foreach($data_staff as $staff)
                     <tr>
                         <td>{{ $staff['id'] }}</td>
                         <td>{{ $staff['code'] }}</td>
                         <td>{{ $staff['firstname'] }}</td>
                         <td>{{ $staff['lastname'] }}</td>
-                        <td>{{ $staff['department'] }}</td>
+                        @foreach ($data_department as $department)
+                                    @if ($staff['department'] == $department['id'])
+                                        <td>{{$department['name']}}</td>
+                                    @endif
+                        @endforeach
                         <td>@if($staff['isManager'] == 0)
                                 Nhân viên
                             @else
