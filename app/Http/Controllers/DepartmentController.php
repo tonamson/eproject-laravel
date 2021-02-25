@@ -16,7 +16,6 @@ class DepartmentController extends Controller
 
         return view('main.department.index')
         ->with('data_department', $data_department);
-    
     }
 
     public function delete(){
@@ -28,8 +27,10 @@ class DepartmentController extends Controller
 
         Http::post('http://localhost:8888/department/delete', $data_request);
         return redirect()->back()->with('success', 'Xóa thành công!');
+    }
 
-        
+    public function add() {
+        return view('main.department.add');
     }
 
     public function createDepartment(Request $request)
@@ -53,76 +54,49 @@ class DepartmentController extends Controller
         }
     }
 
-    public function add() {
-        return view('main.department.add');
-    }
-
-
     public function getEditDep(Request $request) {
-        $id = $request->input('id');
-        
-        $data_request = [
-            "id" => $id
-        ];
+        $data_request = $request->all();
 
         $response = Http::get('http://localhost:8888/department/detail', $data_request);
         $body = json_decode($response->body(), true);
-       // return view('main.department.edit');
+        //dd($body);
+        if($body['isSuccess']){
+            return view('main/department/edit', [
+                'data' => $body['data']
+            ]);
+
+            
+        }
+        return redirect()->back()->with('message','Khong tim thay phong ban');
     }
 
-    //detail Department
-    public function detailDep(Request $request)
-    {
-        $id = $request->input('id');
+    public function postEditDep(Request $request) {
+        // $data_request = $request->all();
+
+        $id =$request->input('txtID');
+        $name = $request->input('txtName');
+        $nameVn = $request->input('txtName1');
+        $del =$request->input('txtDel');
         
         $data_request = [
-            "id" => $id
+            'id'=>$id,
+            'name' => $name,
+            'nameVn' =>$nameVn,
+            'del'=>$del,
         ];
 
-        $response = Http::get('http://localhost:8888/department/detail', $data_request);
+        $response = Http::post('http://localhost:8888/department/update', $data_request);
         $body = json_decode($response->body(), true);
-
-    
-
-        $html = "<input type='hidden' name='id_update' value='". $id ."'>";
-        $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Bổ Sung Công</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-        $html.= '<span aria-hidden="true">&times;</span></button></div>';
-        $html.= '
-            <div class="modal-body">
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Ten Phong Ban:</label>
-                    <div class="col-lg-9">
-                        <input type="text" class="form-control day_leave_update" name="day_leave_update" value="'.$body['data']['name'].'" required>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Ten Phong Ban Tieng Viet</label>
-                    <div class="col-lg-9">
-                        <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="10" placeholder="VD: Quên check in, Quên check out, ..." required>'.$body['data']['nameVn'].'</textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Thay đổi</button>
-            </div>
-
-            <script>
-                $(".day_leave_update").daterangepicker({
-                    singleDatePicker: true,
-                    locale: {
-                        format: "YYYY-MM-DD"
-                    }
-                });
-            </script>
-        ';
-       
-        echo $html;
-        die;
+      //  dd($body);
+        if( $body['isSuccess'] == "Update success"){
+            return redirect()->back()->with('message', 'Cập nhật thành công!');
+        }
+        return redirect()->back()->with('message','Cập nhật thất bại');
     }
 
+   
     
-    
+   
 
 
    

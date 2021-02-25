@@ -19,13 +19,12 @@ Route::group(['prefix' => 'deparment'], function () {
     Route::get('/edit', 'DepartmentController@getEditDep');
 });
 
-// Route::group(['prefix' => 'deparment'], function () {
-//     Route::get('/detail', 'DepartmentController@detailDep');
-// });
-
-
 Route::group(['prefix' => 'deparment'], function () {
     Route::get('/detail', 'DepartmentController@detailDep');
+});
+
+Route::group(['prefix' => 'deparment'], function () {
+    Route::post('/pedit', 'DepartmentController@postEditDep')->name('postEditDepartment');
 });
 
 //Staff

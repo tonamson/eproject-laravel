@@ -1,59 +1,175 @@
+    
 @extends('main._layouts.master')
 
+<?php
+    header("Access-Control-Allow-Origin: *");
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+?>
 
-@section('content')
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <h2>Chỉnh Sửa Phòng Ban</h2>
-            
-            <div class="col-lg-7" style="padding-bottom:120px">
-   <br>
-   <hr>
-                <form action="{{action('DepartmentController@CreateDepartment')}}" method="POST" enctype="multipart/form-data">
-                @csrf
-                    <!-- <input type="hidden" name="_token" value="{{csrf_token()}}"/> -->
-                    <div class="form-group">
-                        <label>Tên Phòng Ban</label>
-                        <input class="form-control" name="txtName" value="{{$department->name}}" placeholder="Nhập tên không dấu" />
-                    </div>
-                    <div class="form-group">
-                        <label>Tên Tiếng Việt</label>
-                        <input class="form-control"  name="txtName1" value="{{$department->nameVn}}" placeholder="Nhập tên tiếng Việt"></input>
-                    </div>
-                    <button type="submit" class="btn btn-default">Thêm</button>
-                    <button type="reset" class="btn btn-default">Làm mới</button>
-                </form>
-            </div>
-        </div>
-        <!-- /.row -->
-    </div>
-    <!-- /.container-fluid -->
-</div>
+@section('css')
+    <link href="{{ asset('assets/css/components_datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        #tb_dkp_wrapper {
+            display: none;
+        }
+
+        .wrap-select {
+	width: 302px;
+	overflow: hidden;
+}
+.wrap-select select {
+	width: 320px;
+	margin: 0;
+	background-color: #212121;
+}
+    </style>
+
+
 @endsection
 
+@section('js')    
+    <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/notifications/jgrowl.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/ui/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
+    <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
+    <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
 
+@endsection
+
+@section('content')
+    <!-- Basic datatable -->
+    <div class="card">
+        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">Cập nhât nhân viên</h1>
+        <div class="card-header header-elements-inline">
+ 
+        </div>
+        <div class="card-body">
+            @if (\Session::has('success'))
+                <div class="">
+                    <div class="alert alert-success">
+                        {!! \Session::get('success') !!}
+                    </div>
+                </div>
+            @endif
+
+            @if (session('message'))
+                <div class="">
+                    <div class="alert alert-primary">
+                        {!! session('message') !!}
+                    </div>
+                </div>
+            @endif
+             
+            <form action="{{ route('postEditDepartment') }}" method="post">
+                @csrf
+            <div class="row">
+                <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Tên Phòng ban:</label>
+                            <input type="text" class="form-control" name="txtID" value="{{$data['id']}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Tên Phòng ban:</label>
+                            <input type="text" class="form-control" name="txtName" value="{{$data['name']}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Tên Tiếng Việt:</label>
+                            <input type="text" class="form-control" name="txtName1" value="{{$data['nameVn']}}" >
+                        </div>
+                        <div class="form-group">
+                            <label>Trạng Thái:</label>
+                            <input type="text" class="form-control" name="txtDel" value="{{$data['del']}}" >
+                        </div>
+                        <button class="btn btn-success" type="submit">Lưu</button>
+                        <button class="btn btn-success" type="reset">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- /basic datatable -->
+@endsection
 
 @section('scripts')
     <script>
-        /* ------------------------------------------------------------------------------
-        *
-        *  # Basic datatables
-        *
-        *  Demo JS code for datatable_basic.html page
-        *
-        * ---------------------------------------------------------------------------- */
+        $('.day_bsc').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
 
+        $('.day_leave').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
 
-        // Setup module
-        // ------------------------------
+        $( "#btn_tb_bsc" ).click(function() {
+            $('#tb_dkp').hide();
+            $('#tb_dkp_wrapper').hide();
+            $('#tb_bsc').show();
+            $('#tb_bsc_wrapper').show();
+            $(this).addClass('active');
+            $('#btn_tb_dkp').removeClass('active');
+        });
+
+        $( "#btn_tb_dkp" ).click(function() {
+            $('#tb_bsc').hide();
+            $('#tb_bsc_wrapper').hide();
+            $('#tb_dkp').show();
+            $('#tb_dkp_wrapper').show();
+            $(this).addClass('active');
+            $('#btn_tb_bsc').removeClass('active');
+        });
+
+        $('.open-detail-time-leave').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailTime') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending').empty().append(data);
+                    $('#bsc-modal').modal();
+                }
+            });
+        });
+
+        $('.open-detail-dkp').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailLeave') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending').empty().append(data);
+                    $('#bsc-modal').modal();
+                }
+            });
+        });
 
         var DatatableBasic = function() {
-
-
-            //
-            // Setup module components
-            //
 
             // Basic Datatable examples
             var _componentDatatableBasic = function() {
@@ -81,6 +197,7 @@
 
                 // Basic datatable
                 $('.datatable-basic').DataTable();
+                $('.datatable-basic2').DataTable();
 
                 // Alternative pagination
                 $('.datatable-pagination').DataTable({
@@ -122,11 +239,6 @@
                 });
             };
 
-
-            //
-            // Return objects assigned to module
-            //
-
             return {
                 init: function() {
                     _componentDatatableBasic();
@@ -135,13 +247,19 @@
             }
         }();
 
-
-        // Initialize module
-        // ------------------------------
-
         document.addEventListener('DOMContentLoaded', function() {
             DatatableBasic.init();
         });
 
+});
+
+
+
+
+
+
     </script>
+
+
+
 @endsection

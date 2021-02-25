@@ -23,8 +23,9 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Phòng ban</h1>
+      
         <div class="card-header header-elements-inline">
+        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">Phòng ban</h1>
             <h4 class="card-title font-weight-bold text-uppercase">HR-Department</h4>
 
              <!-- Basic datatable -->
@@ -52,11 +53,10 @@
         <table class="table datatable-basic">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Name_VN</th>
-                    <th>DELETE</th>
-                    <th>ACTION</th>
+                    <th>Mã ID</th>
+                    <th>Tên Phòng Ban</th>
+                    <th>Tên Tiếng Việt</th>
+                    <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,29 +65,17 @@
                         <td>{{ $department['id'] }}</td>
                         <td>{{ $department['name'] }}</td>
                         <td>{{ $department['nameVn'] }}</td>
-                        <td>
+                        <!-- <td>
                             @if($department['del'] == 0)
                                 Hiện
                             @else
                                 Ẩn
                             @endif    
-                        </td>
-                        <td class="center"><i class="btn"></i><a href="{{ action('DepartmentController@getEditDep') }}">Sửa</a>||
+                        </td> -->
+                        <td class="center"><i class="btn"></i><a href="{{ action('DepartmentController@getEditDep') }}?id={{ $department['id'] }}">Cập nhật</a>||
                         <i class="fa fa-trash-o fa-fw"></i><a href="#"> Xóa</a></td>
                     </tr>
                     @endforeach
-                        </td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-menu9"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-          
             </tbody>
         </table>
     </div>
@@ -132,113 +120,4 @@
 @endsection
 
 @section('scripts')
-    <script>
-        /* ------------------------------------------------------------------------------
-        *
-        *  # Basic datatables
-        *
-        *  Demo JS code for datatable_basic.html page
-        *
-        * ---------------------------------------------------------------------------- */
-
-
-        // Setup module
-        // ------------------------------
-
-        var DatatableBasic = function() {
-
-
-            //
-            // Setup module components
-            //
-
-            // Basic Datatable examples
-            var _componentDatatableBasic = function() {
-                if (!$().DataTable) {
-                    console.warn('Warning - datatables.min.js is not loaded.');
-                    return;
-                }
-
-                // Setting datatable defaults
-                $.extend( $.fn.dataTable.defaults, {
-                    autoWidth: false,
-                    columnDefs: [{ 
-                        orderable: false,
-                        width: 100,
-                        targets: [ 5 ]
-                    }],
-                    dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-                    language: {
-                        search: '<span>Filter:</span> _INPUT_',
-                        searchPlaceholder: 'Type to filter...',
-                        lengthMenu: '<span>Show:</span> _MENU_',
-                        paginate: { 'first': 'First', 'last': 'Last', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;' }
-                    }
-                });
-
-                // Basic datatable
-                $('.datatable-basic').DataTable();
-
-                // Alternative pagination
-                $('.datatable-pagination').DataTable({
-                    pagingType: "simple",
-                    language: {
-                        paginate: {'next': $('html').attr('dir') == 'rtl' ? 'Next &larr;' : 'Next &rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr; Prev' : '&larr; Prev'}
-                    }
-                });
-
-                // Datatable with saving state
-                $('.datatable-save-state').DataTable({
-                    stateSave: true
-                });
-
-                // Scrollable datatable
-                var table = $('.datatable-scroll-y').DataTable({
-                    autoWidth: true,
-                    scrollY: 300
-                });
-
-                // Resize scrollable table when sidebar width changes
-                $('.sidebar-control').on('click', function() {
-                    table.columns.adjust().draw();
-                });
-            };
-
-            // Select2 for length menu styling
-            var _componentSelect2 = function() {
-                if (!$().select2) {
-                    console.warn('Warning - select2.min.js is not loaded.');
-                    return;
-                }
-
-                // Initialize
-                $('.dataTables_length select').select2({
-                    minimumResultsForSearch: Infinity,
-                    dropdownAutoWidth: true,
-                    width: 'auto'
-                });
-            };
-
-
-            //
-            // Return objects assigned to module
-            //
-
-            return {
-                init: function() {
-                    _componentDatatableBasic();
-                    _componentSelect2();
-                }
-            }
-        }();
-
-
-        // Initialize module
-        // ------------------------------
-
-        document.addEventListener('DOMContentLoaded', function() {
-            DatatableBasic.init();
-        });
-
-    </script>
 @endsection

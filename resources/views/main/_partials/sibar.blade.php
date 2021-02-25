@@ -60,19 +60,18 @@
                 </li>
 
                 <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Nhân viên</span></a>
-
+                    <a href="#" class="nav-link"><i class="icon-user"></i> <span>Nhân viên</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                         <li class="nav-item">
                             <a href="{{ action('StaffController@index') }}" class="nav-link">
-                                <i class="icon-clipboard5"></i>
+                                <i class="icon-list"></i>
                                 <span>Danh sách</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ action('StaffController@vaddStaff') }}" class="nav-link">
-                                <i class="icon-clipboard6"></i>
-                                <span>Thêm Nhân viên</span>
+                                <i class="icon-plus2"></i>
+                                <span>Thêm nhân viên</span>
                             </a>
                         </li>
 

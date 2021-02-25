@@ -11,7 +11,19 @@
         #tb_dkp_wrapper {
             display: none;
         }
+
+        .wrap-select {
+	width: 302px;
+	overflow: hidden;
+}
+.wrap-select select {
+	width: 320px;
+	margin: 0;
+	background-color: #212121;
+}
     </style>
+
+
 @endsection
 
 @section('js')    
@@ -23,13 +35,14 @@
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
     <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
     <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
+
 @endsection
 
 
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">THÊM NHÂN VIÊN MỚI</h1>
+        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">THÊM NHÂN VIÊN MỚI</h1>
         <div class="card-header header-elements-inline">
  
         </div>
@@ -49,36 +62,100 @@
                     </div>
                 </div>
             @endif
-            <form action="{{ action('StaffController@CreateStaff') }}" method="POST">
+             
+                <form action="{{ action('StaffController@CreateStaff') }}" method="post">
                 @csrf
-                <div class="form-group d-flex">
-                  
-                    <div class="ml-3">
-                        <input class="form-control btn btn-primary" type="submit" value="Search">
+            <div class="row">
+                <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Mã Nhân viên:</label>
+                            <input type="text" class="form-control" name="txtCode">
+                        </div>
+                        <div class="form-group">
+                            <label>Tên Nhân viên:</label>
+                            <input type="text" class="form-control" name="txtFname">
+                        </div>
+                        <div class="form-group">
+                            <label>Họ nhân viên:</label>
+                            <input type="text" class="form-control" name="txtLname">
+                        </div>
+                        <div class="form-group">
+                            <label>Phòng Ban:</label>
+                            <select name="txtDepartment" color="red" >
+                            @foreach($data_department as $dep)
+                            <option value="{{ $dep['id'] }}">{{ $dep['name'] }}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Phân Quyền:</label>
+                            <!-- <input type="text" class="form-control" name="txtGender"> -->
+                            <select name="txtisManager" color="red" >
+                                <option value="0">Nhân viên</option>
+                                <option value="1">Quản lý</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày Vào:</label>
+                            <input type="Date" class="form-control" name="txtJoinat">
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày sinh:</label>
+                            <input type="Date" class="form-control" name="txtDob">
+                        </div>
+                         <div class="form-group">
+                            <label>Giới tính:</label>
+                            <select name="txtGender" color="red" >
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Khu vực:</label>
+                            <!-- <input type="text" class="form-control" name="txtGender"> -->
+                            <select name="txtRegional" color="red" >
+                            @foreach($data_reg as $reg)
+                            <option value="{{$reg['id']}}">{{ $reg['name'] }}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Điện thoại:</label>
+                            <input type="text" class="form-control" name="txtPhone">
+                        </div>
+                       <div class="form-group">
+                            <label>Email:</label>
+                            <input type="text" class="form-control" name="txtEmail">
+                        </div>
+                        <div class="form-group">
+                            <label>Mật Khẩu:</label>
+                            <input type="text" class="form-control" name="txtPass">
+                        </div>
+                         <div class="form-group">
+                            <label>CMND:</label>
+                            <input type="text" class="form-control" name="txtIDNumber">
+                        </div>
+                        <div class="form-group">
+                            <label>Hình ảnh:</label>
+                            <input type="text" class="form-control" name="txtPhoto">
+                        </div>
+                        <div class="form-group">
+                            <label>Mặt trước CMND:</label>
+                            <input type="text" class="form-control" name="txtIDPhoto">
+                        </div>
+                        <div class="form-group">
+                            <label>Mặt sau CMND:</label>
+                            <input type="text" class="form-control" name="txtIDPhoto2">
+                        </div>
+                        <div class="form-group">
+                            <label>Ghi chú:</label>
+                            <input type="text" class="form-control" name="txtNote">
+                        </div>
+                    
+                        <button class="btn btn-success" type="submit">Lưu</button>
+                        <button class="btn btn-success" type="reset">Reset</button>
                     </div>
                 </div>
-                <div class="modal-body">
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Code</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="txtCode"  required>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Tên</label>
-                                <div class="col-lg-9">
-                                <input type="text" class="form-control" name="txtFname"  required>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Họ</label>
-                                <div class="col-lg-9">
-                                <input type="text" class="form-control" name="txtLname"  required>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-success">Thêm</button>
-                            <button type="reset" class="btn btn-info">Làm mới</button>
-                 </div>
             </form>
         </div>
     </div>
@@ -243,5 +320,15 @@
             DatatableBasic.init();
         });
 
+});
+
+
+
+
+
+
     </script>
+
+
+
 @endsection
