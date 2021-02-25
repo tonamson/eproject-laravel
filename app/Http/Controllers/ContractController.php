@@ -28,8 +28,11 @@ class ContractController extends Controller
 
         $response = Http::get(config('app.api_url') . '/contract/edit', ['id' => $id]);
         $editContractResponse = json_decode($response->body(), false);
-        dd($editContractResponse);
-        return view('main.contract.edit', ['listStaff' => $listStaff->data]);
+        $contract = null;
+        if ($editContractResponse->isSuccess) {
+            $contract = $editContractResponse->data;
+        }
+        return view('main.contract.edit', ['listStaff' => $listStaff->data, 'contract' => $contract]);
     }
 
     public function getCreate()
