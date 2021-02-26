@@ -22,11 +22,11 @@
     <script src="{{ asset('global_assets/js/plugins/loaders/blockui.min.js') }}"></script>
     <!-- /core JS files -->
 
-    <script src="{{ asset('assets/js/app.js') }}"></script>
     <!-- /theme JS files -->
 
     @yield('css')
     @yield('js')
+    <script src="{{ asset('assets/js/app.js') }}"></script>
 </head>
 
 <body>
@@ -40,16 +40,16 @@
 <div class="page-content">
 
     <!-- Main sidebar -->
-    @include('main._partials.sibar')
-    <!-- /main sidebar -->
+@include('main._partials.sibar')
+<!-- /main sidebar -->
 
 
     <!-- Main content -->
     <div class="content-wrapper">
 
         <!-- Page header -->
-        @include('main._partials.header')
-        <!-- /page header -->
+    @include('main._partials.header')
+    <!-- /page header -->
 
 
         <!-- Content area -->

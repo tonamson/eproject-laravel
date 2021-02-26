@@ -33,19 +33,19 @@ class CheckInOutController extends Controller
 
         //Converting to radians
         // 590 cmt8
-        // $lati1 = deg2rad('10.7863823'); 
+        // $lati1 = deg2rad('10.7863823');
         // $longi1 = deg2rad('106.6641083');
-        $lati1 = deg2rad('10.778933'); 
+        $lati1 = deg2rad('10.778933');
         $longi1 = deg2rad('106.6880956');
-        $lati2 = deg2rad($latitude); 
-        $longi2 = deg2rad($longitude); 
+        $lati2 = deg2rad($latitude);
+        $longi2 = deg2rad($longitude);
 
-        //Haversine Formula 
-        $difflong = $longi2 - $longi1; 
-        $difflat = $lati2 - $lati1; 
-    
-        $val = pow(sin($difflat/2),2)+cos($lati1)*cos($lati2)*pow(sin($difflong/2),2); 
-    
+        //Haversine Formula
+        $difflong = $longi2 - $longi1;
+        $difflat = $lati2 - $lati1;
+
+        $val = pow(sin($difflat/2),2)+cos($lati1)*cos($lati2)*pow(sin($difflong/2),2);
+
         $res2 = 6378.8 * (2 * asin(sqrt($val))); //for kilomet
 
         if($res2 > 0.5) {
@@ -63,9 +63,9 @@ class CheckInOutController extends Controller
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Save success") {
-            return redirect()->back()->with('success', 'Chấm công thành công!');   
+            return redirect()->back()->with('success', 'Chấm công thành công!');
         } else {
-            return redirect()->back()->with('error', 'Chấm công thất bại!');   
+            return redirect()->back()->with('error', 'Chấm công thất bại!');
         }
 
         return response($body);

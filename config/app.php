@@ -2,6 +2,7 @@
 
 return [
 
+    'api_url' => env('APP_API_URL', null),
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -39,7 +40,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
