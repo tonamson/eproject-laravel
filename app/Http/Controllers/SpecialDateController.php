@@ -88,7 +88,7 @@ class SpecialDateController extends Controller
         $html.= '
             <div class="modal-body">
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Đến ngày:</label>
+                    <label class="col-lg-3 col-form-label">Từ ngày:</label>
                     <div class="col-lg-9">
                         <input type="text" class="form-control day_leave" name="day_special_from" value="'.$body['data']['daySpecialFrom'].'" required>
                     </div>
@@ -110,7 +110,7 @@ class SpecialDateController extends Controller
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Tạo mới</button>
+                <button type="submit" class="btn btn-primary">Sửa</button>
             </div>
 
             <script>

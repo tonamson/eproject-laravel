@@ -9,6 +9,7 @@ class ViewMenuController extends Controller
 {
     public function index()
     {
+        
         return view('main.view_menu.index');
     }
 

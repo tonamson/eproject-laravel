@@ -307,7 +307,7 @@
         <div class="col-6 col-md-3 text-center col-max">
             <div class="outer">
                 <a href="{{ action('TimeleaveController@index') }}">
-                    <i class="icon-8x icon-clipboard6"></i>
+                    <i class="icon-8x icon-calendar"></i>
                     <p>Bổ Sung Công Phép</p> 
                 </a>
             </div>
@@ -316,8 +316,24 @@
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('TimeleaveController@approveTimeLeave') }}">
-                        <i class="icon-8x icon-clipboard6"></i>
-                        <p>Duyệt Công Phép</p> 
+                        <i class="icon-8x icon-checkbox-checked"></i>
+                        @if(auth()->user()->department == 2 && auth()->user()->is_manager == 1)
+                            <p>Duyệt Công Phép</p>
+                        @elseif(auth()->user()->department == 2)
+                            <p>Duyệt Phép</p>
+                        @else
+                            <p>Duyệt Bổ Sung Công</p>
+                        @endif
+                    </a>
+                </div>
+            </div>
+        @endif
+        @if(auth()->user()->department == 2)
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('TimeleaveController@getAllStaffTime') }}">
+                        <i class="icon-8x icon-paragraph-left2"></i>
+                        <p>Lưới Công</p> 
                     </a>
                 </div>
             </div>

@@ -22,11 +22,12 @@
             <div class="card-body">
                 <div class="media">
                     <div class="mr-3">
-                        <a href="#"><img src="{{ asset('global_assets/images/image.png') }}" width="38" height="38" class="rounded-circle" alt=""></a>
+                        <a href="#"><img src="{{ asset('images/user/avatar/default_avatar.png') }}" width="38" height="38" class="rounded-circle" alt=""></a>
                     </div>
 
                     <div class="media-body">
                         <div class="media-title font-weight-semibold"><?php echo auth()->user()->firstname . ' ' . auth()->user()->lastname ?></div>
+                        <div class="media-title font-weight-semibold">{{ session('department_name') }}</div>
                     </div>
 
                 </div>
@@ -54,6 +55,11 @@
                         </a>
                     @endif
                 </li>
+                <li class="nav-item">
+                    <a href="{{ action('DepartmentController@index') }}" class="nav-link">
+                        <i class="icon-credit-card"></i>
+                        <span>Phòng ban</span>
+                    </a>
 
                 <li class="nav-item nav-item-submenu">
                     <a href="{{ action('DepartmentController@index') }}" class="nav-link"><i class="icon-stack"></i> <span>Phòng Ban</span></a>
@@ -114,15 +120,29 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ action('TimeleaveController@index') }}" class="nav-link">
-                                <i class="icon-clipboard6"></i>
+                                <i class="icon-calendar"></i>
                                 <span>Bổ Sung Công Phép</span>
                             </a>
                         </li>
                         @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
                             <li class="nav-item">
                                 <a href="{{ action('TimeleaveController@approveTimeLeave') }}" class="nav-link">
-                                    <i class="icon-clipboard6"></i>
-                                    <span>Duyệt Công Phép</span>
+                                    <i class="icon-checkbox-checked"></i>
+                                    @if(auth()->user()->department == 2 && auth()->user()->is_manager == 1)
+                                        <span>Duyệt Công Phép</span>
+                                    @elseif(auth()->user()->department == 2)
+                                        <span>Duyệt Phép</span>
+                                    @else
+                                        <span>Duyệt Bổ Sung Công</span>
+                                    @endif
+                                </a>
+                            </li>
+                        @endif
+                        @if(auth()->user()->department == 2)
+                            <li class="nav-item">
+                                <a href="{{ action('TimeleaveController@getAllStaffTime') }}" class="nav-link">
+                                    <i class="icon-paragraph-left2"></i>
+                                    <span>Lưới Công</span>
                                 </a>
                             </li>
                         @endif
@@ -131,13 +151,13 @@
                 <li class="nav-item">
                     @if(auth()->user()->department == 2)
                         <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
-                            <i class="icon-stats-growth"></i>
+                            <i class="icon-calendar2"></i>
                             <span>Quản Lý Ngày Lễ</span>
                         </a>
                     @endif
                 </li>
                 <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link"><i class="icon-stack"></i> <span>KPI</span></a>
+                    <a href="#" class="nav-link"><i class="icon-racing"></i> <span>KPI</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                         {{-- <li class="nav-item">
@@ -148,19 +168,26 @@
                         </li> --}}
                         <li class="nav-item">
                             <a href="{{ action('KpiController@setKpi') }}" class="nav-link">
-                                <i class="icon-clipboard5"></i>
+                                <i class="icon-finish"></i>
                                 <span>Thiết Lập KPI</span>
                             </a>
                         </li>
                         @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
                             <li class="nav-item">
                                 <a href="{{ action('KpiController@listKpi') }}" class="nav-link">
-                                    <i class="icon-clipboard5"></i>
+                                    <i class="icon-list2"></i>
                                     <span>Danh Sách KPI</span>
                                 </a>
                             </li>
                         @endif
                     </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ action('AboutcompanyController@index') }}" class="nav-link">
+                        <i class="icon-info22"></i>
+                        <span>Giới Thiệu</span>
+                    </a>
                 </li>
                 <!-- /main -->
 

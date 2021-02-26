@@ -300,6 +300,22 @@
         @endif
         <div class="col-6 col-md-3 text-center col-max">
             <div class="outer">
+                <a href="{{ action('DepartmentController@index') }}">
+                    <i class="icon-8x icon-credit-card"></i>
+                    <p>Phòng Ban</p> 
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('StaffController@index') }}">
+                    <i class="icon-8x icon-people"></i>
+                    <p>Nhân Viên</p> 
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
                 <a href="{{ action('ViewmenuController@timeLeave') }}">
                     <i class="icon-8x icon-stack"></i>
                     <p>Công Phép</p> 
@@ -310,7 +326,7 @@
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('SpecialDateController@index') }}">
-                        <i class="icon-8x icon-stats-growth"></i>
+                        <i class="icon-8x icon-calendar2"></i>
                         <p>Quản Lý Ngày Lễ</p> 
                     </a>
                 </div>
@@ -319,8 +335,16 @@
         <div class="col-6 col-md-3 text-center col-max">
             <div class="outer">
                 <a href="{{ action('ViewmenuController@kpi') }}">
-                    <i class="icon-8x icon-stack"></i>
+                    <i class="icon-8x icon-racing"></i>
                     <p>Kpi</p> 
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('AboutcompanyController@index') }}">
+                    <i class="icon-8x icon-info22"></i>
+                    <p>Giới Thiệu</p> 
                 </a>
             </div>
         </div>
