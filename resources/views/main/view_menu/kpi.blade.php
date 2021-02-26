@@ -291,7 +291,7 @@
         <div class="col-6 col-md-3 text-center col-max">
             <div class="outer">
                 <a href="{{ action('KpiController@setKpi') }}">
-                    <i class="icon-8x icon-clipboard5"></i>
+                    <i class="icon-8x icon-finish"></i>
                     <p>Thiết Lập Kpi</p> 
                 </a>
             </div>
@@ -300,7 +300,7 @@
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('KpiController@listKpi') }}">
-                        <i class="icon-8x icon-clipboard6"></i>
+                        <i class="icon-8x icon-list2"></i>
                         <p>Danh Sách KPI</p> 
                     </a>
                 </div>

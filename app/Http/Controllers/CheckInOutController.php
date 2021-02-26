@@ -68,7 +68,6 @@ class CheckInOutController extends Controller
             return redirect()->back()->with('error', 'Chấm công thất bại!');   
         }
 
-        var_dump($body['message']);
         return response($body);
     }
 
@@ -95,8 +94,6 @@ class CheckInOutController extends Controller
 
         $response = Http::post('http://localhost:8888/check-in-out/get-staff-time', $data_request);
         $body = json_decode($response->body(), true);
-
-        // dd($body['data']);
 
         return view('main.check_in_out.staff_time')
             ->with('data', $body['data'])

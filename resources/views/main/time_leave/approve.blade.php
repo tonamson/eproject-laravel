@@ -7,11 +7,6 @@
 
 @section('css')
     <link href="{{ asset('assets/css/components_datatables.min.css') }}" rel="stylesheet" type="text/css">
-    <style>
-        #tb_dkp_wrapper {
-            display: none;
-        }
-    </style>
 @endsection
 
 @section('js')    
@@ -27,7 +22,14 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Duyệt Công Phép</h1>
+        @if(auth()->user()->department == 2 && auth()->user()->is_manager == 1)
+            <h1 class="pt-3 pl-3 pr-3">Duyệt Công Phép</h1>
+        @elseif(auth()->user()->department == 2)
+            <h1 class="pt-3 pl-3 pr-3">Duyệt Phép</h1>
+        @else
+            <h1 class="pt-3 pl-3 pr-3">Duyệt Bổ Sung Công</h1>
+        @endif
+
         <div class="card-header header-elements-inline">
             <h4 class="card-title font-weight-bold text-uppercase">
                 <?php echo auth()->user()->firstname . " " . auth()->user()->lastname ?> 
@@ -70,13 +72,15 @@
                 </div>
             </form>
 
-             <ul class="nav nav-tabs">
-                <li class="nav-item">
-                  <button class="nav-link active" id="btn_tb_bsc">Bổ sung công</button>
-                <li class="nav-item">
-                  <button class="nav-link" id="btn_tb_dkp">Đăng kí phép</button>
-                </li>
-            </ul>
+            @if(auth()->user()->department == 2 && auth()->user()->is_manager == 1)
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                    <button class="nav-link active" id="btn_tb_bsc">Bổ sung công</button>
+                    <li class="nav-item">
+                    <button class="nav-link" id="btn_tb_dkp">Đăng kí phép</button>
+                    </li>
+                </ul>
+            @endif
         </div>
 
         <table class="table datatable-basic" id="tb_bsc">
@@ -129,7 +133,7 @@
             </tbody>
         </table>
 
-        <table class="table datatable-basic2" id="tb_dkp" style="display: none">
+        <table class="table datatable-basic2" id="tb_dkp">
              <thead>
                 <tr>
                     <th>Tên nhân viên</th>
@@ -168,6 +172,20 @@
                 @endforeach       
             </tbody>
         </table>
+
+        <?php if(auth()->user()->department == 2 && auth()->user()->is_manager == 0):?>
+            <style>
+                #tb_bsc_wrapper {
+                    display: none;
+                }
+            </style>
+        <?php else :?>
+            <style>
+                #tb_dkp_wrapper {
+                    display: none;
+                }
+            </style>
+        <?php endif ?>
 
         <div id="bsc-modal" class="modal fade" role="dialog"> <!-- modal bsc -->
             <div class="modal-dialog">

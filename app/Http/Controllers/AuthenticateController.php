@@ -6,6 +6,7 @@ use App\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class AuthenticateController extends Controller
 {
@@ -35,6 +36,13 @@ class AuthenticateController extends Controller
         if ($auth) {
             // login thành công thì redirect tới trang nào đó tùy
             //return response(auth()->user()); // thông tin user
+            $params_get_department = [
+                'id' => auth()->user()->id,
+            ];
+            $response_get_department = Http::get('http://localhost:8888/staff/findOneStaffDepartment', $params_get_department);
+            $body_get_department = json_decode($response_get_department->body(), true);
+
+            $request->session()->put('department_name', $body_get_department['data'][0][2]);
             return redirect('/');
         }
         return redirect()->back()->with('authentication', 'Không tìm thấy thông tin tài khoản');

@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['check_login'])->group(function () {
     Route::get('/', 'ViewmenuController@index');
 
+    Route::get('/about', 'AboutcompanyController@index');
+
     Route::group(['prefix' => 'view-menu'], function () {
         Route::get('/time-leave', 'ViewmenuController@timeLeave');
 
@@ -63,6 +65,12 @@ Route::middleware(['check_login'])->group(function () {
             Route::get('/detail-staff-approve', 'TimeleaveController@detailStaffApprove');
 
             Route::post('/approve-time-leave', 'TimeleaveController@approvedTimeLeave');
+
+        });
+
+        // All time leave
+        Route::middleware(['check_hr'])->group(function () {
+            Route::get('/all-staff-time', 'TimeleaveController@getAllStaffTime');
 
         });
     });

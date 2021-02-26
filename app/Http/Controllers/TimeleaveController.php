@@ -56,6 +56,11 @@ class TimeleaveController extends Controller
             $time = "08:00:00";
         else
             $time = "04:00:00";
+
+        $is_approved = false;
+        if($user->is_manager == 1) {
+            $is_approved = true;
+        }
         
         $data_request = [
             "staff_id" => $user->id,
@@ -64,13 +69,18 @@ class TimeleaveController extends Controller
             'time' => $time,
             'type' => false,
             'note' => $note_bsc,
+            'is_approved' => $is_approved
         ];
 
         $response = Http::post('http://localhost:8888/time-leave/add', $data_request);
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Save success") {
-            return redirect()->back()->with('success', 'Bổ sung công thành công! Vui lòng đợi quản lý phê duyệt');
+            if($user->is_manager == 1) {
+                return redirect()->back()->with('success', 'Bổ sung công thành công! Vì là cấp quản lý nên bổ sung công tự động phê duyệt');
+            } else {
+                return redirect()->back()->with('success', 'Bổ sung công thành công! Vui lòng đợi quản lý phê duyệt');
+            }
         } 
         else if($body['data'] == "Added time") {
             return redirect()->back()->with('error', 'Bổ sung công thất bại! Bạn đã đi làm và chấm công ngày ' . $day_leave . ' rồi! Vui lòng chỉnh sửa');
@@ -193,7 +203,7 @@ class TimeleaveController extends Controller
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Update success") {
-            return redirect()->back()->with('success', 'Chỉnh sửa thành công! Vui lòng đợi quản lý phê duyệt');
+            return redirect()->back()->with('success', 'Chỉnh sửa thành công! Vui lòng đợi phê duyệt');
         } 
         else if($body['data'] == "Added time") {
             return redirect()->back()->with('error', 'Bổ sung công / Đăng kí phép thất bại! Bạn đã đi làm và chấm công ngày ' . $day_leave . ' rồi! Vui lòng chỉnh sửa');
@@ -224,6 +234,11 @@ class TimeleaveController extends Controller
             $time = "08:00:00";
         else
             $time = "04:00:00";
+
+        $is_approved = false;
+        if($user->is_manager == 1) {
+            $is_approved = true;
+        }
         
         $data_request = [
             "staff_id" => $user->id,
@@ -232,13 +247,20 @@ class TimeleaveController extends Controller
             'time' => $time,
             'type' => true,
             'note' => $note_dkp,
+            'is_approved' => $is_approved
         ];
 
         $response = Http::post('http://localhost:8888/time-leave/addLeave', $data_request);
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Save success") {
-            return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi quản lý phê duyệt');
+            if($user->department == 2 && $user->is_manager == 1) {
+                return redirect()->back()->with('success', 'Đăng kí phép thành công! Vì là cấp quản lý HR nên đăng kí phép tự động phê duyệt');
+            } else if($user->department == 2) {
+                return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi quản lý phê duyệt');
+            } else {
+                return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi nhân sự phê duyệt');
+            }
         } 
         else if($body['data'] == "Added time") {
             return redirect()->back()->with('error', 'Đăng kí phép thất bại! Bạn đã đi làm và chấm công ngày ' . $day_leave . ' rồi! Vui lòng chỉnh sửa');
@@ -339,7 +361,7 @@ class TimeleaveController extends Controller
         }
 
         $date = $year . '-' . $month . '-' . '01';
-        $data_request = ['department' => $user->department, 'day_time_leave' => $date];
+        $data_request = ['department' => $user->department, 'day_time_leave' => $date, 'is_manager' => $user->is_manager];
 
         $response = Http::post('http://localhost:8888/time-leave/get-staff-approve', $data_request);
         $body = json_decode($response->body(), true);
@@ -477,5 +499,27 @@ class TimeleaveController extends Controller
         else {
             return redirect()->back()->with('error', 'Thay đổi thất bại');
         }
+    }
+
+    public function getAllStaffTime(Request $request) {
+        $user = auth()->user();
+        $month = $request->input('month');
+        $year = $request->input('year');
+        if(!$month) {
+            $month = date("m");
+        }
+        if(!$year) {
+            $year = date("Y");
+        }
+        $date = $year . '-' . $month . '-' . '01';
+        $data_request = ['y_m' => $date];
+
+        $response = Http::get('http://localhost:8888/time-leave/get-all-staff-time', $data_request);
+        $body = json_decode($response->body(), true);
+
+        return view('main.time_leave.all_staff_time')
+            ->with('data', $body['data'])
+            ->with('year', $year)
+            ->with('month', $month);
     }
 }
