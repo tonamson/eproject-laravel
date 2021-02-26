@@ -73,7 +73,7 @@
                             @endif    
                         </td> -->
                     <td class="center"><i class="btn-btn-success"></i><a href="{{ action('DepartmentController@getEditDep') }}?id={{ $department['id'] }}">Cập nhật</a>&nbsp;||&nbsp;
-                        <i class="fa fa-trash-o fa-fw"></i><a href="#"> Xóa</a></td>
+                        <i class="fa fa-trash-o fa-fw"></i><a href="{{ action('DepartmentController@deleteDepartment') }}?id={{ $department['id'] }}""> Xóa</a></td>
                     </tr>
                     @endforeach
             </tbody>
