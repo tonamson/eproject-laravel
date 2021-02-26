@@ -84,9 +84,9 @@ class DepartmentController extends Controller
             'nameVn' =>$nameVn,
             'del'=>$del,
         ];
-       
+        
         $response = Http::post('http://localhost:8888/department/update', $data_request);
-       // dd($response);
+        
         $body = json_decode($response->body(), true);
         
         if( $body['isSuccess'] == "Update success"){
@@ -95,10 +95,44 @@ class DepartmentController extends Controller
         return redirect()->back()->with('message','Cập nhật thất bại');
     }
 
-   
-    
-   
+
+    public function deleteDepartment(Request $request) {
+        // $data_request = $request->all();
+
+        $id =$request;
+        $name = $request;
+        $nameVn = $request;
+       // $del =$request->input('txtDel');
+        
+        $data_request = [
+            'id'=>$id,
+            'name' => $name,
+            'nameVn' =>$nameVn,
+            'del'=>$del ==0,
+        ];
+        
+        $response = Http::post('http://localhost:8888/department/update', $data_request);
+        
+        $body = json_decode($response->body(), true);
+        
+        if( $body['isSuccess'] == "Update success"){
+            return redirect()->back()->with('message', 'Xóa thành công!');
+        }
+        return redirect()->back()->with('message','Xóa thất bại');
+    }
 
 
+    // public function deleteDepartment(Request $request)
+    // {
+    //     $id = $request->input('id');
+        
+    //     $data_request = [
+    //         "id" => $id
+    //     ];
+
+    //     Http::post('http://localhost:8888/department/delete', $data_request);
+
+    //     return redirect()->back()->with('success', 'Xóa thành công!');
+    // }
    
 }

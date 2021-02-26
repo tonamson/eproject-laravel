@@ -29,7 +29,7 @@ class StaffController extends Controller
 
     public function createStaff(Request $request)
     {
-       // $authen->$user->$id;
+        
         $code = $request->input('txtCode');
         $firstname = $request->input('txtFname');
         $lastname = $request->input('txtLname');
@@ -48,10 +48,12 @@ class StaffController extends Controller
         $idPhoto = $request->file('txtIDPhoto');
         $idPhotoBack = $request->file('txtIDPhoto2');
         $note = $request->input('txtNote');
+        $user = auth()->user();
       //  $dayOfLeave =request(0);
 
 
         $data_request = [
+            
             'code' => $code,
             'firstname' =>$firstname,
             'lastname' =>$lastname,
@@ -71,6 +73,7 @@ class StaffController extends Controller
             'idPhotoBack' =>$idPhotoBack,
             "dayOfLeave"==0,
             'note' =>$note,
+            "createdBy" => $user->id,
             "status" =>$status=0,
       
         ];
