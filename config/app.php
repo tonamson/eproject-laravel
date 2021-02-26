@@ -2,7 +2,7 @@
 
 return [
 
-    'api_url' => env('APP_API_URL', null),
+    'api_url' => env('APP_API_URL', 'http://localhost:8888'),
     /*
     |--------------------------------------------------------------------------
     | Application Name
