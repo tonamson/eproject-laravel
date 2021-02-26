@@ -40,16 +40,16 @@
 <div class="page-content">
 
     <!-- Main sidebar -->
-    @include('main._partials.sibar')
-    <!-- /main sidebar -->
+@include('main._partials.sibar')
+<!-- /main sidebar -->
 
 
     <!-- Main content -->
     <div class="content-wrapper">
 
         <!-- Page header -->
-        @include('main._partials.header')
-        <!-- /page header -->
+    @include('main._partials.header')
+    <!-- /page header -->
 
 
         <!-- Content area -->
