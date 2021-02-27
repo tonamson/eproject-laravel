@@ -67,8 +67,8 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ action('DepartmentController@listUndo') }}" class="nav-link">
-                                <i class="icon-list"></i>
-                                <span>Danh sách Hoàn tác</span>
+                                <i class="icon-trash"></i>
+                                <span>Thùng rác</span>
                             </a>
                         </li>
                     </ul>
@@ -87,6 +87,12 @@
                             <a href="{{ action('StaffController@vaddStaff') }}" class="nav-link">
                                 <i class="icon-plus2"></i>
                                 <span>Thêm nhân viên</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ action('StaffController@listUndo') }}" class="nav-link">
+                                <i class="icon-trash"></i>
+                                <span>Thùng rác</span>
                             </a>
                         </li>
 

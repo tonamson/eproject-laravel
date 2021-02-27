@@ -23,7 +23,7 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">DANH SÁCH NHÂN VIÊN</h1>
+        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">DANH SÁCH NHÂN VIÊN TẠM XÓA</h1>
         <div class="card-header header-elements-inline">
             <h4 class="card-title font-weight-bold text-uppercase">HR-STAFF</h4>
             <div class="header-elements">
@@ -88,9 +88,8 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right">
-                                        <a href="{{ action('StaffController@getEditStaff') }}?id={{ $staff['id'] }}" class="dropdown-item">Cập nhật</a>
+                                        <a href="{{ action('StaffController@getUndoStaff') }}?id={{ $staff['id'] }}" class="dropdown-item">Hoàn tác</a>
                                         <a href="{{ action('StaffController@getDetail') }}?id={{ $staff['id'] }}" class="dropdown-item">Chi tiết</a>
-                                        <a href="{{ action('StaffController@getDeleteStaff') }}?id={{ $staff['id'] }}" class="dropdown-item">Xóa</a>
                                 </div>
                             </div>
                         </div>
