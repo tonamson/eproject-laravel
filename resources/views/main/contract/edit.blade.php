@@ -31,6 +31,7 @@
                 @csrf
                 <input type="hidden" name="id" value="{{ $contract->id }}">
                 <input type="hidden" name="createAt" value="{{ $contract->createAt }}">
+                <input type="hidden" name="del" value="{{ $contract->del ? 'true' : 'false' }}">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">

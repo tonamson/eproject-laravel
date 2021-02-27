@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Http;
 
 class ContractController extends Controller
 {
-    public function getList()
+    public function getList(Request $request)
     {
-        $response = Http::get(config('app.api_url') . '/contract/list', []);
+        $response = Http::get(config('app.api_url') . '/contract/list', [
+            'del' => boolval($request->del)
+        ]);
         $body = json_decode($response->body(), false);
         $data = [];
         if ($body->isSuccess) {
@@ -65,5 +67,15 @@ class ContractController extends Controller
             return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa hợp đồng thành công.']);
         }
         return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Xóa hợp đồng thất bại.']);
+    }
+
+    public function getUndo($id)
+    {
+        $response = Http::get(config('app.api_url') . '/contract/undo', ['id' => $id]);
+        $body = json_decode($response->body(), false);
+        if ($body->isSuccess) {
+            return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Khôi phục hợp đồng thành công.']);
+        }
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Khôi phục hợp đồng thất bại.']);
     }
 }
