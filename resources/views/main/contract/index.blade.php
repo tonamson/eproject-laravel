@@ -15,7 +15,14 @@
         <div class="card-header header-elements-inline">
             <h5 class="card-title">Danh sách hợp đồng</h5>
         </div>
-
+        <div class="card-body">
+            @if(session('message'))
+                <div class="alert alert-{{ session('message')['type'] }} border-0 alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                    {{ session('message')['message'] }}
+                </div>
+            @endif
+        </div>
         <table class="table datatable-basic">
             <thead>
             <tr>
@@ -43,8 +50,12 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="{{ route('getEditContract', ['id' => $item->id]) }}" class="dropdown-item">Chỉnh sửa</a>
-                                    <a href="{{ route('getDeleteContract',['id' => $item->id]) }}" class="dropdown-item">Xóa</a>
+                                    @if(!$item->del)
+                                        <a href="{{ route('getEditContract', ['id' => $item->id]) }}" class="dropdown-item">Chỉnh sửa</a>
+                                        <a href="{{ route('getDeleteContract',['id' => $item->id]) }}" class="dropdown-item">Xóa</a>
+                                    @else
+                                        <a href="{{ route('getUndoContract', ['id' => $item->id]) }}" class="dropdown-item">Hoàn tác</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

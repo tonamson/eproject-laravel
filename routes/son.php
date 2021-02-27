@@ -16,4 +16,5 @@ Route::group(['prefix' => 'contract'], function () {
     Route::get('edit/{id}','ContractController@getEdit')->name('getEditContract');
     Route::post('save','ContractController@postSave')->name('postSaveContract');
     Route::get('delete/{id}','ContractController@getDelete')->name('getDeleteContract');
+    Route::get('undo/{id}','ContractController@getUndo')->name('getUndoContract');
 });
