@@ -106,9 +106,17 @@ class StaffController extends Controller
             $dsKhuvuc=$body['data'];
         }
 
+        $response = Http::get('http://localhost:8888/regional/list-district',['parent' => 3410]);
+        $body = json_decode($response->body(), true);
+        $district_default = [];
+        if($body['isSuccess']){
+            $district_default=$body['data'];
+        }
+
         return view('main.staff.add',[
             'data_reg' => $dsKhuvuc,
             'data_department' => $dsPhongBan,
+            'data_district' => $district_default,
         ]);
         return view('main.staff.add');
     }
@@ -138,10 +146,46 @@ class StaffController extends Controller
 
         $response = Http::get('http://localhost:8888/staff/one', $data_request);
         $body = json_decode($response->body(), true);
-        //dd($body);
+        if($body['isSuccess']){
+            $staff=$body['data'];
+        }
+
+        $response = Http::get('http://localhost:8888/regional/get-one',['id' => $staff['regional']]);
+        $body = json_decode($response->body(), true);
+        $district_default = [];
+        if($body['isSuccess']){
+            $district_selected=$body['data'];
+        }
+
+        $response = Http::get('http://localhost:8888/regional/list',[]);
+        $body = json_decode($response->body(), true);
+        $dsKhuvuc = [];
+        if($body['isSuccess']){
+            $dsKhuvuc=$body['data'];
+        }
+
+        $response = Http::get('http://localhost:8888/regional/list-district',['parent' => $district_selected['parent']]);
+        $body = json_decode($response->body(), true);
+        $district_default = [];
+        if($body['isSuccess']){
+            $district_default=$body['data'];
+        }
+
+        $response = Http::get('http://localhost:8888/department/list', []);
+        $body = json_decode($response->body(), true);
+        $dsPhongBan = [];
+        if($body['isSuccess']){
+            $dsPhongBan=$body['data'];
+        }
+
+
         if($body['isSuccess']){
             return view('main/staff/edit', [
-                'data' => $body['data']
+                'data' => $staff,
+                'data_department' => $dsPhongBan,
+                'data_reg' => $dsKhuvuc,
+                'data_district' => $district_default,
+                'district_selected' => $district_selected
             ]);
         }
         return redirect()->back()->with('message','Khong tim nhan vien');
@@ -224,6 +268,20 @@ class StaffController extends Controller
             'educations' => $body_edu['data'],
             'contracts' => $body_contract['data']
         ]);
+    }
+
+    public function loadRegional(Request $request) {
+        $parent =$request->input('parent');
+
+        $params = [
+            'parent' => $parent
+        ];
+
+        $response = Http::get('http://localhost:8888/regional/list-district', $params);
+        $body = json_decode($response->body(), true);
+
+        echo json_encode($body['data']);
+        exit;
     }
 
 }
