@@ -64,7 +64,7 @@
                                 Ẩn
                             @endif    
                         </td> -->
-                    <td class="center"><i class="btn-btn-success"></i><a href="#">Hoàn tác</a>&nbsp;||&nbsp;
+                    <td class="center"><i class="btn-btn-success"></i><a href="{{ action('DepartmentController@getUndoDep') }}?id={{ $department['id'] }}">Hoàn tác</a>&nbsp;||&nbsp;
                     </tr>
                     @endforeach
             </tbody>
