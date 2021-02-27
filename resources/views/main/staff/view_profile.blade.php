@@ -135,7 +135,7 @@
                                     </div>
                                     <div class="control-group row">
                                         <label for="" class="col-4 p-0">Được tạo lúc: </label>
-                                        <div class="control col-8"><?php $date=date_create($staff['created_at']);echo date_format($date,"d/m/Y H:i:s");?></div>
+                                        <div class="control col-8"><?php $date=date_create($staff['created_at']);echo date_format($date,"d/m/Y");?></div>
                                     </div>
                                     <div class="control-group row">
                                         <label for="" class="col-4 p-0">Chỉnh sửa bởi: </label>
@@ -143,7 +143,7 @@
                                     </div>
                                     <div class="control-group row">
                                         <label for="" class="col-4 p-0">Chỉnh sửa lúc: </label>
-                                        <div class="control col-8"><?php $date=date_create($staff['updated_at']);echo date_format($date,"d/m/Y H:i:s");?></div>
+                                        <div class="control col-8"><?php $date=date_create($staff['updated_at']);echo date_format($date,"d/m/Y");?></div>
                                     </div>
                                 </div>
                             </div>
@@ -223,8 +223,8 @@
                                                 <td><?php echo $count_ct ?></td>
                                                 <td><?php $date=date_create($contract['startDate']);echo date_format($date,"d/m/Y");?></td>
                                                 <td><?php $date=date_create($contract['endDate']);echo date_format($date,"d/m/Y");?></td>
-                                                <td>{{ $contract['salary'] }}</td>
-                                                <td><?php $date=date_create($contract['createAt']);echo date_format($date,"d/m/Y H:i:s");?></td>
+                                                <td>{{ number_format($contract['salary']) }} vnđ</td>
+                                                <td><?php $date=date_create($contract['createAt']);echo date_format($date,"d/m/Y");?></td>
                                             </tr>
                                             <?php $count_ct++; ?> 
                                         @endforeach
