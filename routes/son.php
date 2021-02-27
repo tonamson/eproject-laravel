@@ -18,3 +18,7 @@ Route::group(['prefix' => 'contract'], function () {
     Route::get('delete/{id}','ContractController@getDelete')->name('getDeleteContract');
     Route::get('undo/{id}','ContractController@getUndo')->name('getUndoContract');
 });
+
+Route::group(['prefix' => 'salary'], function () {
+    Route::get('create','SalaryController@getCreate')->name('getCreateSalary');
+});

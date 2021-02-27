@@ -18,7 +18,7 @@
 
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Chỉnh sửa hợp đồng</h5>
+            <h5 class="card-title">Danh sách hợp đồng</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('postSaveContract') }}" method="post">
