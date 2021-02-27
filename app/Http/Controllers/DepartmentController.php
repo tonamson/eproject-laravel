@@ -106,43 +106,53 @@ class DepartmentController extends Controller
     }
 
 
-    public function deleteDepartment(Request $request) {
-        // $data_request = $request->all();
+    // public function deleteDepartment(Request $request) {
+    //     // $data_request = $request->all();
 
-        $id =$request;
-        $name = $request;
-        $nameVn = $request;
-       // $del =$request->input('txtDel');
-        
-        $data_request = [
-            'id'=>$id,
-            'name' => $name,
-            'nameVn' =>$nameVn,
-            'del'=>$del ==0,
-        ];
-        
-        $response = Http::post('http://localhost:8888/department/update', $data_request);
-        
-        $body = json_decode($response->body(), true);
-        
-        if( $body['isSuccess'] == "Update success"){
-            return redirect()->back()->with('message', 'Xóa thành công!');
-        }
-        return redirect()->back()->with('message','Xóa thất bại');
-    }
-
-
-    // public function deleteDepartment(Request $request)
-    // {
-    //     $id = $request->input('id');
+    //     $id =$request;
+    //     $name = $request;
+    //     $nameVn = $request;
+    //    // $del =$request->input('txtDel');
         
     //     $data_request = [
-    //         "id" => $id
+    //         'id'=>$id,
+    //         'name' => $name,
+    //         'nameVn' =>$nameVn,
+    //         'del'=>$del ==0,
     //     ];
-
-    //     Http::post('http://localhost:8888/department/delete', $data_request);
-
-    //     return redirect()->back()->with('success', 'Xóa thành công!');
+        
+    //     $response = Http::post('http://localhost:8888/department/update', $data_request);
+        
+    //     $body = json_decode($response->body(), true);
+        
+    //     if( $body['isSuccess'] == "Update success"){
+    //         return redirect()->back()->with('message', 'Xóa thành công!');
+    //     }
+    //     return redirect()->back()->with('message','Xóa thất bại');
     // }
+
+
+    public function getDeleteDep(Request $request)
+    {
+        $id = $request->id;
+        $response = Http::get(config('app.api_url') . '/department/delete', ['id' => $id]);
+        $body = json_decode($response->body(), false);
+      // dd($body);
+        if ($body->isSuccess) {
+            return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa Phòng ban thành công.']);
+        }
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Xóa Phòng ban thất bại.']);
+    }
+
+    public function getUndoDep(Request $request)
+    {
+        $id = $request->id;
+        $response = Http::get(config('app.api_url') . '/department/undo', ['id' => $id]);
+        $body = json_decode($response->body(), false);
+        if ($body->isSuccess) {
+            return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Khôi phục hợp đồng thành công.']);
+        }
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Khôi phục hợp đồng thất bại.']);
+    }
    
 }
