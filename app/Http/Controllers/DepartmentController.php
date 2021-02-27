@@ -18,6 +18,16 @@ class DepartmentController extends Controller
         ->with('data_department', $data_department);
     }
 
+    public function listUndo(){
+
+        $response = Http::get('http://localhost:8888/department/listUndo');
+        $body = json_decode($response->body(), true);
+        $data_department = $body['data'];
+
+        return view('main.department.listUndo')
+        ->with('data_department', $data_department);
+    }
+
     public function delete(){
         $id = $request->input('id');
         

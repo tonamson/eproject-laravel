@@ -55,10 +55,10 @@
                 </div>
             @endif
 
-            @if (\Session::has('error'))
+            @if (\Session::has('message'))
                 <div class="">
                     <div class="alert alert-danger">
-                        {!! \Session::get('error') !!}
+                        {!! \Session::get('message') !!}
                     </div>
                 </div>
             @endif
@@ -85,7 +85,7 @@
                         </div>
                         <div class="form-group">
                             <label>Phân Quyền:</label>
-                            <select name="txtisManager" color="red" >
+                            <select class="form-control" name="txtisManager" color="red" >
                                 <option value="0">Nhân viên</option>
                                 <option value="1">Quản lý</option>
                             </select>
@@ -100,14 +100,14 @@
                         </div>
                          <div class="form-group">
                             <label>Giới tính:</label>
-                            <select name="txtGender" color="red" >
+                            <select class="form-control" name="txtGender" color="red" >
                                 <option value="1">Nam</option>
                                 <option value="0">Nữ</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            
-                            <input type="Date" class="form-control" name="txtRegional" value="{{$data['regional']}}">
+                            <label>Khu vực:</label>
+                            <input type="text" class="form-control" name="txtRegional" value="{{$data['regional']}}">
                         </div>
                         <div class="form-group">
                             <label>Điện thoại:</label>
