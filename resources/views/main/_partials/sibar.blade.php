@@ -56,13 +56,22 @@
                     @endif
                 </li>
                 <li class="nav-item">
-                    <a href="{{ action('DepartmentController@index') }}" class="nav-link">
-                        <i class="icon-credit-card"></i>
-                        <span>Phòng ban</span>
-                    </a>
-
                 <li class="nav-item nav-item-submenu">
-                    <a href="{{ action('DepartmentController@index') }}" class="nav-link"><i class="icon-stack"></i> <span>Phòng Ban</span></a>
+                    <a href="#" class="nav-link"><i class="icon-credit-card"></i> <span>Phòng Ban</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                    <li class="nav-item">
+                            <a href="{{ action('DepartmentController@index') }}" class="nav-link">
+                                <i class="icon-list"></i>
+                                <span>Danh sách Phòng Ban</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ action('DepartmentController@listUndo') }}" class="nav-link">
+                                <i class="icon-list"></i>
+                                <span>Danh sách Hoàn tác</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="nav-item nav-item-submenu">

@@ -10,6 +10,7 @@ Route::group(['prefix' => 'deparment'], function () {
     Route::get('/edit', 'DepartmentController@getEditDep')->name('getEditDepartment');
     Route::post('/edit', 'DepartmentController@postEditDep')->name('postEditDepartment');
     Route::post('/delete', 'DepartmentController@deleteDepartment')->name('getDeleteDepartment');
+    Route::get('/undo', 'DepartmentController@listUndo')->name('getUndoDepartment');
 });
 
 //Staff

@@ -68,7 +68,7 @@
             <div class="row">
                 <div class="col-md-3">
                         <div class="form-group">
-                            <label>Tên Phòng ban:</label>
+                            <label>ID Phòng ban:</label>
                             <input type="text" class="form-control" name="txtID" value="{{$data['id']}}" readonly/>
                         </div>
                         <div class="form-group">
@@ -81,9 +81,9 @@
                         </div>
                         <div class="form-group">
                             <label>Trạng thái:</label>
-                            <select name="txtDel" color="red" >
-                                <option value="0">Hiện</option>
-                                <option value="1">Ẩn</option>
+                            <select class="form-control" name="txtDel" color="red" >
+                                <option value="0">None</option>
+                                <option value="1">Xóa tạm thời</option>
                             </select>
                         </div>
                         <button class="btn btn-success" type="submit">Lưu</button>&nbsp;&nbsp;

@@ -81,7 +81,7 @@
                         </div>
                         <div class="form-group">
                             <label>Phòng Ban:</label>
-                            <select name="txtDepartment" color="red" >
+                            <select class="form-control" name="txtDepartment" color="red" >
                             @foreach($data_department as $dep)
                             <option value="{{ $dep['id'] }}">{{ $dep['name'] }}</option>
                             @endforeach
@@ -90,7 +90,7 @@
                         <div class="form-group">
                             <label>Phân Quyền:</label>
                             <!-- <input type="text" class="form-control" name="txtGender"> -->
-                            <select name="txtisManager" color="red" >
+                            <select class="form-control"  name="txtisManager" color="red" >
                                 <option value="0">Nhân viên</option>
                                 <option value="1">Quản lý</option>
                             </select>
@@ -105,7 +105,7 @@
                         </div>
                          <div class="form-group">
                             <label>Giới tính:</label>
-                            <select name="txtGender" color="red" >
+                            <select class="form-control" name="txtGender" color="red" >
                                 <option value="1">Nam</option>
                                 <option value="0">Nữ</option>
                             </select>
@@ -113,7 +113,7 @@
                         <div class="form-group">
                             <label>Khu vực:</label>
                             <!-- <input type="text" class="form-control" name="txtGender"> -->
-                            <select name="txtRegional" color="red" >
+                            <select class="form-control"  name="txtRegional" color="red" >
                             @foreach($data_reg as $reg)
                             <option value="{{$reg['id']}}">{{ $reg['name'] }}</option>
                             @endforeach
