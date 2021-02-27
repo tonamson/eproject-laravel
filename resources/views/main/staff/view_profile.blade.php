@@ -93,7 +93,7 @@
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body p-0 mt-3 mb-3 ml-4 mr-4">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-12 col-md-6">
                                     <div class="control-group row">
                                         <label for="" class="col-4 p-0">Họ và tên: </label>
                                         <div class="control col-8"><?php echo $staff['firstname'] . ' ' . $staff['lastname'] ?></div>
@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-6">
+                                <div class="col-12 col-md-6">
                                     <div class="control-group row">
                                         <label for="" class="col-4 p-0">Ngày vào: </label>
                                         <div class="control col-8"><?php $date=date_create($staff['joined_at']);echo date_format($date,"d/m/Y");?></div>

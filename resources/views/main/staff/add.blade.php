@@ -81,7 +81,7 @@
                         </div>
                         <div class="form-group">
                             <label>Phòng Ban:</label>
-                            <select name="txtDepartment" color="red" >
+                            <select class="form-control" name="txtDepartment" color="red" >
                             @foreach($data_department as $dep)
                             <option value="{{ $dep['id'] }}">{{ $dep['name'] }}</option>
                             @endforeach
@@ -90,7 +90,7 @@
                         <div class="form-group">
                             <label>Phân Quyền:</label>
                             <!-- <input type="text" class="form-control" name="txtGender"> -->
-                            <select name="txtisManager" color="red" >
+                            <select class="form-control" name="txtisManager" color="red" >
                                 <option value="0">Nhân viên</option>
                                 <option value="1">Quản lý</option>
                             </select>
@@ -105,7 +105,7 @@
                         </div>
                          <div class="form-group">
                             <label>Giới tính:</label>
-                            <select name="txtGender" color="red" >
+                            <select class="form-control" name="txtGender" color="red" >
                                 <option value="1">Nam</option>
                                 <option value="0">Nữ</option>
                             </select>
@@ -113,9 +113,17 @@
                         <div class="form-group">
                             <label>Khu vực:</label>
                             <!-- <input type="text" class="form-control" name="txtGender"> -->
-                            <select name="txtRegional" color="red" >
+                            <select id="province" class="form-control" color="red" >
                             @foreach($data_reg as $reg)
                             <option value="{{$reg['id']}}">{{ $reg['name'] }}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Thành Phố/Huyện/Xã:</label>
+                            <select id="district" class="form-control" name="txtRegional" color="red" >
+                            @foreach($data_district as $district)
+                            <option value="{{$district['id']}}">{{ $district['name'] }}</option>
                             @endforeach
                             </select>
                         </div>
@@ -164,36 +172,27 @@
 
 @section('scripts')
     <script>
-        $('.day_bsc').daterangepicker({
-            singleDatePicker: true,
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });
+        $('#province').on('change', function() {
+            var parent = this.value;
 
-        $('.day_leave').daterangepicker({
-            singleDatePicker: true,
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });
-
-        $( "#btn_tb_bsc" ).click(function() {
-            $('#tb_dkp').hide();
-            $('#tb_dkp_wrapper').hide();
-            $('#tb_bsc').show();
-            $('#tb_bsc_wrapper').show();
-            $(this).addClass('active');
-            $('#btn_tb_dkp').removeClass('active');
-        });
-
-        $( "#btn_tb_dkp" ).click(function() {
-            $('#tb_bsc').hide();
-            $('#tb_bsc_wrapper').hide();
-            $('#tb_dkp').show();
-            $('#tb_dkp_wrapper').show();
-            $(this).addClass('active');
-            $('#btn_tb_bsc').removeClass('active');
+            $.ajax({
+                url: '{{ action('StaffController@loadRegional') }}',
+                Type: 'GET',
+                datatype: 'text',
+                data:
+                {
+                    parent: parent,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    var obj = $.parseJSON( data);
+                    $('#district').empty();
+                    for (var i = 0; i < obj.length; i++) {
+                        $('#district').append('<option value="'+obj[i]['id']+'">'+obj[i]['name']+'</option>');
+                    }
+                }
+            });
         });
 
         $('.open-detail-time-leave').click(function() {
@@ -216,116 +215,6 @@
                 }
             });
         });
-
-        $('.open-detail-dkp').click(function() {
-            var id = $(this).attr('id');
-
-            $.ajax({
-                url: '{{ action('TimeleaveController@detailLeave') }}',
-                Type: 'POST',
-                datatype: 'text',
-                data:
-                {
-                    id: id,
-                },
-                cache: false,
-                success: function (data)
-                {
-                    console.log(data);
-                    $('#html_pending').empty().append(data);
-                    $('#bsc-modal').modal();
-                }
-            });
-        });
-
-        var DatatableBasic = function() {
-
-            // Basic Datatable examples
-            var _componentDatatableBasic = function() {
-                if (!$().DataTable) {
-                    console.warn('Warning - datatables.min.js is not loaded.');
-                    return;
-                }
-
-                // Setting datatable defaults
-                $.extend( $.fn.dataTable.defaults, {
-                    autoWidth: false,
-                    columnDefs: [{ 
-                        orderable: false,
-                        width: 100,
-                        targets: [ 5 ]
-                    }],
-                    dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-                    language: {
-                        search: '<span>Filter:</span> _INPUT_',
-                        searchPlaceholder: 'Type to filter...',
-                        lengthMenu: '<span>Show:</span> _MENU_',
-                        paginate: { 'first': 'First', 'last': 'Last', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;' }
-                    }
-                });
-
-                // Basic datatable
-                $('.datatable-basic').DataTable();
-                $('.datatable-basic2').DataTable();
-
-                // Alternative pagination
-                $('.datatable-pagination').DataTable({
-                    pagingType: "simple",
-                    language: {
-                        paginate: {'next': $('html').attr('dir') == 'rtl' ? 'Next &larr;' : 'Next &rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr; Prev' : '&larr; Prev'}
-                    }
-                });
-
-                // Datatable with saving state
-                $('.datatable-save-state').DataTable({
-                    stateSave: true
-                });
-
-                // Scrollable datatable
-                var table = $('.datatable-scroll-y').DataTable({
-                    autoWidth: true,
-                    scrollY: 300
-                });
-
-                // Resize scrollable table when sidebar width changes
-                $('.sidebar-control').on('click', function() {
-                    table.columns.adjust().draw();
-                });
-            };
-
-            // Select2 for length menu styling
-            var _componentSelect2 = function() {
-                if (!$().select2) {
-                    console.warn('Warning - select2.min.js is not loaded.');
-                    return;
-                }
-
-                // Initialize
-                $('.dataTables_length select').select2({
-                    minimumResultsForSearch: Infinity,
-                    dropdownAutoWidth: true,
-                    width: 'auto'
-                });
-            };
-
-            return {
-                init: function() {
-                    _componentDatatableBasic();
-                    _componentSelect2();
-                }
-            }
-        }();
-
-        document.addEventListener('DOMContentLoaded', function() {
-            DatatableBasic.init();
-        });
-
-});
-
-
-
-
-
 
     </script>
 
