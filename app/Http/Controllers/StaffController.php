@@ -214,11 +214,15 @@ class StaffController extends Controller
         $response_edu = Http::get('http://localhost:8888/education/get-education-by-staff-id', $params);
         $body_edu = json_decode($response_edu->body(), true);
 
-        // dd($body_edu['data']);
+        $response_contract = Http::get('http://localhost:8888/contract/by-staff', $params);
+        $body_contract = json_decode($response_contract->body(), true);
+
+        //dd($body_contract['data']);
 
         return view('main.staff.view_profile', [
             'staff' => $body['data'],
             'educations' => $body_edu['data'],
+            'contracts' => $body_contract['data']
         ]);
     }
 
