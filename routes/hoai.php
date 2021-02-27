@@ -20,4 +20,5 @@ Route::group(['prefix' => 'staff'], function () {
     Route::get('/gedit', 'StaffController@getEditStaff');
     Route::post('/pedit', 'StaffController@postEditStaff');
     Route::post('/add', 'StaffController@CreateStaff')->name('postAddStaff');
+    Route::get('/view-profile', 'StaffController@viewProfile');
 });

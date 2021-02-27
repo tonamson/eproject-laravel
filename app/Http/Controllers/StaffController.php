@@ -204,4 +204,22 @@ class StaffController extends Controller
         return redirect()->back()->with('message','Cập nhật thất bại');
     }
 
+    public function viewProfile(Request $request) {
+        $params = [
+            'staff_id' => auth()->user()->id,
+        ];
+        $response = Http::get('http://localhost:8888/staff/get-profile', $params);
+        $body = json_decode($response->body(), true);
+
+        $response_edu = Http::get('http://localhost:8888/education/get-education-by-staff-id', $params);
+        $body_edu = json_decode($response_edu->body(), true);
+
+        // dd($body_edu['data']);
+
+        return view('main.staff.view_profile', [
+            'staff' => $body['data'],
+            'educations' => $body_edu['data'],
+        ]);
+    }
+
 }
