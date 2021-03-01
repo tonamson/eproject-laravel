@@ -34,7 +34,7 @@
     }
 
     .fluid-view-menu {
-        padding: 20px 10px;
+        padding: 20px 20px;
     }
 
     .outer {
@@ -288,6 +288,16 @@
 
 <div class="container-fluid fluid-view-menu">
     <div class="row text-center">
+        @if(auth()->user()->department == 2)
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('SpecialDateController@index') }}">
+                        <i class="icon-8x icon-calendar2"></i>
+                        <p>Quản Lý Ngày Lễ</p> 
+                    </a>
+                </div>
+            </div>
+        @endif
         <div class="col-6 col-md-3 text-center col-max">
             <div class="outer">
                 <a href="{{ action('CheckInOutController@index') }}">

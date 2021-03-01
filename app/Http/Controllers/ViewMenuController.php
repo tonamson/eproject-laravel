@@ -22,4 +22,24 @@ class ViewMenuController extends Controller
     {
         return view('main.view_menu.kpi');
     }
+
+    public function department()
+    {
+        return view('main.view_menu.department');
+    }
+    
+    public function staff()
+    {
+        return view('main.view_menu.staff');
+    }
+
+    public function contract()
+    {
+        return view('main.view_menu.contract');
+    }
+    
+    public function salary()
+    {
+        return view('main.view_menu.salary');
+    }
 }

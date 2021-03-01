@@ -291,71 +291,29 @@
         @if(auth()->user()->department == 2)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
-                    <a href="{{ action('DashboardController@index') }}">
-                        <i class="icon-8x icon-stats-growth"></i>
-                        <p>Biểu Đồ</p> 
+                    <a href="{{ route('getListContract', ['del' => false]) }}">
+                        <i class="icon-8x icon-list"></i>
+                        <p>Danh Sách</p> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ route('getCreateSalary') }}">
+                        <i class="icon-8x icon-plus2"></i>
+                        <p>Tính Lương</p> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ route('getListContract', ['del' => true]) }}">
+                        <i class="icon-8x icon-trash"></i>
+                        <p>Thùng Rác</p> 
                     </a>
                 </div>
             </div>
         @endif
-        @if(auth()->user()->department == 2)
-            <div class="col-6 col-md-3 text-center col-max">
-                <div class="outer">
-                    <a href="{{ action('ViewmenuController@department') }}">
-                        <i class="icon-8x icon-credit-card"></i>
-                        <p>Phòng Ban</p> 
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 text-center col-max">
-                <div class="outer">
-                    <a href="{{ action('ViewmenuController@staff') }}">
-                        <i class="icon-8x icon-people"></i>
-                        <p>Nhân Viên</p> 
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 text-center col-max">
-                <div class="outer">
-                    <a href="{{ action('ViewmenuController@contract') }}">
-                        <i class="icon-8x icon-newspaper2"></i>
-                        <p>Hợp Đồng</p> 
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 text-center col-max">
-                <div class="outer">
-                    <a href="{{ action('ViewmenuController@salary') }}">
-                        <i class="icon-8x icon-cash3"></i>
-                        <p>Lương</p> 
-                    </a>
-                </div>
-            </div>
-        @endif
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ action('ViewmenuController@timeLeave') }}">
-                    <i class="icon-8x icon-stack"></i>
-                    <p>Công Phép</p> 
-                </a>
-            </div>
-        </div>
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ action('ViewmenuController@kpi') }}">
-                    <i class="icon-8x icon-racing"></i>
-                    <p>Kpi</p> 
-                </a>
-            </div>
-        </div>
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ action('AboutcompanyController@index') }}">
-                    <i class="icon-8x icon-info22"></i>
-                    <p>Giới Thiệu</p> 
-                </a>
-            </div>
-        </div>
         <div class="no-tool text-center">
             <?php
 

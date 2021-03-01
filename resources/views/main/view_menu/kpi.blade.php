@@ -34,7 +34,7 @@
     }
 
     .fluid-view-menu {
-        padding: 20px 10px;
+        padding: 20px 20px;
     }
 
     .outer {
