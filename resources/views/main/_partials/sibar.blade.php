@@ -47,15 +47,14 @@
                         <span>Trang Chủ</span>
                     </a>
                 </li>
+                @if(auth()->user()->department == 2)
                 <li class="nav-item">
-                    @if(auth()->user()->department == 2)
-                        <a href="{{ action('DashboardController@index') }}" class="nav-link">
-                            <i class="icon-stats-growth"></i>
-                            <span>Biểu Đồ</span>
-                        </a>
-                    @endif
+                    <a href="{{ action('DashboardController@index') }}" class="nav-link">
+                        <i class="icon-stats-growth"></i>
+                        <span>Biểu Đồ</span>
+                    </a>
                 </li>
-                <li class="nav-item">
+
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-credit-card"></i> <span>Phòng Ban</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
@@ -146,6 +145,7 @@
                         </li>
                     </ul>
                 </li>
+                @endif
 
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Công Phép</span></a>
@@ -200,6 +200,7 @@
                     </ul>
                 </li>
 
+                @if(auth()->user()->department == 2)
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-cash3"></i> <span>Lương</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
@@ -223,17 +224,12 @@
                         </li>
                     </ul>
                 </li>
+                @endif
                 
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-racing"></i> <span>KPI</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                        {{-- <li class="nav-item">
-                            <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
-                                <i class="icon-clipboard5"></i>
-                                <span>KPI Cá Nhân</span>
-                            </a>
-                        </li> --}}
                         <li class="nav-item">
                             <a href="{{ action('KpiController@setKpi') }}" class="nav-link">
                                 <i class="icon-finish"></i>
