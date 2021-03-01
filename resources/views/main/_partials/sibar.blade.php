@@ -56,13 +56,22 @@
                     @endif
                 </li>
                 <li class="nav-item">
-                    <a href="{{ action('DepartmentController@index') }}" class="nav-link">
-                        <i class="icon-credit-card"></i>
-                        <span>Phòng ban</span>
-                    </a>
-
                 <li class="nav-item nav-item-submenu">
-                    <a href="{{ action('DepartmentController@index') }}" class="nav-link"><i class="icon-stack"></i> <span>Phòng Ban</span></a>
+                    <a href="#" class="nav-link"><i class="icon-credit-card"></i> <span>Phòng Ban</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                    <li class="nav-item">
+                            <a href="{{ action('DepartmentController@index') }}" class="nav-link">
+                                <i class="icon-list"></i>
+                                <span>Danh sách Phòng Ban</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ action('DepartmentController@listUndo') }}" class="nav-link">
+                                <i class="icon-trash"></i>
+                                <span>Thùng rác</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="nav-item nav-item-submenu">
@@ -80,12 +89,17 @@
                                 <span>Thêm nhân viên</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ action('StaffController@listUndo') }}" class="nav-link">
+                                <i class="icon-trash"></i>
+                                <span>Thùng rác</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
 
                 <li class="nav-item nav-item-submenu">
-
                     <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span>Hợp đồng</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                         <li class="nav-item">
@@ -98,6 +112,30 @@
                             <a href="{{ route('getCreateContract') }}" class="nav-link">
                                 <i class="icon-plus2"></i>
                                 <span>Tạo hợp đồng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('getListContract', ['del' => true]) }}" class="nav-link">
+                                <i class="icon-trash"></i>
+                                <span>Thùng rác</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item nav-item-submenu">
+                    <a href="#" class="nav-link"><i class="icon-cash3"></i> <span>Lương</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                        <li class="nav-item">
+                            <a href="{{ route('getListContract', ['del' => false]) }}" class="nav-link">
+                                <i class="icon-list"></i>
+                                <span>Danh sách</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('getCreateSalary') }}" class="nav-link">
+                                <i class="icon-plus2"></i>
+                                <span>Tính lương</span>
                             </a>
                         </li>
                         <li class="nav-item">

@@ -9,7 +9,9 @@ Route::group(['prefix' => 'deparment'], function () {
     Route::get('/add', 'DepartmentController@add')->name('getAddDepartment');
     Route::get('/edit', 'DepartmentController@getEditDep')->name('getEditDepartment');
     Route::post('/edit', 'DepartmentController@postEditDep')->name('postEditDepartment');
-    Route::post('/delete', 'DepartmentController@deleteDepartment')->name('getDeleteDepartment');
+    Route::get('/undo', 'DepartmentController@listUndo')->name('getUndoDepartment');
+    Route::get('/delete', 'DepartmentController@getDeleteDep')->name('getDeleteDep');
+    Route::get('/getundo', 'DepartmentController@getUndoDep')->name('getUndoDep');
 });
 
 //Staff
@@ -22,4 +24,7 @@ Route::group(['prefix' => 'staff'], function () {
     Route::post('/add', 'StaffController@CreateStaff')->name('postAddStaff');
     Route::get('/view-profile', 'StaffController@viewProfile');
     Route::get('/load-regional', 'StaffController@loadRegional');
+    Route::get('/undo', 'StaffController@listUndo')->name('listUndo');
+    Route::get('/delete', 'StaffController@getDeleteStaff')->name('getDeleteStaff');
+    Route::get('/getundo', 'StaffController@getUndoStaff')->name('getUndoStaff');
 });

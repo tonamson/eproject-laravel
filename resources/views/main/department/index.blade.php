@@ -72,8 +72,21 @@
                                 Ẩn
                             @endif    
                         </td> -->
-                    <td class="center"><i class="btn-btn-success"></i><a href="{{ action('DepartmentController@getEditDep') }}?id={{ $department['id'] }}">Cập nhật</a>&nbsp;||&nbsp;
-                        <i class="fa fa-trash-o fa-fw"></i><a href="{{ action('DepartmentController@deleteDepartment') }}?id={{ $department['id'] }}""> Xóa</a></td>
+                
+                        <td class="text-center">
+                        <div class="list-icons">
+                            <div class="dropdown">
+                                <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                    <i class="icon-menu9"></i>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="{{ action('DepartmentController@getEditDep') }}?id={{ $department['id'] }}" class="dropdown-item">Cập nhật</a>
+                                        <a href="{{ action('DepartmentController@getDeleteDep') }}?id={{ $department['id'] }}" class="dropdown-item">Xóa</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                     </tr>
                     @endforeach
             </tbody>

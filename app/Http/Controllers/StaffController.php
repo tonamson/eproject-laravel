@@ -284,4 +284,47 @@ class StaffController extends Controller
         exit;
     }
 
+    public function listUndo(){
+
+        $response = Http::get('http://localhost:8888/department/list', []);
+        $body = json_decode($response->body(), true);
+        $dsPhongBan = [];
+        if($body['isSuccess']){
+            $dsPhongBan=$body['data'];
+        }
+        $response = Http::get('http://localhost:8888/staff/listUndo');
+        $body = json_decode($response->body(), true);
+        $data_staff = $body['data'];
+
+        return view('main.staff.listUndo',[
+            'data_staff' => $data_staff,
+            'data_department' => $dsPhongBan,
+        ]);
+        
+    }
+
+    public function getDeleteStaff(Request $request)
+    {
+        $id = $request->id;
+        $response = Http::get(config('app.api_url') . '/staff/delete', ['id' => $id]);
+        $body = json_decode($response->body(), false);
+     
+        if ($body->isSuccess) {
+            return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa nhân viên thành công.']);
+        }
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Xóa nhân viên thất bại.']);
+    }
+
+    public function getUndoStaff(Request $request)
+    {
+        $id = $request->id;
+        $response = Http::get(config('app.api_url') . '/staff/undo', ['id' => $id]);
+        $body = json_decode($response->body(), false);
+        if ($body->isSuccess) {
+            return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Khôi phục nhân viên thành công.']);
+        }
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Khôi phục nhân viên thất bại.']);
+    }
+   
+
 }

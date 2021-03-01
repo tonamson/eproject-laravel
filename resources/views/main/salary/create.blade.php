@@ -18,7 +18,7 @@
 
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Chỉnh sửa hợp đồng</h5>
+            <h5 class="card-title">Tạo tính lương</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('postSaveContract') }}" method="post">
@@ -29,46 +29,35 @@
                     </div>
                 @endif
                 @csrf
-                <input type="hidden" name="id" value="{{ $contract->id }}">
-                <input type="hidden" name="createAt" value="{{ $contract->createAt }}">
-                <input type="hidden" name="del" value="{{ $contract->del ? 'true' : 'false' }}">
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Mã nhân viên</label>
-                            <select class="form-control select-search" name="staffId">
-                                @foreach($listStaff as $staff)
-                                    <option value="{{ $staff->id }}" @if($contract->staffId == $staff->id) selected @endif>{{ $staff->firstname .' '. $staff->lastname }}</option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Ngày bắt đầu hợp đồng:</label>
+                                    <label>Ngày bắt đầu:</label>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                         </span>
-                                        <input type="text" class="form-control daterange-single" value="{{ $contract->startDate }}" name="startDate">
+                                        <input type="text" class="form-control daterange-single" value="2021-01-01" name="startDate">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Ngày kết thúc hợp đồng:</label>
+                                    <label>Ngày kết thúc:</label>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                         </span>
-                                        <input type="text" class="form-control daterange-single" value="{{ $contract->endDate }}" name="endDate">
+                                        <input type="text" class="form-control daterange-single" value="2021-01-01" name="endDate">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Lương:</label>
-                            <input type="number" class="form-control" name="salary" value="{{ $contract->salary }}">
+                            <input type="number" class="form-control" name="salary">
                         </div>
                         <button class="btn btn-success" type="submit">Lưu</button>
                     </div>
