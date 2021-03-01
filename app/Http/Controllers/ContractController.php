@@ -19,7 +19,10 @@ class ContractController extends Controller
             $data = $body->data;
         }
         return view('main.contract.index', [
-            'data' => $data
+            'data' => $data,
+            'breadcrumbs' => [
+                'Hợp đồng', 'Danh sách'
+            ]
         ]);
     }
 
@@ -34,14 +37,25 @@ class ContractController extends Controller
         if ($editContractResponse->isSuccess) {
             $contract = $editContractResponse->data;
         }
-        return view('main.contract.edit', ['listStaff' => $listStaff->data, 'contract' => $contract]);
+        return view('main.contract.edit', [
+            'listStaff' => $listStaff->data,
+            'contract' => $contract,
+            'breadcrumbs' => [
+                'Hợp đồng', 'Chỉnh sửa'
+            ]
+        ]);
     }
 
     public function getCreate()
     {
         $response = Http::get(config('app.api_url') . '/staff/list', []);
         $listStaff = json_decode($response->body(), false);
-        return view('main.contract.create', ['listStaff' => $listStaff->data]);
+        return view('main.contract.create', [
+            'listStaff' => $listStaff->data,
+            'breadcrumbs' => [
+                'Hợp đồng', 'Tạo mới hợp đồng'
+            ]
+        ]);
     }
 
     public function postSave(Request $request)
