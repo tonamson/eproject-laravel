@@ -1,0 +1,12 @@
+<div class="breadcrumb">
+    <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Trang chủ</a>
+    @if(isset($breadcrumbs) && count($breadcrumbs) > 0)
+        @foreach($breadcrumbs as $index => $item)
+            @if($index < count($breadcrumbs) - 1)
+                <a href="#" class="breadcrumb-item">{{ $item }}</a>
+            @else
+                <span class="breadcrumb-item active">{{ $item }}</span>
+            @endif
+        @endforeach
+    @endif
+</div>

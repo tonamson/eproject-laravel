@@ -149,11 +149,11 @@
                         </div>
                         <div class="form-group">
                             <label>Mặt trước CMND:</label>
-                            <input type="file" class="form-control" name="txtIDPhoto">
+                            <input type="text" class="form-control" name="txtIDPhoto">
                         </div>
                         <div class="form-group">
                             <label>Mặt sau CMND:</label>
-                            <input type="file" class="form-control" name="txtIDPhoto2">
+                            <input type="text" class="form-control" name="txtIDPhoto2">
                         </div>
                         <div class="form-group">
                             <label>Ghi chú:</label>

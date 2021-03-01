@@ -100,6 +100,30 @@
                 </li>
 
                 <li class="nav-item nav-item-submenu">
+                    <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Bằng Cấp</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                    <li class="nav-item">
+                            <a href="{{ action('EducationController@index') }}" class="nav-link">
+                                <i class="icon-list"></i>
+                                <span>Danh sách</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ action('EducationController@addEducation') }}" class="nav-link">
+                                <i class="icon-plus2"></i>
+                                <span>Thêm Văn Bằng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="icon-trash"></i>
+                                <span>Thùng rác</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span>Hợp đồng</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                         <li class="nav-item">

@@ -28,3 +28,13 @@ Route::group(['prefix' => 'staff'], function () {
     Route::get('/delete', 'StaffController@getDeleteStaff')->name('getDeleteStaff');
     Route::get('/getundo', 'StaffController@getUndoStaff')->name('getUndoStaff');
 });
+
+//Education
+
+Route::group(['prefix' => 'education'], function () {
+    Route::get('/index', 'EducationController@index');
+    Route::get('/add', 'EducationController@addEducation');
+    Route::post('/add', 'EducationController@CreateEducation')->name('postEducation');
+
+ 
+});

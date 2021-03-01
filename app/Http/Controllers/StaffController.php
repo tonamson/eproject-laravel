@@ -38,18 +38,35 @@ class StaffController extends Controller
         $joinedAt = $request->input('txtJoinat');
         $dob = $request->input('txtDob');
         $gender = $request->input('txtGender');
-        $regional = $request->input('txtRegional');
-        $phoneNumber = $request->input('txtPhone');
-        $email = $request->input('txtEmail');
-        $password = $request->input('txtPass');
+    //     $regional = $request->input('txtRegional');
+    //     $phoneNumber = $request->input('txtPhone');
+    //     $email = $request->input('txtEmail');
+    //     $password = $request->input('txtPass');
 
-       $idNumber = $request->input('txtIDNumber');
-        $photo = $request->file('txtPhoto');
-        $idPhoto = $request->file('txtIDPhoto');
-        $idPhotoBack = $request->file('txtIDPhoto2');
-        $note = $request->input('txtNote');
-        $user = auth()->user();
+    //    $idNumber = $request->input('txtIDNumber');
+        // $photo = $request->file('txtPhoto');
+    //     $idPhoto = $request->file('txtIDPhoto');
+    //     $idPhotoBack = $request->file('txtIDPhoto2');
+    //     $note = $request->input('txtNote');
+    //     $user = auth()->user();
       //  $dayOfLeave =request(0);
+
+      if ($request->hasFile('txtPhoto')) {
+        $file = $request->file('txtPhoto');
+    //kiem tra duoi anh
+        $duoi =$file->getClientOriginalExtension();
+        if($duoi !='jpg' && $duoi !='png' && $duoi !='jpeg'){
+            return Redirect('main/staff/add')->with('loi','Bạn chỉ được chọn file đuôi jpg, png, jpeg');
+        }
+        $name =$file ->getClientOriginalName();
+        $file->move("./global_data/images",$name);
+        $photo->photo =$name;
+       
+    }
+    else{
+        $photo->photo ="";
+    }
+
 
 
         $data_request = [
@@ -62,26 +79,32 @@ class StaffController extends Controller
             'joinedAt' =>$joinedAt,
             'dob'=>$dob,
             'gender'=>$gender,
-            'regional' =>$regional,
-            'phoneNumber' =>$phoneNumber,
-            'email' =>$email,
-            'password' => bcrypt($password),
+        //     'regional' =>$regional,
+        //     'phoneNumber' =>$phoneNumber,
+        //     'email' =>$email,
+        //     'password' => bcrypt($password),
 
-           'idNumber' =>$idNumber,
+        //    'idNumber' =>$idNumber,
             'photo' =>$photo,
-            'idPhoto' =>$idPhoto,
-            'idPhotoBack' =>$idPhotoBack,
-            "dayOfLeave"==0,
-            'note' =>$note,
-            "createdBy" => $user->id,
+        //     'idPhoto' =>$idPhoto,
+        //     'idPhotoBack' =>$idPhotoBack,
+        //     "dayOfLeave"==0,
+        //     'note' =>$note,
+        //     "createdBy" => $user->id,
             "status" =>$status=0,
+
+            
       
         ];
-        $response = Http::attach('attachment', file_get_contents($photo), 'photo.jpg')
-            ->post('http://localhost:8888/staff/add', $data_request);
+        // $response = Http::attach('attachment', file_get_contents($photo), 'photo.jpg')
+        //     ->post('http://localhost:8888/staff/add', $data_request);
        // dd($response);
-        $body = json_decode($response->body(), true);
 
+
+
+        $response = Http::post('http://localhost:8888/staff/add', $data_request);
+        $body = json_decode($response->body(), true);
+//dd($body);
         if($body['message'] == "Save success") {
             return redirect()->back()->with('success', 'Thêm thành công!');
         } 
