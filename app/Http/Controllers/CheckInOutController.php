@@ -16,7 +16,8 @@ class CheckInOutController extends Controller
         $body = json_decode($response->body(), true);
 
         return view('main.check_in_out.index')
-                ->with('staff', $body['data']);
+                ->with('staff', $body['data'])
+                ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Chấm công GPS', 'url' => '#']]);
     }
 
     public function create(Request $request)
@@ -99,6 +100,7 @@ class CheckInOutController extends Controller
             ->with('data', $body['data'])
             ->with('year', $year)
             ->with('month', $month)
-            ->with('staff', $body_staff['data']);
+            ->with('staff', $body_staff['data'])
+            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Lịch sử chấm công', 'url' => '#']]);
     }
 }

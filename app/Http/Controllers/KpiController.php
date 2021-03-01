@@ -9,7 +9,11 @@ class KpiController extends Controller
 {
     public function setKpi(Request $request)
     {
-        return view('main.kpi.set_kpi');
+        return view('main.kpi.set_kpi', [
+            'breadcrumbs' => [
+                ['text' => 'Kpi', 'url' => '../view-menu/kpi'], ['text' => 'Thiết lập Kpi', 'url' => '#']
+            ]
+        ]);
     }
 
     public function findKpiStaff(Request $request)
@@ -359,7 +363,10 @@ class KpiController extends Controller
         return view('main.kpi.list_kpi', [
             'data_staff' => $body_staff['data'],
             'data_department' => $body_department['data'],
-            'staff' => $body_get_department['data']
+            'staff' => $body_get_department['data'],
+            'breadcrumbs' => [
+                ['text' => 'Kpi', 'url' => '../view-menu/kpi'], ['text' => 'Danh sách Kpi', 'url' => '#']
+            ]
         ]);
     }
 

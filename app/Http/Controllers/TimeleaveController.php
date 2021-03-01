@@ -37,7 +37,8 @@ class TimeleaveController extends Controller
             ->with('data', $body['data'])
             ->with('year', $year)
             ->with('month', $month)
-            ->with('staff', $body_get_department['data']);
+            ->with('staff', $body_get_department['data'])
+            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Bổ sung công phép', 'url' => '#']]);
     }
 
     public function createTime(Request $request)
@@ -394,7 +395,8 @@ class TimeleaveController extends Controller
             ->with('data', $body['data'])
             ->with('year', $year)
             ->with('month', $month)
-            ->with('staff', $body_get_department['data']);
+            ->with('staff', $body_get_department['data'])
+            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Duyệt Công Phép', 'url' => '#']]);  
     }
 
     public function detailStaffApprove(Request $request)
@@ -544,6 +546,7 @@ class TimeleaveController extends Controller
         return view('main.time_leave.all_staff_time')
             ->with('data', $body['data'])
             ->with('year', $year)
-            ->with('month', $month);
+            ->with('month', $month)
+            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Lưới công', 'url' => '#']]);
     }
 }

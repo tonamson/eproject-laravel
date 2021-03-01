@@ -21,7 +21,7 @@ class ContractController extends Controller
         return view('main.contract.index', [
             'data' => $data,
             'breadcrumbs' => [
-                ['text' => 'Hợp đồng', 'url' => '#'], ['text' => 'Danh sách hợp đồng', 'url' => '#']
+                ['text' => 'Hợp đồng', 'url' => '../view-menu/contract'], ['text' => 'Danh sách hợp đồng', 'url' => '#']
             ]
         ]);
     }
@@ -53,7 +53,7 @@ class ContractController extends Controller
         return view('main.contract.create', [
             'listStaff' => $listStaff->data,
             'breadcrumbs' => [
-                ['text' => 'Hợp đồng', 'url' => '#'], ['text' => 'Tạo mới hợp đồng', 'url' => '#']
+                ['text' => 'Hợp đồng', 'url' => '../view-menu/contract'], ['text' => 'Tạo mới hợp đồng', 'url' => '#']
             ]
         ]);
     }

@@ -23,7 +23,8 @@ class SpecialDateController extends Controller
 
         return view('main.special_date.index')
             ->with('data', $body['data'])
-            ->with('year', $year);
+            ->with('year', $year)
+            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Quản lý ngày lễ', 'url' => '#']]);
     }
 
     public function createSpecialDate(Request $request)

@@ -118,7 +118,6 @@ class DashboardController extends Controller
             array_push($arr_chart_staffs_off, $value);
         }
         $staffs_off = json_encode($arr_chart_staffs_off);
-
         
         return view('main.dashboard.index')
             ->with('staffs_gender', $staffs_gender)
@@ -127,6 +126,9 @@ class DashboardController extends Controller
             ->with('staffs_tn', $staffs_tn)
             ->with('staffs_month', $staffs_month)
             ->with('last_year', $last_year)
-            ->with('staffs_off', $staffs_off);
+            ->with('staffs_off', $staffs_off)
+            ->with('breadcrumbs', [
+                ['text' => 'Biểu đồ', 'url' => '#']
+            ]);
     }
 }

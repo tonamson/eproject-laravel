@@ -9,7 +9,8 @@ class AboutCompanyController extends Controller
 {
     public function index()
     {
-        return view('main.about_company.index');
+        return view('main.about_company.index')
+                ->with('breadcrumbs', [['text' => 'Giới thiệu', 'url' => '#']]);;
     }
 
 }

@@ -15,7 +15,8 @@ class DepartmentController extends Controller
         $data_department = $body['data'];
 
         return view('main.department.index')
-        ->with('data_department', $data_department);
+        ->with('data_department', $data_department)
+        ->with('breadcrumbs', [['text' => 'Phòng ban', 'url' => '../view-menu/department'], ['text' => 'Danh sách phòng ban', 'url' => '#']]);
     }
 
     public function listUndo(){
@@ -25,7 +26,8 @@ class DepartmentController extends Controller
         $data_department = $body['data'];
 
         return view('main.department.listUndo')
-        ->with('data_department', $data_department);
+        ->with('data_department', $data_department)
+        ->with('breadcrumbs', [['text' => 'Phòng ban', 'url' => '../view-menu/department'], ['text' => 'Phòng ban đã xóa', 'url' => '#']]);
     }
 
     public function delete(){

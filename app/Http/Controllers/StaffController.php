@@ -23,6 +23,7 @@ class StaffController extends Controller
         return view('main.staff.index',[
             'data_staff' => $data_staff,
             'data_department' => $dsPhongBan,
+            'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '#']]
         ]);
         
     }
@@ -140,6 +141,7 @@ class StaffController extends Controller
             'data_reg' => $dsKhuvuc,
             'data_department' => $dsPhongBan,
             'data_district' => $district_default,
+            'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Thêm nhân viên', 'url' => '#']]
         ]);
         return view('main.staff.add');
     }
@@ -322,6 +324,7 @@ class StaffController extends Controller
         return view('main.staff.listUndo',[
             'data_staff' => $data_staff,
             'data_department' => $dsPhongBan,
+            'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Nhân viên đã xóa', 'url' => '#']]
         ]);
         
     }
