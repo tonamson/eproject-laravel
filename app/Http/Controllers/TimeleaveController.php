@@ -61,17 +61,6 @@ class TimeleaveController extends Controller
         if($user->is_manager == 1) {
             $is_approved = true;
         }
-
-        $check_special_day = [
-            'day_check' => $day_leave
-        ];
-
-        $response = Http::get('http://localhost:8888/special-date/check-day', $check_special_day);
-        $body = json_decode($response->body(), true);
-
-        if($body['data'] == "Yes") {
-            return redirect()->back()->with('error', 'Bổ sung công thất bại! ' . $day_leave . ' là ngày lễ! Vui lòng chỉnh sửa');
-        }
         
         $data_request = [
             "staff_id" => $user->id,
@@ -92,11 +81,9 @@ class TimeleaveController extends Controller
             } else {
                 return redirect()->back()->with('success', 'Bổ sung công thành công! Vui lòng đợi quản lý phê duyệt');
             }
-        } 
-        else if($body['data'] == "Added time") {
+        } else if($body['data'] == "Added time") {
             return redirect()->back()->with('error', 'Bổ sung công thất bại! Bạn đã đi làm và chấm công ngày ' . $day_leave . ' rồi! Vui lòng chỉnh sửa');
-        }
-        else {
+        } else {
             return redirect()->back()->with('error', 'Bổ sung công thất bại! Bạn đã bổ sung công / đăng kí phép ngày ' . $day_leave . ' rồi! Vui lòng chỉnh sửa');
         }
     }
@@ -260,6 +247,10 @@ class TimeleaveController extends Controller
         $is_approved = false;
         if($user->is_manager == 1) {
             $is_approved = true;
+        }
+
+        if(date('w', strtotime($day_leave)) == 6 or date('w', strtotime($day_leave)) == 0) {
+            return redirect()->back()->with('error', 'Đăng kí phép thất bại! ' . $day_leave . ' là Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
         }
 
         $check_special_day = [
