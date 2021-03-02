@@ -21,4 +21,5 @@ Route::group(['prefix' => 'contract'], function () {
 
 Route::group(['prefix' => 'salary'], function () {
     Route::get('create','SalaryController@getCreate')->name('getCreateSalary');
+    Route::post('create','SalaryController@postCalculatedSalary')->name('postCalculatedSalary');
 });

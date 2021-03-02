@@ -32,8 +32,8 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{{ action('StaffController@viewProfile') }}" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
-                    <a href="{{ action('AuthenticateController@getLogout') }}" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
+                    <a href="{{ action('StaffController@viewProfile') }}" class="dropdown-item"><i class="icon-user-plus"></i> Thông tin cá nhân</a>
+                    <a href="{{ action('AuthenticateController@getLogout') }}" class="dropdown-item"><i class="icon-switch2"></i> Đăng xuất</a>
                 </div>
             </li>
         </ul>

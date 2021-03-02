@@ -21,11 +21,23 @@
             <h5 class="card-title">Tạo tính lương</h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('postSaveContract') }}" method="post">
+            <form action="{{ route('postCalculatedSalary') }}" method="post">
                 @if(session('message'))
                     <div class="alert alert-{{ session('message')['type'] }} border-0 alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
                         {{ session('message')['message'] }}
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="alert alert-danger border-0 alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <p><b>Dữ liệu đầu vào không chính xác:</b></p>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
                 @csrf
@@ -39,7 +51,7 @@
                                         <span class="input-group-prepend">
                                             <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                         </span>
-                                        <input type="text" class="form-control daterange-single" value="2021-01-01" name="startDate">
+                                        <input type="text" class="form-control daterange-single" value="{{ now()->format('Y-m-d') }}" name="from_date">
                                     </div>
                                 </div>
                             </div>
@@ -50,14 +62,10 @@
                                         <span class="input-group-prepend">
                                             <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                         </span>
-                                        <input type="text" class="form-control daterange-single" value="2021-01-01" name="endDate">
+                                        <input type="text" class="form-control daterange-single" value="{{ now()->format('Y-m-d') }}" name="to_date">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Lương:</label>
-                            <input type="number" class="form-control" name="salary">
                         </div>
                         <button class="btn btn-success" type="submit">Lưu</button>
                     </div>
