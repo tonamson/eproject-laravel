@@ -68,27 +68,27 @@
             <div class="row">
                 <div class="col-md-3">
                         <div class="form-group">
-                            <label>Mã Nhân viên:</label>
-                            <input type="text" class="form-control" name="txtCode">
+                            <label>Mã Nhân viên:(*)</label>
+                            <input type="text" class="form-control" name="txtCode" require>
                         </div>
                         <div class="form-group">
-                            <label>Tên Nhân viên:</label>
-                            <input type="text" class="form-control" name="txtFname">
+                            <label>Tên Nhân viên:(*)</label>
+                            <input type="text" class="form-control" name="txtFname" require>
                         </div>
                         <div class="form-group">
                             <label>Họ nhân viên:</label>
                             <input type="text" class="form-control" name="txtLname">
                         </div>
                         <div class="form-group">
-                            <label>Phòng Ban:</label>
-                            <select class="form-control" name="txtDepartment" color="red" >
+                            <label>Phòng Ban:(*)</label>
+                            <select class="form-control" name="txtDepartment" color="red">
                             @foreach($data_department as $dep)
                             <option value="{{ $dep['id'] }}">{{ $dep['name'] }}</option>
                             @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Phân Quyền:</label>
+                            <label>Phân Quyền:(*)</label>
                             <!-- <input type="text" class="form-control" name="txtGender"> -->
                             <select class="form-control" name="txtisManager" color="red" >
                                 <option value="0">Nhân viên</option>
@@ -96,7 +96,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Ngày Vào:</label>
+                            <label>Ngày Vào:(*)</label>
                             <input type="Date" class="form-control" name="txtJoinat">
                         </div>
                         <div class="form-group">
@@ -104,14 +104,14 @@
                             <input type="Date" class="form-control" name="txtDob">
                         </div>
                          <div class="form-group">
-                            <label>Giới tính:</label>
+                            <label>Giới tính:(*)</label>
                             <select class="form-control" name="txtGender" color="red" >
                                 <option value="1">Nam</option>
                                 <option value="0">Nữ</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Khu vực:</label>
+                            <label>Khu vực:(*)</label>
                             <!-- <input type="text" class="form-control" name="txtGender"> -->
                             <select id="province" class="form-control" color="red" >
                             @foreach($data_reg as $reg)
@@ -120,7 +120,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Thành Phố/Huyện/Xã:</label>
+                            <label>Thành Phố/Huyện/Xã:(*)</label>
                             <select id="district" class="form-control" name="txtRegional" color="red" >
                             @foreach($data_district as $district)
                             <option value="{{$district['id']}}">{{ $district['name'] }}</option>
@@ -136,12 +136,12 @@
                             <input type="text" class="form-control" name="txtEmail">
                         </div>
                         <div class="form-group">
-                            <label>Mật Khẩu:</label>
-                            <input type="text" class="form-control" name="txtPass">
+                            <label>Mật Khẩu:(*)</label>
+                            <input type="text" class="form-control" name="txtPass" require>
                         </div>
                          <div class="form-group">
-                            <label>CMND:</label>
-                            <input type="text" class="form-control" name="txtIDNumber">
+                            <label>CMND:(*)</label>
+                            <input type="text" class="form-control" name="txtIDNumber" require>
                         </div>
                         <div class="form-group">
                             <label>Hình ảnh:</label>
@@ -149,11 +149,11 @@
                         </div>
                         <div class="form-group">
                             <label>Mặt trước CMND:</label>
-                            <input type="text" class="form-control" name="txtIDPhoto">
+                            <input type="file" class="form-control" name="txtIDPhoto">
                         </div>
                         <div class="form-group">
                             <label>Mặt sau CMND:</label>
-                            <input type="text" class="form-control" name="txtIDPhoto2">
+                            <input type="file" class="form-control" name="txtIDPhoto2">
                         </div>
                         <div class="form-group">
                             <label>Ghi chú:</label>
