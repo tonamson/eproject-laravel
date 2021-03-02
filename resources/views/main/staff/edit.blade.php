@@ -63,13 +63,17 @@
                 </div>
             @endif
              
-                <form action="{{ action('StaffController@postEditStaff') }}" method="post">
+                <form action="{{ action('StaffController@postEditStaff') }}" method="post" enctype="multipart/form-data">
                 @csrf
             <div class="row">
                 <div class="col-md-3">
                         <div class="form-group">
                             <label>Mã Nhân viên:</label>
-                            <input type="text" class="form-control" name="txtCode" value="{{$data['code']}}">
+                            <input type="text" class="form-control" name="txtID" value="{{$data['id']}}" readonly/>
+                        </div>
+                        <div class="form-group">
+                            <label>Mã Nhân viên:</label>
+                            <input type="text" class="form-control" name="txtCode" value="{{$data['code']}}" readonly/>
                         </div>
                         <div class="form-group">
                             <label>Tên Nhân viên:</label>
@@ -127,10 +131,6 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            
-                            <input type="text" class="form-control" name="txtRegional" value="{{$data['regional']}}">
-                        </div>
-                        <div class="form-group">
                             <label>Điện thoại:</label>
                             <input type="text" class="form-control" name="txtPhone" value="{{$data['phoneNumber']}}">
                         </div>
@@ -148,15 +148,18 @@
                         </div>
                         <div class="form-group">
                             <label>Hình ảnh:</label>
-                            <input type="text" class="form-control" name="txtPhoto">
+                            <p><img width="150px" height="150px" src="{{ asset($data['photo']) }}"></p>
+                            <input type="file" class="form-control" name="txtPhoto">
                         </div>
                         <div class="form-group">
                             <label>Mặt trước CMND:</label>
-                            <input type="text" class="form-control" name="txtIDPhoto">
+                            <p><img width="150px" height="150px" src="{{ asset($data['idPhoto']) }}"></p>
+                            <input type="file" class="form-control" name="txtIDPhoto">
                         </div>
                         <div class="form-group">
                             <label>Mặt sau CMND:</label>
-                            <input type="text" class="form-control" name="txtIDPhoto2">
+                            <p><img width="150px" height="150px" src="{{ asset($data['idPhotoBack']) }}"></p>
+                            <input type="file" class="form-control" name="txtIDPhoto2">
                         </div>
                         <div class="form-group">
                             <label>Ghi chú:</label>

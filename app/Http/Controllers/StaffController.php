@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class StaffController extends Controller
 {
@@ -39,74 +40,93 @@ class StaffController extends Controller
         $joinedAt = $request->input('txtJoinat');
         $dob = $request->input('txtDob');
         $gender = $request->input('txtGender');
-    //     $regional = $request->input('txtRegional');
-    //     $phoneNumber = $request->input('txtPhone');
-    //     $email = $request->input('txtEmail');
-    //     $password = $request->input('txtPass');
+        $regional = $request->input('txtRegional');
+        $phoneNumber = $request->input('txtPhone');
+        $email = $request->input('txtEmail');
+        $password = $request->input('txtPass');
 
-    //    $idNumber = $request->input('txtIDNumber');
-        // $photo = $request->file('txtPhoto');
-    //     $idPhoto = $request->file('txtIDPhoto');
-    //     $idPhotoBack = $request->file('txtIDPhoto2');
-    //     $note = $request->input('txtNote');
-    //     $user = auth()->user();
-      //  $dayOfLeave =request(0);
+        $idNumber = $request->input('txtIDNumber');
+        $photo = null;
+        $idPhoto = null;
+        $idPhotoBack = null;
+        $note = $request->input('txtNote');
+        $user = auth()->user();
+    //  $dayOfLeave =request(0);
 
-      if ($request->hasFile('txtPhoto')) {
-        $file = $request->file('txtPhoto');
-    //kiem tra duoi anh
-        $duoi =$file->getClientOriginalExtension();
-        if($duoi !='jpg' && $duoi !='png' && $duoi !='jpeg'){
-            return Redirect('main/staff/add')->with('loi','Bạn chỉ được chọn file đuôi jpg, png, jpeg');
+        //Photo
+        $now = Carbon::now();
+
+        if (request()->hasFile('txtPhoto')) {
+            // random name cho ảnh
+            $file_name_random = function ($key) {
+                $ext = request()->file($key)->getClientOriginalExtension();
+                $str_random = (string)Str::uuid();
+
+                return $str_random . '.' . $ext;
+            };
+            $image = $file_name_random('txtPhoto');
+            if (request()->file('txtPhoto')->move('./images/user/avatar/' . $now->format('dmY') . '/', $image)) {
+                // gán path ảnh vào model để lưu
+                $photo = '/images/user/avatar/' . $now->format('dmY') . '/' . $image;
+            }
         }
-        $name =$file ->getClientOriginalName();
-        $file->move("./global_data/images",$name);
-        $photo->photo =$name;
-       
-    }
-    else{
-        $photo->photo ="";
-    }
 
+        if (request()->hasFile('txtIDPhoto')) {
+            // random name cho ảnh
+            $file_name_random = function ($key) {
+                $ext = request()->file($key)->getClientOriginalExtension();
+                $str_random = (string)Str::uuid();
 
+                return $str_random . '.' . $ext;
+            };
+            $image = $file_name_random('txtIDPhoto');
+            if (request()->file('txtIDPhoto')->move('./images/user/cmnd/' . $now->format('dmY') . '/', $image)) {
+                // gán path ảnh vào model để lưu
+                $idPhoto = '/images/user/cmnd/' . $now->format('dmY') . '/' . $image;
+            }
+        }
+
+        if (request()->hasFile('txtIDPhoto2')) {
+            // random name cho ảnh
+            $file_name_random = function ($key) {
+                $ext = request()->file($key)->getClientOriginalExtension();
+                $str_random = (string)Str::uuid();
+
+                return $str_random . '.' . $ext;
+            };
+            $image = $file_name_random('txtIDPhoto2');
+            if (request()->file('txtIDPhoto2')->move('./images/user/cmnd/' . $now->format('dmY') . '/', $image)) {
+                // gán path ảnh vào model để lưu
+                $idPhotoBack = '/images/user/cmnd/' . $now->format('dmY') . '/' . $image;
+            }
+        }
 
         $data_request = [
-            
             'code' => $code,
             'firstname' =>$firstname,
             'lastname' =>$lastname,
             'department' =>$department,
-            'isManager'=>$isManager,
+            'isManager'=>boolval($isManager),
             'joinedAt' =>$joinedAt,
             'dob'=>$dob,
             'gender'=>$gender,
-        //     'regional' =>$regional,
-        //     'phoneNumber' =>$phoneNumber,
-        //     'email' =>$email,
-        //     'password' => bcrypt($password),
-
-        //    'idNumber' =>$idNumber,
+            'regional' =>$regional,
+            'phoneNumber' =>$phoneNumber,
+            'email' =>$email,
+            'password' => bcrypt($password),
+            'idNumber' =>$idNumber,
             'photo' =>$photo,
-        //     'idPhoto' =>$idPhoto,
-        //     'idPhotoBack' =>$idPhotoBack,
-        //     "dayOfLeave"==0,
-        //     'note' =>$note,
-        //     "createdBy" => $user->id,
-            "status" =>$status=0,
-
-            
-      
+            'idPhoto' =>$idPhoto,
+            'idPhotoBack' =>$idPhotoBack,
+            "dayOfLeave"=>0,
+            'note' =>$note,
+            "createdBy" => $user->id,
+            "status" => 0,
         ];
-        // $response = Http::attach('attachment', file_get_contents($photo), 'photo.jpg')
-        //     ->post('http://localhost:8888/staff/add', $data_request);
-       // dd($response);
-
-
-
+        
         $response = Http::post('http://localhost:8888/staff/add', $data_request);
         $body = json_decode($response->body(), true);
-//dd($body);
-        if($body['message'] == "Save success") {
+        if($body['isSuccess']) {
             return redirect()->back()->with('success', 'Thêm thành công!');
         } 
         else {
@@ -234,10 +254,62 @@ class StaffController extends Controller
         $password = $request->input('txtPass');
 
        $idNumber = $request->input('txtIDNumber');
-        $photo = $request->input('txtPhoto');
-        $idPhoto = $request->input('txtIDPhoto');
-        $idPhotoBack = $request->input('txtIDPhoto2');
+        // $photo = $request->input('txtPhoto');
+        // $idPhoto = $request->input('txtIDPhoto');
+        // $idPhotoBack = $request->input('txtIDPhoto2');
         $note = $request->input('txtNote');
+        $user = auth()->user();
+
+       //Photo
+
+      if ($request->hasFile('txtPhoto')) {
+        $file = $request->file('txtPhoto');
+    //kiem tra duoi anh
+        $duoi =$file->getClientOriginalExtension();
+        if($duoi !='jpg' && $duoi !='png' && $duoi !='jpeg'){
+            return Redirect('main/staff/edit')->with('loi','Bạn chỉ được chọn file đuôi jpg, png, jpeg');
+        }
+        $name =$file ->getClientOriginalName();
+        $file->move("./images/user/avatar",$name);
+        $file->photo =$name;
+       
+    }
+    else{
+        $photo->photo ="";
+    }
+//IdPhoto
+    if ($request->hasFile('txtIDPhoto')) {
+        $fileid = $request->file('txtIDPhoto');
+    //kiem tra duoi anh
+        $duoi =$fileid->getClientOriginalExtension();
+        if($duoi !='jpg' && $duoi !='png' && $duoi !='jpeg'){
+            return Redirect('main/staff/edit')->with('loi','Bạn chỉ được chọn file đuôi jpg, png, jpeg');
+        }
+        $name =$fileid ->getClientOriginalName();
+        $fileid->move("./images/user/cmnd",$name);
+        $fileid->idPhoto =$name;
+       
+    }
+    else{
+        $idPhoto->idPhoto ="";
+    }
+
+//IdPhotoBack
+    if ($request->hasFile('txtIDPhoto2')) {
+        $fileidback = $request->file('txtIDPhoto2');
+    //kiem tra duoi anh
+        $duoi =$fileidback->getClientOriginalExtension();
+        if($duoi !='jpg' && $duoi !='png' && $duoi !='jpeg'){
+            return Redirect('main/staff/edit')->with('loi','Bạn chỉ được chọn file đuôi jpg, png, jpeg');
+        }
+        $name =$fileidback ->getClientOriginalName();
+        $fileidback->move("./images/user/cmnd",$name);
+        $fileidback->idPhotoBack =$name;
+       
+    }
+    else{
+        $idPhotoBack->idPhotoBack ="";
+    }
         
         $data_request = [
             'id'=>$id,
@@ -245,7 +317,7 @@ class StaffController extends Controller
             'firstname' =>$firstname,
             'lastname' =>$lastname,
             'department' =>$department,
-            'isManager'=>$isManager,
+            'isManager'=> $isManager == "0" ? 0 : 1,
             'joinedAt' =>$joinedAt,
             'dob'=>$dob,
             'gender'=>$gender,
@@ -254,12 +326,13 @@ class StaffController extends Controller
             'email' =>$email,
             'password' => bcrypt($password),
 
-           'idNumber' =>$idNumber,
-            'photo' =>$photo,
-            'idPhoto' =>$idPhoto,
-            'idPhotoBack' =>$idPhotoBack,
-            "dayOfLeave"==0,
+            'idNumber' =>$idNumber,
+            'photo' =>$file,
+            'idPhoto' =>$fileid,
+            'idPhotoBack' =>$fileidback,
+            "dayOfLeave"=>$dayOfLeave=0,
             'note' =>$note,
+            "updatedBy" => $user->id,
             "status" =>$status=0,
         ];
        

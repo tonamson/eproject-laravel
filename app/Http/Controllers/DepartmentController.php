@@ -47,6 +47,7 @@ class DepartmentController extends Controller
 
     public function createDepartment(Request $request)
     {
+       
         $name = $request->input('txtName');
         $nameVn = $request->input('txtName1');
         
