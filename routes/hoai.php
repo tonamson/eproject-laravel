@@ -34,7 +34,10 @@ Route::group(['prefix' => 'staff'], function () {
 Route::group(['prefix' => 'education'], function () {
     Route::get('/index', 'EducationController@index');
     Route::get('/add', 'EducationController@addEducation');
-    Route::post('/add', 'EducationController@CreateEducation')->name('postEducation');
+    Route::post('/add', 'EducationController@createEducation')->name('postEducation');
+    Route::get('/delete', 'EducationController@deleteEducation')->name('getDeleteEdu');
+    Route::get('/gedit', 'EducationController@getEditEducation');
+    Route::post('/pedit', 'EducationController@postEditEducation');
 
  
 });

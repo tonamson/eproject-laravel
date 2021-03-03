@@ -28,14 +28,6 @@
         <h1 class="pt-3 pl-3 pr-3 font-weight-bold">Thông tin Bằng cấp</h1>
             <h4 class="card-title font-weight-bold text-uppercase">HR-Education</h4>
 
-             <!-- Basic datatable -->
-    
-                <div class="ml-1">
-                    <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2">THÊM MỚI</button>
-                </div>
-     
-              <!--End Basic datatable -->
-
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
@@ -54,7 +46,7 @@
             <thead>
                 <tr>
                     <th>Mã ID</th>
-                    <th>Mã Nhân viên</th>
+                    <th>Họ tên Nhân viên</th>
                     <th>Bậc</th>
                     <th>Hạng Bậc</th>
                     <th>Tên Trường</th>
@@ -62,13 +54,18 @@
                     <th>Năm học</th>
                     <th>Xếp loại</th>
                     <th>Phương thức</th>
+                    <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>
                     @foreach($data_education as $education)
                     <tr>
                         <td>{{ $education['id'] }}</td>
-                        <td>{{ $education['staffId'] }}</td>
+                        @foreach ($data_staff as $staff)
+                                    @if ($education['staffId'] == $staff['id'])
+                                        <td>{{$staff['firstname']}} {{$staff['lastname']}} </td>
+                                    @endif
+                        @endforeach
                         <td>{{ $education['level'] }}</td>
                         <td>{{ $education['levelName'] }}</td>
                         <td>{{ $education['school'] }}</td>
@@ -76,6 +73,20 @@
                         <td>{{ $education['graduatedYear'] }}</td>
                         <td>{{ $education['grade'] }}</td>
                         <td>{{ $education['modeOfStudy'] }}</td>
+                        <td class="text-center">
+                        <div class="list-icons">
+                            <div class="dropdown">
+                                <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                    <i class="icon-menu9"></i>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="{{ action('EducationController@getEditEducation') }}?id={{ $education['id'] }}" class="dropdown-item">Cập nhật</a>
+                                        <a href="{{ action('EducationController@deleteEducation') }}?id={{ $education['id'] }}" class="dropdown-item">Xóa</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                    
                     </tr>
                     @endforeach
@@ -84,42 +95,6 @@
     </div>
     <!-- /basic datatable -->
 
-     <!-- Modal Add Deparment -->
-     <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <form action="{{action('DepartmentController@CreateDepartment')}}" method="post">
-                        @csrf
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">THÊM MỚI</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Tên Phòng Ban</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="txtName"  required>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Tên Phòng Ban Tiếng Việt</label>
-                                <div class="col-lg-9">
-                                <input type="text" class="form-control" name="txtName1"  required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                            <button type="submit" class="btn btn-primary">Thêm mới</button>
-                        </div>
-                    </form>  
-                </div>
-            </div>
-        </div>
-
-    <!-- /basic datatable -->
 @endsection
 
 @section('scripts')

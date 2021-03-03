@@ -42,7 +42,7 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">THÊM VĂN BẰNG NHÂN VIÊN</h1>
+        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">CẬP NHẬT VĂN BẰNG NHÂN VIÊN</h1>
         <div class="card-header header-elements-inline">
  
         </div>
@@ -63,45 +63,45 @@
                 </div>
             @endif
              
-                <form action="{{ route('postEducation') }}" method="post" enctype="multipart/form-data">
+                <form action="{{action('EducationController@postEditEducation')}}" method="post" enctype="multipart/form-data">
                 @csrf
             <div class="row">
                 <div class="col-md-3">
                         <div class="form-group">
+                            <label>ID:</label>
+                            <input type="text" class="form-control" name="txtID" value="{{$data['id']}}" readonly>
+                        </div>
+                        <div class="form-group">
                             <label>ID Nhân viên:</label>
-                            <select class="form-control" name="txtStaffID" color="red">
-                            @foreach($data_staff as $staff)
-                            <option value="{{ $staff['id'] }}">{{ $staff['id'] }}</option>
-                            @endforeach
-                            </select>
+                            <input type="text" class="form-control" name="txtStaffID" value="{{$data['staffId']}}">
                         </div>
                         <div class="form-group">
                             <label>Cấp Bậc:</label>
-                            <input type="text" class="form-control" name="txtLevel">
+                            <input type="text" class="form-control" name="txtLevel" value="{{$data['level']}}">
                         </div>
                         <div class="form-group">
                             <label>Tên Cấp Bậc:</label>
-                            <input type="text" class="form-control" name="txtLevelName">
+                            <input type="text" class="form-control" name="txtLevelName" value="{{$data['levelName']}}">
                         </div>
                         <div class="form-group">
                             <label>Tên Trường:</label>
-                            <input type="text" class="form-control" name="txtSchool">
+                            <input type="text" class="form-control" name="txtSchool" value="{{$data['school']}}">
                         </div>
                         <div class="form-group">
                             <label>Chuyên ngành:</label>
-                            <input type="text" class="form-control" name="txtFieldOfStudy">
+                            <input type="text" class="form-control" name="txtFieldOfStudy" value="{{$data['fieldOfStudy']}}">
                         </div>
                         <div class="form-group">
                             <label>Năm tốt nghiện:</label>
-                            <input type="text" class="form-control" name="txtGraduatedYear">
+                            <input type="text" class="form-control" name="txtGraduatedYear" value="{{$data['graduatedYear']}}">
                         </div>
                         <div class="form-group">
                             <label>Xếp loại:</label>
-                            <input type="text" class="form-control" name="txtGrade">
+                            <input type="text" class="form-control" name="txtGrade" value="{{$data['grade']}}">
                         </div>
                         <div class="form-group">
                             <label>Hình thức học:</label>
-                            <input type="text" class="form-control" name="txtModeOf">
+                            <input type="text" class="form-control" name="txtModeOf" value="{{$data['modeOfStudy']}}">
                         </div>
                         <button class="btn btn-success" type="submit">Lưu</button>
                         <button class="btn btn-success" type="reset">Reset</button>
