@@ -42,12 +42,12 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">THÔNG TIN CHI TIẾT NHÂN VIÊN</h1>
+        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">CHI TIẾT NHÂN VIÊN</h1>
         <div class="card-header header-elements-inline">
  
         </div>
         <div class="card-body">
-            @if (\Session::has('success'))
+        @if (\Session::has('success'))
                 <div class="">
                     <div class="alert alert-success">
                         {!! \Session::get('success') !!}
@@ -55,85 +55,98 @@
                 </div>
             @endif
 
-            @if (\Session::has('error'))
+            @if (session('message'))
                 <div class="">
-                    <div class="alert alert-danger">
-                        {!! \Session::get('error') !!}
+                    <div class="alert alert-primary">
+                        {!! session('message') !!}
                     </div>
                 </div>
             @endif
-             
-                <form action="#" method="post">
+                <form action="#" method="post" enctype="multipart/form-data">
                 @csrf
             <div class="row">
                 <div class="col-md-3">
                         <div class="form-group">
+                            <label >Mã Nhân viên:</label>
+                            <b><label>{{$data['id']}}</label></b>
+                        </div>
+                        <div class="form-group">
                             <label>Mã Nhân viên:</label>
-                            <input type="text" class="form-control" name="txtCode" value="{{$data['code']}}" readonly/>
+                            <b><label>{{$data['code']}}</label></b>
                         </div>
                         <div class="form-group">
-                            <label>Tên Nhân viên:</label>
-                            <input type="text" class="form-control" name="txtFname" value="{{$data['firstname']}}" readonly/>
-                        </div>
-                        <div class="form-group">
-                            <label>Họ nhân viên:</label>
-                            <input type="text" class="form-control" name="txtLname" value="{{$data['lastname']}}" readonly/>
+                            <label>Họ tên Nhân viên:</label>
+                            <b><label>{{$data['lastname']}} {{$data['firstname']}}</label></b>
                         </div>
                         <div class="form-group">
                             <label>Phòng Ban:</label>
-                            <input type="text" class="form-control" name="txtLname" value="{{$data['department']}}" readonly/>  
+                            <b>
+                                @foreach ($data_department as $dep)
+                                @if ($data['department'] == $dep['id'])
+                                <td>{{$dep['name']}}</td>
+                                @endif
+                                @endforeach
+                            </b>
                         </div>
                         <div class="form-group">
                             <label>Phân Quyền:</label>
-                            <input type="text" class="form-control" name="txtLname" value="{{$data['isManager']}}" readonly/>  
+                            <b>@if($data['isManager'] == 1)
+                                Quản lý
+                            @else
+                                Nhân viên
+                            @endif</b>
                         </div>
                         <div class="form-group">
                             <label>Ngày Vào:</label>
-                            <input type="Date" class="form-control" name="txtJoinat" value="{{$data['joinedAt']}}" readonly/>
+                            <b><label>{{$data['joinedAt']}}</label></b>
                         </div>
                         <div class="form-group">
                             <label>Ngày sinh:</label>
-                            <input type="Date" class="form-control" name="txtDob" value="{{$data['dob']}}" readonly/>
+                            <b><label>{{$data['dob']}}</label></b>
                         </div>
                          <div class="form-group">
                             <label>Giới tính:</label>
-                            <select name="txtGender" color="red" >
-                                <option value="1">Nam</option>
-                                <option value="0">Nữ</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Khu vực:</label>
-                            <select name="txtRegional" color="red" >
-                            </select>
-                        </div>
+                            <b>@if($data['isManager'] == 1)
+                                Nam
+                            @else
+                                Nữ
+                            @endif</b>
+                            </div>
                         <div class="form-group">
                             <label>Điện thoại:</label>
-                            <input type="text" class="form-control" name="txtPhone" value="{{$data['phoneNumber']}}" readonly/>
+                            <b><label>{{$data['phoneNumber']}}</label></b>
                         </div>
                        <div class="form-group">
                             <label>Email:</label>
-                            <input type="text" class="form-control" name="txtEmail" value="{{$data['email']}}" readonly/>
+                            <b><label>{{$data['email']}}</label></b>
                         </div>
                          <div class="form-group">
                             <label>CMND:</label>
-                            <input type="text" class="form-control" name="txtIDNumber" value="{{$data['idNumber']}}" readonly/>
+                            <b><label>{{$data['idNumber']}}</label></b>
                         </div>
                         <div class="form-group">
                             <label>Hình ảnh:</label>
-                            <input type="text" class="form-control" name="txtPhoto">
+                            <p><img width="150px" height="150px" src="{{ asset($data['photo']) }}"></p>
                         </div>
                         <div class="form-group">
                             <label>Mặt trước CMND:</label>
-                            <input type="text" class="form-control" name="txtIDPhoto">
+                            <p><img width="150px" height="150px" src="{{ asset($data['idPhoto']) }}"></p>
                         </div>
                         <div class="form-group">
                             <label>Mặt sau CMND:</label>
-                            <input type="text" class="form-control" name="txtIDPhoto2">
+                            <p><img width="150px" height="150px" src="{{ asset($data['idPhotoBack']) }}"></p>
                         </div>
                         <div class="form-group">
                             <label>Ghi chú:</label>
-                            <input type="text" class="form-control" name="txtNote">
+                            <b><label>{{$data['note']}}</label></b>
+                        </div>
+                        <div class="form-group">
+                            <label>Tạo bởi:</label>
+                            <b><label>{{$data['createdBy']}}</label></b>
+                        </div>
+                        <div class="form-group">
+                            <label>Thời gian tạo:</label>
+                            <b><label>{{$data['createdAt']}}</label></b>
                         </div>
                     </div>
                 </div>
@@ -145,36 +158,27 @@
 
 @section('scripts')
     <script>
-        $('.day_bsc').daterangepicker({
-            singleDatePicker: true,
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });
+        $('#province').on('change', function() {
+            var parent = this.value;
 
-        $('.day_leave').daterangepicker({
-            singleDatePicker: true,
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });
-
-        $( "#btn_tb_bsc" ).click(function() {
-            $('#tb_dkp').hide();
-            $('#tb_dkp_wrapper').hide();
-            $('#tb_bsc').show();
-            $('#tb_bsc_wrapper').show();
-            $(this).addClass('active');
-            $('#btn_tb_dkp').removeClass('active');
-        });
-
-        $( "#btn_tb_dkp" ).click(function() {
-            $('#tb_bsc').hide();
-            $('#tb_bsc_wrapper').hide();
-            $('#tb_dkp').show();
-            $('#tb_dkp_wrapper').show();
-            $(this).addClass('active');
-            $('#btn_tb_bsc').removeClass('active');
+            $.ajax({
+                url: '{{ action('StaffController@loadRegional') }}',
+                Type: 'GET',
+                datatype: 'text',
+                data:
+                {
+                    parent: parent,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    var obj = $.parseJSON( data);
+                    $('#district').empty();
+                    for (var i = 0; i < obj.length; i++) {
+                        $('#district').append('<option value="'+obj[i]['id']+'">'+obj[i]['name']+'</option>');
+                    }
+                }
+            });
         });
 
         $('.open-detail-time-leave').click(function() {
@@ -197,116 +201,6 @@
                 }
             });
         });
-
-        $('.open-detail-dkp').click(function() {
-            var id = $(this).attr('id');
-
-            $.ajax({
-                url: '{{ action('TimeleaveController@detailLeave') }}',
-                Type: 'POST',
-                datatype: 'text',
-                data:
-                {
-                    id: id,
-                },
-                cache: false,
-                success: function (data)
-                {
-                    console.log(data);
-                    $('#html_pending').empty().append(data);
-                    $('#bsc-modal').modal();
-                }
-            });
-        });
-
-        var DatatableBasic = function() {
-
-            // Basic Datatable examples
-            var _componentDatatableBasic = function() {
-                if (!$().DataTable) {
-                    console.warn('Warning - datatables.min.js is not loaded.');
-                    return;
-                }
-
-                // Setting datatable defaults
-                $.extend( $.fn.dataTable.defaults, {
-                    autoWidth: false,
-                    columnDefs: [{ 
-                        orderable: false,
-                        width: 100,
-                        targets: [ 5 ]
-                    }],
-                    dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-                    language: {
-                        search: '<span>Filter:</span> _INPUT_',
-                        searchPlaceholder: 'Type to filter...',
-                        lengthMenu: '<span>Show:</span> _MENU_',
-                        paginate: { 'first': 'First', 'last': 'Last', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;' }
-                    }
-                });
-
-                // Basic datatable
-                $('.datatable-basic').DataTable();
-                $('.datatable-basic2').DataTable();
-
-                // Alternative pagination
-                $('.datatable-pagination').DataTable({
-                    pagingType: "simple",
-                    language: {
-                        paginate: {'next': $('html').attr('dir') == 'rtl' ? 'Next &larr;' : 'Next &rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr; Prev' : '&larr; Prev'}
-                    }
-                });
-
-                // Datatable with saving state
-                $('.datatable-save-state').DataTable({
-                    stateSave: true
-                });
-
-                // Scrollable datatable
-                var table = $('.datatable-scroll-y').DataTable({
-                    autoWidth: true,
-                    scrollY: 300
-                });
-
-                // Resize scrollable table when sidebar width changes
-                $('.sidebar-control').on('click', function() {
-                    table.columns.adjust().draw();
-                });
-            };
-
-            // Select2 for length menu styling
-            var _componentSelect2 = function() {
-                if (!$().select2) {
-                    console.warn('Warning - select2.min.js is not loaded.');
-                    return;
-                }
-
-                // Initialize
-                $('.dataTables_length select').select2({
-                    minimumResultsForSearch: Infinity,
-                    dropdownAutoWidth: true,
-                    width: 'auto'
-                });
-            };
-
-            return {
-                init: function() {
-                    _componentDatatableBasic();
-                    _componentSelect2();
-                }
-            }
-        }();
-
-        document.addEventListener('DOMContentLoaded', function() {
-            DatatableBasic.init();
-        });
-
-});
-
-
-
-
-
 
     </script>
 
