@@ -89,8 +89,8 @@
                 {{-- @dd($data) --}}
                     <tr style="
                         <?php 
-                            if($check_in_out['special_date_id'] !== null) echo "background-color: #f0c757";
-                            else if($check_in_out['day_of_week'] == 1 or $check_in_out['day_of_week'] == 7)  echo "background-color: #84da86";
+                            if($check_in_out['special_date_id'] !== null) echo "background-color: #fff2ce";
+                            else if($check_in_out['day_of_week'] == 1 or $check_in_out['day_of_week'] == 7)  echo "background-color: #d3ffd4";
                         ?>
                     ">
                         <td>

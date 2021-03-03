@@ -98,11 +98,30 @@
             <tbody>
                 @foreach ($data as $time_leave)
                     @if($time_leave['type'] == 0)
-                        <tr>
+                            <tr style="
+                                <?php 
+                                    if($time_leave['special_date_id'] !== null) echo "background-color: #fff2ce";
+                                    else if($time_leave['day_of_week'] == 1 or $time_leave['day_of_week'] == 7)  echo "background-color: #d3ffd4";
+                                ?>
+                            ">
                             <td>{{ $time_leave['firstname'] . ' ' . $time_leave['lastname'] }}</td>
                             <td>{{ $time_leave['name'] }}</td>
-                            <td>{{ $time_leave['day_time_leave'] }}</td>
-                            <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
+                            <td>
+                                {{ $time_leave['day_time_leave'] }}
+                                <?php 
+                                    if($time_leave['day_of_week'] == 1) {
+                                        echo 'Chủ Nhật';
+                                    } else {
+                                        echo 'Thứ ' . $time_leave['day_of_week'];
+                                    }
+                                ?>
+                                <?php 
+                                    if($time_leave['special_date_id'] !== null) {
+                                        echo '(Ngày lễ)';
+                                    }
+                                ?>
+                            </td>
+                            <td><?php echo $time_leave['time'] == "08:00:00" ? 1 * $time_leave['multiply'] . ' ngày công' : 0.5 * $time_leave['multiply'] . ' ngày công' ?></td>
                             <td>
                                 <?php 
                                     if(strlen($time_leave['note']) > 20) echo substr($time_leave['note'], 0, 30) . '...';
@@ -151,7 +170,21 @@
                         <tr>
                             <td>{{ $time_leave['firstname'] . ' ' . $time_leave['lastname'] }}</td>
                             <td>{{ $time_leave['name'] }}</td>
-                            <td>{{ $time_leave['day_time_leave'] }}</td>
+                            <td>
+                                {{ $time_leave['day_time_leave'] }}
+                                <?php 
+                                    if($time_leave['day_of_week'] == 1) {
+                                        echo 'Chủ Nhật';
+                                    } else {
+                                        echo 'Thứ ' . $time_leave['day_of_week'];
+                                    }
+                                ?>
+                                <?php 
+                                    if($time_leave['special_date_id'] !== null) {
+                                        echo '(Ngày lễ)';
+                                    }
+                                ?>
+                            </td>
                             <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
                             <td>
                                 <?php 

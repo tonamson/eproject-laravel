@@ -122,12 +122,14 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ action('TransferController@list') }}" class="nav-link">
-                        <i class="icon-transmission"></i>
-                        <span>Điều Chuyển</span>
-                    </a>
-                </li>
+                @if(auth()->user()->department == 2 or auth()->user()->is_manager == 2)
+                    <li class="nav-item">
+                        <a href="{{ action('TransferController@list') }}" class="nav-link">
+                            <i class="icon-transmission"></i>
+                            <span>Điều Chuyển</span>
+                        </a>
+                    </li>
+                @endif
 
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span>Hợp đồng</span></a>
