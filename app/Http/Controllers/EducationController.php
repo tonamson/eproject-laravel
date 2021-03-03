@@ -67,7 +67,6 @@ class EducationController extends Controller
        }
        return redirect()->back()->with('message','Thêm thất bại');
    }
-
     //Update
 
     public function getEditEducation(Request $request) {
@@ -81,12 +80,9 @@ class EducationController extends Controller
             return view('main/education/edit', [
                 'data' => $body['data']
             ]);
-
-            
         }
         return redirect()->back()->with('message','Khong tim thay phong ban');
     }
-
 
     public function postEditEducation(Request $request) {
         $id=$request->input('txtID');
@@ -133,8 +129,4 @@ class EducationController extends Controller
 
         return redirect()->back()->with('success', 'Xóa thành công!');
     }
-
-   
-   
-
 }
