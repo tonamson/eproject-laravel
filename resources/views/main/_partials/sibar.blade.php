@@ -114,12 +114,6 @@
                                     <span>Thêm Văn Bằng</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="icon-trash"></i>
-                                    <span>Thùng rác</span>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                 @endif
