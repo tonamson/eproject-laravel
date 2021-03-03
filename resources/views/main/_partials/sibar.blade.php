@@ -27,7 +27,7 @@
 
                     <div class="media-body">
                         <div class="media-title font-weight-semibold"><?php echo auth()->user()->firstname . ' ' . auth()->user()->lastname ?></div>
-                        <div class="media-title font-weight-semibold">{{ session('department_name') }}</div>
+                        <div class="media-title font-weight-semibold">{{ session('department_name') }} - <?php echo auth()->user()->is_manager == 1 ? 'Quản lý' : 'Nhân viên' ?></div>
                     </div>
 
                 </div>
@@ -47,82 +47,84 @@
                         <span>Trang Chủ</span>
                     </a>
                 </li>
+                
                 @if(auth()->user()->department == 2)
-                <li class="nav-item">
-                    <a href="{{ action('DashboardController@index') }}" class="nav-link">
-                        <i class="icon-stats-growth"></i>
-                        <span>Biểu Đồ</span>
-                    </a>
-                </li>
-
-                <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link"><i class="icon-credit-card"></i> <span>Phòng Ban</span></a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                     <li class="nav-item">
-                            <a href="{{ action('DepartmentController@index') }}" class="nav-link">
-                                <i class="icon-list"></i>
-                                <span>Danh sách Phòng Ban</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ action('DepartmentController@listUndo') }}" class="nav-link">
-                                <i class="icon-trash"></i>
-                                <span>Thùng rác</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                        <a href="{{ action('DashboardController@index') }}" class="nav-link">
+                            <i class="icon-stats-growth"></i>
+                            <span>Biểu Đồ</span>
+                        </a>
+                    </li>
 
-                <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link"><i class="icon-user"></i> <span>Nhân viên</span></a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                    <li class="nav-item nav-item-submenu">
+                        <a href="#" class="nav-link"><i class="icon-credit-card"></i> <span>Phòng Ban</span></a>
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                         <li class="nav-item">
-                            <a href="{{ action('StaffController@index') }}" class="nav-link">
-                                <i class="icon-list"></i>
-                                <span>Danh sách</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ action('StaffController@vaddStaff') }}" class="nav-link">
-                                <i class="icon-plus2"></i>
-                                <span>Thêm nhân viên</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ action('StaffController@listUndo') }}" class="nav-link">
-                                <i class="icon-trash"></i>
-                                <span>Thùng rác</span>
-                            </a>
-                        </li>
+                                <a href="{{ action('DepartmentController@index') }}" class="nav-link">
+                                    <i class="icon-list"></i>
+                                    <span>Danh sách Phòng Ban</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ action('DepartmentController@listUndo') }}" class="nav-link">
+                                    <i class="icon-trash"></i>
+                                    <span>Thùng rác</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-                    </ul>
-                </li>
+                    <li class="nav-item nav-item-submenu">
+                        <a href="#" class="nav-link"><i class="icon-user"></i> <span>Nhân viên</span></a>
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                            <li class="nav-item">
+                                <a href="{{ action('StaffController@index') }}" class="nav-link">
+                                    <i class="icon-list"></i>
+                                    <span>Danh sách</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ action('StaffController@vaddStaff') }}" class="nav-link">
+                                    <i class="icon-plus2"></i>
+                                    <span>Thêm nhân viên</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ action('StaffController@listUndo') }}" class="nav-link">
+                                    <i class="icon-trash"></i>
+                                    <span>Thùng rác</span>
+                                </a>
+                            </li>
 
-                <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Bằng Cấp</span></a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                    <li class="nav-item">
-                            <a href="{{ action('EducationController@index') }}" class="nav-link">
-                                <i class="icon-list"></i>
-                                <span>Danh sách</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ action('EducationController@addEducation') }}" class="nav-link">
-                                <i class="icon-plus2"></i>
-                                <span>Thêm Văn Bằng</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="icon-trash"></i>
-                                <span>Thùng rác</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
 
-                @if(auth()->user()->department == 2 or auth()->user()->is_manager == 2)
+                    <li class="nav-item nav-item-submenu">
+                        <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Bằng Cấp</span></a>
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                        <li class="nav-item">
+                                <a href="{{ action('EducationController@index') }}" class="nav-link">
+                                    <i class="icon-list"></i>
+                                    <span>Danh sách</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ action('EducationController@addEducation') }}" class="nav-link">
+                                    <i class="icon-plus2"></i>
+                                    <span>Thêm Văn Bằng</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="icon-trash"></i>
+                                    <span>Thùng rác</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                @if(auth()->user()->department == 2 or auth()->user()->is_manager == 1)
                     <li class="nav-item">
                         <a href="{{ action('TransferController@list') }}" class="nav-link">
                             <i class="icon-transmission"></i>
@@ -131,29 +133,30 @@
                     </li>
                 @endif
 
-                <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span>Hợp đồng</span></a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                        <li class="nav-item">
-                            <a href="{{ route('getListContract', ['del' => false]) }}" class="nav-link">
-                                <i class="icon-list"></i>
-                                <span>Danh sách</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('getCreateContract') }}" class="nav-link">
-                                <i class="icon-plus2"></i>
-                                <span>Tạo hợp đồng</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('getListContract', ['del' => true]) }}" class="nav-link">
-                                <i class="icon-trash"></i>
-                                <span>Thùng rác</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @if(auth()->user()->department == 2)
+                    <li class="nav-item nav-item-submenu">
+                        <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span>Hợp đồng</span></a>
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                            <li class="nav-item">
+                                <a href="{{ route('getListContract', ['del' => false]) }}" class="nav-link">
+                                    <i class="icon-list"></i>
+                                    <span>Danh sách</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('getCreateContract') }}" class="nav-link">
+                                    <i class="icon-plus2"></i>
+                                    <span>Tạo hợp đồng</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('getListContract', ['del' => true]) }}" class="nav-link">
+                                    <i class="icon-trash"></i>
+                                    <span>Thùng rác</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 @endif
 
                 <li class="nav-item nav-item-submenu">

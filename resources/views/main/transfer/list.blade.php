@@ -170,15 +170,23 @@
                             ?>
                         </td>
                         <td><?php echo $transfer['created_at'] ?></td>
-                        @if($transfer['old_manager_approved'] == 0 && $transfer['new_manager_approved'] == 0)
+                        @if(auth()->user()->department == 2)
+                            @if($transfer['old_manager_approved'] == 0 && $transfer['new_manager_approved'] == 0)
+                                <td>
+                                    <div class="from-group d-flex">
+                                        <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                        <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                    </div>
+                                </td>
+                            @else
+                                <td style="max-width: 160px;">Đã có ít nhất một quản lý phê duyệt, không thể chỉnh sửa</td>
+                            @endif
+                        @else
                             <td>
                                 <div class="from-group d-flex">
-                                    <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                    <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                    <a href="{{ action('TransferController@list') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
                                 </div>
                             </td>
-                        @else
-                            <td style="max-width: 160px;">Đã có ít nhất một quản lý phê duyệt, không thể chỉnh sửa</td>
                         @endif
                     </tr>
                 @endforeach   

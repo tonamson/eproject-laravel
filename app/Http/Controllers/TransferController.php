@@ -20,7 +20,7 @@ class TransferController extends Controller
         }
 
         $date = $year . '-' . $month . '-' . '01';
-        $data_request = ['day_get' => $date];
+        $data_request = ['day_get' => $date, 'department' => auth()->user()->department];
 
         $response = Http::get('http://localhost:8888/transfer/list', $data_request);
         $body = json_decode($response->body(), true);
