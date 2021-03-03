@@ -36,6 +36,20 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/index', 'CheckInOutController@show');
     });
 
+    Route::group(['prefix' => 'transfer'], function () {
+        Route::get('/list', 'TransferController@list');
+
+        Route::get('/get-old-department', 'TransferController@loadOldDepartment');
+   
+        Route::post('/create-transfer', 'TransferController@create');
+
+        Route::get('/delete-transfer', 'TransferController@delete');
+
+        Route::get('/detail-transfer', 'TransferController@detail');
+
+        Route::post('/update-transfer', 'TransferController@update');
+    });
+
     Route::middleware(['check_hr'])->group(function () {
         Route::group(['prefix' => 'special-date'], function () {
             Route::get('/index', 'SpecialDateController@index');
