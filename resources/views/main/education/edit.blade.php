@@ -35,81 +35,132 @@
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
     <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
     <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
+    <script src="{{asset('global_assets/js/plugins/forms/selects/select2.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
+    <script src="{{asset('global_assets/js/demo_pages/form_layouts.js')}}"></script>
 
 @endsection
 
 
 @section('content')
-    <!-- Basic datatable -->
-    <div class="card">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">CẬP NHẬT VĂN BẰNG NHÂN VIÊN</h1>
-        <div class="card-header header-elements-inline">
- 
-        </div>
-        <div class="card-body">
-        @if (\Session::has('success'))
-                <div class="">
-                    <div class="alert alert-success">
-                        {!! \Session::get('success') !!}
-                    </div>
-                </div>
-            @endif
+   <!-- Basic datatable -->
+    	<!-- 2 columns form -->
+        <div class="card">
+					<div class="card-header header-elements-inline">
+						<b><h3 class="card-title">CẬP NHẬT VĂN BẰNG CHỨNG CHỈ</h3></b>
+						<div class="header-elements">
+							<div class="list-icons">
+		                		<a class="list-icons-item" data-action="collapse"></a>
+		                		<a class="list-icons-item" data-action="reload"></a>
+		                		<a class="list-icons-item" data-action="remove"></a>
+		                	</div>
+	                	</div>
+					</div>
+                    @if (\Session::has('success'))
+                        <div class="">
+                            <div class="alert alert-success">
+                                {!! \Session::get('success') !!}
+                            </div>
+                        </div>
+                    @endif
 
-            @if (session('message'))
-                <div class="">
-                    <div class="alert alert-primary">
-                        {!! session('message') !!}
-                    </div>
-                </div>
-            @endif
-             
-                <form action="{{action('EducationController@postEditEducation')}}" method="post" enctype="multipart/form-data">
-                @csrf
-            <div class="row">
-                <div class="col-md-3">
-                        <div class="form-group">
-                            <label>ID:</label>
-                            <input type="text" class="form-control" name="txtID" value="{{$data['id']}}" readonly>
+                    @if (session('message'))
+                        <div class="">
+                            <div class="alert alert-primary">
+                                {!! session('message') !!}
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>ID Nhân viên:</label>
-                            <input type="text" class="form-control" name="txtStaffID" value="{{$data['staffId']}}">
-                        </div>
-                        <div class="form-group">
-                            <label>Cấp Bậc:</label>
-                            <input type="text" class="form-control" name="txtLevel" value="{{$data['level']}}">
-                        </div>
-                        <div class="form-group">
-                            <label>Tên Cấp Bậc:</label>
-                            <input type="text" class="form-control" name="txtLevelName" value="{{$data['levelName']}}">
-                        </div>
-                        <div class="form-group">
-                            <label>Tên Trường:</label>
-                            <input type="text" class="form-control" name="txtSchool" value="{{$data['school']}}">
-                        </div>
-                        <div class="form-group">
-                            <label>Chuyên ngành:</label>
-                            <input type="text" class="form-control" name="txtFieldOfStudy" value="{{$data['fieldOfStudy']}}">
-                        </div>
-                        <div class="form-group">
-                            <label>Năm tốt nghiện:</label>
-                            <input type="text" class="form-control" name="txtGraduatedYear" value="{{$data['graduatedYear']}}">
-                        </div>
-                        <div class="form-group">
-                            <label>Xếp loại:</label>
-                            <input type="text" class="form-control" name="txtGrade" value="{{$data['grade']}}">
-                        </div>
-                        <div class="form-group">
-                            <label>Hình thức học:</label>
-                            <input type="text" class="form-control" name="txtModeOf" value="{{$data['modeOfStudy']}}">
-                        </div>
-                        <button class="btn btn-success" type="submit">Lưu</button>
-                        <button class="btn btn-success" type="reset">Reset</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+                    @endif
+
+					<div class="card-body">
+						<form action="{{action('EducationController@postEditEducation')}}" method="post" enctype="multipart/form-data">
+                        @csrf
+							<div class="row">
+                            <div class="col-md-6">
+									<fieldset>
+					                	<legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Imformation</legend>
+
+										<div class="row">
+											<div class="col-md-6" hidden>
+                                                <label>ID:</label>
+                                                <input type="text" class="form-control" name="txtID" value="{{$data['id']}}" readonly>
+											</div>
+
+                                            <div class="col-md-6">
+												<div class="form-group">
+                                                    <label>Mã Nhân viên:</label>
+                                                    <input type="text" class="form-control" name="txtStaffID" value="{{$data['staffId']}}">
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+                                                 <label>Cấp Bậc:</label>
+                                                  <input type="text" class="form-control" name="txtLevel" value="{{$data['level']}}">
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+                                                    <label>Tên Cấp Bậc:</label>
+                                                    <input type="text" class="form-control" name="txtLevelName" value="{{$data['levelName']}}">
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+                                                    <label>Tên Trường:</label>
+                                                    <input type="text" class="form-control" name="txtSchool" value="{{$data['school']}}">
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+                                                    <label>Chuyên ngành:</label>
+                                                    <input type="text" class="form-control" name="txtFieldOfStudy" value="{{$data['fieldOfStudy']}}">
+					                            </div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+                                                    <label>Năm tốt nghiện:</label>
+                                                    <input type="text" class="form-control" name="txtGraduatedYear" value="{{$data['graduatedYear']}}">
+												</div>
+											</div>
+										</div>
+
+                                        <div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+                                                    <label>Xếp loại:</label>
+                                                    <input type="text" class="form-control" name="txtGrade" value="{{$data['grade']}}">
+					                            </div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+                                                    <label>Hình thức học:</label>
+                                                    <input type="text" class="form-control" name="txtModeOf" value="{{$data['modeOfStudy']}}">
+												</div>
+											</div>
+										</div>
+
+                                       
+									</fieldset>
+								</div>
+							</div>
+							<div class="text-left">
+								<button type="submit" class="btn btn-primary">Cập nhật <i class="icon-paperplane ml-2"></i></button>
+                                <button type="reset" class="btn btn-success">Reset <i class="icon-paperplane ml-2"></i></button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- /2 columns form -->
     <!-- /basic datatable -->
 @endsection
 

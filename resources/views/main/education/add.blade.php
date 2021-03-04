@@ -35,81 +35,129 @@
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
     <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
     <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
+    <script src="{{asset('global_assets/js/plugins/forms/selects/select2.min.js')}}"></script>
+	<script src="{{asset('global_assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
+    <script src="{{asset('global_assets/js/demo_pages/form_layouts.js')}}"></script>
 
 @endsection
 
 
 @section('content')
-    <!-- Basic datatable -->
-    <div class="card">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">THÊM VĂN BẰNG NHÂN VIÊN</h1>
-        <div class="card-header header-elements-inline">
- 
-        </div>
-        <div class="card-body">
-        @if (\Session::has('success'))
-                <div class="">
-                    <div class="alert alert-success">
-                        {!! \Session::get('success') !!}
-                    </div>
-                </div>
-            @endif
+   <!-- Basic datatable -->
+    	<!-- 2 columns form -->
+        <div class="card">
+					<div class="card-header header-elements-inline">
+						<b><h3 class="card-title">THÊM MỚI VĂN BẰNG CHỨNG CHỈ</h3></b>
+						<div class="header-elements">
+							<div class="list-icons">
+		                		<a class="list-icons-item" data-action="collapse"></a>
+		                		<a class="list-icons-item" data-action="reload"></a>
+		                		<a class="list-icons-item" data-action="remove"></a>
+		                	</div>
+	                	</div>
+					</div>
+                    @if (\Session::has('success'))
+                        <div class="">
+                            <div class="alert alert-success">
+                                {!! \Session::get('success') !!}
+                            </div>
+                        </div>
+                      @endif
 
-            @if (session('message'))
-                <div class="">
-                    <div class="alert alert-primary">
-                        {!! session('message') !!}
-                    </div>
-                </div>
-            @endif
-             
-                <form action="{{ route('postEducation') }}" method="post" enctype="multipart/form-data">
-                @csrf
-            <div class="row">
-                <div class="col-md-3">
-                        <div class="form-group">
-                            <label>ID Nhân viên:</label>
-                            <select class="form-control" name="txtStaffID" color="red">
-                            @foreach($data_staff as $staff)
-                            <option value="{{ $staff['id'] }}">{{ $staff['id'] }}</option>
-                            @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Cấp Bậc:</label>
-                            <input type="text" class="form-control" name="txtLevel">
-                        </div>
-                        <div class="form-group">
-                            <label>Tên Cấp Bậc:</label>
-                            <input type="text" class="form-control" name="txtLevelName">
-                        </div>
-                        <div class="form-group">
-                            <label>Tên Trường:</label>
-                            <input type="text" class="form-control" name="txtSchool">
-                        </div>
-                        <div class="form-group">
-                            <label>Chuyên ngành:</label>
-                            <input type="text" class="form-control" name="txtFieldOfStudy">
-                        </div>
-                        <div class="form-group">
-                            <label>Năm tốt nghiện:</label>
-                            <input type="text" class="form-control" name="txtGraduatedYear">
-                        </div>
-                        <div class="form-group">
-                            <label>Xếp loại:</label>
-                            <input type="text" class="form-control" name="txtGrade">
-                        </div>
-                        <div class="form-group">
-                            <label>Hình thức học:</label>
-                            <input type="text" class="form-control" name="txtModeOf">
-                        </div>
-                        <button class="btn btn-success" type="submit">Lưu</button>
-                        <button class="btn btn-success" type="reset">Reset</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+                        @if (session('message'))
+                            <div class="">
+                                <div class="alert alert-primary">
+                                    {!! session('message') !!}
+                                </div>
+                            </div>
+                        @endif
+
+					<div class="card-body">
+						<form action="{{ route('postEducation') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+							<div class="row">
+                            <div class="col-md-6">
+									<fieldset>
+					                	<legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Imformation</legend>
+
+										<div class="row">
+											<div class="col-md-6">
+                                            <label>ID Nhân viên:</label>
+                                                <select class="form-control" name="txtStaffID" color="red">
+                                                @foreach($data_staff as $staff)
+                                                <option value="{{ $staff['id'] }}">{{ $staff['id'] }}</option>
+                                                @endforeach
+                                                </select>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+                                                    <label>Cấp Bậc:</label>
+                                                   <input type="text" class="form-control" name="txtLevel">
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+                                                <label>Tên Cấp Bậc:</label>
+                                                <input type="text" class="form-control" name="txtLevelName">
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+                                                <label>Tên Trường:</label>
+                                                <input type="text" class="form-control" name="txtSchool">
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+                                                <label>Chuyên ngành:</label>
+                                                <input type="text" class="form-control" name="txtFieldOfStudy">
+					                            </div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+                                                <label>Năm tốt nghiện:</label>
+                                                <input type="text" class="form-control" name="txtGraduatedYear">
+												</div>
+											</div>
+										</div>
+
+                                        <div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+                                                <label>Xếp loại:</label>
+                                                <input type="text" class="form-control" name="txtGrade">
+					                            </div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+                                                <label>Hình thức học:</label>
+                                                <input type="text" class="form-control" name="txtModeOf">
+												</div>
+											</div>
+										</div>
+
+                                       
+									</fieldset>
+								</div>
+							</div>
+							<div class="text-left">
+								<button type="submit" class="btn btn-primary">Lưu <i class="icon-paperplane ml-2"></i></button>
+                                <button type="reset" class="btn btn-success">Reset <i class="icon-paperplane ml-2"></i></button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- /2 columns form -->
     <!-- /basic datatable -->
 @endsection
 

@@ -171,25 +171,48 @@ class StaffController extends Controller
     public function getDetail(Request $request) {
         $data_request = $request->all();
 
-        $response = Http::get('http://localhost:8888/department/list', []);
-        $body = json_decode($response->body(), true);
-        $data_department  = [];
-        if($body['isSuccess']){
-            $data_department =$body['data'];
-        }
-
         $response = Http::get('http://localhost:8888/staff/one', $data_request);
         $body = json_decode($response->body(), true);
-        //dd($body);
         if($body['isSuccess']){
-            return view('main/staff/detail', [
-                'data_department' => $data_department,
-                'data' => $body['data']
-            ]); 
+            $staff=$body['data'];
         }
 
-      
+        $response = Http::get('http://localhost:8888/regional/get-one',['id' => $staff['regional']]);
+        $body = json_decode($response->body(), true);
+        $district_default = [];
+        if($body['isSuccess']){
+            $district_selected=$body['data'];
+        }
 
+        $response = Http::get('http://localhost:8888/regional/list',[]);
+        $body = json_decode($response->body(), true);
+        $dsKhuvuc = [];
+        if($body['isSuccess']){
+            $dsKhuvuc=$body['data'];
+        }
+
+        $response = Http::get('http://localhost:8888/regional/list-district',['parent' => $district_selected['parent']]);
+        $body = json_decode($response->body(), true);
+        $district_default = [];
+        if($body['isSuccess']){
+            $district_default=$body['data'];
+        }
+
+        $response = Http::get('http://localhost:8888/department/list', []);
+        $body = json_decode($response->body(), true);
+        $dsPhongBan = [];
+        if($body['isSuccess']){
+            $dsPhongBan=$body['data'];
+        }
+        if($body['isSuccess']){
+            return view('main/staff/detail', [
+                'data' => $staff,
+                'data_department' => $dsPhongBan,
+                'data_reg' => $dsKhuvuc,
+                'data_district' => $district_default,
+                'district_selected' => $district_selected
+            ]);
+        }
         return redirect()->back()->with('message','Khong tim nhan vien');
     }
 
@@ -260,8 +283,8 @@ class StaffController extends Controller
         $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
         $photo = null;
-        $idPhoto = null;
-        $idPhotoBack = null;
+        $idPhoto =null;
+        $idPhotoBack =null;
         $note = $request->input('txtNote');
         $createdBy=$request->input('txtCreateBy');
         $createdAt=$request->input('txtCreatedAt');

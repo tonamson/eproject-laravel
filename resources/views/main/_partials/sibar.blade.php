@@ -100,7 +100,7 @@
                     </li>
 
                     <li class="nav-item nav-item-submenu">
-                        <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Bằng Cấp</span></a>
+                        <a href="#" class="nav-link"><i class="icon-graduation"></i> <span>Bằng Cấp</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                         <li class="nav-item">
                                 <a href="{{ action('EducationController@index') }}" class="nav-link">
