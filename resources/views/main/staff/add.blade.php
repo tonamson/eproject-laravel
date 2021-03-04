@@ -88,11 +88,15 @@
 												</div>
 											</div>
 
-											<div class="col-md-6">
+                                            <div class="col-md-6">
 												<div class="form-group">
-                                                    <label>Tên Nhân viên:(*)</label>
-                                                    <input type="text" class="form-control" name="txtFname" require  placeholder="Nhập Tên">
-												</div>
+                                                <label>Phân Quyền:(*)</label>
+                                                    <!-- <input type="text" class="form-control" name="txtGender"> -->
+                                                    <select class="form-control" name="txtisManager" color="red" >
+                                                        <option value="0">Nhân viên</option>
+                                                        <option value="1">Quản lý</option>
+                                                    </select>
+					                            </div>
 											</div>
 										</div>
 
@@ -117,15 +121,11 @@
 										</div>
 
 										<div class="row">
-											<div class="col-md-6">
+                                            <div class="col-md-6">
 												<div class="form-group">
-                                                <label>Phân Quyền:(*)</label>
-                                                    <!-- <input type="text" class="form-control" name="txtGender"> -->
-                                                    <select class="form-control" name="txtisManager" color="red" >
-                                                        <option value="0">Nhân viên</option>
-                                                        <option value="1">Quản lý</option>
-                                                    </select>
-					                            </div>
+                                                    <label>Tên Nhân viên:(*)</label>
+                                                    <input type="text" class="form-control" name="txtFname" require  placeholder="Nhập Tên">
+												</div>
 											</div>
 
 											<div class="col-md-6">

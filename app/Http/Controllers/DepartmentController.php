@@ -30,7 +30,7 @@ class DepartmentController extends Controller
         ->with('breadcrumbs', [['text' => 'Phòng ban', 'url' => '../view-menu/department'], ['text' => 'Phòng ban đã xóa', 'url' => '#']]);
     }
 
-    public function delete(){
+    public function delete(Request $request){
         $id = $request->input('id');
         
         $data_request = [

@@ -48,6 +48,8 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/detail-transfer', 'TransferController@detail');
 
         Route::post('/update-transfer', 'TransferController@update');
+
+        Route::get('/approve-transfer', 'TransferController@approve');
     });
 
     Route::middleware(['check_hr'])->group(function () {

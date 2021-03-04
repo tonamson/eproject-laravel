@@ -22,7 +22,7 @@
             <div class="card-body">
                 <div class="media">
                     <div class="mr-3">
-                        <a href="#"><img src="{{ asset('images/user/avatar/default_avatar.png') }}" width="38" height="38" class="rounded-circle" alt=""></a>
+                        <a href="{{ action('StaffController@viewProfile') }}"><img src="{{ asset('images/user/avatar/default_avatar.png') }}" width="38" height="38" class="rounded-circle" alt=""></a>
                     </div>
 
                     <div class="media-body">

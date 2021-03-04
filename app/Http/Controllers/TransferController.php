@@ -252,4 +252,25 @@ class TransferController extends Controller
             return redirect()->back()->with('error', 'Chỉnh sửa điều chuyển thất bại!');
         }
     }
+
+    public function approve(Request $request) {
+        $id = $request->input('id');
+        $department = auth()->user()->department;
+
+        $data_request = [
+            'id' => $id,
+            'department' => $department
+        ];
+
+        $response = Http::get('http://localhost:8888/transfer/approve', $data_request);
+        $body = json_decode($response->body(), true);
+
+        if($body['data'] == "Approve Success") {
+            return redirect()->back()->with('success', 'Phê duyệt thành công, khi quản lý còn lại phê duyệt, nhân viên sẽ chuyển phòng ban!');
+        } else if($body['data'] == "Staff changed department") {
+            return redirect()->back()->with('success', 'Phê duyệt thành công, nhân viên đã chuyển phòng ban!');
+        } else {
+            return redirect()->back()->with('error', 'Phê duyệt điều chuyển thất bại!');
+        }
+    }
 }

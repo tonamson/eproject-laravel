@@ -16,13 +16,14 @@
 
 @section('js')    
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
-    <script src="{{ asset('global_assets/js/plugins/notifications/jgrowl.min.js') }}"></script>
-    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/ui/moment/moment.min.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/anytime.min.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
-    <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
-    <script src="{{ asset('global_assets/js/demo_pages/form_select2.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.time.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/forms/selects/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2_init.js') }}"></script>
 @endsection
 
 @section('content')
@@ -66,12 +67,14 @@
                     </div>
                 </div>
             </form>
-
-            <div class="form-group d-flex">
-                <div class="">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Tạo mới</button>
+            
+            @if(auth()->user()->department == 2)
+                <div class="form-group d-flex">
+                    <div class="">
+                        <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Tạo mới</button>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
         <!-- Modal bsc -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -177,14 +180,27 @@
                                         <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
                                         <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
+                                    @if(auth()->user()->is_manager == 1)
+                                        <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                    @endif
                                 </td>
+                            @elseif($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1)
+                                <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
                             @else
-                                <td style="max-width: 160px;">Đã có ít nhất một quản lý phê duyệt, không thể chỉnh sửa</td>
+                                @if(auth()->user()->is_manager == 1)
+                                    <td>
+                                        <div class="from-group d-flex">
+                                            <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td style="max-width: 160px;">Đã có ít nhất một quản lý phê duyệt, không thể chỉnh sửa</td>
+                                @endif
                             @endif
                         @else
                             <td>
                                 <div class="from-group d-flex">
-                                    <a href="{{ action('TransferController@list') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                    <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
                                 </div>
                             </td>
                         @endif
