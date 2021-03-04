@@ -170,14 +170,14 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Mục tiêu Công việc:</label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control target" name="target[]" value="{{ $kpi_detail['taskTarget'] }}" onkeyup=checkEmpty(this) placeholder="Vd: Tăng tỉ lệ chuyển đổi bán hàng của website lên 20%" <?php echo $readonly ? 'readonly' : 'required' ?>>
+                                    <input type="text" class="form-control target" name="target[]" value="{{ $kpi_detail['taskTarget'] }}" onkeyup=checkEmpty(this) placeholder="Vd: Tăng tỉ trọng chuyển đổi bán hàng của website lên 20%" <?php echo $readonly ? 'readonly' : 'required' ?>>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Chi tiết Công việc:</label>
                                 <div class="col-lg-8">
-                                    <textarea rows="3" cols="3" class="form-control task_description" name="task_description[]" onkeyup=checkEmpty(this) placeholder="Vd: Tỷ lệ chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['taskDescription'] }}</textarea>
+                                    <textarea rows="3" cols="3" class="form-control task_description" name="task_description[]" onkeyup=checkEmpty(this) placeholder="Vd: Tỷ trọng chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['taskDescription'] }}</textarea>
                                 </div>
                             </div>
 
@@ -196,7 +196,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-form-label col-lg-4">Tỉ lệ trên tổng các Công việc:</label>
+                                <label class="col-form-label col-lg-4">Tỉ trọng trên tổng các Công việc:</label>
                                 <div class="col-lg-8">
                                     <input id="ratio<?php echo $count ?>" type="number" name="ratio[]" onkeyup=checkEmpty(this) class="form-control ratio" min="0" max="100" value="{{ $kpi_detail['ratio'] }}" placeholder="Vd: 20" <?php echo $readonly ? 'readonly' : 'required' ?>>
                                 </div>
@@ -251,11 +251,11 @@
             $("#btn_add_more").click(function() {
                 html = '<div class="col-md-6" id="one_row'+count_job+'"><input id="input_del'+count_job+'" type="hidden" name="del[]" value="false"><div class="card"><div class="card-header header-elements-inline"><h6 class="card-title">Công việc '+count_job+'</h6><div class="header-elements"><div class="list-icons"><a class="list-icons-item list-icons-item-remove"  onclick="removeTask('+count_job+')"></a></div></div></div>'
                 html += '<div class="card-body">';
-                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Mục tiêu Công việc:</label><div class="col-lg-8"><input type="text" class="form-control target" onkeyup=checkEmpty(this) name="target[]" placeholder="Vd: Tăng tỉ lệ chuyển đổi bán hàng của website lên 20%" required></div></div>';
-                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Chi tiết Công việc:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control task_description" onkeyup=checkEmpty(this) name="task_description[]" placeholder="Vd: Tỷ lệ chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" required></textarea></div></div>';
+                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Mục tiêu Công việc:</label><div class="col-lg-8"><input type="text" class="form-control target" onkeyup=checkEmpty(this) name="target[]" placeholder="Vd: Tăng tỉ trọng chuyển đổi bán hàng của website lên 20%" required></div></div>';
+                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Chi tiết Công việc:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control task_description" onkeyup=checkEmpty(this) name="task_description[]" placeholder="Vd: Tỷ trọng chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" required></textarea></div></div>';
                 html += '<div class="form-group row"><label class="col-form-label col-lg-4">Các bước thực hiện:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control duties_activities" onkeyup=checkEmpty(this) name="duties_activities[]" placeholder="Vd: Tìm hiểu thị trường, chạy marketing, ..." required></textarea></div></div>';
                 html += '<div class="form-group row"><label class="col-form-label col-lg-4">Các kĩ năng cần có:</label><div class="col-lg-8"><textarea rows="3" cols="3" class="form-control skill" onkeyup=checkEmpty(this) name="skill[]" placeholder="Vd: Tìm kiếm thông tin, ..." required></textarea></div></div>';
-                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Tỉ lệ trên tổng các Công việc:</label><div class="col-lg-8"><input id="ratio'+count_job+'" type="number" name="ratio[]" class="form-control ratio" onkeyup=checkEmpty(this) min="0" max="100" placeholder="Vd: 20" required></div></div>';
+                html += '<div class="form-group row"><label class="col-form-label col-lg-4">Tỉ trọng trên tổng các Công việc:</label><div class="col-lg-8"><input id="ratio'+count_job+'" type="number" name="ratio[]" class="form-control ratio" onkeyup=checkEmpty(this) min="0" max="100" placeholder="Vd: 20" required></div></div>';
                 html += '</div></div></div>';
                 $("#row_kpi_detail").append(html);
                 count_job++;
@@ -386,7 +386,7 @@
                         $('.ratio:eq('+i+')').focus();
                         Swal.fire(
                             'Không thể lưu!',
-                            'Tỉ lệ Công việc không được để trống!',
+                            'Tỉ trọng Công việc không được để trống!',
                             'error'
                         );
                         return false;
@@ -395,7 +395,7 @@
                         $('.ratio:eq('+i+')').focus();
                         Swal.fire(
                             'Không thể lưu!',
-                            'Tỉ lệ mỗi Công việc không được nhỏ hơn 0 hoặc vượt quá 100!',
+                            'Tỉ trọng mỗi Công việc không được nhỏ hơn 0 hoặc vượt quá 100!',
                             'error'
                         );
                         return false;
@@ -416,7 +416,7 @@
                 if(total_ratio !== 100) {
                     Swal.fire(
                         'Không thể lưu!',
-                        'Tổng tỉ lệ của các Công việc phải bằng 100!',
+                        'Tổng tỉ trọng của các Công việc phải bằng 100!',
                         'error'
                     );
                     return false;
