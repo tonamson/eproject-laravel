@@ -4,7 +4,7 @@
     <!-- Basic datatable -->
             <div class="form-group d-flex">
                 <div class="ml-1">
-                    <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2">Đăng Kí Phép</button>
+                    <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2"></button>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Tên Phòng Ban Tiếng Việt</label>
                                 <div class="col-lg-9">
-                                    <textarea class="form-control" name="txtName1" id="note_dkp" cols="20" rows="10" placeholder="VD: Bận việc gia đình, Đi học, ..." required></textarea>
+                                    <textarea class="form-control" name="txtName1" id="note_dkp" cols="20" rows="10" placeholder="" required></textarea>
                                 </div>
                             </div>
                         </div>

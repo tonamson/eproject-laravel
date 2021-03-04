@@ -47,7 +47,7 @@
     	<!-- 2 columns form -->
         <div class="card">
 					<div class="card-header header-elements-inline">
-						<b><h3 class="card-title">THÊM MỚI VĂN BẰNG CHỨNG CHỈ</h3></b>
+						<h3 class="pt-3 pl-3 pr-3 font-weight-bold">THÊM MỚI VĂN BẰNG CHỨNG CHỈ</h3>
 						<div class="header-elements">
 							<div class="list-icons">
 		                		<a class="list-icons-item" data-action="collapse"></a>
@@ -82,14 +82,13 @@
 
 										<div class="row">
 											<div class="col-md-6">
-                                            <label>ID Nhân viên:</label>
+                                            <label>ID Nhân viên:(*)</label>
                                                 <select class="form-control" name="txtStaffID" color="red">
                                                 @foreach($data_staff as $staff)
-                                                <option value="{{ $staff['id'] }}">{{ $staff['id'] }}</option>
+                                                <option value="{{ $staff['id'] }}">{{ $staff['lastname'] }} {{ $staff['firstname'] }} || {{ $staff['id'] }} </option>
                                                 @endforeach
                                                 </select>
 											</div>
-
 											<div class="col-md-6">
 												<div class="form-group">
                                                     <label>Cấp Bậc:</label>
@@ -108,8 +107,8 @@
 
 											<div class="col-md-6">
 												<div class="form-group">
-                                                <label>Tên Trường:</label>
-                                                <input type="text" class="form-control" name="txtSchool">
+                                                <label>Tên Trường:(*)</label>
+                                                <input type="text" class="form-control" name="txtSchool" require>
 												</div>
 											</div>
 										</div>
@@ -117,15 +116,15 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-                                                <label>Chuyên ngành:</label>
-                                                <input type="text" class="form-control" name="txtFieldOfStudy">
+                                                <label>Chuyên ngành:(*)</label>
+                                                <input type="text" class="form-control" name="txtFieldOfStudy" require>
 					                            </div>
 											</div>
 
 											<div class="col-md-6">
 												<div class="form-group">
-                                                <label>Năm tốt nghiện:</label>
-                                                <input type="text" class="form-control" name="txtGraduatedYear">
+                                                <label>Năm tốt nghiện:(*)</label>
+                                                <input type="text" class="form-control" name="txtGraduatedYear" require>
 												</div>
 											</div>
 										</div>

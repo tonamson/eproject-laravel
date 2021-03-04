@@ -25,8 +25,7 @@
     <div class="card">
       
         <div class="card-header header-elements-inline">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">Phòng Ban Tạm Xóa</h1>
-            <h4 class="card-title font-weight-bold text-uppercase">HR-Department</h4>
+        <h3 class="pt-3 pl-3 pr-3 font-weight-bold">PHÒNG BAN TẠM XÓA</h3>
 
             <div class="header-elements">
                 <div class="list-icons">

@@ -23,19 +23,13 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-      
         <div class="card-header header-elements-inline">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">Phòng ban</h1>
-            <h4 class="card-title font-weight-bold text-uppercase">HR-Department</h4>
-
-             <!-- Basic datatable -->
-    
-                <div class="ml-1">
-                    <button id="register_leave" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2">THÊM MỚI PHÒNG BAN</button>
-                </div>
-     
-              <!--End Basic datatable -->
-
+        <h3  class="pt-3 pl-3 pr-3 font-weight-bold"><div>DANH SÁCH PHÒNG BAN </div><br>
+             <div class="text-left">
+                <button  class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">THÊM MỚI PHÒNG BAN <i class="icon-paperplane ml-2"></i></button>
+            </div> 
+        </h3>
+          
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
