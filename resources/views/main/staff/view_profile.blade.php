@@ -233,7 +233,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="card">
                     <div class="card-header p-1" id="headingFour">
                         <h5 class="mb-0">
                             <button class="btn btn-link text-green collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree" style="font-size: 17px">
