@@ -18,6 +18,8 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/contract', 'ViewmenuController@contract');
 
         Route::get('/salary', 'ViewmenuController@salary');
+
+        Route::get('/education', 'ViewmenuController@education');
     });
 
     Route::group(['prefix' => 'dashboard'], function () {

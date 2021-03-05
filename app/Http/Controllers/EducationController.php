@@ -22,6 +22,7 @@ class EducationController extends Controller
         return view('main.education.index',[
             'data_staff' => $data_staff,
             'data_education' => $data_education,
+            'breadcrumbs' => [['text' => 'Bằng cấp', 'url' => '../view-menu/education'], ['text' => 'Danh sách bằng cấp', 'url' => '#']]
         ]);
     }
 
@@ -31,7 +32,7 @@ class EducationController extends Controller
         $data_staff = $body['data'];
         return view('main.education.add',[
             'data_staff' => $data_staff,
-           
+            'breadcrumbs' => [['text' => 'Bằng cấp', 'url' => '../view-menu/education'], ['text' => 'Thêm văn bằng', 'url' => '#']]
         ]);
 
     }
@@ -78,7 +79,8 @@ class EducationController extends Controller
         //dd($body);
         if($body['isSuccess']){
             return view('main/education/edit', [
-                'data' => $body['data']
+                'data' => $body['data'],
+                'breadcrumbs' => [['text' => 'Bằng cấp', 'url' => '../view-menu/education'], ['text' => 'Danh sách bằng cấp', 'url' => '../education/index'], ['text' => 'Cập nhật bằng cấp', 'url' => '#']]
             ]);
         }
         return redirect()->back()->with('message','Khong tim thay phong ban');

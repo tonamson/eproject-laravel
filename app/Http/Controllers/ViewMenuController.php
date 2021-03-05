@@ -66,4 +66,13 @@ class ViewMenuController extends Controller
             ]
         ]);
     }
+
+    public function education()
+    {
+        return view('main.view_menu.education',[
+            'breadcrumbs' => [
+                ['text' => 'Bằng cấp', 'url' => '#']
+            ]
+        ]);
+    }
 }

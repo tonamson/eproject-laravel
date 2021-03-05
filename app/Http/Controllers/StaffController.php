@@ -210,7 +210,8 @@ class StaffController extends Controller
                 'data_department' => $dsPhongBan,
                 'data_reg' => $dsKhuvuc,
                 'data_district' => $district_default,
-                'district_selected' => $district_selected
+                'district_selected' => $district_selected,
+                'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '../staff/index'], ['text' => 'Chi tiết nhân viên', 'url' => '#']]
             ]);
         }
         return redirect()->back()->with('message','Khong tim nhan vien');
@@ -260,7 +261,8 @@ class StaffController extends Controller
                 'data_department' => $dsPhongBan,
                 'data_reg' => $dsKhuvuc,
                 'data_district' => $district_default,
-                'district_selected' => $district_selected
+                'district_selected' => $district_selected,
+                'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '../staff/index'], ['text' => 'Cập nhật nhân viên', 'url' => '#']]
             ]);
         }
         return redirect()->back()->with('message','Khong tim nhan vien');

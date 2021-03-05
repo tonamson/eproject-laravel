@@ -37,7 +37,8 @@ class TransferController extends Controller
             'listDepartment' => $data_department,
             'year' => $year,
             'month' => $month,
-            'data' => $body['data']
+            'data' => $body['data'],
+            'breadcrumbs' => [['text' => 'Điều chuyển', 'url' => '../view-menu/transfer']]
         ]);
     }
 
