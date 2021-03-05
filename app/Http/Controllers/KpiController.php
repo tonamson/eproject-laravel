@@ -201,7 +201,10 @@ class KpiController extends Controller
                 ->with('readonly', $readonly)
                 ->with('go_approve', $go_approve)
                 ->with('detail_of_kpi', $body_detail['data'])
-                ->with('staff', $body_get_department['data']);
+                ->with('staff', $body_get_department['data'])
+                ->with('breadcrumbs', [
+                    ['text' => 'Kpi', 'url' => '../view-menu/kpi'], ['text' => 'Thiết lập Kpi', 'url' => '../kpi/set-kpi'], ['text' => 'Chi tiết Kpi', 'url' => '#']
+                ]);
     }
 
     public function createKpi(Request $request)
