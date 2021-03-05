@@ -30,7 +30,7 @@ class DepartmentController extends Controller
         ->with('breadcrumbs', [['text' => 'Phòng ban', 'url' => '../view-menu/department'], ['text' => 'Phòng ban đã xóa', 'url' => '#']]);
     }
 
-    public function delete(){
+    public function delete(Request $request){
         $id = $request->input('id');
         
         $data_request = [
@@ -75,7 +75,8 @@ class DepartmentController extends Controller
         //dd($body);
         if($body['isSuccess']){
             return view('main/department/edit', [
-                'data' => $body['data']
+                'data' => $body['data'],
+                'breadcrumbs' => [['text' => 'Phòng ban', 'url' => '../view-menu/department'], ['text' => 'Danh sách phòng ban', 'url' => '../deparment/index'], ['text' => 'Cập nhật phòng ban', 'url' => '#']]
             ]);
 
             

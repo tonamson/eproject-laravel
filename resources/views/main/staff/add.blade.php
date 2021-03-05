@@ -26,7 +26,7 @@
 
 @endsection
 
-@section('js')    
+@section('js')
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/notifications/jgrowl.min.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.js') }}"></script>
@@ -47,7 +47,7 @@
     	<!-- 2 columns form -->
 				<div class="card">
 					<div class="card-header header-elements-inline">
-						<h3 class="pt-3 pl-3 pr-3 font-weight-bold">THÊM NHÂN VIÊN MỚI</h3>
+						<b><h3 class="card-title">THÊM NHÂN VIÊN MỚI</h3></b>
 						<div class="header-elements">
 							<div class="list-icons">
 		                		<a class="list-icons-item" data-action="collapse"></a>
@@ -84,15 +84,19 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<label>Mã Nhân viên:(*)</label>
-													<input type="text" class="form-control" name="txtCode" require  placeholder="Nhập Mã Nhân viên" require>
+													<input type="text" class="form-control" name="txtCode" require  placeholder="Nhập Mã Nhân viên">
 												</div>
 											</div>
 
-											<div class="col-md-6">
+                                            <div class="col-md-6">
 												<div class="form-group">
-                                                    <label>Tên Nhân viên:(*)</label>
-                                                    <input type="text" class="form-control" name="txtFname" require  placeholder="Nhập Tên" require>
-												</div>
+                                                <label>Phân Quyền:(*)</label>
+                                                    <!-- <input type="text" class="form-control" name="txtGender"> -->
+                                                    <select class="form-control" name="txtisManager" color="red" >
+                                                        <option value="0">Nhân viên</option>
+                                                        <option value="1">Quản lý</option>
+                                                    </select>
+					                            </div>
 											</div>
 										</div>
 
@@ -117,21 +121,17 @@
 										</div>
 
 										<div class="row">
-											<div class="col-md-6">
+                                            <div class="col-md-6">
 												<div class="form-group">
-                                                <label>Phân Quyền:(*)</label>
-                                                    <!-- <input type="text" class="form-control" name="txtGender"> -->
-                                                    <select class="form-control" name="txtisManager" color="red" >
-                                                        <option value="0">Nhân viên</option>
-                                                        <option value="1">Quản lý</option>
-                                                    </select>
-					                            </div>
+                                                    <label>Tên Nhân viên:(*)</label>
+                                                    <input type="text" class="form-control" name="txtFname" require  placeholder="Nhập Tên">
+												</div>
 											</div>
 
 											<div class="col-md-6">
 												<div class="form-group">
                                                     <label>Ngày Vào:(*)</label>
-                                                    <input type="Date" class="form-control" name="txtJoinat" require>
+                                                    <input type="Date" class="form-control" name="txtJoinat">
 												</div>
 											</div>
 										</div>
@@ -139,8 +139,8 @@
                                         <div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-                                                <label>Ngày sinh:(*)</label>
-                                                  <input type="Date" class="form-control" name="txtDob" require>
+                                                <label>Ngày sinh:</label>
+                                                  <input type="Date" class="form-control" name="txtDob">
 					                            </div>
 											</div>
 
@@ -204,6 +204,11 @@
 										<legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Imformation</legend>
 
 										<div class="form-group">
+                                            <label>Mật Khẩu:(*)</label>
+											<input type="password" class="form-control" name="txtPass" placeholder="Nhập mật khẩu" require>
+										</div>
+
+										<div class="form-group">
                                             <label>CMND:(*)</label>
 											<input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" require>
 										</div>
@@ -225,7 +230,7 @@
 
 										<div class="form-group">
 											<label>Ghi chú:</label>
-											<textarea rows="5" cols="5" class="form-control" name="txtNote" placeholder="Nhập Ghi chú"></textarea>
+											<textarea rows="2" cols="5" class="form-control" name="txtNote" placeholder="Nhập Ghi chú"></textarea>
 										</div>
 									</fieldset>
 								</div>

@@ -234,6 +234,63 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="card">
+                    <div class="card-header p-1" id="headingFour">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link text-green collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree" style="font-size: 17px">
+                                Thay đổi mật khẩu
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-parent="#accordion">
+                        <div class="card-body p-0 mt-3 mb-3 ml-4 mr-4">
+                            <form action="{{ action('StaffController@changePassword') }}" method="post">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-12 col-lg-9">
+                                        @if (\Session::has('success'))
+                                            <div class="">
+                                                <div class="alert alert-success">
+                                                    {!! \Session::get('success') !!}
+                                                </div>
+                                            </div>
+                                        @endif
+                            
+                                        @if (\Session::has('error'))
+                                            <div class="">
+                                                <div class="alert alert-danger">
+                                                    {!! \Session::get('error') !!}
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <div class="form-group row">
+                                            <label class="col-lg-5 col-form-label">Mật khẩu cũ:</label>
+                                            <div class="col-lg-7">
+                                                <input type="password" class="form-control" name="pass_old" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-5 col-form-label">Mật khẩu mới:</label>
+                                            <div class="col-lg-7">
+                                                <input type="password" class="form-control" name="pass_new" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-5 col-form-label">Xác nhận mật khẩu mới:</label>
+                                            <div class="col-lg-7">
+                                                <input type="password" class="form-control" name="comfirm_pass" required>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Thay đổi</button>
+                                        </div>
+                                    </div>
+                                </div>       
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

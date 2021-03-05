@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 
 class EducationController extends Controller
 {
-   
+
     public function index(){
-        
+
         $response = Http::get('http://localhost:8888/staff/list');
         $body = json_decode($response->body(), true);
         $data_staff = $body['data'];
@@ -22,6 +22,7 @@ class EducationController extends Controller
         return view('main.education.index',[
             'data_staff' => $data_staff,
             'data_education' => $data_education,
+            'breadcrumbs' => [['text' => 'Bằng cấp', 'url' => '../view-menu/education'], ['text' => 'Danh sách bằng cấp', 'url' => '#']]
         ]);
     }
 
@@ -31,13 +32,13 @@ class EducationController extends Controller
         $data_staff = $body['data'];
         return view('main.education.add',[
             'data_staff' => $data_staff,
-           
+            'breadcrumbs' => [['text' => 'Bằng cấp', 'url' => '../view-menu/education'], ['text' => 'Thêm văn bằng', 'url' => '#']]
         ]);
 
     }
 
     public function createEducation(Request $request) {
-       
+
         $staffId = $request->input('txtStaffID');
         $level = $request->input('txtLevel');
         $levelName = $request->input('txtLevelName');
@@ -46,9 +47,9 @@ class EducationController extends Controller
         $graduatedYear = $request->input('txtGraduatedYear');
         $grade = $request->input('txtGrade');
         $modeOfStudy = $request->input('txtModeOf');
-    
+
         $data_request = [
-   
+
             'staffId' => $staffId,
             'level' =>$level,
             'levelName' =>$levelName,
@@ -58,7 +59,7 @@ class EducationController extends Controller
             'grade'=>$grade,
             'modeOfStudy'=>$modeOfStudy,
         ];
-       
+
         $response = Http::post('http://localhost:8888/education/add', $data_request);
        $body = json_decode($response->body(), true);
      //   dd($body);
@@ -70,11 +71,8 @@ class EducationController extends Controller
     //Update
 
     public function getEditEducation(Request $request) {
-      
+
         $data_request = $request->all();
-        $response = Http::get('http://localhost:8888/staff/list');
-        $body = json_decode($response->body(), true);
-        $data_staff = $body['data'];
 
         $response = Http::get('http://localhost:8888/education/one', $data_request);
         $body = json_decode($response->body(), true);
@@ -82,7 +80,7 @@ class EducationController extends Controller
         if($body['isSuccess']){
             return view('main/education/edit', [
                 'data' => $body['data'],
-                'data_staff'=> $data_staff,
+                'breadcrumbs' => [['text' => 'Bằng cấp', 'url' => '../view-menu/education'], ['text' => 'Danh sách bằng cấp', 'url' => '../education/index'], ['text' => 'Cập nhật bằng cấp', 'url' => '#']]
             ]);
         }
         return redirect()->back()->with('message','Khong tim thay phong ban');
@@ -98,7 +96,7 @@ class EducationController extends Controller
         $graduatedYear = $request->input('txtGraduatedYear');
         $grade = $request->input('txtGrade');
         $modeOfStudy = $request->input('txtModeOf');
-    
+
         $data_request = [
             'id'=>$id,
             'staffId' => $staffId,
@@ -110,7 +108,7 @@ class EducationController extends Controller
             'grade'=>$grade,
             'modeOfStudy'=>$modeOfStudy,
         ];
-       
+
         $response = Http::post('http://localhost:8888/education/update', $data_request);
        $body = json_decode($response->body(), true);
      //   dd($body);
@@ -124,7 +122,7 @@ class EducationController extends Controller
     public function deleteEducation(Request $request)
     {
         $id = $request->input('id');
-        
+
         $data_request = [
             "id" => $id
         ];

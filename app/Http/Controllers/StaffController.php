@@ -26,12 +26,12 @@ class StaffController extends Controller
             'data_department' => $dsPhongBan,
             'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '#']]
         ]);
-        
+
     }
 
     public function createStaff(Request $request)
     {
-        
+
         $code = $request->input('txtCode');
         $firstname = $request->input('txtFname');
         $lastname = $request->input('txtLname');
@@ -43,7 +43,7 @@ class StaffController extends Controller
         $regional = $request->input('txtRegional');
         $phoneNumber = $request->input('txtPhone');
         $email = $request->input('txtEmail');
-       // $password = $request->input('txtPass');
+        $password = $request->input('txtPass');
 
         $idNumber = $request->input('txtIDNumber');
         $photo = null;
@@ -113,7 +113,7 @@ class StaffController extends Controller
             'regional' =>$regional,
             'phoneNumber' =>$phoneNumber,
             'email' =>$email,
-            'password' => bcrypt(123123),
+            'password' => bcrypt($password),
             'idNumber' =>$idNumber,
             'photo' =>$photo,
             'idPhoto' =>$idPhoto,
@@ -123,12 +123,12 @@ class StaffController extends Controller
             "createdBy" => $user->id,
             "status" => 0,
         ];
-        
+
         $response = Http::post('http://localhost:8888/staff/add', $data_request);
         $body = json_decode($response->body(), true);
         if($body['isSuccess']) {
             return redirect()->back()->with('success', 'Thêm thành công!');
-        } 
+        }
         else {
             return redirect()->back()->with('error', 'Thêm thất bại');
         }
@@ -204,14 +204,6 @@ class StaffController extends Controller
         if($body['isSuccess']){
             $dsPhongBan=$body['data'];
         }
-
-        $response = Http::get('http://localhost:8888/education/list', []);
-        $body = json_decode($response->body(), true);
-        $data_education=[];
-        if($body['isSuccess']){
-            $data_education = $body['data'];
-        }
-
         if($body['isSuccess']){
             return view('main/staff/detail', [
                 'data' => $staff,
@@ -219,14 +211,14 @@ class StaffController extends Controller
                 'data_reg' => $dsKhuvuc,
                 'data_district' => $district_default,
                 'district_selected' => $district_selected,
-                'educa' => $data_education,
+                'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '../staff/index'], ['text' => 'Chi tiết nhân viên', 'url' => '#']]
             ]);
         }
         return redirect()->back()->with('message','Khong tim nhan vien');
     }
 
     public function getEditStaff(Request $request) {
-      
+
         //chinh
         $data_request = $request->all();
 
@@ -269,7 +261,8 @@ class StaffController extends Controller
                 'data_department' => $dsPhongBan,
                 'data_reg' => $dsKhuvuc,
                 'data_district' => $district_default,
-                'district_selected' => $district_selected
+                'district_selected' => $district_selected,
+                'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '../staff/index'], ['text' => 'Cập nhật nhân viên', 'url' => '#']]
             ]);
         }
         return redirect()->back()->with('message','Khong tim nhan vien');
@@ -298,7 +291,7 @@ class StaffController extends Controller
         $createdBy=$request->input('txtCreateBy');
         $createdAt=$request->input('txtCreatedAt');
         $user = auth()->user();
-   
+
 
         //Photo
         $now = Carbon::now();
@@ -373,11 +366,11 @@ class StaffController extends Controller
             'updatedBy' => $user->id,
             "status" => 0,
         ];
-       
+
         $response = Http::post('http://localhost:8888/staff/update', $data_request);
        // dd($response);
         $body = json_decode($response->body(), true);
-        
+
         if( $body['isSuccess'] == "Update success"){
             return redirect()->back()->with('message', 'Cập nhật thành công!');
         }
@@ -404,6 +397,34 @@ class StaffController extends Controller
             'educations' => $body_edu['data'],
             'contracts' => $body_contract['data']
         ]);
+    }
+
+    public function changePassword(Request $request) {
+        $pass_old = bcrypt($request->input('pass_old'));
+        $pass_new = bcrypt($request->input('pass_new'));
+
+        if(strlen($request->input('pass_new')) > 20) {
+            return redirect()->back()->with('error','Mật khẩu mới không được dài quá 20 kí tự');
+        }
+
+        if($request->input('pass_new') != $request->input('comfirm_pass')) {
+            return redirect()->back()->with('error','Mật khẩu mới và xác nhận mật khẩu không giống nhau');
+        }
+
+        $params = [
+            'id' => auth()->user()->id,
+            'pass_old' => $pass_old,
+            'pass_new' => $pass_new
+        ];
+
+        $response = Http::post('http://localhost:8888/staff/change-password', $params);
+        $body = json_decode($response->body(), true);
+
+        if($body['data'] == "Change password Success") {
+            return redirect()->back()->with('success','Đổi mật khẩu thành công');
+        } else {
+            return redirect()->back()->with('error','Mật khẩu cũ không chính xác');
+        }
     }
 
     public function loadRegional(Request $request) {
@@ -437,7 +458,7 @@ class StaffController extends Controller
             'data_department' => $dsPhongBan,
             'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Nhân viên đã xóa', 'url' => '#']]
         ]);
-        
+
     }
 
     public function getDeleteStaff(Request $request)
@@ -445,7 +466,7 @@ class StaffController extends Controller
         $id = $request->id;
         $response = Http::get(config('app.api_url') . '/staff/delete', ['id' => $id]);
         $body = json_decode($response->body(), false);
-     
+
         if ($body->isSuccess) {
             return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa nhân viên thành công.']);
         }
@@ -462,6 +483,6 @@ class StaffController extends Controller
         }
         return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Khôi phục nhân viên thất bại.']);
     }
-   
+
 
 }
