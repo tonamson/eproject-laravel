@@ -23,6 +23,7 @@ Route::group(['prefix' => 'staff'], function () {
     Route::post('/pedit', 'StaffController@postEditStaff');
     Route::post('/add', 'StaffController@CreateStaff')->name('postAddStaff');
     Route::get('/view-profile', 'StaffController@viewProfile');
+    Route::post('/change-password', 'StaffController@changePassword');
     Route::get('/load-regional', 'StaffController@loadRegional');
     Route::get('/undo', 'StaffController@listUndo')->name('listUndo');
     Route::get('/delete', 'StaffController@getDeleteStaff')->name('getDeleteStaff');

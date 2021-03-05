@@ -399,6 +399,34 @@ class StaffController extends Controller
         ]);
     }
 
+    public function changePassword(Request $request) {
+        $pass_old = bcrypt($request->input('pass_old'));
+        $pass_new = bcrypt($request->input('pass_new'));
+        
+        if(strlen($request->input('pass_new')) > 20) {
+            return redirect()->back()->with('error','Mật khẩu mới không được dài quá 20 kí tự');
+        }
+
+        if($request->input('pass_new') != $request->input('comfirm_pass')) {
+            return redirect()->back()->with('error','Mật khẩu mới và xác nhận mật khẩu không giống nhau');
+        }
+
+        $params = [
+            'id' => auth()->user()->id,
+            'pass_old' => $pass_old,
+            'pass_new' => $pass_new
+        ];
+
+        $response = Http::post('http://localhost:8888/staff/change-password', $params);
+        $body = json_decode($response->body(), true);
+
+        if($body['data'] == "Change password Success") {
+            return redirect()->back()->with('success','Đổi mật khẩu thành công');
+        } else {
+            return redirect()->back()->with('error','Mật khẩu cũ không chính xác');
+        }
+    }
+
     public function loadRegional(Request $request) {
         $parent =$request->input('parent');
 
