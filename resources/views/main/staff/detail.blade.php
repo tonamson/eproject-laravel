@@ -47,7 +47,7 @@
     	<!-- 2 columns form -->
         <div class="card">
 					<div class="card-header header-elements-inline">
-						<b><h3 class="card-title">CHI TIẾT NHÂN VIÊN</h3></b>
+						<h3 class="pt-3 pl-3 pr-3 font-weight-bold">CHI TIẾT NHÂN VIÊN</h3>
 						<div class="header-elements">
 							<div class="list-icons">
 		                		<a class="list-icons-item" data-action="collapse"></a>
@@ -226,6 +226,63 @@
                                                 </div>
                                             </div>
 
+                                            <div class="row">
+                                            <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Học Trường:</label>
+                                                        <b>
+                                                        @foreach ($educa as $de)
+                                                            @if($data['id'] == $de['staffId'] )
+                                                                <td>{{$de['school']}}</td>
+                                                            @endif
+                                                        @endforeach
+                                                        </b>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Trình độ:</label>
+                                                        <b>
+                                                        @foreach ($educa as $de)
+                                                            @if($data['id'] == $de['staffId'] )
+                                                                <td>{{$de['levelName']}}</td>
+                                                            @endif
+                                                        @endforeach
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                            <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Chuyên ngành:</label>
+                                                        <b>
+                                                        @foreach ($educa as $de)
+                                                            @if($data['id'] == $de['staffId'] )
+                                                                <td>{{$de['fieldOfStudy']}}</td>
+                                                            @endif
+                                                        @endforeach
+                                                        </b>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Xếp loại:</label>
+                                                        <b>
+                                                        @foreach ($educa as $de)
+                                                            @if($data['id'] == $de['staffId'] )
+                                                                <td>{{$de['grade']}}</td>
+                                                            @endif
+                                                        @endforeach
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
 									</fieldset>
 								</div>
 
@@ -252,6 +309,7 @@
 											<label>Ghi chú:</label>
                                             <b><label>{{$data['note']}}</label></b>
 										</div>
+
 									</fieldset>
 								</div>
 							</div>

@@ -25,9 +25,7 @@
     <div class="card">
       
         <div class="card-header header-elements-inline">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">Thông tin Bằng cấp</h1>
-            <h4 class="card-title font-weight-bold text-uppercase">HR-Education</h4>
-
+        <h3 class="pt-3 pl-3 pr-3 font-weight-bold">DANH SÁCH THÔNG TIN BẰNG CẤP</h3>
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
@@ -82,7 +80,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right">
                                         <a href="{{ action('EducationController@getEditEducation') }}?id={{ $education['id'] }}" class="dropdown-item">Cập nhật</a>
-                                        <a href="{{ action('EducationController@deleteEducation') }}?id={{ $education['id'] }}" class="dropdown-item">Xóa</a>
+                                        <a href="{{ action('EducationController@deleteEducation') }}?id={{ $education['id'] }}" class="dropdown-item" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</a>
                                 </div>
                             </div>
                         </div>

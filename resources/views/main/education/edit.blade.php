@@ -47,7 +47,7 @@
     	<!-- 2 columns form -->
         <div class="card">
 					<div class="card-header header-elements-inline">
-						<b><h3 class="card-title">CẬP NHẬT VĂN BẰNG CHỨNG CHỈ</h3></b>
+						<h3 class="pt-3 pl-3 pr-3 font-weight-bold">CẬP NHẬT VĂN BẰNG CHỨNG CHỈ</h3>
 						<div class="header-elements">
 							<div class="list-icons">
 		                		<a class="list-icons-item" data-action="collapse"></a>
@@ -88,11 +88,19 @@
 
                                             <div class="col-md-6">
 												<div class="form-group">
-                                                    <label>Mã Nhân viên:</label>
-                                                    <input type="text" class="form-control" name="txtStaffID" value="{{$data['staffId']}}">
-												</div>
+                                                <label>ID Nhân viên:</label>
+                                                <select class="form-control" name="txtStaffID" color="red">
+                                                    @foreach($data_staff as $staff)
+                                                    @if($data['staffId']==$staff['id'])
+                                                       <option value="{{$staff['id']}}">{{ $staff['lastname'] }} {{ $staff['firstname'] }} || {{ $staff['id'] }} </option>
+                                                    @endif
+                                                    @endforeach
+                                                    @foreach($data_staff as $staff)
+                                                        <option value="{{$staff['id']}}">{{ $staff['lastname'] }} {{ $staff['firstname'] }} || {{ $staff['id'] }} </option>
+                                                    @endforeach
+                                                </select>
+											    </div>
 											</div>
-
 											<div class="col-md-6">
 												<div class="form-group">
                                                  <label>Cấp Bậc:</label>

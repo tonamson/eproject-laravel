@@ -43,7 +43,7 @@ class StaffController extends Controller
         $regional = $request->input('txtRegional');
         $phoneNumber = $request->input('txtPhone');
         $email = $request->input('txtEmail');
-        $password = $request->input('txtPass');
+       // $password = $request->input('txtPass');
 
         $idNumber = $request->input('txtIDNumber');
         $photo = null;
@@ -113,7 +113,7 @@ class StaffController extends Controller
             'regional' =>$regional,
             'phoneNumber' =>$phoneNumber,
             'email' =>$email,
-            'password' => bcrypt($password),
+            'password' => bcrypt(123123),
             'idNumber' =>$idNumber,
             'photo' =>$photo,
             'idPhoto' =>$idPhoto,
@@ -204,13 +204,22 @@ class StaffController extends Controller
         if($body['isSuccess']){
             $dsPhongBan=$body['data'];
         }
+
+        $response = Http::get('http://localhost:8888/education/list', []);
+        $body = json_decode($response->body(), true);
+        $data_education=[];
+        if($body['isSuccess']){
+            $data_education = $body['data'];
+        }
+
         if($body['isSuccess']){
             return view('main/staff/detail', [
                 'data' => $staff,
                 'data_department' => $dsPhongBan,
                 'data_reg' => $dsKhuvuc,
                 'data_district' => $district_default,
-                'district_selected' => $district_selected
+                'district_selected' => $district_selected,
+                'educa' => $data_education,
             ]);
         }
         return redirect()->back()->with('message','Khong tim nhan vien');

@@ -72,13 +72,17 @@ class EducationController extends Controller
     public function getEditEducation(Request $request) {
       
         $data_request = $request->all();
+        $response = Http::get('http://localhost:8888/staff/list');
+        $body = json_decode($response->body(), true);
+        $data_staff = $body['data'];
 
         $response = Http::get('http://localhost:8888/education/one', $data_request);
         $body = json_decode($response->body(), true);
         //dd($body);
         if($body['isSuccess']){
             return view('main/education/edit', [
-                'data' => $body['data']
+                'data' => $body['data'],
+                'data_staff'=> $data_staff,
             ]);
         }
         return redirect()->back()->with('message','Khong tim thay phong ban');
