@@ -312,8 +312,6 @@
                 date_now = '';
                 date_now += <?php echo $year?> + now;
 
-                console.log(date_now);
-
                 // Define element
                 var calendarBasicViewElement = document.querySelector('.fullcalendar-basic');
 
