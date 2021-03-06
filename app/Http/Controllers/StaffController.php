@@ -26,12 +26,12 @@ class StaffController extends Controller
             'data_department' => $dsPhongBan,
             'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '#']]
         ]);
-        
+
     }
 
     public function createStaff(Request $request)
     {
-        
+
         $code = $request->input('txtCode');
         $firstname = $request->input('txtFname');
         $lastname = $request->input('txtLname');
@@ -123,12 +123,12 @@ class StaffController extends Controller
             "createdBy" => $user->id,
             "status" => 0,
         ];
-        
+
         $response = Http::post('http://localhost:8888/staff/add', $data_request);
         $body = json_decode($response->body(), true);
         if($body['isSuccess']) {
             return redirect()->back()->with('success', 'Thêm thành công!');
-        } 
+        }
         else {
             return redirect()->back()->with('error', 'Thêm thất bại');
         }
@@ -218,7 +218,7 @@ class StaffController extends Controller
     }
 
     public function getEditStaff(Request $request) {
-      
+
         //chinh
         $data_request = $request->all();
 
@@ -291,7 +291,7 @@ class StaffController extends Controller
         $createdBy=$request->input('txtCreateBy');
         $createdAt=$request->input('txtCreatedAt');
         $user = auth()->user();
-   
+
 
         //Photo
         $now = Carbon::now();
@@ -366,11 +366,11 @@ class StaffController extends Controller
             'updatedBy' => $user->id,
             "status" => 0,
         ];
-       
+
         $response = Http::post('http://localhost:8888/staff/update', $data_request);
        // dd($response);
         $body = json_decode($response->body(), true);
-        
+
         if( $body['isSuccess'] == "Update success"){
             return redirect()->back()->with('message', 'Cập nhật thành công!');
         }
@@ -402,7 +402,7 @@ class StaffController extends Controller
     public function changePassword(Request $request) {
         $pass_old = bcrypt($request->input('pass_old'));
         $pass_new = bcrypt($request->input('pass_new'));
-        
+
         if(strlen($request->input('pass_new')) > 20) {
             return redirect()->back()->with('error','Mật khẩu mới không được dài quá 20 kí tự');
         }
@@ -458,7 +458,7 @@ class StaffController extends Controller
             'data_department' => $dsPhongBan,
             'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Nhân viên đã xóa', 'url' => '#']]
         ]);
-        
+
     }
 
     public function getDeleteStaff(Request $request)
@@ -466,7 +466,7 @@ class StaffController extends Controller
         $id = $request->id;
         $response = Http::get(config('app.api_url') . '/staff/delete', ['id' => $id]);
         $body = json_decode($response->body(), false);
-     
+
         if ($body->isSuccess) {
             return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa nhân viên thành công.']);
         }
@@ -483,6 +483,6 @@ class StaffController extends Controller
         }
         return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Khôi phục nhân viên thất bại.']);
     }
-   
+
 
 }

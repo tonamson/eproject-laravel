@@ -23,9 +23,8 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3 font-weight-bold">DANH SÁCH NHÂN VIÊN TẠM XÓA</h1>
         <div class="card-header header-elements-inline">
-            <h4 class="card-title font-weight-bold text-uppercase">HR-STAFF</h4>
+        <h3 class="pt-3 pl-3 pr-3 font-weight-bold">DANH SÁCH NHÂN VIÊN TẠM XÓA</h3>
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
