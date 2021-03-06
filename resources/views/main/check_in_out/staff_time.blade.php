@@ -17,6 +17,10 @@
     <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
     <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
+
+    <script src="{{ asset('global_assets/js/plugins/ui/fullcalendar/core/main.min.js') }}"></script>
+	<script src="{{ asset('global_assets/js/plugins/ui/fullcalendar/daygrid/main.min.js') }}"></script>
+
 @endsection
 
 @section('content')
@@ -143,6 +147,25 @@
         </table>
     </div>
     <!-- /basic datatable -->
+
+    <!-- Event colors -->
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Xem lịch sử chấm công</h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <div class="fullcalendar-event-colors"></div>
+        </div>
+    </div>
+    <!-- /event colors -->
 @endsection
 
 @section('scripts')
@@ -241,6 +264,59 @@
         document.addEventListener('DOMContentLoaded', function() {
             DatatableBasic.init();
         });
+
+
+
+        var FullCalendarStyling = function() {
+            // External events
+            var _componentFullCalendarStyling = function() {
+                if (typeof FullCalendar == 'undefined') {
+                    console.warn('Warning - Fullcalendar files are not loaded.');
+                    return;
+                }
+                 
+                var eventColors = <?php echo $calendar ?>;
+
+                console.log(eventColors);
+
+                var dt = new Date();
+                let now = new Date().toISOString().split('T')[0];
+
+                // Define element
+                var calendarEventColorsElement = document.querySelector('.fullcalendar-event-colors');
+
+                // Initialize
+                if(calendarEventColorsElement) {
+                    var calendarEventColorsInit = new FullCalendar.Calendar(calendarEventColorsElement, {
+                        plugins: [ 'dayGrid', 'interaction' ],
+                        header: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                        },
+                        defaultDate: now,
+                        editable: true,
+                        events: eventColors
+                    }).render();
+                }
+
+            };
+
+            return {
+                init: function() {
+                    _componentFullCalendarStyling();
+                }
+            }
+        }();
+
+
+        // Initialize module
+        // ------------------------------
+
+        document.addEventListener('DOMContentLoaded', function() {
+            FullCalendarStyling.init();
+        });
+
 
     </script>
 @endsection

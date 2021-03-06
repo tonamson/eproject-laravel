@@ -22,6 +22,12 @@
     <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
     <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
+    
+	<!-- Theme JS files -->
+	<script src="{{ asset('global_assets/js/plugins/ui/fullcalendar/core/main.min.js') }}"></script>
+	<script src="{{ asset('global_assets/js/plugins/ui/fullcalendar/daygrid/main.min.js') }}"></script>
+
+	<!-- /theme JS files -->
 @endsection
 
 @section('content')
@@ -158,6 +164,22 @@
           
     </div>
     <!-- /basic datatable -->
+
+    <!-- Basic view -->
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title"></h5>
+            <div class="header-elements">
+      
+            </div>
+        </div>
+        
+        <div class="card-body">
+
+            <div class="fullcalendar-basic"></div>
+        </div>
+    </div>
+    <!-- /basic view -->
 @endsection
 
 @section('scripts')
@@ -271,6 +293,52 @@
         document.addEventListener('DOMContentLoaded', function() {
             DatatableBasic.init();
         });
+
+        var FullCalendarBasic = function() {
+
+            // Basic calendar
+            var _componentFullCalendarBasic = function() {
+                if (typeof FullCalendar == 'undefined') {
+                    console.warn('Warning - Fullcalendar files are not loaded.');
+                    return;
+                }
+
+                events = <?php echo $calendar ?>;
+
+                var dt = new Date();
+                let now = new Date().toISOString().split('T')[0];
+
+                // Define element
+                var calendarBasicViewElement = document.querySelector('.fullcalendar-basic');
+
+                // Initialize
+                if(calendarBasicViewElement) {
+                    var calendarBasicViewInit = new FullCalendar.Calendar(calendarBasicViewElement, {
+                        plugins: [ 'dayGrid', 'interaction' ],
+                        header: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                        },
+                        defaultDate: now,
+                        editable: true,
+                        events: events,
+                        eventLimit: true
+                    }).render();
+                }
+            };
+
+            return {
+                init: function() {
+                    _componentFullCalendarBasic();
+                }
+            }
+        }();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            FullCalendarBasic.init();
+        });
+
 
     </script>
 @endsection

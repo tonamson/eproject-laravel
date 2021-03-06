@@ -11,7 +11,7 @@
         #tb_dkp_wrapper {
             display: none;
         }
-    </style>
+    </style>  
 @endsection
 
 @section('js')    
@@ -22,6 +22,8 @@
     <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
     <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
+	<script src="{{asset('global_assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
+    <script src="{{asset('global_assets/js/demo_pages/form_layouts.js')}}"></script>
 @endsection
 
 @section('content')
@@ -117,6 +119,13 @@
                                         <option value="1">Một ngày</option>
                                         <option value="0.5">Nửa ngày</option>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Hình ảnh(Nếu có):</label>
+                                <div class="col-lg-9">
+                                    <input type="file" class="form-input-styled" name="txtImage" data-fouc>
                                 </div>
                             </div>
 

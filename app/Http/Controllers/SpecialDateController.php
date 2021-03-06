@@ -21,9 +21,21 @@ class SpecialDateController extends Controller
         $response = Http::get('http://localhost:8888/special-date/list?', $data_request);
         $body = json_decode($response->body(), true);
 
+        $calendar = array();
+        foreach ($body['data'] as $value) {
+            $arr = array();
+            $arr['title'] = $value['note'];
+            $arr['start'] = $value['daySpecialFrom'];
+            $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['daySpecialTo'])));
+            $arr['color'] = '#EF5350';
+
+            array_push($calendar, $arr);
+        }
+
         return view('main.special_date.index')
             ->with('data', $body['data'])
             ->with('year', $year)
+            ->with('calendar', json_encode($calendar))
             ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Quản lý ngày lễ', 'url' => '#']]);
     }
 

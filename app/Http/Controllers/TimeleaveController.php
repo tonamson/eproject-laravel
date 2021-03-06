@@ -49,8 +49,25 @@ class TimeleaveController extends Controller
         $number_day_leave = $request->input('number_day_leave');
         $note_bsc = $request->input('note_bsc');
 
+        $image_time = null;
         if(strlen($note_bsc) > 300) {
             return redirect()->back()->with('error', 'Lý do không được vượt quá 300 kí tự');
+        }
+
+        if(request()->hasFile('txtImage')) {
+            // random name cho ảnh
+            $file_name_random = function ($key) {
+                $ext = request()->file($key)->getClientOriginalExtension();
+                $str_random = (string)Str::uuid();
+
+                return $str_random . '.' . $ext;
+            };
+
+            $image = $file_name_random('txtImage');
+            if (request()->file('txtImage')->move('./images/time_leave/' . $now->format('dmY') . '/', $image)) {
+                // gán path ảnh vào model để lưu
+                $image_time = '/images/time_leave/' . $now->format('dmY') . '/' . $image;
+            }
         }
 
         if($number_day_leave == 1)
@@ -58,9 +75,9 @@ class TimeleaveController extends Controller
         else
             $time = "04:00:00";
 
-        $is_approved = false;
+        $is_approved = 0;
         if($user->is_manager == 1) {
-            $is_approved = true;
+            $is_approved = 1;
         }
         
         $data_request = [
@@ -68,6 +85,7 @@ class TimeleaveController extends Controller
             'staff_code' => $user->code,
             'day_time_leave' => $day_leave,
             'time' => $time,
+            'image' => $image_time,
             'type' => false,
             'note' => $note_bsc,
             'is_approved' => $is_approved
@@ -245,9 +263,9 @@ class TimeleaveController extends Controller
         else
             $time = "04:00:00";
 
-        $is_approved = false;
+        $is_approved = 0;
         if($user->is_manager == 1) {
-            $is_approved = true;
+            $is_approved = 1;
         }
 
         if(date('w', strtotime($day_leave)) == 6 or date('w', strtotime($day_leave)) == 0) {
