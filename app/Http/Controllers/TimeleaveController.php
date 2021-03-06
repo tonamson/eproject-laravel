@@ -398,13 +398,6 @@ class TimeleaveController extends Controller
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Hình ảnh:</label>
-                    <div class="col-lg-9">
-                        <img src="..'.$body['data']['image'].'" alt=""  style="max-height: 250px; max-width: 200px">
-                    </div>
-                </div>
-
-                <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Lý do:</label>
                     <div class="col-lg-9">
                         <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="10" placeholder="VD: Bận việc gia đình, Đi học, ..." required>'.$body['data']['note'].'</textarea>
