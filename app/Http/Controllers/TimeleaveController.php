@@ -77,7 +77,7 @@ class TimeleaveController extends Controller
 
         $is_approved = 0;
         if($user->is_manager == 1) {
-            $is_approved = 1;
+            $is_approved = 2;
         }
         
         $data_request = [
@@ -173,7 +173,7 @@ class TimeleaveController extends Controller
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Thay đổi</button>
+                <button type="submit" class="btn btn-primary">Duyệt</button>
             </div>
 
             <script>
@@ -265,7 +265,7 @@ class TimeleaveController extends Controller
 
         $is_approved = 0;
         if($user->is_manager == 1) {
-            $is_approved = 1;
+            $is_approved = 2;
         }
 
         if(date('w', strtotime($day_leave)) == 6 or date('w', strtotime($day_leave)) == 0) {
@@ -366,7 +366,7 @@ class TimeleaveController extends Controller
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Thay đổi</button>
+                <button type="submit" class="btn btn-primary">Duyệt</button>
             </div>
 
             <script>
@@ -404,7 +404,7 @@ class TimeleaveController extends Controller
         }
 
         $date = $year . '-' . $month . '-' . '01';
-        $data_request = ['department' => $user->department, 'day_time_leave' => $date, 'is_manager' => $user->is_manager];
+        $data_request = ['department' => $user->department, 'day_time_leave' => $date, 'is_manager' => $user->is_manager, 'staff_id' => $user->id];
 
         $response = Http::post('http://localhost:8888/time-leave/get-staff-approve', $data_request);
         $body = json_decode($response->body(), true);
@@ -444,13 +444,15 @@ class TimeleaveController extends Controller
 
         if($body['data'][0][5] == 1) {
             $approved = '
-                <option value="1" selected>Phê duyệt</option>
-                <option value="0">Không duyệt</option>
+                Giám đốc đã duyệt
+            ';
+        } else if($body['data'][0][5] == 2) {
+            $approved = '
+                Quản lý đã duyệt
             ';
         } else {
             $approved = '
-                <option value="1">Phê duyệt</option>
-                <option value="0" selected>Không duyệt</option>
+                Chưa duyệt
             ';
         }
         
@@ -492,9 +494,7 @@ class TimeleaveController extends Controller
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Trạng thái:</label>
                     <div class="col-lg-9">
-                        <select class="form-control" name="is_approved" id="is_approved" required>
                         '.$approved.'
-                        </select>
                     </div>
                 </div>
 
@@ -507,7 +507,7 @@ class TimeleaveController extends Controller
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Thay đổi</button>
+                <button type="submit" class="btn btn-primary">Duyệt</button>
             </div>
 
             <script>
@@ -527,21 +527,28 @@ class TimeleaveController extends Controller
     public function approvedTimeLeave(Request $request)
     {
         $id = $request->input('id');
-        $is_approved = $request->input('is_approved');
+        $is_approved = 2;
+        $date = null;
+
+        if(auth()->user()->id == 7) {
+            $is_approved = 1;
+            $date = date('Y-m-d');
+        }
         
         $data_request = [
             "id" => $id,
             "is_approved" => $is_approved,
+            "day_approved" => $date
         ];
 
         $response = Http::post('http://localhost:8888/time-leave/approve-time-leave', $data_request);
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Approve success") {
-            return redirect()->back()->with('success', 'Thay đổi thành công!');
+            return redirect()->back()->with('success', 'Duyệt thành công!');
         } 
         else {
-            return redirect()->back()->with('error', 'Thay đổi thất bại');
+            return redirect()->back()->with('error', 'Duyệt thất bại');
         }
     }
 

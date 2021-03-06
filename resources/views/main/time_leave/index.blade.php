@@ -216,17 +216,25 @@
                                 ?>
                             </td>
                             <td>
-                                <?php echo $time_leave['isApproved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                                @if($time_leave['isApproved'] == 0)
+                                    <span class="badge badge-warning">Chưa phê duyệt</span>
+                                @elseif($time_leave['isApproved'] == 2)
+                                    <span class="badge badge-success">Quản lý đã phê duyệt</span>
+                                @else
+                                    <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
+                                @endif
                             </td>
-                            @if($time_leave['isApproved'] == 0)
+                            @if($time_leave['isApproved'] == 0 || ($time_leave['isApproved'] == 2 && auth()->user()->is_manager == 1))
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
                                         <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                 </td>
-                            @else
+                            @elseif($time_leave['isApproved'] == 2)
                                 <td>Quản lý đã phê duyệt, không thể chỉnh sửa!</td>
+                            @else
+                                <td>Giám đốc đã phê duyệt, không thể chỉnh sửa!</td>
                             @endif
                         </tr>                        
                     @endif
@@ -260,17 +268,25 @@
                                 ?>
                             </td>
                             <td>
-                                <?php echo $time_leave['isApproved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                                @if($time_leave['isApproved'] == 0)
+                                    <span class="badge badge-warning">Chưa phê duyệt</span>
+                                @elseif($time_leave['isApproved'] == 2)
+                                    <span class="badge badge-success">Quản lý đã phê duyệt</span>
+                                @else
+                                    <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
+                                @endif
                             </td>
-                            @if($time_leave['isApproved'] == 0)
+                            @if($time_leave['isApproved'] == 0 || ($time_leave['isApproved'] == 2 && auth()->user()->is_manager == 1))
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-dkp" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
                                         <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                 </td>
-                            @else
+                            @elseif($time_leave['isApproved'] == 2)
                                 <td>Quản lý đã phê duyệt, không thể chỉnh sửa!</td>
+                            @else
+                                <td>Giám đốc đã phê duyệt, không thể chỉnh sửa!</td>
                             @endif
                         </tr>                        
                     @endif

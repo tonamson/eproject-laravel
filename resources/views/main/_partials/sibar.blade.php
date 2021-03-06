@@ -188,7 +188,7 @@
                                     @if(auth()->user()->department == 2 && auth()->user()->is_manager == 1)
                                         <span>Duyệt Công Phép</span>
                                     @elseif(auth()->user()->department == 2)
-                                        <span>Duyệt Phép</span>
+                                        <span>Xem Công Phép</span>
                                     @else
                                         <span>Duyệt Bổ Sung Công</span>
                                     @endif
