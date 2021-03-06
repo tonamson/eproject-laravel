@@ -90,17 +90,51 @@ class CheckInOutController extends Controller
         if(!$year) {
             $year = date("Y");
         }
+        $date_special = $year . '-' . $month . '-' . '01';
+        $data_request_special = ['special_date_from' => $date_special];
+
+        $response_special = Http::get('http://localhost:8888/special-date/list?', $data_request_special);
+        $body_special = json_decode($response_special->body(), true);
+        
         $date = $year . '-' . $month . '-' . '01';
         $data_request = ['staff_id' => $user->id, 'y_m' => $date];
 
         $response = Http::post('http://localhost:8888/check-in-out/get-staff-time', $data_request);
         $body = json_decode($response->body(), true);
 
+        $calendar = array();
+        foreach ($body_special['data'] as $value) {
+            $arr = array();
+            $arr['title'] = $value['note'];
+            $arr['start'] = $value['daySpecialFrom'];
+            $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['daySpecialTo'])));
+            $arr['color'] = '#EF5350';
+
+            array_push($calendar, $arr);
+        }
+
+        foreach ($body['data'] as $value) {
+            $arr = array();
+            $title = 'Giờ vào: ' . $value['check_in'] . ', Giờ ra: ' . $value['check_out'];
+
+            $arr['title'] = $title;
+            $arr['start'] = $value['check_in_day_no_format'];
+
+            if($value['multiply'] == 2) {
+                $arr['color'] = '#1e551e';
+            } else if($value['multiply'] == 3) {
+                $arr['color'] = '#755c16';
+            }
+
+            array_push($calendar, $arr);
+        }
+
         return view('main.check_in_out.staff_time')
             ->with('data', $body['data'])
             ->with('year', $year)
             ->with('month', $month)
             ->with('staff', $body_staff['data'])
+            ->with('calendar', json_encode($calendar))
             ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Lịch sử chấm công', 'url' => '#']]);
     }
 }

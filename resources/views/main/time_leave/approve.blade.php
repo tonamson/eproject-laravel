@@ -25,9 +25,9 @@
         @if(auth()->user()->department == 2 && auth()->user()->is_manager == 1)
             <h1 class="pt-3 pl-3 pr-3">Duyệt Công Phép</h1>
         @elseif(auth()->user()->department == 2)
-            <h1 class="pt-3 pl-3 pr-3">Duyệt Phép</h1>
+            <h1 class="pt-3 pl-3 pr-3">Xem Công Phép</h1>
         @else
-            <h1 class="pt-3 pl-3 pr-3">Duyệt Bổ Sung Công</h1>
+            <h1 class="pt-3 pl-3 pr-3">Duyệt Công Phép</h1>
         @endif
 
         <div class="card-header header-elements-inline">
@@ -72,15 +72,13 @@
                 </div>
             </form>
 
-            @if(auth()->user()->department == 2 && auth()->user()->is_manager == 1)
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
                     <button class="nav-link active" id="btn_tb_bsc">Bổ sung công</button>
-                    <li class="nav-item">
+                <li class="nav-item">
                     <button class="nav-link" id="btn_tb_dkp">Đăng kí phép</button>
-                    </li>
-                </ul>
-            @endif
+                </li>
+            </ul>
         </div>
 
         <table class="table datatable-basic" id="tb_bsc">
@@ -129,12 +127,24 @@
                                 ?>
                             </td>
                             <td>
-                                <?php echo $time_leave['is_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                                @if($time_leave['is_approved'] == 0)
+                                    <span class="badge badge-warning">Chưa phê duyệt</span>
+                                @elseif($time_leave['is_approved'] == 2)
+                                    <span class="badge badge-success">Quản lý đã phê duyệt</span>
+                                @else
+                                    <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
+                                @endif
                             </td>
                             <td>
-                                <div class="from-group d-flex">
-                                    <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
-                                </div>
+                                @if($time_leave['is_approved'] == 1)
+                                   
+                                @elseif($time_leave['is_approved'] == 2 && auth()->user()->id !== 7)
+                                    Chờ Giám đốc phê duyệt
+                                @elseif( (auth()->user()->id == 7 || (auth()->user()->is_manager == 1 && auth()->user()->department != 2)) || auth()->user()->is_manager == 1 && auth()->user()->department == 2 && $time_leave['department_id'] == 2 )
+                                    <div class="from-group d-flex">
+                                        <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
+                                    </div>
+                                @endif
                             </td>
                             {{-- @if($time_leave['is_approved'] == 0)
                                 <td>
@@ -193,12 +203,24 @@
                                 ?>
                             </td>
                             <td>
-                                <?php echo $time_leave['is_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                                @if($time_leave['is_approved'] == 0)
+                                    <span class="badge badge-warning">Chưa phê duyệt</span>
+                                @elseif($time_leave['is_approved'] == 2)
+                                    <span class="badge badge-success">Quản lý đã phê duyệt</span>
+                                @else
+                                    <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
+                                @endif
                             </td>
                             <td>
-                                <div class="from-group d-flex">
-                                    <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
-                                </div>
+                                @if($time_leave['is_approved'] == 1)
+                                   
+                                @elseif($time_leave['is_approved'] == 2 && auth()->user()->id !== 7)
+                                    Chờ Giám đốc phê duyệt
+                                @elseif( (auth()->user()->id == 7 || (auth()->user()->is_manager == 1 && auth()->user()->department != 2)) || auth()->user()->is_manager == 1 && auth()->user()->department == 2 && $time_leave['department_id'] == 2 )
+                                    <div class="from-group d-flex">
+                                        <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
+                                    </div>
+                                @endif
                             </td>
                         </tr>                        
                     @endif
@@ -206,19 +228,11 @@
             </tbody>
         </table>
 
-        <?php if(auth()->user()->department == 2 && auth()->user()->is_manager == 0):?>
-            <style>
-                #tb_bsc_wrapper {
-                    display: none;
-                }
-            </style>
-        <?php else :?>
-            <style>
-                #tb_dkp_wrapper {
-                    display: none;
-                }
-            </style>
-        <?php endif ?>
+        <style>
+            #tb_dkp_wrapper {
+                display: none;
+            }
+        </style>
 
         <div id="bsc-modal" class="modal fade" role="dialog"> <!-- modal bsc -->
             <div class="modal-dialog">

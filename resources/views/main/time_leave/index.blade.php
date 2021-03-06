@@ -11,7 +11,7 @@
         #tb_dkp_wrapper {
             display: none;
         }
-    </style>
+    </style>  
 @endsection
 
 @section('js')    
@@ -22,6 +22,8 @@
     <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
     <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
+	<script src="{{asset('global_assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
+    <script src="{{asset('global_assets/js/demo_pages/form_layouts.js')}}"></script>
 @endsection
 
 @section('content')
@@ -94,7 +96,7 @@
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <form action="{{ action('TimeleaveController@createTime') }}" method="post">
+                    <form action="{{ action('TimeleaveController@createTime') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">Bổ Sung Công</h5>
@@ -117,6 +119,13 @@
                                         <option value="1">Một ngày</option>
                                         <option value="0.5">Nửa ngày</option>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Hình ảnh(Nếu có):</label>
+                                <div class="col-lg-9">
+                                    <input type="file" class="form-input-styled" name="txtImage" data-fouc>
                                 </div>
                             </div>
 
@@ -207,17 +216,25 @@
                                 ?>
                             </td>
                             <td>
-                                <?php echo $time_leave['isApproved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                                @if($time_leave['isApproved'] == 0)
+                                    <span class="badge badge-warning">Chưa phê duyệt</span>
+                                @elseif($time_leave['isApproved'] == 2)
+                                    <span class="badge badge-success">Quản lý đã phê duyệt</span>
+                                @else
+                                    <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
+                                @endif
                             </td>
-                            @if($time_leave['isApproved'] == 0)
+                            @if($time_leave['isApproved'] == 0 || ($time_leave['isApproved'] == 2 && auth()->user()->is_manager == 1))
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
                                         <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                 </td>
-                            @else
+                            @elseif($time_leave['isApproved'] == 2)
                                 <td>Quản lý đã phê duyệt, không thể chỉnh sửa!</td>
+                            @else
+                                <td>Giám đốc đã phê duyệt, không thể chỉnh sửa!</td>
                             @endif
                         </tr>                        
                     @endif
@@ -251,17 +268,25 @@
                                 ?>
                             </td>
                             <td>
-                                <?php echo $time_leave['isApproved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                                @if($time_leave['isApproved'] == 0)
+                                    <span class="badge badge-warning">Chưa phê duyệt</span>
+                                @elseif($time_leave['isApproved'] == 2)
+                                    <span class="badge badge-success">Quản lý đã phê duyệt</span>
+                                @else
+                                    <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
+                                @endif
                             </td>
-                            @if($time_leave['isApproved'] == 0)
+                            @if($time_leave['isApproved'] == 0 || ($time_leave['isApproved'] == 2 && auth()->user()->is_manager == 1))
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-dkp" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
                                         <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                 </td>
-                            @else
+                            @elseif($time_leave['isApproved'] == 2)
                                 <td>Quản lý đã phê duyệt, không thể chỉnh sửa!</td>
+                            @else
+                                <td>Giám đốc đã phê duyệt, không thể chỉnh sửa!</td>
                             @endif
                         </tr>                        
                     @endif

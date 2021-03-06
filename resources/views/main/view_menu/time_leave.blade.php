@@ -298,30 +298,32 @@
                 </div>
             </div>
         @endif
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ action('CheckInOutController@index') }}">
-                    <i class="icon-8x icon-clipboard5"></i>
-                    <p>Chấm Công GPS</p> 
-                </a>
+        @if(auth()->user()->id != 7)
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('CheckInOutController@index') }}">
+                        <i class="icon-8x icon-clipboard5"></i>
+                        <p>Chấm Công GPS</p> 
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ action('CheckInOutController@show') }}">
-                    <i class="icon-8x icon-clipboard6"></i>
-                    <p>Lịch Sử Chấm Công</p> 
-                </a>
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('CheckInOutController@show') }}">
+                        <i class="icon-8x icon-clipboard6"></i>
+                        <p>Lịch Sử Chấm Công</p> 
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ action('TimeleaveController@index') }}">
-                    <i class="icon-8x icon-calendar"></i>
-                    <p>Bổ Sung Công Phép</p> 
-                </a>
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('TimeleaveController@index') }}">
+                        <i class="icon-8x icon-calendar"></i>
+                        <p>Bổ Sung Công Phép</p> 
+                    </a>
+                </div>
             </div>
-        </div>
+        @endif
         @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
