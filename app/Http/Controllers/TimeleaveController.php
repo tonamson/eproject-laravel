@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class TimeleaveController extends Controller
 {
@@ -49,10 +51,12 @@ class TimeleaveController extends Controller
         $number_day_leave = $request->input('number_day_leave');
         $note_bsc = $request->input('note_bsc');
 
-        $image_time = null;
         if(strlen($note_bsc) > 300) {
             return redirect()->back()->with('error', 'Lý do không được vượt quá 300 kí tự');
         }
+        //Photo
+        $now = Carbon::now();
+        $image_time = '';
 
         if(request()->hasFile('txtImage')) {
             // random name cho ảnh
@@ -161,6 +165,13 @@ class TimeleaveController extends Controller
                         <select class="form-control" name="number_day_leave_update" id="number_day_leave_update" required>
                             '.$option.'
                         </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Hình ảnh:</label>
+                    <div class="col-lg-9">
+                        <img src="..'.$body['data']['image'].'" alt="" style="max-height: 250px; max-width: 200px">
                     </div>
                 </div>
 
@@ -358,6 +369,13 @@ class TimeleaveController extends Controller
                 </div>
 
                 <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Hình ảnh:</label>
+                    <div class="col-lg-9">
+                        <img src="..'.$body['data']['image'].'" alt=""  style="max-height: 250px; max-width: 200px">
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Lý do:</label>
                     <div class="col-lg-9">
                         <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="10" placeholder="VD: Bận việc gia đình, Đi học, ..." required>'.$body['data']['note'].'</textarea>
@@ -489,6 +507,12 @@ class TimeleaveController extends Controller
                     <label class="col-lg-3 col-form-label">Yêu cầu:</label>
                     <div class="col-lg-9 col-form-label">
                          '.$time.'
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Hình ảnh:</label>
+                    <div class="col-lg-9">
+                        <img src="..'.$body['data'][0][12].'" alt=""  style="max-height: 250px; max-width: 200px">
                     </div>
                 </div>
                 <div class="form-group row">

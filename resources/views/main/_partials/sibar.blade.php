@@ -163,24 +163,26 @@
                                 <span>Quản Lý Ngày Lễ</span>
                             </a>
                         @endif
-                        <li class="nav-item">
-                            <a href="{{ action('CheckInOutController@index') }}" class="nav-link">
-                                <i class="icon-clipboard5"></i>
-                                <span>Chấm Công GPS</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ action('CheckInOutController@show') }}" class="nav-link">
-                                <i class="icon-clipboard6"></i>
-                                <span>Lịch Sử Chấm Công</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ action('TimeleaveController@index') }}" class="nav-link">
-                                <i class="icon-calendar"></i>
-                                <span>Bổ Sung Công Phép</span>
-                            </a>
-                        </li>
+                        @if(auth()->user()->id != 7)
+                            <li class="nav-item">
+                                <a href="{{ action('CheckInOutController@index') }}" class="nav-link">
+                                    <i class="icon-clipboard5"></i>
+                                    <span>Chấm Công GPS</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ action('CheckInOutController@show') }}" class="nav-link">
+                                    <i class="icon-clipboard6"></i>
+                                    <span>Lịch Sử Chấm Công</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ action('TimeleaveController@index') }}" class="nav-link">
+                                    <i class="icon-calendar"></i>
+                                    <span>Bổ Sung Công Phép</span>
+                                </a>
+                            </li>
+                        @endif
                         @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
                             <li class="nav-item">
                                 <a href="{{ action('TimeleaveController@approveTimeLeave') }}" class="nav-link">
