@@ -274,13 +274,19 @@
                     console.warn('Warning - Fullcalendar files are not loaded.');
                     return;
                 }
-                 
+
                 var eventColors = <?php echo $calendar ?>;
 
-                console.log(eventColors);
-
                 var dt = new Date();
-                let now = new Date().toISOString().split('T')[0];
+                let date_now = new Date().toISOString().split('T')[0];
+
+                let month = <?php echo $month?> + '';
+                if(month.length == 1) {
+                    month = '0' + month;
+                }
+                
+                date_now = '';
+                date_now += <?php echo $year?> + '-' + month + '-01';
 
                 // Define element
                 var calendarEventColorsElement = document.querySelector('.fullcalendar-event-colors');
@@ -294,7 +300,7 @@
                             center: 'title',
                             right: 'dayGridMonth,dayGridWeek,dayGridDay'
                         },
-                        defaultDate: now,
+                        defaultDate: date_now,
                         editable: true,
                         events: eventColors
                     }).render();

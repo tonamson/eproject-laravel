@@ -238,12 +238,14 @@
                     <a href="#" class="nav-link"><i class="icon-racing"></i> <span>KPI</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                        @if(auth()->user()->id != 7)
                         <li class="nav-item">
                             <a href="{{ action('KpiController@setKpi') }}" class="nav-link">
                                 <i class="icon-finish"></i>
                                 <span>Thiết Lập KPI</span>
                             </a>
                         </li>
+                        @endif
                         @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
                             <li class="nav-item">
                                 <a href="{{ action('KpiController@listKpi') }}" class="nav-link">

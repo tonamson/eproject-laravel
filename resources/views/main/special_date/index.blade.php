@@ -308,6 +308,12 @@
                 var dt = new Date();
                 let now = new Date().toISOString().split('T')[0];
 
+                now = now.slice(4);
+                date_now = '';
+                date_now += <?php echo $year?> + now;
+
+                console.log(date_now);
+
                 // Define element
                 var calendarBasicViewElement = document.querySelector('.fullcalendar-basic');
 
@@ -320,7 +326,7 @@
                             center: 'title',
                             right: 'dayGridMonth,dayGridWeek,dayGridDay'
                         },
-                        defaultDate: now,
+                        defaultDate: date_now,
                         editable: true,
                         events: events,
                         eventLimit: true
