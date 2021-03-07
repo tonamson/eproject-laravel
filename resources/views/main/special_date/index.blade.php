@@ -202,10 +202,12 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <div class="from-group d-flex">
-                                        <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
-                                    </div>
+                                    @if(date("Y-m-d") < $special_date['daySpecialFrom'])
+                                        <div class="from-group d-flex">
+                                            <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                            <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                        </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endif
@@ -228,10 +230,12 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <div class="from-group d-flex">
-                                    <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                    <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
-                                </div>
+                                @if(date("Y-m-d") < $special_date['daySpecialFrom'])
+                                    <div class="from-group d-flex">
+                                        <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                        <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                    </div>
+                                @endif
                             </td>
                         </tr>
                     @endif

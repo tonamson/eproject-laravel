@@ -124,11 +124,11 @@ class CheckInOutController extends Controller
             $arr['title'] = $title;
             $arr['start'] = $value['check_in_day_no_format'];
 
-            if($value['multiply'] == 2) {
-                $arr['color'] = '#1e551e';
-            } else if($value['multiply'] == 3) {
-                $arr['color'] = '#755c16';
-            }
+            // if($value['multiply'] == 2) {
+            //     $arr['color'] = '#1e551e';
+            // } else if($value['multiply'] == 3) {
+            //     $arr['color'] = '#755c16';
+            // }
 
             array_push($calendar, $arr);
         }

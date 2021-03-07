@@ -115,7 +115,7 @@
                         <td>{{ $check_in_out['check_in'] }}</td>
                         <td>{{ $check_in_out['check_out'] }}</td>
                         <td>{{ $check_in_out['time'] }}</td>
-                        <td>{{ $check_in_out['number_time'] }}</td>
+                        <td>{{ $check_in_out['number_time'] * $check_in_out['multiply'] }}</td>
                         <td style="min-width: 220px">
                             <?php
                                 if($check_in_out['in_late']){
