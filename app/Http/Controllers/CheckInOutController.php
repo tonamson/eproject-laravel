@@ -108,7 +108,11 @@ class CheckInOutController extends Controller
             $arr['title'] = $value['note'];
             $arr['start'] = $value['daySpecialFrom'];
             $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['daySpecialTo'])));
-            $arr['color'] = '#EF5350';
+            if($value['typeDay'] == 1) {
+                $arr['color'] = '#EF5350';
+            } else {
+                $arr['color'] = '#046A38';
+            }
 
             array_push($calendar, $arr);
         }

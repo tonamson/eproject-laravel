@@ -157,10 +157,14 @@
                     <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Công Phép</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                        @if(auth()->user()->department == 2)
+                        @if(auth()->user()->department == 2 or auth()->user()->id == 7)
                             <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
                                 <i class="icon-calendar2"></i>
-                                <span>Quản Lý Ngày Lễ</span>
+                                @if (auth()->user()->id == 7)
+                                    <span>Quản Lý Ngày Lễ / Tăng Ca</span>
+                                @else
+                                    <span>Quản Lý Ngày Lễ</span>
+                                @endif
                             </a>
                         @endif
                         @if(auth()->user()->id != 7)
