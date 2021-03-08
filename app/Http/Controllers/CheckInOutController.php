@@ -118,19 +118,28 @@ class CheckInOutController extends Controller
         }
 
         foreach ($body['data'] as $value) {
-            $arr = array();
-            $title = 'Giờ vào: ' . $value['check_in'] . ', Giờ ra: ' . $value['check_out'];
 
-            $arr['title'] = $title;
-            $arr['start'] = $value['check_in_day_no_format'];
 
-            // if($value['multiply'] == 2) {
-            //     $arr['color'] = '#1e551e';
-            // } else if($value['multiply'] == 3) {
-            //     $arr['color'] = '#755c16';
-            // }
+            if($value['check_out']) {
+                $arr = array();
+                $title = 'Check out: ' . $value['check_out'];
+    
+                $arr['title'] = $title;
+                $arr['start'] = $value['check_in_day_no_format'];
+                $arr['color'] = '#4caf50';
+    
+                array_push($calendar, $arr);
+            }
 
-            array_push($calendar, $arr);
+            if($value['check_in']) {
+                $arr = array();
+                $title = 'Check in: ' . $value['check_in'];
+    
+                $arr['title'] = $title;
+                $arr['start'] = $value['check_in_day_no_format'];
+    
+                array_push($calendar, $arr);
+            }
         }
 
         return view('main.check_in_out.staff_time')

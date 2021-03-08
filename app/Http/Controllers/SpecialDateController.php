@@ -50,6 +50,18 @@ class SpecialDateController extends Controller
         $note = $request->input('note');
         $type_day = $request->input('type_day');
 
+        $date = date("Y-m-d");
+        $data_request = ['special_date_from' => $date];
+
+        $response_check = Http::get('http://localhost:8888/special-date/list?', $data_request);
+        $body_check = json_decode($response_check->body(), true);
+
+        foreach ($body_check['data'] as $value) {
+            if(($value['daySpecialFrom'] >= $day_special_from && $value['daySpecialFrom'] <= $day_special_to) || ($value['daySpecialTo'] >= $day_special_from && $value['daySpecialTo'] <= $day_special_to)) {
+                return redirect()->back()->with('error', 'Ngày lễ và tăng ca không được chồng chéo nhau!');
+            }
+        }
+
         if($day_special_from > $day_special_to) {
             return redirect()->back()->with('error', 'Từ ngày không được nhỏ hơn đến ngày! Vui lòng thử lại');
         }
@@ -165,6 +177,18 @@ class SpecialDateController extends Controller
         $day_special_from = $request->input('day_special_from');
         $day_special_to = $request->input('day_special_to');
         $note = $request->input('note');
+
+        $date = date("Y-m-d");
+        $data_request = ['special_date_from' => $date];
+
+        $response_check = Http::get('http://localhost:8888/special-date/list?', $data_request);
+        $body_check = json_decode($response_check->body(), true);
+
+        foreach ($body_check['data'] as $value) {
+            if(($value['daySpecialFrom'] >= $day_special_from && $value['daySpecialFrom'] <= $day_special_to) || ($value['daySpecialTo'] >= $day_special_from && $value['daySpecialTo'] <= $day_special_to)) {
+                return redirect()->back()->with('error', 'Ngày lễ và tăng ca không được chồng chéo nhau!');
+            }
+        }
 
         if($day_special_from > $day_special_to) {
             return redirect()->back()->with('error', 'Từ ngày không được nhỏ hơn đến ngày! Vui lòng thử lại');
