@@ -241,10 +241,12 @@
 								<div class="col-md-6">
 									<fieldset>
 										<legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Imformation</legend>
+                                      
 
-										<div class="form-group">
+                                        <div class="form-group">
                                             <label>Mật Khẩu:(*)</label>
-											<input type="password" class="form-control" name="txtPass"  value="{{$data['password']}}" >
+											<input type="hidden" class="form-control" name="txtPassOld" value="{{$data['password']}}" >
+											<input type="password" class="form-control" name="txtPass" value="" >
 										</div>
 
 										<div class="form-group">

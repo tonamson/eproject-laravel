@@ -76,7 +76,7 @@ class StaffController extends Controller
         $regional = $request->input('txtRegional');
         $phoneNumber = $request->input('txtPhone');
         $email = $request->input('txtEmail');
-      //  $password = '123123';
+        $password =  $request->input('txtPass');
 
         $idNumber = $request->input('txtIDNumber');
         $photo = null;
@@ -146,7 +146,7 @@ class StaffController extends Controller
             'regional' =>$regional,
             'phoneNumber' =>$phoneNumber,
             'email' =>$email,
-            'password' => bcrypt(123123),
+            'password' => $password,
             'idNumber' =>$idNumber,
             'photo' =>$photo,
             'idPhoto' =>$idPhoto,
@@ -359,6 +359,7 @@ class StaffController extends Controller
         $regional = $request->input('txtRegional');
         $phoneNumber = $request->input('txtPhone');
         $email = $request->input('txtEmail');
+        $password_old = $request->input('txtPassOld');
         $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
         $photo = $request->input('txtImagesOld')? $request->input('txtImagesOld'): '';
@@ -431,7 +432,6 @@ class StaffController extends Controller
             'regional' =>$regional,
             'phoneNumber' =>$phoneNumber,
             'email' =>$email,
-            'password' => bcrypt($password),
             'idNumber' =>$idNumber,
             'photo' =>$photo,
             'idPhoto' =>$idPhoto,
@@ -442,8 +442,14 @@ class StaffController extends Controller
             'createdAt' =>$createdAt,
             'updatedBy' => $user->id,
             "status" => 0,
-        ];
+        ];   
 
+        if(!$password) {
+            $data_request['password'] = $password_old;
+        } else {
+            $data_request['password'] = md5($password);
+        }
+ 
         $response = Http::post('http://localhost:8888/staff/update', $data_request);
        // dd($response);
         $body = json_decode($response->body(), true);

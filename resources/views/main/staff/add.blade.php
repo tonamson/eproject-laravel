@@ -219,7 +219,7 @@
 
 										<div class="form-group" hidden>
                                             <label>Mật Khẩu:(*)</label>
-											<input type="password" class="form-control" name="txtPass" placeholder="Nhập mật khẩu" require>
+											<input type="password" class="form-control" name="txtPass"  value="<?php echo md5(123123);?>" require>
 										</div>
 
 										<div class="form-group">
