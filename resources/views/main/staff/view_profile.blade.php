@@ -166,7 +166,6 @@
                                         <tr>
                                             <th>STT</th>
                                             <th>Cấp bậc</th>
-                                            <th>Tên cấp bậc</th>
                                             <th>Trường</th>
                                             <th>Ngành</th>
                                             <th>Năm tốt nghiệp</th>
@@ -179,7 +178,6 @@
                                         @foreach ($educations as $education)
                                             <tr>
                                                 <td><?php echo $count ?></td>
-                                                <td>{{ $education['level'] }}</td>
                                                 <td>{{ $education['levelName'] }}</td>
                                                 <td>{{ $education['school'] }}</td>
                                                 <td>{{ $education['fieldOfStudy'] }}</td>
