@@ -293,9 +293,9 @@ class StaffController extends Controller
         $email = $request->input('txtEmail');
         $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
-        $photo = null;
-        $idPhoto =null;
-        $idPhotoBack =null;
+        $photo = $request->input('txtImagesOld')? $request->input('txtImagesOld'): '';
+        $idPhoto =$request->input('txtImagesOld2')? $request->input('txtImagesOld2'): '';
+        $idPhotoBack =$request->input('txtImagesOld3')? $request->input('txtImagesOld3'): '';
         $note = $request->input('txtNote');
         $createdBy=$request->input('txtCreateBy');
         $createdAt=$request->input('txtCreatedAt');
@@ -319,10 +319,6 @@ class StaffController extends Controller
                     $photo = '/images/user/avatar/' . $now->format('dmY') . '/' . $image;
                 }
             }
-       
-
-       
-
 
         if (request()->hasFile('txtIDPhoto')) {
             // random name cho ảnh

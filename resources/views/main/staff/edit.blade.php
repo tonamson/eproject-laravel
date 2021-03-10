@@ -240,22 +240,35 @@
 											<input type="text" class="form-control" name="txtIDNumber" value="{{$data['idNumber']}}" >
 										</div>
 
+                                        <div class="form-group" hidden>
+                                            <label>Hình ảnh:</label>
+											<input type="text" class="form-input-styled" name="txtImagesOld" value="{{$data['photo']}}" data-fouc>
+										</div>
+
                                         <div class="form-group">
                                             <label>Hình ảnh:</label>
                                             <p><img width="50px" height="50px" src="{{ asset($data['photo']) }}"></p>
-											<input type="file" class="form-input-styled" name="txtPhoto" value="{{$data['photo']}}" data-fouc>
+											<input type="file" class="form-input-styled" name="txtPhoto" data-fouc>
 										</div>
 
+                                        <div class="form-group" hidden>
+                                            <label>Mặt trước CMND:</label>
+											<input type="text" class="form-input-styled" name="txtImagesOld2" value="{{$data['idPhoto']}}" data-fouc>
+										</div>
 										<div class="form-group">
                                             <label>Mặt trước CMND:</label>
                                             <p><img width="50px" height="50px" src="{{ asset($data['idPhoto']) }}"></p>
-											<input type="file" class="form-input-styled" name="txtIDPhoto" value="{{$data['idPhoto']}}" data-fouc>
+											<input type="file" class="form-input-styled" name="txtIDPhoto" data-fouc>
 										</div>
 
+                                        <div class="form-group" hidden>
+                                            <label>Mặt sau CMND:</label>
+											<input type="text" class="form-input-styled" name="txtImagesOld3" value="{{$data['idPhotoBack']}}" data-fouc>
+										</div>
                                         <div class="form-group">
                                             <label>Mặt sau CMND:</label>
 											<p><img width="50px" height="50px" src="{{ asset($data['idPhotoBack']) }}"></p>
-											<input type="file" class="form-input-styled" name="txtIDPhoto2" value="{{$data['idPhotoBack']}}" data-fouc>
+											<input type="file" class="form-input-styled" name="txtIDPhoto2" data-fouc>
 										</div>
 
 										<div class="form-group">
