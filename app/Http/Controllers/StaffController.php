@@ -43,7 +43,7 @@ class StaffController extends Controller
         $regional = $request->input('txtRegional');
         $phoneNumber = $request->input('txtPhone');
         $email = $request->input('txtEmail');
-        $password = $request->input('txtPass');
+      //  $password = '123123';
 
         $idNumber = $request->input('txtIDNumber');
         $photo = null;
@@ -113,7 +113,7 @@ class StaffController extends Controller
             'regional' =>$regional,
             'phoneNumber' =>$phoneNumber,
             'email' =>$email,
-            'password' => bcrypt($password),
+            'password' => bcrypt(123123),
             'idNumber' =>$idNumber,
             'photo' =>$photo,
             'idPhoto' =>$idPhoto,
@@ -204,6 +204,14 @@ class StaffController extends Controller
         if($body['isSuccess']){
             $dsPhongBan=$body['data'];
         }
+
+        $response = Http::get('http://localhost:8888/education/list', []);
+        $body = json_decode($response->body(), true);
+        $data_education=[];
+        if($body['isSuccess']){
+            $data_education = $body['data'];
+        }
+
         if($body['isSuccess']){
             return view('main/staff/detail', [
                 'data' => $staff,
@@ -211,6 +219,7 @@ class StaffController extends Controller
                 'data_reg' => $dsKhuvuc,
                 'data_district' => $district_default,
                 'district_selected' => $district_selected,
+                'educa' => $data_education,
                 'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '../staff/index'], ['text' => 'Chi tiết nhân viên', 'url' => '#']]
             ]);
         }
@@ -295,21 +304,25 @@ class StaffController extends Controller
 
         //Photo
         $now = Carbon::now();
-
-        if (request()->hasFile('txtPhoto')) {
-            // random name cho ảnh
-            $file_name_random = function ($key) {
-                $ext = request()->file($key)->getClientOriginalExtension();
-                $str_random = (string)Str::uuid();
-
-                return $str_random . '.' . $ext;
-            };
-            $image = $file_name_random('txtPhoto');
-            if (request()->file('txtPhoto')->move('./images/user/avatar/' . $now->format('dmY') . '/', $image)) {
-                // gán path ảnh vào model để lưu
-                $photo = '/images/user/avatar/' . $now->format('dmY') . '/' . $image;
+     
+            if (request()->hasFile('txtPhoto')) {
+                // random name cho ảnh
+                $file_name_random = function ($key) {
+                    $ext = request()->file($key)->getClientOriginalExtension();
+                    $str_random = (string)Str::uuid();
+    
+                    return $str_random . '.' . $ext;
+                };
+                $image = $file_name_random('txtPhoto');
+                if (request()->file('txtPhoto')->move('./images/user/avatar/' . $now->format('dmY') . '/', $image)) {
+                    // gán path ảnh vào model để lưu
+                    $photo = '/images/user/avatar/' . $now->format('dmY') . '/' . $image;
+                }
             }
-        }
+       
+
+       
+
 
         if (request()->hasFile('txtIDPhoto')) {
             // random name cho ảnh

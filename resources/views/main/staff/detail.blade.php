@@ -233,7 +233,9 @@
                                                         <b>
                                                         @foreach ($educa as $de)
                                                             @if($data['id'] == $de['staffId'] )
-                                                                <td>{{$de['school']}}</td>
+                                                             
+                                                                <td>{{$de['school']}}</td><br>
+
                                                             @endif
                                                         @endforeach
                                                         </b>
@@ -246,7 +248,9 @@
                                                         <b>
                                                         @foreach ($educa as $de)
                                                             @if($data['id'] == $de['staffId'] )
-                                                                <td>{{$de['levelName']}}</td>
+                                                       
+                                                                <td>{{$de['levelName']}}</td><br>
+                                                            
                                                             @endif
                                                         @endforeach
                                                         </b>
@@ -261,7 +265,7 @@
                                                         <b>
                                                         @foreach ($educa as $de)
                                                             @if($data['id'] == $de['staffId'] )
-                                                                <td>{{$de['fieldOfStudy']}}</td>
+                                                                <td>{{$de['fieldOfStudy']}}</td><br>
                                                             @endif
                                                         @endforeach
                                                         </b>
@@ -274,7 +278,7 @@
                                                         <b>
                                                         @foreach ($educa as $de)
                                                             @if($data['id'] == $de['staffId'] )
-                                                                <td>{{$de['grade']}}</td>
+                                                                <td>{{$de['grade']}}</td><br>
                                                             @endif
                                                         @endforeach
                                                         </b>

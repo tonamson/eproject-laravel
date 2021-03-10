@@ -74,12 +74,17 @@ class EducationController extends Controller
 
         $data_request = $request->all();
 
+        $response = Http::get('http://localhost:8888/staff/list');
+        $body = json_decode($response->body(), true);
+        $data_staff = $body['data'];
+
         $response = Http::get('http://localhost:8888/education/one', $data_request);
         $body = json_decode($response->body(), true);
         //dd($body);
         if($body['isSuccess']){
             return view('main/education/edit', [
                 'data' => $body['data'],
+                'data_staff'=> $data_staff,
                 'breadcrumbs' => [['text' => 'Bằng cấp', 'url' => '../view-menu/education'], ['text' => 'Danh sách bằng cấp', 'url' => '../education/index'], ['text' => 'Cập nhật bằng cấp', 'url' => '#']]
             ]);
         }
