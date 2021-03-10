@@ -169,9 +169,17 @@ class TimeleaveController extends Controller
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Hình ảnh:</label>
+                    <label class="col-lg-3 col-form-label">Hình ảnh cũ:</label>
                     <div class="col-lg-9">
                         <img src="..'.$body['data']['image'].'" alt="" style="max-height: 250px; max-width: 200px">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Hình ảnh mới:</label>
+                    <div class="col-lg-9">
+                        <input type="file" class="" name="txtImage">
+                        <input type="hidden" class="" name="txtImageOld" value="'.$body['data']['image'].'">
                     </div>
                 </div>
 
@@ -184,7 +192,7 @@ class TimeleaveController extends Controller
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Duyệt</button>
+                <button type="submit" class="btn btn-primary">Sửa</button>
             </div>
 
             <script>
@@ -209,9 +217,29 @@ class TimeleaveController extends Controller
         $day_leave = $request->input('day_leave_update');
         $number_day_leave = $request->input('number_day_leave_update');
         $note_bsc = $request->input('note_bsc_update');
+        $image_time = $request->input('txtImageOld') ? $request->input('txtImageOld') : '';
 
         if(strlen($note_bsc) > 300) {
             return redirect()->back()->with('error', 'Lý do không được vượt quá 300 kí tự');
+        }
+
+        //Photo
+        $now = Carbon::now();
+
+        if(request()->hasFile('txtImage')) {
+            // random name cho ảnh
+            $file_name_random = function ($key) {
+                $ext = request()->file($key)->getClientOriginalExtension();
+                $str_random = (string)Str::uuid();
+
+                return $str_random . '.' . $ext;
+            };
+
+            $image = $file_name_random('txtImage');
+            if (request()->file('txtImage')->move('./images/time_leave/' . $now->format('dmY') . '/', $image)) {
+                // gán path ảnh vào model để lưu
+                $image_time = '/images/time_leave/' . $now->format('dmY') . '/' . $image;
+            }
         }
 
         if($number_day_leave == 1)
@@ -236,6 +264,7 @@ class TimeleaveController extends Controller
             'day_time_leave' => $day_leave,
             'time' => $time,
             'note' => $note_bsc,
+            'image' => $image_time,
         ];
 
         $response = Http::post('http://localhost:8888/time-leave/update', $data_request);
@@ -369,13 +398,6 @@ class TimeleaveController extends Controller
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Hình ảnh:</label>
-                    <div class="col-lg-9">
-                        <img src="..'.$body['data']['image'].'" alt=""  style="max-height: 250px; max-width: 200px">
-                    </div>
-                </div>
-
-                <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Lý do:</label>
                     <div class="col-lg-9">
                         <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="10" placeholder="VD: Bận việc gia đình, Đi học, ..." required>'.$body['data']['note'].'</textarea>
@@ -384,7 +406,7 @@ class TimeleaveController extends Controller
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Duyệt</button>
+                <button type="submit" class="btn btn-primary">Sửa</button>
             </div>
 
             <script>

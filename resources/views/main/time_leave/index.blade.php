@@ -149,7 +149,7 @@
         <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <form action="{{ action('TimeleaveController@createLeave') }}" method="post">
+                    <form action="{{ action('TimeleaveController@createLeave') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">Đăng Kí Phép</h5>
@@ -297,7 +297,7 @@
         <div id="bsc-modal" class="modal fade" role="dialog"> <!-- modal bsc -->
             <div class="modal-dialog">
               <div class="modal-content">
-                <form action="{{ action('TimeleaveController@updateTime') }}" method="post" class="form-horizontal">
+                <form action="{{ action('TimeleaveController@updateTime') }}" method="post" class="form-horizontal" enctype="multipart/form-data">
                     @csrf
                     <div id="html_pending">
                         
@@ -310,7 +310,7 @@
         <div id="dkp-modal" class="modal fade" role="dialog"> <!-- modal dkp -->
             <div class="modal-dialog">
               <div class="modal-content">
-                <form action="{{ action('TimeleaveController@updateTime') }}" method="post" class="form-horizontal">
+                <form action="{{ action('TimeleaveController@updateTime') }}" method="post" class="form-horizontal" enctype="multipart/form-data">
                     @csrf
                     <div id="html_pending">
                         

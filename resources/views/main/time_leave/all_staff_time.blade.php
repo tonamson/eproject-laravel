@@ -73,6 +73,7 @@
                     <th>Sớm</th>
                     <th>Công</th>
                     <th>Tổng giờ</th>
+                    <th>Tăng ca</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,8 +106,9 @@
                         <td>{{ $check_in_out['check_out'] }}</td>
                         <td>{{ $check_in_out['in_late'] }}</td>
                         <td>{{ $check_in_out['out_soon'] }}</td>
-                        <td>{{ $check_in_out['number_time'] }}</td>
+                        <td>{{ $check_in_out['number_time'] * $check_in_out['multiply'] }}</td>
                         <td>{{ $check_in_out['time'] }}</td>
+                        <td>{{ $check_in_out['ot'] }}</td>
                     </tr>
                 @endforeach       
             </tbody>

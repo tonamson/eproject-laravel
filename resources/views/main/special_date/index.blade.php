@@ -33,7 +33,11 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Danh Sách Ngày Lễ</h1>
+        @if(auth()->user()->id == 7)
+            <h1 class="pt-3 pl-3 pr-3">Danh Sách Ngày Lễ / Tăng Ca</h1>
+        @else
+            <h1 class="pt-3 pl-3 pr-3">Danh Sách Ngày Lễ</h1>
+        @endif
         <div class="card-header header-elements-inline">
             
         </div>
@@ -67,8 +71,13 @@
 
             <div class="form-group d-flex">
                 <div class="">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Tạo mới</button>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Tạo ngày lễ mới</button>
                 </div>
+                @if(auth()->user()->id == 7)
+                    <div class="ml-2">
+                        <button class="btn btn-primary" style="background-color: #046A38" data-toggle="modal" data-target="#exampleModalCenter2">Tạo ngày tăng ca mới</button>
+                    </div>
+                @endif
             </div>
         </div>
         <!-- Modal bsc -->
@@ -77,6 +86,7 @@
                 <div class="modal-content">
                     <form action="{{ action('SpecialDateController@createSpecialDate') }}" method="post">
                         @csrf
+                        <input type="hidden" name="type_day" value="1">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">Tạo Ngày Lễ</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -114,37 +124,121 @@
             </div>
         </div>
 
+         <!-- Modal bsc -->
+         <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form action="{{ action('SpecialDateController@createSpecialDate') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="type_day" value="2">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Tạo Ngày Tăng Ca</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Từ ngày:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control day_leave" name="day_special_from" value="" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Đến ngày:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control day_leave" name="day_special_to" value="" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Mô tả ngày tăng ca:</label>
+                                <div class="col-lg-9">
+                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" placeholder="VD: Tăng ca sản xuất sản phẩm mới, ..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Tạo mới</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>
+        </div>
+
         <table class="table datatable-basic">
             <thead>
                 <tr>
                     <th>STT</th>
                     <th>Từ Ngày</th>
                     <th>Đến Ngày</th>
-                    <th>Mô tả ngày lễ</th>
-                    <th class="text-center">Sửa</th>
-                    <th class="text-center">Xóa</th>
+                    <th>Mô tả</th>
+                    <th>Loại</th>
+                    <th class="text-center">Sửa / Xóa</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $count = 1; ?>
                 @foreach ($data as $special_date)
-                     <tr>
-                        <td><?php echo $count; $count++ ?></td>
-                        <td><?php echo $special_date['daySpecialFrom'] ?></td>
-                        <td><?php echo $special_date['daySpecialTo'] ?></td>
-                        <td>
-                            <?php 
-                                if(strlen($special_date['note']) > 40) echo substr($special_date['note'], 0, 40) . '...';
-                                else echo $special_date['note'];    
-                            ?>
-                        </td>
-                        <td class="text-center">
-                            <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                        </td>
-                        <td class="text-center">
-                            <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
-                        </td>
-                    </tr>
+                    @if(auth()->user()->id != 7)
+                        @if($special_date['typeDay'] == 1)
+                            <tr>
+                                <td><?php echo $count; $count++ ?></td>
+                                <td><?php echo $special_date['daySpecialFrom'] ?></td>
+                                <td><?php echo $special_date['daySpecialTo'] ?></td>
+                                <td>
+                                    <?php 
+                                        if(strlen($special_date['note']) > 40) echo substr($special_date['note'], 0, 40) . '...';
+                                        else echo $special_date['note'];    
+                                    ?>
+                                </td>
+                                <td>
+                                    @if($special_date['typeDay'] == 1)
+                                        <span class="badge badge-danger">Ngày lễ</span>
+                                    @else
+                                        <span class="badge badge-primary" style="background-color: #046A38">Ngày tăng ca</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if(date("Y-m-d") < $special_date['daySpecialFrom'])
+                                        <div class="from-group d-flex">
+                                            <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                            <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                        </div>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
+                    @else
+                        <tr>
+                            <td><?php echo $count; $count++ ?></td>
+                            <td><?php echo $special_date['daySpecialFrom'] ?></td>
+                            <td><?php echo $special_date['daySpecialTo'] ?></td>
+                            <td>
+                                <?php 
+                                    if(strlen($special_date['note']) > 40) echo substr($special_date['note'], 0, 40) . '...';
+                                    else echo $special_date['note'];    
+                                ?>
+                            </td>
+                            <td>
+                                @if($special_date['typeDay'] == 1)
+                                    <span class="badge badge-danger">Ngày lễ</span>
+                                @else
+                                    <span class="badge badge-primary" style="background-color: #046A38">Ngày tăng ca</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if(date("Y-m-d") < $special_date['daySpecialFrom'])
+                                    <div class="from-group d-flex">
+                                        <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                        <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                    </div>
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
                 @endforeach   
             </tbody>
         </table>
@@ -308,6 +402,10 @@
                 var dt = new Date();
                 let now = new Date().toISOString().split('T')[0];
 
+                now = now.slice(4);
+                date_now = '';
+                date_now += <?php echo $year?> + now;
+
                 // Define element
                 var calendarBasicViewElement = document.querySelector('.fullcalendar-basic');
 
@@ -320,7 +418,7 @@
                             center: 'title',
                             right: 'dayGridMonth,dayGridWeek,dayGridDay'
                         },
-                        defaultDate: now,
+                        defaultDate: date_now,
                         editable: true,
                         events: events,
                         eventLimit: true

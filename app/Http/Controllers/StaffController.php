@@ -483,8 +483,8 @@ class StaffController extends Controller
     }
 
     public function changePassword(Request $request) {
-        $pass_old = bcrypt($request->input('pass_old'));
-        $pass_new = bcrypt($request->input('pass_new'));
+        $pass_old = md5($request->input('pass_old'));
+        $pass_new = md5($request->input('pass_new'));
 
         if(strlen($request->input('pass_new')) > 20) {
             return redirect()->back()->with('error','Mật khẩu mới không được dài quá 20 kí tự');
