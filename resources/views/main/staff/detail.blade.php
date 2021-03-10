@@ -168,22 +168,28 @@
 											<div class="col-md-6">
 												<div class="form-group">
                                                 <label>Khu vực:(*)</label>
-                                                    <label id="province" class="form-control form-control-select2" color="red"  data-fouc >
+                                                    <b><label id="province" class="form-control " color="red"  data-fouc >
                                                     @foreach($data_reg as $reg)
+                                                        @if($reg['id'] == $district_selected['parent'])
                                                         <option value="{{$reg['id']}}" <?php echo $reg['id'] == $district_selected['parent'] ? 'selected' : '' ?> >{{ $reg['name'] }}</option>
+                                                        @endif
                                                     @endforeach
                                                 </lable>
+                                                </b>
 					                            </div>
 											</div>
 
 											<div class="col-md-6">
 												<div class="form-group">
                                                 <label>Thành Phố/Huyện/Xã:(*)</label>
-                                                    <select id="district" class="form-control form-control-select2" name="txtRegional" color="red" data-fouc >
+                                                    <b><select id="district" class="form-control form-control-select2" name="txtRegional" color="red" data-fouc >
                                                     @foreach($data_district as $district)
+                                                        @if($district['id'] == $district_selected['id'])
                                                         <option value="{{$district['id']}}" <?php echo $district['id'] == $district_selected['id'] ? 'selected' : '' ?>>{{ $district['name'] }}</option>
+                                                        @endif
                                                     @endforeach
                                                     </select>
+                                                    </b>
 												</div>
 											</div>
 										</div>
@@ -226,73 +232,12 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row">
-                                            <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Học Trường:</label>
-                                                        <b>
-                                                        @foreach ($educa as $de)
-                                                            @if($data['id'] == $de['staffId'] )
-                                                             
-                                                                <td>{{$de['school']}}</td><br>
-
-                                                            @endif
-                                                        @endforeach
-                                                        </b>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Trình độ:</label>
-                                                        <b>
-                                                        @foreach ($educa as $de)
-                                                            @if($data['id'] == $de['staffId'] )
-                                                       
-                                                                <td>{{$de['levelName']}}</td><br>
-                                                            
-                                                            @endif
-                                                        @endforeach
-                                                        </b>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row">
-                                            <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Chuyên ngành:</label>
-                                                        <b>
-                                                        @foreach ($educa as $de)
-                                                            @if($data['id'] == $de['staffId'] )
-                                                                <td>{{$de['fieldOfStudy']}}</td><br>
-                                                            @endif
-                                                        @endforeach
-                                                        </b>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Xếp loại:</label>
-                                                        <b>
-                                                        @foreach ($educa as $de)
-                                                            @if($data['id'] == $de['staffId'] )
-                                                                <td>{{$de['grade']}}</td><br>
-                                                            @endif
-                                                        @endforeach
-                                                        </b>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
 									</fieldset>
 								</div>
 
 								<div class="col-md-6">
 									<fieldset>
-										<legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Picture</legend>
+										<legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Images</legend>
 
                                         <div class="form-group">
                                             <label>Hình ảnh:</label>
@@ -316,6 +261,46 @@
 
 									</fieldset>
 								</div>
+
+                        <div class="col-12">
+                            <legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Education</legend>
+                            <div class="card-body p-0 mt-3 mb-3 ml-4 mr-4">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Cấp bậc</th>
+                                            <th>Tên cấp bậc</th>
+                                            <th>Trường</th>
+                                            <th>Ngành</th>
+                                            <th>Năm tốt nghiệp</th>
+                                            <th>Xếp loại</th>
+                                            <th>Phương thức</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $count = 1; ?> 
+                                        @foreach ($educa  as $de)
+                                            <tr>
+                                            @if($data['id'] == $de['staffId'] )
+                                                <td><?php echo $count ?></td>
+                                                <td>{{ $de['level'] }}</td>
+                                                <td>{{ $de['levelName'] }}</td>
+                                                <td>{{ $de['school'] }}</td>
+                                                <td>{{ $de['fieldOfStudy'] }}</td>
+                                                <td>{{ $de['graduatedYear'] }}</td>
+                                                <td>{{ $de['grade'] }}</td>
+                                                <td>{{ $de['modeOfStudy'] }}</td>
+                                                @endif
+                                            </tr>
+                                            <?php $count++; ?> 
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div></div>
 							</div>
 							
 						</form>

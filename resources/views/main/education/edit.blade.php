@@ -102,7 +102,7 @@
                                             <div class="col-md-6">
 												<div class="form-group">
                                                 <label>ID Nhân viên:</label>
-                                                <select class="form-control" name="txtStaffID" color="red">
+                                                <select class="form-control form-control-select2" name="txtStaffID" color="red">
                                                     @foreach($data_staff as $staff)
                                                     @if($data['staffId']==$staff['id'])
                                                        <option value="{{$staff['id']}}">{{ $staff['lastname'] }} {{ $staff['firstname'] }} || {{ $staff['id'] }} </option>
