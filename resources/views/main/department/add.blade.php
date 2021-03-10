@@ -32,7 +32,7 @@
                                 <div class="col-lg-9">
                                     <textarea class="form-control" name="txtName1" id="note_dkp" cols="20" rows="10" placeholder="" required></textarea>
                                 </div>
-                            </div>
+                            </div> 
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>

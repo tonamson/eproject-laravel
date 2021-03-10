@@ -72,6 +72,18 @@
                         </div>
                     @endif
 
+                    @if($errors->any())
+                    <div class="alert alert-danger border-0 alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <p><b>Dữ liệu đầu vào không chính xác:</b></p>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
 					<div class="card-body">
 						<form action="{{ route('postAddStaff') }}" method="post" enctype="multipart/form-data">
                         @csrf
@@ -84,7 +96,7 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<label>Mã Nhân viên:(*)</label>
-													<input type="text" class="form-control" name="txtCode" require  placeholder="Nhập Mã Nhân viên">
+													<input type="text" class="form-control" name="txtCode" value="{{ old('txtCode') }}" require  placeholder="Nhập Mã Nhân viên">
 												</div>
 											</div>
 
@@ -104,45 +116,47 @@
 											<div class="col-md-6">
 												<div class="form-group">
                                                     <label>Họ nhân viên:</label>
-                                                    <input type="text" class="form-control" name="txtLname"  placeholder="Nhập Họ">
+                                                    <input type="text" class="form-control" name="txtLname" value="{{ old('txtLname') }}" placeholder="Nhập Họ">
 												</div>
 											</div>
+                                            <div class="col-md-6">
+												<div class="form-group">
+                                                    <label>Tên Nhân viên:(*)</label>
+                                                    <input type="text" class="form-control" name="txtFname" value="{{ old('txtFname') }}" require  placeholder="Nhập Tên">
+												</div>
+											</div>
+											
+										</div>
 
-											<div class="col-md-6">
+										<div class="row">
+                                        <div class="col-md-6">
 												<div class="form-group">
                                                 <label>Phòng Ban:(*)</label>
-                                                    <select class="form-control form-control-select2" name="txtDepartment" color="red"  data-fouc>
+                                                    <select class="form-control form-control-select2" name="txtDepartment" value="{{ old('txtDepartment') }}" color="red"  data-fouc>
                                                     @foreach($data_department as $dep)
                                                     <option value="{{ $dep['id'] }}">{{ $dep['name'] }}</option>
                                                     @endforeach
                                                     </select>
 												</div>
 											</div>
-										</div>
-
-										<div class="row">
+                                            
                                             <div class="col-md-6">
 												<div class="form-group">
-                                                    <label>Tên Nhân viên:(*)</label>
-                                                    <input type="text" class="form-control" name="txtFname" require  placeholder="Nhập Tên">
-												</div>
+                                                <label>Ngày sinh:</label>
+                                                  <input type="Date" class="form-control" name="txtDob"  value="{{ old('txtDob') }}">
+					                            </div>
 											</div>
-
-											<div class="col-md-6">
-												<div class="form-group">
-                                                    <label>Ngày Vào:(*)</label>
-                                                    <input type="Date" class="form-control" name="txtJoinat">
-												</div>
-											</div>
+										
 										</div>
 
                                         <div class="row">
-											<div class="col-md-6">
+                                        <div class="col-md-6">
 												<div class="form-group">
-                                                <label>Ngày sinh:</label>
-                                                  <input type="Date" class="form-control" name="txtDob">
-					                            </div>
+                                                    <label>Ngày Vào:(*)</label>
+                                                    <input type="Date" class="form-control" name="txtJoinat" value="{{ old('txtJoinat') }}">
+												</div>
 											</div>
+										
 
 											<div class="col-md-6">
 												<div class="form-group">
@@ -184,14 +198,14 @@
 											<div class="col-md-6">
 												<div class="form-group">
                                                     <label>Điện thoại:</label>
-                                                    <input type="number" class="form-control" name="txtPhone" placeholder="Nhập số điện thoại">
+                                                    <input type="number" class="form-control" name="txtPhone" value="{{ old('txtPhone') }}" placeholder="Nhập số điện thoại">
 					                            </div>
 											</div>
 
 											<div class="col-md-6">
 												<div class="form-group">
                                                     <label>Email:</label>
-                                                    <input type="text" class="form-control" name="txtEmail" placeholder="Nhập Email">
+                                                    <input type="text" class="form-control" name="txtEmail" value="{{ old('txtEmail') }}" placeholder="Nhập Email abc12@exam.com">
 												</div>
 											</div>
 										</div>
@@ -203,14 +217,14 @@
 									<fieldset>
 										<legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Imformation</legend>
 
-										<div class="form-group">
+										<div class="form-group" hidden>
                                             <label>Mật Khẩu:(*)</label>
 											<input type="password" class="form-control" name="txtPass" placeholder="Nhập mật khẩu" require>
 										</div>
 
 										<div class="form-group">
                                             <label>CMND:(*)</label>
-											<input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" require>
+											<input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" value="{{ old('txtIDNumber') }}"  require>
 										</div>
 
 										<div class="form-group">
@@ -230,7 +244,7 @@
 
 										<div class="form-group">
 											<label>Ghi chú:</label>
-											<textarea rows="2" cols="5" class="form-control" name="txtNote" placeholder="Nhập Ghi chú"></textarea>
+											<textarea rows="5" cols="5" class="form-control" name="txtNote" value="{{ old('txtNote') }}" placeholder="Nhập Ghi chú" ></textarea>
 										</div>
 									</fieldset>
 								</div>

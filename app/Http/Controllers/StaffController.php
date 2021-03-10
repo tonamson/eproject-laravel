@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class StaffController extends Controller
 {
@@ -31,6 +32,38 @@ class StaffController extends Controller
 
     public function createStaff(Request $request)
     {
+
+        $rule = [
+            'txtCode' => 'bail|required|unique:staff,code|min:3|max:20',
+            'txtFname' => 'bail|required',
+            'txtJoinat' => 'bail|required',
+            'txtDob' => 'bail|required',
+            'txtIDNumber' => 'bail|required|unique:staff,id_number',
+            'txtEmail' => 'bail|email',
+            'txtPhone' => 'bail|numeric',
+            'txtNote' => 'bail|max:500',
+        ];
+        $message = [
+            'txtCode.required' => 'Mã nhân viên không để rỗng',
+            'txtCode.unique' => 'Mã nhân viên đã tồn tại',
+            'txtCode.max' => 'Mã nhân viên tối đa 20 ký tự',
+            'txtCode.min' => 'Mã nhân viên tối thiểu 3 ký tự',
+            'txtFname.required' => 'Tên Nhân viên không để rỗng',
+            'txtJoinat.required' => 'Ngày vào không để rỗng',
+            'txtDob.required' => 'Ngày sinh nhật không để rỗng',
+            'txtIDNumber.required' => 'Số CMND không để rỗng',
+            'txtIDNumber.unique' => 'Số CMND đã tồn tại',
+            'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
+            'txtPhone.numeric' => 'Số Phone phải là số',
+            'txtNote.max' => 'Ghi chú không quá 500 ký tự',
+           
+        ];
+        $data = $request->all();
+        $validate = Validator::make($data, $rule, $message);
+
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->errors())->withInput();
+        }
 
         $code = $request->input('txtCode');
         $firstname = $request->input('txtFname');
@@ -279,6 +312,41 @@ class StaffController extends Controller
 
 
     public function postEditStaff(Request $request) {
+
+        $rule = [
+            // 'txtCode' => 'bail|required|unique:staff,code|min:3|max:20',
+            'txtFname' => 'bail|required',
+            'txtJoinat' => 'bail|required',
+            'txtDob' => 'bail|required',
+            // 'txtIDNumber' => 'bail|required|unique:staff,idNumber',
+            'txtEmail' => 'bail|email',
+            'txtPhone' => 'bail|numeric',
+            'txtNote' => 'bail|max:500',
+        ];
+        $message = [
+            // 'txtCode.required' => 'Mã nhân viên không để rỗng',
+            // 'txtCode.unique' => 'Mã nhân viên đã tồn tại',
+            // 'txtCode.max' => 'Mã nhân viên tối đa 20 ký tự',
+            'txtCode.min' => 'Mã nhân viên tối thiểu 3 ký tự',
+            'txtFname.required' => 'Tên Nhân viên không để rỗng',
+            'txtJoinat.required' => 'Ngày vào không để rỗng',
+            'txtDob.required' => 'Ngày sinh nhật không để rỗng',
+            'txtIDNumber.required' => 'Số CMND không để rỗng',
+            // 'txtIDNumber.unique' => 'Số CMND đã tồn tại',
+            'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
+            'txtPhone.numeric' => 'Số Phone phải là số',
+            'txtNote.max' => 'Ghi chú không quá 500 ký tự',
+           
+        ];
+        $data = $request->all();
+        $validate = Validator::make($data, $rule, $message);
+
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->errors())->withInput();
+        }
+
+
+
         $id=$request->input('txtID');
         $code = $request->input('txtCode');
         $firstname = $request->input('txtFname');

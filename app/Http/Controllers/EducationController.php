@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 class EducationController extends Controller
@@ -39,6 +40,24 @@ class EducationController extends Controller
 
     public function createEducation(Request $request) {
 
+        $rule = [
+            'txtSchool' => 'bail|required|min:3|max:100',
+            'txtFieldOfStudy' => 'bail|required',
+            'txtGraduatedYear' => 'bail|required',
+        ];
+        $message = [
+            'txtSchool.required' => 'Tên trường không để rỗng',
+            'txtSchool.max' => 'Tên Trường tối đa 100 ký tự',
+            'txtFieldOfStudy.required' => 'Chuyên ngành không để rổng',
+            'txtGraduatedYear.required' => 'Năm tốt nghiệp không để rỗng',
+        ];
+        $data = $request->all();
+        $validate = Validator::make($data, $rule, $message);
+
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->errors())->withInput();
+        }
+
         $staffId = $request->input('txtStaffID');
         $level = $request->input('txtLevel');
         $levelName = $request->input('txtLevelName');
@@ -71,7 +90,6 @@ class EducationController extends Controller
     //Update
 
     public function getEditEducation(Request $request) {
-
         $data_request = $request->all();
 
         $response = Http::get('http://localhost:8888/staff/list');
@@ -92,6 +110,26 @@ class EducationController extends Controller
     }
 
     public function postEditEducation(Request $request) {
+
+        $rule = [
+            'txtSchool' => 'bail|required|min:3|max:100',
+            'txtFieldOfStudy' => 'bail|required',
+            'txtGraduatedYear' => 'bail|required',
+        ];
+        $message = [
+            'txtSchool.required' => 'Tên trường không để rỗng',
+            'txtSchool.max' => 'Tên Trường tối đa 100 ký tự',
+            'txtFieldOfStudy.required' => 'Chuyên ngành không để rổng',
+            'txtGraduatedYear.required' => 'Năm tốt nghiệp không để rỗng',
+        ];
+        $data = $request->all();
+        $validate = Validator::make($data, $rule, $message);
+
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->errors())->withInput();
+        }
+
+        
         $id=$request->input('txtID');
         $staffId = $request->input('txtStaffID');
         $level = $request->input('txtLevel');

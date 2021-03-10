@@ -71,6 +71,18 @@
                                 </div>
                             </div>
                         @endif
+<!-- validate  -->
+                        @if($errors->any())
+                    <div class="alert alert-danger border-0 alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        <p><b>Dữ liệu đầu vào không chính xác:</b></p>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
 					<div class="card-body">
 						<form action="{{ route('postEducation') }}" method="post" enctype="multipart/form-data">
@@ -92,7 +104,7 @@
 											<div class="col-md-6">
 												<div class="form-group">
                                                     <label>Cấp Bậc:</label>
-                                                   <input type="text" class="form-control" name="txtLevel">
+                                                   <input type="text" class="form-control" name="txtLevel" value="{{ old('txtLevel') }}">
 												</div>
 											</div>
 										</div>
@@ -101,14 +113,14 @@
 											<div class="col-md-6">
 												<div class="form-group">
                                                 <label>Tên Cấp Bậc:</label>
-                                                <input type="text" class="form-control" name="txtLevelName">
+                                                <input type="text" class="form-control" name="txtLevelName" value="{{ old('txtLevelName') }}">
 												</div>
 											</div>
 
 											<div class="col-md-6">
 												<div class="form-group">
                                                 <label>Tên Trường:(*)</label>
-                                                <input type="text" class="form-control" name="txtSchool" require>
+                                                <input type="text" class="form-control" name="txtSchool" value="{{ old('txtSchool') }}" require>
 												</div>
 											</div>
 										</div>
@@ -117,14 +129,14 @@
 											<div class="col-md-6">
 												<div class="form-group">
                                                 <label>Chuyên ngành:(*)</label>
-                                                <input type="text" class="form-control" name="txtFieldOfStudy" require>
+                                                <input type="text" class="form-control" name="txtFieldOfStudy" value="{{ old('txtFieldOfStudy') }}" require>
 					                            </div>
 											</div>
 
 											<div class="col-md-6">
 												<div class="form-group">
                                                 <label>Năm tốt nghiện:(*)</label>
-                                                <input type="text" class="form-control" name="txtGraduatedYear" require>
+                                                <input type="text" class="form-control" name="txtGraduatedYear" value="{{ old('txtGraduatedYear') }}" require>
 												</div>
 											</div>
 										</div>
@@ -133,14 +145,14 @@
 											<div class="col-md-6">
 												<div class="form-group">
                                                 <label>Xếp loại:</label>
-                                                <input type="text" class="form-control" name="txtGrade">
+                                                <input type="text" class="form-control" name="txtGrade"  value="{{ old('txtGrade') }}" >
 					                            </div>
 											</div>
 
 											<div class="col-md-6">
 												<div class="form-group">
                                                 <label>Hình thức học:</label>
-                                                <input type="text" class="form-control" name="txtModeOf">
+                                                <input type="text" class="form-control" name="txtModeOf"  value="{{ old('txtModeOf') }}" >
 												</div>
 											</div>
 										</div>

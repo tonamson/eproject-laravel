@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 class DepartmentController extends Controller
@@ -47,7 +48,23 @@ class DepartmentController extends Controller
 
     public function createDepartment(Request $request)
     {
-       
+        $rule = [
+            'txtName' => 'required',
+            'txtName1' => 'required',
+        ];
+        $message = [
+            'txtName.required' => 'Tên Phòng Ban không để rỗng',
+           
+            'txtName1.required' => 'Tên Tiếng Việt không để rỗng',
+           
+        ];
+        $data = $request->all();
+        $validate = Validator::make($data, $rule, $message);
+
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->errors());
+        }
+
         $name = $request->input('txtName');
         $nameVn = $request->input('txtName1');
         
@@ -86,6 +103,23 @@ class DepartmentController extends Controller
 
     public function postEditDep(Request $request) {
         // $data_request = $request->all();
+        $rule = [
+            'txtName' => 'bail|required|min:3|max:50',
+            'txtName1' => 'bail|required',
+        ];
+        $message = [
+            'txtName.required' => 'Tên Phòng Ban không để rỗng',
+            // 'txtName.unique' => 'Tên Phòng Ban đã tồn tại',
+            'txtName.max' => 'Tên Phòng Ban tối đa 20 ký tự',
+            'txtName.min' => 'Tên Phòng Ban tối thiểu 3 ký tự',
+            'txtName1.required' => 'Tên Phòng Ban Tiếng Việt không để rỗng',  
+        ];
+        $data = $request->all();
+        $validate = Validator::make($data, $rule, $message);
+
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->errors())->withInput();
+        }
 
         $id =$request->input('txtID');
         $name = $request->input('txtName');
