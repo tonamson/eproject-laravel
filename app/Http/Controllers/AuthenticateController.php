@@ -31,8 +31,9 @@ class AuthenticateController extends Controller
             return redirect()->back()->withErrors($validate)->withInput();
         }
         $id_number = $data['id_number'];
-        $password = $data['password'];
-        $auth = Auth::attempt(['id_number' => $id_number, 'password' => $password]);
+        $password = md5($data['password']);
+        $user = Staff::where(['id_number' => $id_number, 'password' => $password])->first();
+        $auth = Auth::login($user);
         if ($auth) {
             // login thành công thì redirect tới trang nào đó tùy
             //return response(auth()->user()); // thông tin user
