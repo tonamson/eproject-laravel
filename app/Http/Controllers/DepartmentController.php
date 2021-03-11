@@ -104,14 +104,14 @@ class DepartmentController extends Controller
     public function postEditDep(Request $request) {
         // $data_request = $request->all();
         $rule = [
-            'txtName' => 'bail|required|min:3|max:50',
+            'txtName' => 'bail|required|min:2|max:50',
             'txtName1' => 'bail|required',
         ];
         $message = [
             'txtName.required' => 'Tên Phòng Ban không để rỗng',
             // 'txtName.unique' => 'Tên Phòng Ban đã tồn tại',
             'txtName.max' => 'Tên Phòng Ban tối đa 20 ký tự',
-            'txtName.min' => 'Tên Phòng Ban tối thiểu 3 ký tự',
+            'txtName.min' => 'Tên Phòng Ban tối thiểu 2 ký tự',
             'txtName1.required' => 'Tên Phòng Ban Tiếng Việt không để rỗng',  
         ];
         $data = $request->all();

@@ -99,8 +99,8 @@
                                 <option value="1">Xóa tạm thời</option>
                             </select>
                         </div>
-                        <button class="btn btn-success" type="submit">Lưu</button>&nbsp;&nbsp;
-                        <button class="btn btn-success" type="reset">Reset</button>
+                        <a class="btn btn-primary" role="button" href="{{ action('DepartmentController@index') }}" style="color:white;">Quay lại</a>
+                        <button class="btn btn-success" type="submit"> Lưu  <i class="icon-paperplane ml-2"></i></button>&nbsp;&nbsp;
                     </div>
                 </div>
             </form>
