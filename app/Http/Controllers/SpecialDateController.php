@@ -23,17 +23,15 @@ class SpecialDateController extends Controller
 
         $calendar = array();
         foreach ($body['data'] as $value) {
-            $arr = array();
-            $arr['title'] = $value['note'];
-            $arr['start'] = $value['daySpecialFrom'];
-            $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['daySpecialTo'])));
             if($value['typeDay'] == 1) {
+                $arr = array();
+                $arr['title'] = $value['note'];
+                $arr['start'] = $value['daySpecialFrom'];
+                $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['daySpecialTo'])));
                 $arr['color'] = '#EF5350';
-            } else {
-                $arr['color'] = '#046A38';
-            }
 
-            array_push($calendar, $arr);
+                array_push($calendar, $arr);
+            }
         }
 
         return view('main.special_date.index')
@@ -49,18 +47,20 @@ class SpecialDateController extends Controller
         $day_special_to = $request->input('day_special_to');
         $note = $request->input('note');
         $type_day = $request->input('type_day');
+        
+        // $date = date("Y-m-d");
+        // $data_request = ['special_date_from' => $date];
 
-        $date = date("Y-m-d");
-        $data_request = ['special_date_from' => $date];
+        // $response_check = Http::get('http://localhost:8888/special-date/list?', $data_request);
+        // $body_check = json_decode($response_check->body(), true);
 
-        $response_check = Http::get('http://localhost:8888/special-date/list?', $data_request);
-        $body_check = json_decode($response_check->body(), true);
-
-        foreach ($body_check['data'] as $value) {
-            if(($value['daySpecialFrom'] >= $day_special_from && $value['daySpecialFrom'] <= $day_special_to) || ($value['daySpecialTo'] >= $day_special_from && $value['daySpecialTo'] <= $day_special_to)) {
-                return redirect()->back()->with('error', 'Ngày lễ và tăng ca không được chồng chéo nhau!');
-            }
-        }
+        // foreach ($body_check['data'] as $value) {
+        //     if($value['typeDate'] == 1) {
+        //         if(($value['daySpecialFrom'] >= $day_special_from && $value['daySpecialFrom'] <= $day_special_to) || ($value['daySpecialTo'] >= $day_special_from && $value['daySpecialTo'] <= $day_special_to)) {
+        //             return redirect()->back()->with('error', 'Ngày lễ không được chồng chéo nhau!');
+        //         }
+        //     }
+        // }
 
         if($day_special_from > $day_special_to) {
             return redirect()->back()->with('error', 'Từ ngày không được nhỏ hơn đến ngày! Vui lòng thử lại');
@@ -77,6 +77,12 @@ class SpecialDateController extends Controller
             'type_day' => $type_day
         ];
 
+        if($type_day == 2) {
+            $data_request['staff_request'] = auth()->user()->id;
+            $data_request['department_request'] = auth()->user()->department;
+            $data_request['is_approved'] = 0;
+        }
+
         $response = Http::post('http://localhost:8888/special-date/add', $data_request);
         $body = json_decode($response->body(), true);
 
@@ -84,13 +90,13 @@ class SpecialDateController extends Controller
             if($type_day == 1)
                 return redirect()->back()->with('success', 'Thêm ngày lễ thành công!');
             else
-                return redirect()->back()->with('success', 'Thêm tăng ca thành công!');
+                return redirect()->back()->with('success', 'Đề xuất tăng ca thành công! Vui lòng chờ giám đốc duyệt');
         } 
         else {
             if($type_day == 1)
                 return redirect()->back()->with('error', 'Thêm ngày lễ thất bại!');
             else
-                return redirect()->back()->with('error', 'Thêm ngày tăng ca thất bại!');
+                return redirect()->back()->with('error', 'Đề xuất tăng ca thất bại!');
         }
     }
 
@@ -214,5 +220,53 @@ class SpecialDateController extends Controller
         else {
             return redirect()->back()->with('error', 'Chỉnh sửa ngày lễ thất bại!');
         }
+    }
+
+    public function requestOverTime(Request $request) {
+        $params_get_department = [
+            'id' => auth()->user()->id,
+        ];
+        $response_get_department = Http::get('http://localhost:8888/staff/findOneStaffDepartment', $params_get_department);
+        $body_get_department = json_decode($response_get_department->body(), true);
+
+        $year = $request->input('year');
+        $month = date("m");
+        if(!$year) {
+            $year = date("Y");
+        }
+
+        $date = $year . '-' . $month . '-' . '01';
+        $data_request = ['special_date_from' => $date, 'staff_request' => auth()->user()->id, 'department_request' => auth()->user()->department];
+
+        $response = Http::get('http://localhost:8888/special-date/get-request-ot?', $data_request);
+        $body = json_decode($response->body(), true);
+
+        $calendar = array();
+        foreach ($body['data'] as $value) {
+            if($value['is_approved'] == 1 or $value['type_day'] == 1) {
+                $arr = array();
+                $arr['title'] = $value['note'];
+                $arr['start'] = $value['day_special_from'];
+                $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['day_special_to'])));
+                if($value['type_day'] == 1) {
+                    $arr['color'] = '#EF5350';
+                } else {
+                    $arr['color'] = '#046A38';
+                }
+    
+                array_push($calendar, $arr);
+            }
+        }
+
+        return view('main.special_date.request_ot')
+            ->with('data', $body['data'])
+            ->with('year', $year)
+            ->with('calendar', json_encode($calendar))
+            ->with('staff', $body_get_department['data'])
+            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tăng ca', 'url' => '#']]);
+    }
+
+    public function approveOverTime(Request $request) {
+        
     }
 }

@@ -33,7 +33,7 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Danh Sách Ngày Lễ</h1>
+        <h1 class="pt-3 pl-3 pr-3">Danh Sách Tăng Ca</h1>
         <div class="card-header header-elements-inline">
             
         </div>
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             @endif
-            <form action="{{ action('SpecialDateController@index') }}" method="GET">
+            <form action="{{ action('SpecialDateController@requestOverTime') }}" method="GET">
                 @csrf
                 <div class="form-group d-flex">
                     <div class="">
@@ -66,49 +66,70 @@
             </form>
 
             <div class="form-group d-flex">
-                <div class="">
-                    <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Tạo ngày lễ mới</button>
-                </div>
+                @if(auth()->user()->id !== 7)
+                    <div class="">
+                        <button class="btn btn-primary" style="background-color: #046A38" data-toggle="modal" data-target="#exampleModalCenter2">Tạo đề xuất tăng ca mới</button>
+                    </div>
+                @endif
             </div>
         </div>
-        <!-- Modal bsc -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+         <!-- Modal bsc -->
+         <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <form action="{{ action('SpecialDateController@createSpecialDate') }}" method="post">
                         @csrf
-                        <input type="hidden" name="type_day" value="1">
+                        <input type="hidden" name="staff_request" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="department_request" value="{{ auth()->user()->department }}">
+                        <input type="hidden" name="type_day" value="2">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Tạo Ngày Lễ</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Đề Xuất Ngày Tăng Ca</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Từ ngày:</label>
-                                <div class="col-lg-9">
+                                <label class="col-lg-4 col-form-label">Tên nhân viên đề xuất:</label>
+                                <div class="col-lg-8">
+                                    <div class="col-form-label">{{ auth()->user()->firstname . ' ' . auth()->user()->lastname }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Mã nhân viên:</label>
+                                <div class="col-lg-8">
+                                    <div class="col-form-label">{{ auth()->user()->code }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Phòng ban đề xuất:</label>
+                                <div class="col-lg-8">
+                                    <div class="col-form-label">{{ $staff[0][2] }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Từ ngày:</label>
+                                <div class="col-lg-8">
                                     <input type="text" class="form-control day_leave" name="day_special_from" value="" required>
                                 </div>
                             </div>
-
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Đến ngày:</label>
-                                <div class="col-lg-9">
+                                <label class="col-lg-4 col-form-label">Đến ngày:</label>
+                                <div class="col-lg-8">
                                     <input type="text" class="form-control day_leave" name="day_special_to" value="" required>
                                 </div>
                             </div>
-
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Mô tả ngày lễ:</label>
-                                <div class="col-lg-9">
-                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" placeholder="VD: Lễ quốc khánh, Lễ Tết, ..." required></textarea>
+                                <label class="col-lg-4 col-form-label">Lý do tăng ca:</label>
+                                <div class="col-lg-8">
+                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" placeholder="VD: Tăng ca sản xuất sản phẩm mới, ..." required></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                            <button type="submit" class="btn btn-primary">Tạo mới</button>
+                            <button type="submit" class="btn btn-primary">Tạo đề xuất</button>
                         </div>
                     </form>  
                 </div>
@@ -119,32 +140,35 @@
             <thead>
                 <tr>
                     <th>STT</th>
+                    <th>Nhân viên đề xuất</th>
+                    <th>Mã nhân viên</th>
+                    <th>Phòng ban đề xuất</th>
                     <th>Từ Ngày</th>
                     <th>Đến Ngày</th>
-                    <th>Mô tả</th>
-                    <th>Loại</th>
+                    <th>Trạng thái</th>
                     <th class="text-center">Sửa / Xóa</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $count = 1; ?>
                 @foreach ($data as $special_date)
-                    @if($special_date['typeDay'] == 1)
+                    @if($special_date['type_day'] == 2)
                         <tr>
                             <td><?php echo $count; $count++ ?></td>
-                            <td><?php echo $special_date['daySpecialFrom'] ?></td>
-                            <td><?php echo $special_date['daySpecialTo'] ?></td>
+                            <td><?php echo $special_date['full_name_staff_request'] ?></td>
+                            <td><?php echo $special_date['code'] ?></td>
+                            <td><?php echo $special_date['name_department_request'] ?></td>
+                            <td><?php echo $special_date['day_special_from'] ?></td>
+                            <td><?php echo $special_date['day_special_to'] ?></td>
                             <td>
-                                <?php 
-                                    if(strlen($special_date['note']) > 40) echo substr($special_date['note'], 0, 40) . '...';
-                                    else echo $special_date['note'];    
-                                ?>
-                            </td>
-                            <td>
-                                <span class="badge badge-danger">Ngày lễ</span>
+                                @if($special_date['is_approved'] == 0)
+                                    <span class="badge badge-warning">Chưa phê duyệt</span>
+                                @else
+                                    <span class="badge badge-primary" style="background-color: #046A38">Đã duyệt</span>
+                                @endif
                             </td>
                             <td class="text-center">
-                                @if(date("Y-m-d") < $special_date['daySpecialFrom'])
+                                @if(date("Y-m-d") < $special_date['day_special_from'])
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
                                         <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
