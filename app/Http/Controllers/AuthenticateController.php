@@ -12,7 +12,7 @@ class AuthenticateController extends Controller
 {
     public function getLogin()
     {
-        if(auth()->user()) {
+        if (auth()->user()) {
             return redirect('/');
         }
         return view('auth.login');
@@ -33,8 +33,7 @@ class AuthenticateController extends Controller
         $id_number = $data['id_number'];
         $password = md5($data['password']);
         $user = Staff::where(['id_number' => $id_number, 'password' => $password])->first();
-        $auth = Auth::login($user);
-        if ($auth) {
+        if ($user && $auth = Auth::login($user)) {
             // login thành công thì redirect tới trang nào đó tùy
             //return response(auth()->user()); // thông tin user
             $params_get_department = [
@@ -49,7 +48,8 @@ class AuthenticateController extends Controller
         return redirect()->back()->with('authentication', 'Không tìm thấy thông tin tài khoản');
     }
 
-    public function getLogout(Request $request){
+    public function getLogout(Request $request)
+    {
         Auth::logout();
         $request->session()->flush();
         return redirect('auth/login');
