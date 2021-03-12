@@ -18,59 +18,55 @@
 
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Tạo tính lương</h5>
+            <h5 class="card-title">Chi tiết bảng tính lương</h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('postCalculatedSalary') }}" method="post">
-                @if(session('message'))
-                    <div class="alert alert-{{ session('message')['type'] }} border-0 alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                        {{ session('message')['message'] }}
-                    </div>
-                @endif
+            <table class="table datatable-basics">
+                <thead>
+                <tr>
+                    <th>Mã nhân viên</th>
+                    <th>Tên nhân viên</th>
+                    <th>Ngày chấm công</th>
+                    <th>Công chuẩn của tháng</th>
+                    <th>Lương</th>
+                    <th>Lương 1 ngày</th>
+                    <th>Công đã làm</th>
+                    <th>Hệ số</th>
+                    <th>Tổng tiền</th>
 
-                @if($errors->any())
-                    <div class="alert alert-danger border-0 alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                        <p><b>Dữ liệu đầu vào không chính xác:</b></p>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                @csrf
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Ngày bắt đầu:</label>
-                                    <div class="input-group">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
-                                        </span>
-                                        <input type="text" class="form-control daterange-single" value="{{ now()->format('Y-m-d') }}" name="from_date">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Ngày kết thúc:</label>
-                                    <div class="input-group">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
-                                        </span>
-                                        <input type="text" class="form-control daterange-single" value="{{ now()->format('Y-m-d') }}" name="to_date">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-success" type="submit">Lưu</button>
-                    </div>
-                </div>
-            </form>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($data as $item)
+                    @foreach($item->details as $detail)
+                        <tr>
+                            <td>{{ $detail->contract->staff->code }}</td>
+                            <td>{{ $detail->contract->staff->firstname . ' ' . $detail->contract->staff->lastname }}</td>
+                            <td>{{ $detail->day_detail }}</td>
+                            <td>{{ $detail->standard_days }}</td>
+                            <td>{{ number_format($detail->contract->salary) }}</td>
+                            <td>{{ number_format($detail->salary_per_day) }}</td>
+                            <td>{{ $detail->total_working_of_day }}</td>
+                            <td>{{ $detail->multiply_day }}</td>
+                            <td>{{ number_format($detail->salary_of_day) }}</td>
+{{--                            <td class="text-center">--}}
+{{--                                <div class="list-icons">--}}
+{{--                                    <div class="dropdown">--}}
+{{--                                        <a href="#" class="list-icons-item" data-toggle="dropdown">--}}
+{{--                                            <i class="icon-menu9"></i>--}}
+{{--                                        </a>--}}
+
+{{--                                        <div class="dropdown-menu dropdown-menu-right">--}}
+{{--                                            <a href="{{ route('getDetailSalary', ['id' => $item->id]) }}" class="dropdown-item">Chi tiết</a>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </td>--}}
+                        </tr>
+                    @endforeach
+                @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 

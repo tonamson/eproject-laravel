@@ -27,7 +27,7 @@ class SalaryController extends Controller
     public function getDetail(Request $request)
     {
         $response = Http::get(config('app.api_url') . '/salary/details', [
-            'id' => boolval($request->id)
+            'id' => $request->id
         ]);
         $body = json_decode($response->body(), false);
         $data = [];
