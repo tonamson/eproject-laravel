@@ -47,7 +47,7 @@
     	<!-- 2 columns form -->
         <div class="card">
 					<div class="card-header header-elements-inline">
-						<h3 class="pt-3 pl-3 pr-3 font-weight-bold">CHI TIẾT NHÂN VIÊN</h3>
+                    <h1 class="pt-3 pl-3 pr-3">Thông Tin Chi Tiết Nhân Viên</h1>
 						<div class="header-elements">
 							<div class="list-icons">
 		                		<a class="list-icons-item" data-action="collapse"></a>
