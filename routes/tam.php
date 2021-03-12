@@ -58,13 +58,28 @@ Route::middleware(['check_login'])->group(function () {
         Route::group(['prefix' => 'special-date'], function () {
             Route::get('/index', 'SpecialDateController@index');
 
-            Route::post('/create', 'SpecialDateController@createSpecialDate');
+        });
+    });
 
-            Route::get('/delete', 'SpecialDateController@deleteSpecialDate');
+    Route::middleware(['check_hr_or_manager'])->group(function () {
+        Route::group(['prefix' => 'special-date'], function () {
+            Route::post('/create', 'SpecialDateController@createSpecialDate');
 
             Route::get('/detail', 'SpecialDateController@detailSpecialDate');
 
+            Route::get('/detail-ot', 'SpecialDateController@detailOverTime');
+
             Route::post('/update', 'SpecialDateController@updateSpecialDate');
+
+            Route::get('/delete', 'SpecialDateController@deleteSpecialDate');
+        });
+    });
+
+    Route::middleware(['check_manager'])->group(function () {
+        Route::group(['prefix' => 'over-time'], function () {
+            Route::get('/index', 'SpecialDateController@requestOverTime');
+
+            Route::post('/approve', 'SpecialDateController@approveOverTime');
         });
     });
 

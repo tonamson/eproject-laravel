@@ -51,6 +51,17 @@ class TimeleaveController extends Controller
         $number_day_leave = $request->input('number_day_leave');
         $note_bsc = $request->input('note_bsc');
 
+        if($day_leave > date('Y-m-d')) {
+            return redirect()->back()->with('error', 'Không được bổ sung công trước ngày hiện tại');
+        }
+
+        $date1=date_create($day_leave);
+        $date2=date_create(date('Y-m-d'));
+        $diff=date_diff($date1,$date2);
+        if($diff->format("%a") > 1) {
+            return redirect()->back()->with('error', 'Không được bổ sung công cách quá 2 ngày hiện tại');
+        }
+
         if(strlen($note_bsc) > 300) {
             return redirect()->back()->with('error', 'Lý do không được vượt quá 300 kí tự');
         }
@@ -92,7 +103,8 @@ class TimeleaveController extends Controller
             'image' => $image_time,
             'type' => false,
             'note' => $note_bsc,
-            'is_approved' => $is_approved
+            'is_approved' => $is_approved,
+            'created_at' => date('Y-m-d')
         ];
 
         $response = Http::post('http://localhost:8888/time-leave/add', $data_request);
@@ -219,6 +231,17 @@ class TimeleaveController extends Controller
         $note_bsc = $request->input('note_bsc_update');
         $image_time = $request->input('txtImageOld') ? $request->input('txtImageOld') : '';
 
+        if($day_leave > date('Y-m-d')) {
+            return redirect()->back()->with('error', 'Không được bổ sung công trước ngày hiện tại');
+        }
+
+        $date1=date_create($day_leave);
+        $date2=date_create(date('Y-m-d'));
+        $diff=date_diff($date1,$date2);
+        if($diff->format("%a") > 1) {
+            return redirect()->back()->with('error', 'Không được bổ sung công cách quá 2 ngày hiện tại');
+        }
+
         if(strlen($note_bsc) > 300) {
             return redirect()->back()->with('error', 'Lý do không được vượt quá 300 kí tự');
         }
@@ -342,7 +365,7 @@ class TimeleaveController extends Controller
             } else if($user->department == 2) {
                 return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi quản lý phê duyệt');
             } else {
-                return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi nhân sự phê duyệt');
+                return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi phê duyệt');
             }
         } 
         else if($body['data'] == "Added time") {

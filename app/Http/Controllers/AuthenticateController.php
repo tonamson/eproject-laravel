@@ -33,16 +33,20 @@ class AuthenticateController extends Controller
         $id_number = $data['id_number'];
         $password = md5($data['password']);
         $user = Staff::where(['id_number' => $id_number, 'password' => $password])->first();
-        if ($user && $auth = Auth::login($user)) {
-            // login thành công thì redirect tới trang nào đó tùy
-            //return response(auth()->user()); // thông tin user
+
+        if($user) {
             $params_get_department = [
-                'id' => auth()->user()->id,
+                'id' => $user->id,
             ];
             $response_get_department = Http::get('http://localhost:8888/staff/findOneStaffDepartment', $params_get_department);
             $body_get_department = json_decode($response_get_department->body(), true);
-
+    
             $request->session()->put('department_name', $body_get_department['data'][0][2]);
+        }
+
+        if ($user && $auth = Auth::login($user)) {
+             // login thành công thì redirect tới trang nào đó tùy
+            //return response(auth()->user()); // thông tin user
             return redirect('/');
         }
         return redirect()->back()->with('authentication', 'Không tìm thấy thông tin tài khoản');
