@@ -117,7 +117,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Giá</label>
-                                    <input type="number" onkeyup="changeDetailContract()" name="detail[2][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="0">
+                                    <input type="number" onkeyup="changeDetailContract()" name="details[2][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="0">
                                 </div>
                             </div>
                         </div>
