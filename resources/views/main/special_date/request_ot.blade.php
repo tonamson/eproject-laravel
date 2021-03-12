@@ -33,7 +33,7 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Danh Sách Tăng Ca</h1>
+        <h1 class="pt-3 pl-3 pr-3">Danh Sách Đề Xuất Tăng Ca</h1>
         <div class="card-header header-elements-inline">
             
         </div>
@@ -163,16 +163,34 @@
                             <td>
                                 @if($special_date['is_approved'] == 0)
                                     <span class="badge badge-warning">Chưa phê duyệt</span>
+                                @elseif($special_date['is_approved'] == -1)
+                                    <span class="badge badge-danger">Đã từ chối</span>
                                 @else
                                     <span class="badge badge-primary" style="background-color: #046A38">Đã duyệt</span>
                                 @endif
                             </td>
                             <td class="text-center">
-                                @if(date("Y-m-d") < $special_date['day_special_from'])
-                                    <div class="from-group d-flex">
-                                        <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
-                                    </div>
+                                @if(auth()->user()->id != 7)
+                                    @if($special_date['is_approved'] == 1)
+                                        <span class="badge badge-primary">Đã duyệt. Không thể chỉnh sửa!</span>
+                                    @elseif($special_date['is_approved'] == -1)
+                                        <span class="badge badge-danger">Đã từ chối!</span>
+                                    @elseif(date("Y-m-d") <= $special_date['day_special_from'])
+                                        <div class="from-group d-flex">
+                                            <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                            <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                        </div>
+                                    @endif
+                                @else
+                                    @if($special_date['is_approved'] == 1)
+                                        <span class="badge badge-primary">Đã duyệt!</span>
+                                    @elseif($special_date['is_approved'] == -1)
+                                        <span class="badge badge-danger">Đã từ chối!</span>
+                                    @elseif(date("Y-m-d") <= $special_date['day_special_from'])
+                                        <div class="from-group d-flex">
+                                            <a class="btn btn-info open-detail-approve-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
+                                        </div>
+                                    @endif
                                 @endif
                             </td>
                         </tr>
@@ -184,15 +202,25 @@
         <div id="bsc-modal" class="modal fade" role="dialog"> <!-- modal bsc -->
             <div class="modal-dialog">
               <div class="modal-content">
-                <form action="{{ action('SpecialDateController@updateSpecialDate') }}" method="post" class="form-horizontal">
+                @if(auth()->user()->id != 7)
+                    <form action="{{ action('SpecialDateController@updateSpecialDate') }}" method="post" class="form-horizontal">
                     @csrf
-                    <div id="html_pending">
-                        
-                    </div>
-                </form> <!-- end form -->
+                        <div id="html_pending">
+                            
+                        </div>
+                    </form> <!-- end form -->
+                @else
+                    <form action="{{ action('SpecialDateController@approveOverTime') }}" method="post" class="form-horizontal">
+                    @csrf
+                        <div id="html_pending">
+                            
+                        </div>
+                    </form> <!-- end form -->
+                @endif
               </div>
             </div>
         </div> <!-- end modal bsc -->
+
           
     </div>
     <!-- /basic datatable -->
@@ -228,6 +256,27 @@
 
             $.ajax({
                 url: '{{ action('SpecialDateController@detailSpecialDate') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending').empty().append(data);
+                    $('#bsc-modal').modal();
+                }
+            });
+        });
+
+        $('.open-detail-approve-special-date').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('SpecialDateController@detailOverTime') }}',
                 Type: 'POST',
                 datatype: 'text',
                 data:

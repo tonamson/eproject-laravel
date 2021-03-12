@@ -91,9 +91,9 @@ class CheckInOutController extends Controller
             $year = date("Y");
         }
         $date_special = $year . '-' . $month . '-' . '01';
-        $data_request_special = ['special_date_from' => $date_special];
+        $data_request_special = ['special_date_from' => $date_special, 'staff_request' => auth()->user()->id, 'department_request' => auth()->user()->department];
 
-        $response_special = Http::get('http://localhost:8888/special-date/list?', $data_request_special);
+        $response_special = Http::get('http://localhost:8888/special-date/get-request-ot?', $data_request_special);
         $body_special = json_decode($response_special->body(), true);
         
         $date = $year . '-' . $month . '-' . '01';
@@ -106,9 +106,9 @@ class CheckInOutController extends Controller
         foreach ($body_special['data'] as $value) {
             $arr = array();
             $arr['title'] = $value['note'];
-            $arr['start'] = $value['daySpecialFrom'];
-            $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['daySpecialTo'])));
-            if($value['typeDay'] == 1) {
+            $arr['start'] = $value['day_special_from'];
+            $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['day_special_to'])));
+            if($value['type_day'] == 1) {
                 $arr['color'] = '#EF5350';
             } else {
                 $arr['color'] = '#046A38';

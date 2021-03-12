@@ -160,10 +160,16 @@
                         @if(auth()->user()->department == 2 or auth()->user()->id == 7)
                             <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
                                 <i class="icon-calendar2"></i>
-                                @if (auth()->user()->id == 7)
-                                    <span>Quản Lý Ngày Lễ / Tăng Ca</span>
+                                <span>Quản Lý Ngày Lễ</span>
+                            </a>
+                        @endif
+                        @if(auth()->user()->is_manager == 1)
+                            <a href="{{ action('SpecialDateController@requestOverTime') }}" class="nav-link">
+                                <i class="icon-calendar2"></i>
+                                @if(auth()->user()->id == 7)
+                                    <span>Danh Sách Đề Xuất Tăng Ca</span>
                                 @else
-                                    <span>Quản Lý Ngày Lễ</span>
+                                    <span>Đề Xuất Tăng Ca</span>
                                 @endif
                             </a>
                         @endif

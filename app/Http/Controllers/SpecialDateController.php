@@ -48,19 +48,32 @@ class SpecialDateController extends Controller
         $note = $request->input('note');
         $type_day = $request->input('type_day');
         
-        // $date = date("Y-m-d");
-        // $data_request = ['special_date_from' => $date];
+        $date = date("Y-m-d");
+        $data_request = ['special_date_from' => $date, 'staff_request' => auth()->user()->id, 'department_request' => auth()->user()->department];
 
-        // $response_check = Http::get('http://localhost:8888/special-date/list?', $data_request);
-        // $body_check = json_decode($response_check->body(), true);
+        $response_check = Http::get('http://localhost:8888/special-date/get-request-ot?', $data_request);
+        $body_check = json_decode($response_check->body(), true);
+        
+        if($day_special_from < date('Y-m-d')) {
+            return redirect()->back()->with('error', 'Ngày bắt đầu không được nhỏ hơn ngày hiện tại! Vui lòng thử lại');
+        }
 
-        // foreach ($body_check['data'] as $value) {
-        //     if($value['typeDate'] == 1) {
-        //         if(($value['daySpecialFrom'] >= $day_special_from && $value['daySpecialFrom'] <= $day_special_to) || ($value['daySpecialTo'] >= $day_special_from && $value['daySpecialTo'] <= $day_special_to)) {
-        //             return redirect()->back()->with('error', 'Ngày lễ không được chồng chéo nhau!');
-        //         }
-        //     }
-        // }
+        foreach ($body_check['data'] as $value) {
+            if($value['type_day'] == 2 && $value['department_request'] == auth()->user()->department) {
+                if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
+                    return redirect()->back()->with('error', 'Ngày tăng ca không được chồng chéo nhau!');
+                }
+            }
+
+            if($value['type_day'] == 1) {
+                if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
+                    if($type_day == 1)
+                        return redirect()->back()->with('error', 'Ngày lễ không được chồng chéo nhau!');
+                    else 
+                        return redirect()->back()->with('error', 'Ngày tăng ca không được chồng chéo ngày lễ!');
+                }
+            }
+        }
 
         if($day_special_from > $day_special_to) {
             return redirect()->back()->with('error', 'Từ ngày không được nhỏ hơn đến ngày! Vui lòng thử lại');
@@ -179,20 +192,35 @@ class SpecialDateController extends Controller
     {
         $user = auth()->user();
 
-        $id_update = $day_leave = $request->input('id_update');
+        $id_update = $request->input('id_update');
         $day_special_from = $request->input('day_special_from');
         $day_special_to = $request->input('day_special_to');
         $note = $request->input('note');
 
         $date = date("Y-m-d");
-        $data_request = ['special_date_from' => $date];
+        $data_request = ['special_date_from' => $date, 'staff_request' => auth()->user()->id, 'department_request' => auth()->user()->department];
 
-        $response_check = Http::get('http://localhost:8888/special-date/list?', $data_request);
+        $response_check = Http::get('http://localhost:8888/special-date/get-request-ot?', $data_request);
         $body_check = json_decode($response_check->body(), true);
+        
+        if($day_special_from < date('Y-m-d')) {
+            return redirect()->back()->with('error', 'Ngày bắt đầu không được nhỏ hơn ngày hiện tại! Vui lòng thử lại');
+        }
 
         foreach ($body_check['data'] as $value) {
-            if(($value['daySpecialFrom'] >= $day_special_from && $value['daySpecialFrom'] <= $day_special_to) || ($value['daySpecialTo'] >= $day_special_from && $value['daySpecialTo'] <= $day_special_to)) {
-                return redirect()->back()->with('error', 'Ngày lễ và tăng ca không được chồng chéo nhau!');
+            if($id_update == $value['id']) {
+                continue;
+            }
+            
+            if($value['type_day'] == 2 && $value['department_request'] == auth()->user()->department) {
+                if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
+                    return redirect()->back()->with('error', 'Ngày tăng ca không được chồng chéo nhau!');
+                }
+            }
+            if($value['type_day'] == 1) {
+                if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
+                    return redirect()->back()->with('error', 'Ngày tăng ca và ngày lễ không được chồng chéo nhau!');
+                }
             }
         }
 
@@ -245,7 +273,11 @@ class SpecialDateController extends Controller
         foreach ($body['data'] as $value) {
             if($value['is_approved'] == 1 or $value['type_day'] == 1) {
                 $arr = array();
-                $arr['title'] = $value['note'];
+                if($value['type_day'] == 1) {
+                    $arr['title'] = $value['note'];
+                } else {
+                    $arr['title'] = $value['name_department_request'] . " - " . $value['note'];
+                }
                 $arr['start'] = $value['day_special_from'];
                 $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['day_special_to'])));
                 if($value['type_day'] == 1) {
@@ -266,7 +298,104 @@ class SpecialDateController extends Controller
             ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tăng ca', 'url' => '#']]);
     }
 
-    public function approveOverTime(Request $request) {
+    public function detailOverTime(Request $request)
+    {
+        $id = $request->input('id');
         
+        $data_request = [
+            "id" => $id
+        ];
+
+        $response = Http::get('http://localhost:8888/special-date/detail-ot?', $data_request);
+        $body = json_decode($response->body(), true);
+
+        $title = "Lễ";
+
+        if($body['data']['type_day'] == 2) {
+            $title = "Tăng Ca";
+        }     
+        
+        $html = "<input type='hidden' name='id_update' value='". $id ."'>";
+        $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Chi Tiết Đề Xuất '.$title.'</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+        $html.= '<span aria-hidden="true">&times;</span></button></div>';
+        $html.= '
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Nhân viên đề xuất:</label>
+                    <div class="col-lg-9">
+                        <label class="col-form-label">'.$body['data']['full_name_staff_request'].'</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Mã nhân viên:</label>
+                    <div class="col-lg-9">
+                        <label class="col-form-label">'.$body['data']['code'].'</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Phòng ban đề xuất:</label>
+                    <div class="col-lg-9">
+                        <label class="col-form-label">'.$body['data']['name_department_request'].'</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Từ ngày:</label>
+                    <div class="col-lg-9">
+                        <label class="col-form-label">'.$body['data']['day_special_from'].'</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Đến ngày:</label>
+                    <div class="col-lg-9">
+                        <label class="col-form-label">'.$body['data']['day_special_to'].'</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Mô tả ngày '.$title.':</label>
+                    <div class="col-lg-9">
+                        <textarea class="form-control" name="note" id="note" cols="15" rows="7" placeholder="VD: Lễ quốc khánh, Lễ Tết, ..." readonly>'.$body['data']['note'].'</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="btn_approve" value="1" class="btn btn-success">Duyệt</button>
+                <button type="submit" name="btn_reject" value="-1" class="btn btn-danger">Từ chối</button>
+            </div>
+
+            <script>
+                $(".day_leave").daterangepicker({
+                    singleDatePicker: true,
+                    locale: {
+                        format: "YYYY-MM-DD"
+                    }
+                });
+            </script>
+        ';
+       
+        echo $html;
+        die;
+    }
+
+    public function approveOverTime(Request $request) {
+        $id_update = $request->input('id_update');
+        $approve = $request->input('btn_approve');
+        $reject = $request->input('btn_reject');
+        $is_approve = $approve ? $approve : $reject;
+
+        $data_request = [
+            "id" => $id_update,
+            'is_approved' => $is_approve,
+        ];
+
+        $response = Http::post('http://localhost:8888/special-date/approve-ot', $data_request);
+        $body = json_decode($response->body(), true);
+
+        if($body['message'] == "Approve success") {
+            return redirect()->back()->with('success', 'Thành công!');
+        } 
+        else {
+            return redirect()->back()->with('error', 'Thất bại!');
+        }
     }
 }
