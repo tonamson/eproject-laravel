@@ -1,5 +1,5 @@
 <?php 
-    $url = request()->segments();
+    $url = request()->segments() ? request()->segments() : $url = ['abc'];
     //var_dump($url[0]);die;
 ?>
 
