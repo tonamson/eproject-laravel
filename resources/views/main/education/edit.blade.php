@@ -21,6 +21,8 @@
 	margin: 0;
 	background-color: #212121;
 }
+
+
     </style>
 
 
@@ -175,8 +177,8 @@
 								</div>
 							</div>
 							<div class="text-left">
-								<button type="submit" class="btn btn-primary">Cập nhật <i class="icon-paperplane ml-2"></i></button>
-                                <button type="reset" class="btn btn-success">Reset <i class="icon-paperplane ml-2"></i></button>
+                                <a class="btn btn-primary" role="button" href="{{ action('EducationController@index') }}" style="color:white;">Quay lại</a>
+								<button type="submit" class="btn btn-success">Cập nhật <i class="icon-paperplane ml-2"></i></button>
 							</div>
 						</form>
 					</div>

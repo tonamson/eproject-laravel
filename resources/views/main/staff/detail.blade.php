@@ -100,7 +100,7 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-                                                    <label>Họ nhân viên:</label>
+                                                    <label>Họ tên nhân viên:</label>
                                                     <b><label>{{$data['lastname']}} {{$data['firstname']}}</label></b>
 												</div>
 											</div>
@@ -167,28 +167,27 @@
                                         <div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-                                                <label>Khu vực:(*)</label>
-                                                    <b><label id="province" class="form-control " color="red"  data-fouc >
+                                                <label>Tỉnh Thành:(*)</label>
+                                                <label id="province" class="form-group" >
                                                     @foreach($data_reg as $reg)
                                                         @if($reg['id'] == $district_selected['parent'])
-                                                        <option value="{{$reg['id']}}" <?php echo $reg['id'] == $district_selected['parent'] ? 'selected' : '' ?> >{{ $reg['name'] }}</option>
+                                                        <label value="{{$reg['id']}}" <?php echo $reg['id'] == $district_selected['parent'] ? 'selected' : '' ?> ><b>{{ $reg['name'] }}</b></label>
                                                         @endif
                                                     @endforeach
                                                 </lable>
-                                                </b>
 					                            </div>
 											</div>
 
 											<div class="col-md-6">
 												<div class="form-group">
-                                                <label>Thành Phố/Huyện/Xã:(*)</label>
-                                                    <b><select id="district" class="form-control form-control-select2" name="txtRegional" color="red" data-fouc >
+                                                <label>Huyện/TX:(*)</label>
+                                                    <b><label id="district" class="form-group" name="txtRegional" color="red" data-fouc >
                                                     @foreach($data_district as $district)
                                                         @if($district['id'] == $district_selected['id'])
-                                                        <option value="{{$district['id']}}" <?php echo $district['id'] == $district_selected['id'] ? 'selected' : '' ?>>{{ $district['name'] }}</option>
+                                                       <label value="{{$district['id']}}" <?php echo $district['id'] == $district_selected['id'] ? 'selected' : '' ?>><b>{{ $district['name'] }}</b></label>
                                                         @endif
                                                     @endforeach
-                                                    </select>
+                                                    </label>
                                                     </b>
 												</div>
 											</div>
@@ -301,7 +300,7 @@
                             </div>
                         </div>
                     </div></div>
-							</div>
+						</div>
 							
 						</form>
 					</div>
