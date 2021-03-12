@@ -42,7 +42,7 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h3 class="pt-3 pl-3 pr-3 font-weight-bold">CẬP NHẬT PHÒNG BAN</h3>
+    <h1 class="pt-3 pl-3 pr-3">Cập Nhật Phòng Ban</h1>
         <div class="card-header header-elements-inline">
  
         </div>

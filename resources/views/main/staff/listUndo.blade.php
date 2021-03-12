@@ -24,7 +24,7 @@
     <!-- Basic datatable -->
     <div class="card">
         <div class="card-header header-elements-inline">
-        <h3 class="pt-3 pl-3 pr-3 font-weight-bold">DANH SÁCH NHÂN VIÊN TẠM XÓA</h3>
+        <h1 class="pt-3 pl-3 pr-3">Danh Sách Nhân Viên Tạm Xóa</h1>
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>
