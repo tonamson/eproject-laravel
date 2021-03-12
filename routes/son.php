@@ -20,6 +20,8 @@ Route::group(['prefix' => 'contract'], function () {
 });
 
 Route::group(['prefix' => 'salary'], function () {
+    Route::get('list','SalaryController@getIndex')->name('getIndexSalary');
+    Route::get('details','SalaryController@getDetail')->name('getDetailSalary');
     Route::get('create','SalaryController@getCreate')->name('getCreateSalary');
     Route::post('create','SalaryController@postCalculatedSalary')->name('postCalculatedSalary');
 });

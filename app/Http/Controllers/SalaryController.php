@@ -8,6 +8,37 @@ use Illuminate\Support\Facades\Validator;
 
 class SalaryController extends Controller
 {
+
+    public function getIndex(Request $request)
+    {
+        $response = Http::get(config('app.api_url') . '/salary/list', [
+            'del' => boolval($request->del)
+        ]);
+        $body = json_decode($response->body(), false);
+        $data = [];
+        if ($body->isSuccess) {
+            $data = $body->data;
+        }
+        return view('main.salary.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function getDetail(Request $request)
+    {
+        $response = Http::get(config('app.api_url') . '/salary/details', [
+            'id' => boolval($request->id)
+        ]);
+        $body = json_decode($response->body(), false);
+        $data = [];
+        if ($body->isSuccess) {
+            $data = $body->data;
+        }
+        return view('main.salary.details', [
+            'data' => $data
+        ]);
+    }
+
     public function getCreate()
     {
         return view('main.salary.create');

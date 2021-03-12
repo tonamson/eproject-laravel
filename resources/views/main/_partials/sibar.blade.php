@@ -47,7 +47,7 @@
                         <span>Trang Chủ</span>
                     </a>
                 </li>
-                
+
                 @if(auth()->user()->department == 2)
                     <li class="nav-item">
                         <a href="{{ action('DashboardController@index') }}" class="nav-link">
@@ -59,7 +59,7 @@
                     <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link"><i class="icon-credit-card"></i> <span>Phòng Ban</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                        <li class="nav-item">
+                            <li class="nav-item">
                                 <a href="{{ action('DepartmentController@index') }}" class="nav-link">
                                     <i class="icon-list"></i>
                                     <span>Danh sách Phòng Ban</span>
@@ -102,7 +102,7 @@
                     <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link"><i class="icon-graduation"></i> <span>Bằng Cấp</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                        <li class="nav-item">
+                            <li class="nav-item">
                                 <a href="{{ action('EducationController@index') }}" class="nav-link">
                                     <i class="icon-list"></i>
                                     <span>Danh sách</span>
@@ -220,42 +220,42 @@
                 </li>
 
                 @if(auth()->user()->department == 2)
-                <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link"><i class="icon-cash3"></i> <span>Lương</span></a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                        <li class="nav-item">
-                            <a href="{{ route('getListContract', ['del' => false]) }}" class="nav-link">
-                                <i class="icon-list"></i>
-                                <span>Danh sách</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('getCreateSalary') }}" class="nav-link">
-                                <i class="icon-plus2"></i>
-                                <span>Tính lương</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('getListContract', ['del' => true]) }}" class="nav-link">
-                                <i class="icon-trash"></i>
-                                <span>Thùng rác</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                    <li class="nav-item nav-item-submenu">
+                        <a href="#" class="nav-link"><i class="icon-cash3"></i> <span>Lương</span></a>
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                            <li class="nav-item">
+                                <a href="{{ route('getIndexSalary') }}" class="nav-link">
+                                    <i class="icon-list"></i>
+                                    <span>Danh sách</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('getCreateSalary') }}" class="nav-link">
+                                    <i class="icon-plus2"></i>
+                                    <span>Tính lương</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('getListContract', ['del' => true]) }}" class="nav-link">
+                                    <i class="icon-trash"></i>
+                                    <span>Thùng rác</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 @endif
-                
+
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link"><i class="icon-racing"></i> <span>KPI</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                         @if(auth()->user()->id != 7)
-                        <li class="nav-item">
-                            <a href="{{ action('KpiController@setKpi') }}" class="nav-link">
-                                <i class="icon-finish"></i>
-                                <span>Thiết Lập KPI</span>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="{{ action('KpiController@setKpi') }}" class="nav-link">
+                                    <i class="icon-finish"></i>
+                                    <span>Thiết Lập KPI</span>
+                                </a>
+                            </li>
                         @endif
                         @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
                             <li class="nav-item">
