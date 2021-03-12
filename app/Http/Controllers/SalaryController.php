@@ -34,7 +34,7 @@ class SalaryController extends Controller
         }
 
         $response = Http::post(config('app.api_url') . '/salary/calculated', $data);
-        $body = json_decode($response->body(), false);;
+        $body = json_decode($response->body(), false);
         if ($body->isSuccess) {
             return redirect()->back()->with('message', [
                 'type' => 'success',

@@ -41,7 +41,7 @@ class ContractController extends Controller
             'listStaff' => $listStaff->data,
             'contract' => $contract,
             'breadcrumbs' => [
-                'Hợp đồng', 'Chỉnh sửa'
+                ['text' => 'Hợp đồng', 'url' => '../view-menu/contract'], ['text' => 'Chỉnh sửa hợp đồng', 'url' => '#']
             ]
         ]);
     }
