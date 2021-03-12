@@ -224,15 +224,29 @@
                                     <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
                                 @endif
                             </td>
+      
                             @if($time_leave['isApproved'] == 0 || ($time_leave['isApproved'] == 2 && auth()->user()->is_manager == 1))
-                                <td>
-                                    <div class="from-group d-flex">
-                                        <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
-                                    </div>
-                                </td>
+                                <?php
+                                    $date1=date_create($time_leave['createdAt']);
+                                    $date2=date_create(date('Y-m-d'));
+                                    $diff=date_diff($date1,$date2);
+                                ?>
+                                @if($diff->format("%a") > 1)
+                                    <td>
+                                        <div class="from-group d-flex">
+                                            Đã quá 2 ngày kể từ khi bổ sung công
+                                        </div>
+                                    </td>
+                                @else
+                                    <td>
+                                        <div class="from-group d-flex">
+                                            <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                            <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $time_leave['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                        </div>
+                                    </td>
+                                @endif
                             @elseif($time_leave['isApproved'] == 2)
-                                <td>Quản lý đã phê duyệt, không thể chỉnh sửa!</td>
+                                <td>Quản lý đã phê duyệt, chờ giám đốc phê duyệt!</td>
                             @else
                                 <td>Giám đốc đã phê duyệt, không thể chỉnh sửa!</td>
                             @endif
@@ -284,7 +298,7 @@
                                     </div>
                                 </td>
                             @elseif($time_leave['isApproved'] == 2)
-                                <td>Quản lý đã phê duyệt, không thể chỉnh sửa!</td>
+                                <td>Quản lý đã phê duyệt, chờ giám đốc phê duyệt!</td>
                             @else
                                 <td>Giám đốc đã phê duyệt, không thể chỉnh sửa!</td>
                             @endif

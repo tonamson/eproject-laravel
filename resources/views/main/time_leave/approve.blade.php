@@ -137,13 +137,24 @@
                             </td>
                             <td>
                                 @if($time_leave['is_approved'] == 1)
-                                   
+                                    Giám đốc đã phê duyệt
                                 @elseif($time_leave['is_approved'] == 2 && auth()->user()->id !== 7)
                                     Chờ Giám đốc phê duyệt
                                 @elseif( (auth()->user()->id == 7 || (auth()->user()->is_manager == 1 && auth()->user()->department != 2)) || auth()->user()->is_manager == 1 && auth()->user()->department == 2 && $time_leave['department_id'] == 2 )
-                                    <div class="from-group d-flex">
-                                        <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
-                                    </div>
+                                    <?php
+                                        $date1=date_create($time_leave['created_at']);
+                                        $date2=date_create(date('Y-m-d'));
+                                        $diff=date_diff($date1,$date2);
+                                    ?>
+                                    @if($diff->format("%a") > 1)
+                                        <div class="from-group d-flex">
+                                            Đã quá 2 ngày kể từ khi bổ sung công
+                                        </div>
+                                    @else
+                                        <div class="from-group d-flex">
+                                            <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
+                                        </div>
+                                    @endif                   
                                 @endif
                             </td>
                             {{-- @if($time_leave['is_approved'] == 0)
