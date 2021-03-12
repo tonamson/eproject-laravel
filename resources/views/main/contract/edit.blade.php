@@ -79,7 +79,7 @@
                     <div class="card-header header-elements-inline">
                         <h5 class="card-title">Chi tiết hợp đồng</h5>
                         <div class="header-elements">
-{{--                            <a href="javascript:void(0)" onclick="addOption()" class="text-default"><i title="Thêm chi tiết" class="icon-stack-plus "></i></a>--}}
+                            <a href="javascript:void(0)" onclick="addOption()" class="text-default"><i title="Thêm chi tiết" class="icon-stack-plus "></i></a>
                         </div>
                     </div>
                     <div class="card-body" id="options">
@@ -110,6 +110,28 @@
 @section('scripts')
     <script src="{{ asset('assets/js/picker_date_init.js') }}"></script>
     <script>
+        let optionIndex = {{ count($contract->details) }};
+
+        function addOption() {
+            optionIndex++;
+            $('#options').append(`
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tên</label>
+                                <input type="text" name="details[${optionIndex}][name]" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Giá</label>
+                                <input type="number" onkeypress="changeDetailContract()" name="details[${optionIndex}][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="0">
+                            </div>
+                        </div>
+                    </div>
+            `);
+        }
+
         function changeDetailContract() {
             let total_salary = 0;
             $('input[type="number"][name^="details"]').each((index, item) => {
