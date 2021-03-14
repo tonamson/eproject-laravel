@@ -26,6 +26,7 @@
         <table class="table datatable-basic">
             <thead>
             <tr>
+                <th>Mã nhân viên</th>
                 <th>Nhân viên</th>
                 <th>Ngày bắt đầu HĐ</th>
                 <th>Ngày kết thúc HĐ</th>
@@ -37,6 +38,7 @@
             <tbody>
             @foreach($data as $item)
                 <tr>
+                    <td>{{ $item->staff->id }}</td>
                     <td>{{ $item->staff->firstname . ' ' . $item->staff->lastname}}</td>
                     <td>{{ $item->startDate }}</td>
                     <td>{{ $item->endDate }}</td>

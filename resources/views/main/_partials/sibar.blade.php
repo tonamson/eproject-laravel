@@ -31,8 +31,8 @@
                     </div>
 
                     <div class="media-body">
-                        <div class="media-title font-weight-semibold"><?php echo auth()->user()->firstname . ' ' . auth()->user()->lastname ?></div>
-                        <div class="media-title font-weight-semibold">{{ session('department_name') }} - <?php echo auth()->user()->is_manager == 1 ? 'Quản lý' : 'Nhân viên' ?></div>
+                        <div class="media-title font-weight-semibold">{{ auth()->user()->firstname . ' ' . auth()->user()->lastname }}</div>
+                        <div class="media-title font-weight-semibold">{{ session('department_name') }} - {{ auth()->user()->is_manager == 1 ? 'Quản lý' : 'Nhân viên' }}</div>
                     </div>
 
                 </div>

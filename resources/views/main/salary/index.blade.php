@@ -28,6 +28,7 @@
             <tr>
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
+                <th>Trạng thái</th>
                 <th class="text-center">Thao tác</th>
             </tr>
             </thead>
@@ -36,6 +37,7 @@
                 <tr>
                     <td>{{ $item->fromDate }}</td>
                     <td>{{ $item->toDate }}</td>
+                    <td>{{ $item->status == 'pending' ? 'Chưa khóa' : 'Đã khóa' }}</td>
                     <td class="text-center">
                         <div class="list-icons">
                             <div class="dropdown">

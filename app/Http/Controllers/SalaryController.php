@@ -69,10 +69,10 @@ class SalaryController extends Controller
         if ($body->isSuccess) {
             return redirect()->back()->with('message', [
                 'type' => 'success',
-                'message' => 'Lưu hợp đồng thành công.'
+                'message' => 'Tính lương hoàn tất.'
             ]);
         }
 
-        return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Thành công.']);
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Tính lương thất bại: ' . $body->message]);
     }
 }
