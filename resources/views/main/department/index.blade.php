@@ -24,12 +24,10 @@
     <!-- Basic datatable -->
     <div class="card">
         <div class="card-header header-elements-inline">
-        <h3  class="pt-3 pl-3 pr-3 font-weight-bold"><div>DANH SÁCH PHÒNG BAN </div><br>
-             <div class="text-left">
-                <button  class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">THÊM MỚI PHÒNG BAN <i class="icon-paperplane ml-2"></i></button>
+            <div class="text-left">
+                <h1 class="pt-3 pl-3 pr-3">Danh Sách Phòng Ban</h1><br>
+                &nbsp; &nbsp; &nbsp;<button  class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">Thêm Mới Phòng Ban <i class="icon-paperplane ml-2"></i></button>
             </div> 
-        </h3>
-          
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>

@@ -13,13 +13,15 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'contract'], function () {
     Route::get('list','ContractController@getList')->name('getListContract');
     Route::get('create','ContractController@getCreate')->name('getCreateContract');
-    Route::get('edit/{id}','ContractController@getEdit')->name('getEditContract');
+    Route::get('detail/{id}','ContractController@getDetail')->name('getDetailContract');
     Route::post('save','ContractController@postSave')->name('postSaveContract');
+    Route::get('stop/{id?}','ContractController@stopContract')->name('stopContractContract');
     Route::get('delete/{id}','ContractController@getDelete')->name('getDeleteContract');
-    Route::get('undo/{id}','ContractController@getUndo')->name('getUndoContract');
 });
 
 Route::group(['prefix' => 'salary'], function () {
+    Route::get('list','SalaryController@getIndex')->name('getIndexSalary');
+    Route::get('details','SalaryController@getDetail')->name('getDetailSalary');
     Route::get('create','SalaryController@getCreate')->name('getCreateSalary');
     Route::post('create','SalaryController@postCalculatedSalary')->name('postCalculatedSalary');
 });

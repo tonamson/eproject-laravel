@@ -15,7 +15,7 @@
                     <form action="{{action('DepartmentController@CreateDepartment')}}" method="post">
                         @csrf
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">THÊM MỚI</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Thêm Mới Phòng Ban</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

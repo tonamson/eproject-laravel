@@ -8,6 +8,37 @@ use Illuminate\Support\Facades\Validator;
 
 class SalaryController extends Controller
 {
+
+    public function getIndex(Request $request)
+    {
+        $response = Http::get(config('app.api_url') . '/salary/list', [
+            'del' => boolval($request->del)
+        ]);
+        $body = json_decode($response->body(), false);
+        $data = [];
+        if ($body->isSuccess) {
+            $data = $body->data;
+        }
+        return view('main.salary.index', [
+            'data' => $data
+        ]);
+    }
+
+    public function getDetail(Request $request)
+    {
+        $response = Http::get(config('app.api_url') . '/salary/details', [
+            'id' => $request->id
+        ]);
+        $body = json_decode($response->body(), false);
+        $data = [];
+        if ($body->isSuccess) {
+            $data = $body->data;
+        }
+        return view('main.salary.details', [
+            'data' => $data,
+        ]);
+    }
+
     public function getCreate()
     {
         return view('main.salary.create');
@@ -38,10 +69,10 @@ class SalaryController extends Controller
         if ($body->isSuccess) {
             return redirect()->back()->with('message', [
                 'type' => 'success',
-                'message' => 'Lưu hợp đồng thành công.'
+                'message' => 'Tính lương hoàn tất.'
             ]);
         }
 
-        return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Thành công.']);
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Tính lương thất bại: ' . $body->message]);
     }
 }

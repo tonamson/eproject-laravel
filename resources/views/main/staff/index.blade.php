@@ -25,7 +25,7 @@
     <div class="card">
        
         <div class="card-header header-elements-inline">
-        <h3 class="pt-3 pl-3 pr-3 font-weight-bold">DANH SÁCH NHÂN VIÊN</h3>
+        <h1 class="pt-3 pl-3 pr-3">Danh Sách Nhân Viên</h1>
             <h4 class="card-title font-weight-bold text-uppercase"></h4>
             <div class="header-elements">
                 <div class="list-icons">

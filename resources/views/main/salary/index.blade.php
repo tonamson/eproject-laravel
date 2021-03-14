@@ -13,7 +13,7 @@
 
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Danh sách lương</h5>
+            <h5 class="card-title">Danh sách kì lương</h5>
         </div>
         <div class="card-body">
             @if(session('message'))
@@ -26,22 +26,18 @@
         <table class="table datatable-basic">
             <thead>
             <tr>
-                <th>Lương tháng</th>
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
-                <th>Tổng chi</th>
-                <th>Ngày tạo</th>
+                <th>Trạng thái</th>
                 <th class="text-center">Thao tác</th>
             </tr>
             </thead>
             <tbody>
             @foreach($data as $item)
                 <tr>
-                    <td>{{ $item->staff->firstname . ' ' . $item->staff->lastname}}</td>
-                    <td>{{ $item->startDate }}</td>
-                    <td>{{ $item->endDate }}</td>
-                    <td>{{ number_format($item->salary) }}</td>
-                    <td>{{ $item->createAt }}</td>
+                    <td>{{ $item->fromDate }}</td>
+                    <td>{{ $item->toDate }}</td>
+                    <td>{{ $item->status == 'pending' ? 'Chưa khóa' : 'Đã khóa' }}</td>
                     <td class="text-center">
                         <div class="list-icons">
                             <div class="dropdown">
@@ -50,12 +46,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    @if(!$item->del)
-                                        <a href="{{ route('getEditContract', ['id' => $item->id]) }}" class="dropdown-item">Chỉnh sửa</a>
-                                        <a href="{{ route('getDeleteContract',['id' => $item->id]) }}" class="dropdown-item">Xóa</a>
-                                    @else
-                                        <a href="{{ route('getUndoContract', ['id' => $item->id]) }}" class="dropdown-item">Hoàn tác</a>
-                                    @endif
+                                    <a href="{{ route('getDetailSalary', ['id' => $item->id]) }}" class="dropdown-item">Chi tiết</a>
                                 </div>
                             </div>
                         </div>
