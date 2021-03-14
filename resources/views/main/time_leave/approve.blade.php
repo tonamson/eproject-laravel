@@ -17,6 +17,8 @@
     <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/pickers/pickadate/picker.date.js') }}"></script>
     <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
+    <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
 @endsection
 
 @section('content')
@@ -304,88 +306,6 @@
                     console.log(JSON.stringify(error));
                 }
             });
-        });
-
-        var DatatableBasic = function() {
-
-            // Basic Datatable examples
-            var _componentDatatableBasic = function() {
-                if (!$().DataTable) {
-                    console.warn('Warning - datatables.min.js is not loaded.');
-                    return;
-                }
-
-                // Setting datatable defaults
-                $.extend( $.fn.dataTable.defaults, {
-                    autoWidth: false,
-                    columnDefs: [{ 
-                        orderable: false,
-                        width: 100,
-                        targets: [ 5 ]
-                    }],
-                    dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-                    language: {
-                        search: '<span>Tìm kiếm:</span> _INPUT_',
-                        searchPlaceholder: 'Nhập để tìm kiếm...',
-                        lengthMenu: '<span>Hiển thị:</span> _MENU_',
-                        paginate: { 'first': 'First', 'last': 'Last', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;' }
-                    }
-                });
-
-                // Basic datatable
-                $('.datatable-basic').DataTable();
-                $('.datatable-basic2').DataTable();
-
-                // Alternative pagination
-                $('.datatable-pagination').DataTable({
-                    pagingType: "simple",
-                    language: {
-                        paginate: {'next': $('html').attr('dir') == 'rtl' ? 'Next &larr;' : 'Next &rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr; Prev' : '&larr; Prev'}
-                    }
-                });
-
-                // Datatable with saving state
-                $('.datatable-save-state').DataTable({
-                    stateSave: true
-                });
-
-                // Scrollable datatable
-                var table = $('.datatable-scroll-y').DataTable({
-                    autoWidth: true,
-                    scrollY: 300
-                });
-
-                // Resize scrollable table when sidebar width changes
-                $('.sidebar-control').on('click', function() {
-                    table.columns.adjust().draw();
-                });
-            };
-
-            // Select2 for length menu styling
-            var _componentSelect2 = function() {
-                if (!$().select2) {
-                    console.warn('Warning - select2.min.js is not loaded.');
-                    return;
-                }
-
-                // Initialize
-                $('.dataTables_length select').select2({
-                    minimumResultsForSearch: Infinity,
-                    dropdownAutoWidth: true,
-                    width: 'auto'
-                });
-            };
-
-            return {
-                init: function() {
-                    _componentDatatableBasic();
-                    _componentSelect2();
-                }
-            }
-        }();
-
-        document.addEventListener('DOMContentLoaded', function() {
-            DatatableBasic.init();
         });
 
     </script>
