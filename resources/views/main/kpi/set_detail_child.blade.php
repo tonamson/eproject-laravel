@@ -44,12 +44,6 @@
         <div class="card-body">
             <h5 class="">Mục tiêu công việc: <b>{{ $kpi_detail['taskTarget'] }} </b></h5>
 
-            <button id="btn_add" class="btn btn-primary">+</button>
-
-            <div class="float-right">
-                <button id="btn_submit_form" class="btn btn-success">Lưu</button>
-            </div>
-
             @if (\Session::has('success'))
                 <div class="">
                     <div class="alert alert-success">
@@ -65,10 +59,18 @@
                     </div>
                 </div>
             @endif
+
+            <button id="btn_add" class="btn btn-primary">+</button>
+
+            <div class="float-right">
+                <button id="btn_submit_form" class="btn btn-success">Lưu</button>
+            </div>
+
         </div>
 
         <form action="{{ action('KpiController@createDetailChild') }}" method="POST" id="form_detail_child">
         @csrf
+        <input type="hidden" name="id_kpi_detail" value="{{ $kpi_detail['id'] }}">
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
