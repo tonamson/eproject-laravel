@@ -127,7 +127,9 @@ Route::middleware(['check_login'])->group(function () {
 
         Route::post('/create-kpi', 'KpiController@createKpi');
 
-        Route::get('/get-detail-kpi', 'KpiController@test');
+        Route::get('/set-detail-child', 'KpiController@setDetailChild');
+
+        Route::post('/create-detail-child', 'KpiController@createDetailChild');
 
         Route::middleware(['check_hr_or_manager'])->group(function () {
          

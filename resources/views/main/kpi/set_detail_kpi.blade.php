@@ -174,7 +174,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            {{-- <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Chi tiết Công việc:</label>
                                 <div class="col-lg-8">
                                     <textarea rows="3" cols="3" class="form-control task_description" name="task_description[]" onkeyup=checkEmpty(this) placeholder="Vd: Tỷ trọng chuyển đổi hiện tại của website đang bị chững lại ở ngưỡng 12%, để có thể cạnh tranh được với những đối thủ cùng phân khúc, doanh nghiệp phải tìm cách để tối ưu chúng lên 20% trong 6 tháng" <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['taskDescription'] }}</textarea>
@@ -193,13 +193,18 @@
                                 <div class="col-lg-8">
                                     <textarea rows="3" cols="3" class="form-control skill" name="skill[]" onkeyup=checkEmpty(this) placeholder="Vd: Tìm kiếm thông tin, ..." <?php echo $readonly ? 'readonly' : 'required' ?>>{{ $kpi_detail['skill'] }}</textarea>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-4">Tỉ trọng trên tổng các Công việc:</label>
                                 <div class="col-lg-8">
                                     <input id="ratio<?php echo $count ?>" type="number" name="ratio[]" onkeyup=checkEmpty(this) class="form-control ratio" min="0" max="100" value="{{ $kpi_detail['ratio'] }}" placeholder="Vd: 20" <?php echo $readonly ? 'readonly' : 'required' ?>>
                                 </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-primary text-right">Lưu</button>
+                                <a href="../kpi/set-detail-child?kpi_detail_id=<?php echo $kpi_detail['id'] ?>" class="btn btn-success text-left float-right">Chi tiết</a>
                             </div>
 
                         </div>

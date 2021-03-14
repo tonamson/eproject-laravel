@@ -407,4 +407,56 @@ class KpiController extends Controller
         }
 
     }
+
+    public function setDetailChild(Request $request) {
+        $kpi_detail_id = $request->input('kpi_detail_id');
+
+        $data_request_detail_kpi = [
+            'id' => $kpi_detail_id
+        ];
+
+        $response = Http::get('http://localhost:8888/kpi-detail/get-one-kpi-detail', $data_request_detail_kpi);
+        $kpi_detail = json_decode($response->body(), true);
+
+        $data_request = [
+            'kpi_detail_id' => $kpi_detail_id
+        ];
+
+        $response = Http::get('http://localhost:8888/kpi/get-kpi-detail-child', $data_request);
+        $body = json_decode($response->body(), true);
+
+        return view('main.kpi.set_detail_child',
+        [
+            'kpi_detail' => $kpi_detail['data'],
+            'data' => $body['data']
+        ]);
+    }
+
+    public function createDetailChild(Request $request)
+    {
+        $id_child = $request->input('id_child');
+        $name = $request->input('name');
+        $number_target = $request->input('number_target');
+        $number_get = $request->input('number_get');
+        $duties_activities = $request->input('duties_activities');
+        $skill = $request->input('skill');
+
+        $tasks = array();
+        for ($i=0; $i < count($name); $i++) { 
+            $task = array();
+            
+            $task['id'] = $id_child[$i] ? $id_child[$i] : null;
+            $task['name'] = $name[$i];
+            $task['number_target'] = $number_target[$i];
+            $task['duties_activities'] = $duties_activities[$i];
+            $task['skill'] = $skill[$i];
+
+            array_push($tasks, $task);
+        }
+
+        echo "<pre>";
+
+        var_dump($tasks);die;
+ 
+    }
 }
