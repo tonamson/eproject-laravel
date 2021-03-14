@@ -19,10 +19,12 @@ var DatatableBasic = function () {
             }],
             dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
             language: {
-                search: '<span>Filter:</span> _INPUT_',
-                searchPlaceholder: 'Type to filter...',
-                lengthMenu: '<span>Show:</span> _MENU_',
-                paginate: {'first': 'First', 'last': 'Last', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;'}
+                search: '<span>Tìm kiếm:</span> _INPUT_',
+                searchPlaceholder: 'Gõ từ khóa cần tìm...',
+                lengthMenu: '<span>Hiển thị:</span> _MENU_',
+                infoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
+                emptyTable: "Không có dữ liệu nào để hiển thị",
+                paginate: {'first': 'Đầu tiền', 'last': 'Cuối', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;'}
             }
         });
 
