@@ -35,7 +35,7 @@ class SalaryController extends Controller
             $data = $body->data;
         }
         return view('main.salary.details', [
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
