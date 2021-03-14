@@ -1,3 +1,8 @@
+<?php
+    $url = request()->segments() ? request()->segments() : $url = ['abc'];
+    //var_dump($url[0]);die;
+?>
+
 <div class="sidebar sidebar-dark sidebar-main sidebar-expand-md">
 
     <!-- Sidebar mobile toggler -->
@@ -56,10 +61,10 @@
                         </a>
                     </li>
 
-                    <li class="nav-item nav-item-submenu">
+                    <li class="nav-item nav-item-submenu <?php echo $url[0] == "deparment" ? "nav-item-open" : "" ?>">
                         <a href="#" class="nav-link"><i class="icon-credit-card"></i> <span>Phòng Ban</span></a>
-                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                            <li class="nav-item">
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "deparment" ? "block" : "none" ?>">
+                        <li class="nav-item">
                                 <a href="{{ action('DepartmentController@index') }}" class="nav-link">
                                     <i class="icon-list"></i>
                                     <span>Danh sách Phòng Ban</span>
@@ -74,9 +79,9 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item nav-item-submenu">
+                    <li class="nav-item nav-item-submenu <?php echo $url[0] == "staff" ? "nav-item-open" : "" ?>">
                         <a href="#" class="nav-link"><i class="icon-user"></i> <span>Nhân viên</span></a>
-                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "staff" ? "block" : "none" ?>">
                             <li class="nav-item">
                                 <a href="{{ action('StaffController@index') }}" class="nav-link">
                                     <i class="icon-list"></i>
@@ -99,10 +104,10 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item nav-item-submenu">
+                    <li class="nav-item nav-item-submenu <?php echo $url[0] == "education" ? "nav-item-open" : "" ?>">
                         <a href="#" class="nav-link"><i class="icon-graduation"></i> <span>Bằng Cấp</span></a>
-                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                            <li class="nav-item">
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "education" ? "block" : "none" ?>">
+                        <li class="nav-item">
                                 <a href="{{ action('EducationController@index') }}" class="nav-link">
                                     <i class="icon-list"></i>
                                     <span>Danh sách</span>
@@ -128,9 +133,9 @@
                 @endif
 
                 @if(auth()->user()->department == 2)
-                    <li class="nav-item nav-item-submenu">
+                    <li class="nav-item nav-item-submenu <?php echo $url[0] == "contract" ? "nav-item-open" : "" ?>">
                         <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span>Hợp đồng</span></a>
-                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "contract" ? "block" : "none" ?>">
                             <li class="nav-item">
                                 <a href="{{ route('getListContract') }}" class="nav-link">
                                     <i class="icon-list"></i>
@@ -146,11 +151,19 @@
                         </ul>
                     </li>
                 @endif
+                <?php
+                    $active = "";
+                    $display = "none";
+                    if($url[0] == "special-date" or $url[0] == "over-time" or $url[0] == "check-in-gps" or $url[0] == "staff-time" or $url[0] == "time-leave" or $url[0] == "approve-time-leave" or $url[0] == "staff-time") {
+                        $active = "nav-item-open";
+                        $display = "block";
+                    }
 
-                <li class="nav-item nav-item-submenu">
+                ?>
+                <li class="nav-item nav-item-submenu <?php echo $active ?>">
                     <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Công Phép</span></a>
 
-                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $display ?>">
                         @if(auth()->user()->department == 2 or auth()->user()->id == 7)
                             <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
                                 <i class="icon-calendar2"></i>
@@ -214,35 +227,35 @@
                 </li>
 
                 @if(auth()->user()->department == 2)
-                    <li class="nav-item nav-item-submenu">
-                        <a href="#" class="nav-link"><i class="icon-cash3"></i> <span>Lương</span></a>
-                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
-                            <li class="nav-item">
-                                <a href="{{ route('getIndexSalary') }}" class="nav-link">
-                                    <i class="icon-list"></i>
-                                    <span>Danh sách</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('getCreateSalary') }}" class="nav-link">
-                                    <i class="icon-plus2"></i>
-                                    <span>Tính lương</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('getListContract', ['del' => true]) }}" class="nav-link">
-                                    <i class="icon-trash"></i>
-                                    <span>Thùng rác</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                <li class="nav-item nav-item-submenu <?php echo $url[0] == "salary" ? "nav-item-open" : "" ?>">
+                    <a href="#" class="nav-link"><i class="icon-cash3"></i> <span>Lương</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "salary" ? "block" : "none" ?>">
+                        <li class="nav-item">
+                            <a href="{{ route('getIndexSalary') }}" class="nav-link">
+                                <i class="icon-list"></i>
+                                <span>Danh sách</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('getCreateSalary') }}" class="nav-link">
+                                <i class="icon-plus2"></i>
+                                <span>Tính lương</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('getListContract', ['del' => true]) }}" class="nav-link">
+                                <i class="icon-trash"></i>
+                                <span>Thùng rác</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 @endif
 
-                <li class="nav-item nav-item-submenu">
+                <li class="nav-item nav-item-submenu <?php echo $url[0] == "kpi" ? "nav-item-open" : "" ?>">
                     <a href="#" class="nav-link"><i class="icon-racing"></i> <span>KPI</span></a>
 
-                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
+                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "kpi" ? "block" : "none" ?>">
                         @if(auth()->user()->id != 7)
                             <li class="nav-item">
                                 <a href="{{ action('KpiController@setKpi') }}" class="nav-link">
