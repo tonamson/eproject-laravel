@@ -50,12 +50,15 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    @if(!$item->del)
-                                        <a href="{{ route('getEditContract', ['id' => $item->id]) }}" class="dropdown-item">Chỉnh sửa</a>
-                                        <a href="{{ route('getDeleteContract',['id' => $item->id]) }}" class="dropdown-item">Xóa</a>
-                                    @else
-                                        <a href="{{ route('getUndoContract', ['id' => $item->id]) }}" class="dropdown-item">Hoàn tác</a>
+                                    <a href="{{ route('getDetailContract', ['id' => $item->id]) }}" class="dropdown-item">Chi tiết</a>
+                                    @php
+                                        $endDate = \Carbon\Carbon::createFromFormat('Y-m-d', $item->endDate);
+                                        $stopDate = \Carbon\Carbon::createFromFormat('Y-m-d', $item->stopDate);
+                                    @endphp
+                                    @if($stopDate->eq($endDate))
+                                        <a href="javascript:void(0);" onclick="stopContract({{ $item->id }})" class="dropdown-item">Chấm dứt hợp đồng trước kì hạn</a>
                                     @endif
+                                    {{--                                    <a href="{{ route('getDeleteContract',['id' => $item->id]) }}" class="dropdown-item">Xóa</a>--}}
                                 </div>
                             </div>
                         </div>
@@ -70,4 +73,12 @@
 @endsection
 
 @section('scripts')
+    <script>
+        function stopContract(id) {
+            let conf = confirm('Bạn có chắc muốn chấm dứt hợp đồng này?');
+            if (conf) {
+                window.location.href = '{{ route('stopContractContract') }}/' + id;
+            }
+        }
+    </script>
 @endsection

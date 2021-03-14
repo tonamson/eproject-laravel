@@ -132,7 +132,7 @@
                         <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span>Hợp đồng</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: none">
                             <li class="nav-item">
-                                <a href="{{ route('getListContract', ['del' => false]) }}" class="nav-link">
+                                <a href="{{ route('getListContract') }}" class="nav-link">
                                     <i class="icon-list"></i>
                                     <span>Danh sách</span>
                                 </a>
@@ -141,12 +141,6 @@
                                 <a href="{{ route('getCreateContract') }}" class="nav-link">
                                     <i class="icon-plus2"></i>
                                     <span>Tạo hợp đồng</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('getListContract', ['del' => true]) }}" class="nav-link">
-                                    <i class="icon-trash"></i>
-                                    <span>Thùng rác</span>
                                 </a>
                             </li>
                         </ul>
