@@ -147,10 +147,12 @@
                             </td>
                             <td class="text-center">
                                 @if(date("Y-m-d") < $special_date['daySpecialFrom'])
-                                    <div class="from-group d-flex">
+                                    <div class="from-group">
                                         <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
                                         <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
+                                @else 
+                                    <span class="badge badge-primary">Ngày lễ đã diễn ra!</span>
                                 @endif
                             </td>
                         </tr>

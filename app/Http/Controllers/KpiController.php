@@ -219,9 +219,9 @@ class KpiController extends Controller
         //data kpi detail
         $kpi_detail_id = $request->input('kpi_detail_id');
         $target = $request->input('target');
-        $task_description = $request->input('task_description');
-        $duties_activities = $request->input('duties_activities');
-        $skill = $request->input('skill');
+        // $task_description = $request->input('task_description');
+        // $duties_activities = $request->input('duties_activities');
+        // $skill = $request->input('skill');
         $ratio = $request->input('ratio');
         $del = $request->input('del');
 
@@ -231,9 +231,9 @@ class KpiController extends Controller
             for ($i=0; $i < count($target); $i++) { 
                 $task = array();
                 $task['target'] = $target[$i];
-                $task['task_description'] = $task_description[$i];
-                $task['duties_activities'] = $duties_activities[$i];
-                $task['skill'] = $skill[$i];
+                // $task['task_description'] = $task_description[$i];
+                // $task['duties_activities'] = $duties_activities[$i];
+                // $task['skill'] = $skill[$i];
                 $task['ratio'] = $ratio[$i];
                 array_push($tasks, $task);
             }
@@ -292,9 +292,9 @@ class KpiController extends Controller
                 $task = array();
                 $task['id'] = isset($kpi_detail_id[$i]) ? $kpi_detail_id[$i] : null;
                 $task['target'] = $target[$i];
-                $task['task_description'] = $task_description[$i];
-                $task['duties_activities'] = $duties_activities[$i];
-                $task['skill'] = $skill[$i];
+                // $task['task_description'] = $task_description[$i];
+                // $task['duties_activities'] = $duties_activities[$i];
+                // $task['skill'] = $skill[$i];
                 $task['ratio'] = $ratio[$i];
                 $task['del'] = $del[$i];
                 array_push($tasks, $task);
@@ -406,5 +406,68 @@ class KpiController extends Controller
             return redirect()->back()->with('error', 'Phê duyệt KPI thất bại!');
         }
 
+    }
+
+    public function setDetailChild(Request $request) {
+        $kpi_detail_id = $request->input('kpi_detail_id');
+
+        $data_request_detail_kpi = [
+            'id' => $kpi_detail_id
+        ];
+
+        $response = Http::get('http://localhost:8888/kpi-detail/get-one-kpi-detail', $data_request_detail_kpi);
+        $kpi_detail = json_decode($response->body(), true);
+
+        $data_request = [
+            'kpi_detail_id' => $kpi_detail_id
+        ];
+
+        $response = Http::get('http://localhost:8888/kpi/get-kpi-detail-child', $data_request);
+        $body = json_decode($response->body(), true);
+
+        return view('main.kpi.set_detail_child',
+        [
+            'kpi_detail' => $kpi_detail['data'],
+            'data' => $body['data']
+        ]);
+    }
+
+    public function createDetailChild(Request $request)
+    {
+        $id_kpi_detail = $request->input('id_kpi_detail');
+        $id_child = $request->input('id_child');
+        $name = $request->input('name');
+        $number_target = $request->input('number_target');
+        $number_get = $request->input('number_get');
+        $duties_activities = $request->input('duties_activities');
+        $skill = $request->input('skill');
+
+        $tasks = array();
+        for ($i=0; $i < count($name); $i++) { 
+            $task = array();
+            
+            $task['id'] = $id_child[$i] ? $id_child[$i] : null;
+            $task['name'] = $name[$i];
+            $task['number_target'] = $number_target[$i];
+            $task['number_get'] = $number_get[$i];
+            $task['duties_activities'] = $duties_activities[$i];
+            $task['skill'] = $skill[$i];
+
+            array_push($tasks, $task);
+        }
+
+        $data_request_create = [
+            'id_kpi_detail' => $id_kpi_detail,
+            'tasks' => $tasks
+        ];
+
+        $response = Http::post('http://localhost:8888/kpi/save-detail-child', $data_request_create);
+        $body = json_decode($response->body(), true);
+
+        if($body['data'] == "Success") {
+            return redirect()->back()->with('success', 'Lưu thành công!');
+        } else {
+            return redirect()->back()->with('error', 'Lưu thất bại!');
+        }
     }
 }

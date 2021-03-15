@@ -298,6 +298,20 @@
                 </div>
             </div>
         @endif
+        @if(auth()->user()->is_manager == 1)
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('SpecialDateController@requestOverTime') }}">
+                        <i class="icon-8x icon-calendar2"></i>
+                        @if(auth()->user()->id == 7)
+                            <p>Danh Sách Đề Xuất Tăng Ca</p>
+                        @else
+                            <p>Đề Xuất Tăng Ca</p>
+                        @endif
+                    </a>
+                </div>
+            </div>
+        @endif
         @if(auth()->user()->id != 7)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">

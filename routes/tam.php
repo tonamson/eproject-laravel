@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['check_login'])->group(function () {
     Route::get('/', 'ViewmenuController@index');
 
-    Route::get('/about', 'AboutcompanyController@index');
+    Route::get('/about/index', 'AboutcompanyController@index');
 
     Route::group(['prefix' => 'view-menu'], function () {
         Route::get('/time-leave', 'ViewmenuController@timeLeave');
@@ -127,7 +127,9 @@ Route::middleware(['check_login'])->group(function () {
 
         Route::post('/create-kpi', 'KpiController@createKpi');
 
-        Route::get('/get-detail-kpi', 'KpiController@test');
+        Route::get('/set-detail-child', 'KpiController@setDetailChild');
+
+        Route::post('/create-detail-child', 'KpiController@createDetailChild');
 
         Route::middleware(['check_hr_or_manager'])->group(function () {
          
