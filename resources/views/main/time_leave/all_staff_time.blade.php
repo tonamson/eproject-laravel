@@ -71,8 +71,8 @@
                     <th>Thứ</th>
                     <th>Giờ vào</th>
                     <th>Giờ ra</th>
-                    <th>Trễ</th>
-                    <th>Sớm</th>
+                    <th>Đi Trễ</th>
+                    <th>Về Sớm</th>
                     <th>Công</th>
                     <th>Tổng giờ</th>
                     <th>Tăng ca</th>
@@ -82,7 +82,7 @@
                 @foreach ($data as $check_in_out)
                     <tr style="
                         <?php 
-                            if($check_in_out['special_date_id'] !== null) echo "background-color: #fff2ce";
+                            if($check_in_out['special_date_id'] !== null) echo "background-color: #ffe7e7";
                             else if($check_in_out['day_of_week'] == 1 or $check_in_out['day_of_week'] == 7)  echo "background-color: #d3ffd4";
                         ?>
                     ">

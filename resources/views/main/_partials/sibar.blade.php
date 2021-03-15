@@ -204,14 +204,12 @@
                             <li class="nav-item">
                                 <a href="{{ action('TimeleaveController@approveTimeLeave') }}" class="nav-link">
                                     <i class="icon-checkbox-checked"></i>
-                                    <span>Duyệt Công Phép</span>
-                                    {{-- @if(auth()->user()->department == 2 && auth()->user()->is_manager == 1)
+                                    {{-- <span>Duyệt Công Phép</span> --}}
+                                    @if(auth()->user()->is_manager == 1)
                                         <span>Duyệt Công Phép</span>
                                     @elseif(auth()->user()->department == 2)
                                         <span>Xem Công Phép</span>
-                                    @else
-                                        <span>Duyệt Bổ Sung Công</span>
-                                    @endif --}}
+                                    @endif
                                 </a>
                             </li>
                         @endif

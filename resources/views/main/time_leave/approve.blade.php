@@ -7,6 +7,11 @@
 
 @section('css')
     <link href="{{ asset('assets/css/components_datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        #tb_dkp_wrapper {
+            display: none;
+        }
+    </style>
 @endsection
 
 @section('js')    
@@ -90,6 +95,7 @@
                     <th>Phòng ban</th>
                     <th>Ngày </th>
                     <th>Ngày công</th>
+                    <th>Ngày công được tính</th>
                     <th>Ghi chú</th>
                     <th>Phê duyệt</th>
                     <th>Hành động</th>
@@ -100,7 +106,7 @@
                     @if($time_leave['type'] == 0)
                             <tr style="
                                 <?php 
-                                    if($time_leave['special_date_id'] !== null) echo "background-color: #fff2ce";
+                                    if($time_leave['special_date_id'] !== null) echo "background-color: #ffe7e7";
                                     else if($time_leave['day_of_week'] == 1 or $time_leave['day_of_week'] == 7)  echo "background-color: #d3ffd4";
                                 ?>
                             ">
@@ -121,7 +127,8 @@
                                     }
                                 ?>
                             </td>
-                            <td><?php echo $time_leave['time'] == "08:00:00" ? 1 * $time_leave['multiply'] . ' ngày công' : 0.5 * $time_leave['multiply'] . ' ngày công' ?></td>
+                            <td><?php echo $time_leave['time'] == "08:00:00" ? '1' : '0.5' ?></td>
+                            <td><?php echo $time_leave['time'] == "08:00:00" ? 1 * $time_leave['multiply'] . '' : 0.5 * $time_leave['multiply'] . '' ?></td>
                             <td>
                                 <?php 
                                     if(strlen($time_leave['note']) > 20) echo substr($time_leave['note'], 0, 30) . '...';
@@ -175,7 +182,7 @@
             </tbody>
         </table>
 
-        <table class="table datatable-basic2" id="tb_dkp">
+        <table class="table datatable-basic2" id="tb_dkp" style="display: none">
              <thead>
                 <tr>
                     <th>Tên nhân viên</th>
@@ -240,12 +247,6 @@
                 @endforeach       
             </tbody>
         </table>
-
-        <style>
-            #tb_dkp_wrapper {
-                display: none;
-            }
-        </style>
 
         <div id="bsc-modal" class="modal fade" role="dialog"> <!-- modal bsc -->
             <div class="modal-dialog">

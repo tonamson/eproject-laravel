@@ -79,6 +79,37 @@
             </form>
         </div>
 
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Ngày đi làm</th>
+                        <th>Ngày lễ đi làm</th>
+                        <th>Ngày nghỉ đi làm</th>
+                        <th>Tổng ngày bổ sung công</th>
+                        <th>Tổng ngày đăng kí phép</th>
+                        <th>Tổng thời gian đi trễ</th>
+                        <th>Tổng thời gian về sớm</th>
+                        <th>Tổng công</th>
+                        <th>Tổng công được tính</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <tr>
+                        <td>{{ $summary['total_day_normal'] }}</td>
+                        <td>{{ $summary['total_special'] }}</td>
+                        <td>{{ $summary['total_day_off'] }}</td>
+                        <td>{{ $summary['total_day_add'] }}</td>
+                        <td>{{ $summary['total_day_leave'] }}</td>
+                        <td>{{ $summary['total_late'] }}</td>
+                        <td>{{ $summary['total_soon'] }}</td>
+                        <td>{{ $summary['total_number_time'] }}</td>
+                        <td>{{ $summary['total_number_time_all'] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         <table class="table datatable-basic">
             <thead>
                 <tr>
@@ -87,6 +118,7 @@
                     <th>Giờ ra</th>
                     <th>Tổng thời gian làm việc</th>
                     <th>Ngày công</th>
+                    <th>Ngày công được tính</th>
                     <th>Ghi chú</th>
                 </tr>
             </thead>
@@ -95,12 +127,12 @@
                 {{-- @dd($data) --}}
                     <tr style="
                         <?php 
-                            if($check_in_out['special_date_id'] !== null) echo "background-color: #fff2ce";
+                            if($check_in_out['special_date_id'] !== null) echo "background-color: #ffe7e7";
                             else if($check_in_out['day_of_week'] == 1 or $check_in_out['day_of_week'] == 7)  echo "background-color: #d3ffd4";
                         ?>
                     ">
                         <td>
-                            ngày {{ $check_in_out['check_in_day'] }}, 
+                            {{ $check_in_out['check_in_day'] }}, 
                             <?php 
                                 if($check_in_out['day_of_week'] == 1) {
                                     echo 'Chủ Nhật';
@@ -117,6 +149,7 @@
                         <td>{{ $check_in_out['check_in'] }}</td>
                         <td>{{ $check_in_out['check_out'] }}</td>
                         <td>{{ $check_in_out['time'] }}</td>
+                        <td>{{ $check_in_out['number_time'] }}</td>
                         <td>{{ $check_in_out['number_time'] * $check_in_out['multiply'] }}</td>
                         <td style="min-width: 220px">
                             <?php
@@ -144,7 +177,62 @@
                             ?>
                         </td>
                     </tr>
-                @endforeach       
+                @endforeach 
+                @foreach ($time_leave as $item)
+                    @if($item['is_approved'] == 1 && $item['staff_id'] == auth()->user()->id)
+                        <tr style="background-color: #ffffe7">
+                            <td>
+                                <?php
+                                    $date = date_create($item['day_time_leave']);
+                                    $dayofweek = date('w', strtotime($item['day_time_leave']));
+                                    $day = '';
+
+                                    switch ($dayofweek) {
+                                        case '0':
+                                            $day = "Chủ Nhật";
+                                            break;
+                                        case '1':
+                                            $day = "Thứ 2";
+                                            break;
+                                        case '2':
+                                            $day = "Thứ 3";
+                                            break;
+                                        case '3':
+                                            $day = "Thứ 4";
+                                            break;
+                                        case '4':
+                                            $day = "Thứ 5";
+                                            break;
+                                        case '5':
+                                            $day = "Thứ 6";
+                                            break;
+                                        case '6':
+                                            $day = "Thứ 7";
+                                            break;
+                                        default:
+                                            # code...
+                                            break;
+                                    }
+                                    echo date_format($date,"d-m-Y") . ', ' . $day;
+                                ?>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ $item['time'] }}</td>
+                            <td>
+                                <?php 
+                                    echo $item['time'] == "08:00:00" ? '1' : '0.5' 
+                                ?>
+                            </td>
+                            <td>
+                                <?php 
+                                    echo $item['time'] == "08:00:00" ? '1' * $item['multiply'] : '0.5' * $item['multiply']
+                                ?>
+                            </td>
+                            <td><?php echo $item['type'] == "0" ? 'Bổ sung công đã được duyệt' : 'Đăng kí phép đã được duyệt' ?></td>
+                        </tr>
+                    @endif
+                @endforeach      
             </tbody>
         </table>
     </div>

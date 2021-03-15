@@ -78,7 +78,7 @@
                             <th>Tên Kết quả</th>
                             <th>Mục tiêu</th>
                             <th>Đạt được</th>
-                            <th>Mức độ tự tin hoàn thành</th>
+                            {{-- <th>Mức độ tự tin hoàn thành</th> --}}
                             <th>Các bước thực hiện</th>
                             <th>Kĩ năng cần có</th>
                             <th>Quản lý phản hồi</th>
@@ -91,7 +91,7 @@
                                 <td><textarea name="name[]" id="" cols="30" rows="5">{{ $kpi_child['name'] }}</textarea></td>
                                 <td><input type="number" name="number_target[]" id="" value="{{ $kpi_child['numberTarget'] }}"></td>
                                 <td><input type="number" name="number_get[]" id="" value="{{ $kpi_child['numberGet'] }}"></td>
-                                <td>
+                                {{-- <td>
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="1" {{ $kpi_child['confidenceLevel'] == 1 ? 'checked' : '' }} data-fouc>
@@ -112,10 +112,10 @@
                                             Không tự tin
                                         </label>
                                     </div>
-                                </td>
+                                </td> --}}
                                 <td><textarea name="duties_activities[]" id="" cols="30" rows="10">{{ $kpi_child['dutiesActivities'] }}</textarea></td>
                                 <td><textarea name="skill[]" id="" cols="30" rows="10">{{ $kpi_child['skill'] }}</textarea></td>
-                                <td><textarea name="" id="" cols="30" rows="10"></textarea></td>
+                                <td><textarea name="" id="" cols="30" rows="10" disabled></textarea></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -136,12 +136,12 @@
             html += '<td><textarea name="name[]" id="" cols="30" rows="5"></textarea></td>';
             html += '<td><input type="number" name="number_target[]" id="" value=""></td>';
             html += '<td><input type="number" name="number_get[]" id="" value=""></td>';
-            html += '<td><div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="1" data-fouc>Rất tự tin</label></div>';
-            html += '<div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="2" data-fouc>Tự tin</label></div>';
-            html += '<div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="3" data-fouc>Không tự tin</label></div></td>';
+            // html += '<td><div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="1" data-fouc>Rất tự tin</label></div>';
+            // html += '<div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="2" data-fouc>Tự tin</label></div>';
+            // html += '<div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="3" data-fouc>Không tự tin</label></div></td>';
             html += '<td><textarea name="duties_activities[]" id="" cols="30" rows="10"></textarea></td>';
             html += '<td><textarea name="skill[]" id="" cols="30" rows="10"></textarea></td>';
-            html += '<td><textarea name="" id="" cols="30" rows="10"></textarea></td>';
+            html += '<td><textarea name="" id="" cols="30" rows="10" disabled></textarea></td>';
             html += '</tr>';
 
             $("#tbody").append(html);
