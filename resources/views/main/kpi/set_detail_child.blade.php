@@ -88,7 +88,7 @@
                         @foreach ($data as $kpi_child)
                             <tr>
                                 <input type="hidden" name="id_child[]" value="{{ $kpi_child['id'] }}">
-                                <td><textarea name="name[]" id="" cols="30" rows="5">{{ $kpi_child['name'] }}</textarea></td>
+                                <td><textarea name="name[]" id="" cols="20" rows="5">{{ $kpi_child['name'] }}</textarea></td>
                                 <td><input type="number" name="number_target[]" id="" value="{{ $kpi_child['numberTarget'] }}"></td>
                                 <td><input type="number" name="number_get[]" id="" value="{{ $kpi_child['numberGet'] }}"></td>
                                 {{-- <td>
@@ -113,9 +113,9 @@
                                         </label>
                                     </div>
                                 </td> --}}
-                                <td><textarea name="duties_activities[]" id="" cols="30" rows="10">{{ $kpi_child['dutiesActivities'] }}</textarea></td>
-                                <td><textarea name="skill[]" id="" cols="30" rows="10">{{ $kpi_child['skill'] }}</textarea></td>
-                                <td><textarea name="" id="" cols="30" rows="10" disabled></textarea></td>
+                                <td><textarea name="duties_activities[]" id="" cols="20" rows="10">{{ $kpi_child['dutiesActivities'] }}</textarea></td>
+                                <td><textarea name="skill[]" id="" cols="20" rows="10">{{ $kpi_child['skill'] }}</textarea></td>
+                                <td><textarea name="" id="" cols="20" rows="10" disabled></textarea></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -133,15 +133,15 @@
         $("#btn_add").click(function() {
             html = '<tr>';
             html += '<input type="hidden" name="id_child[]" value="">';
-            html += '<td><textarea name="name[]" id="" cols="30" rows="5"></textarea></td>';
+            html += '<td><textarea name="name[]" id="" cols="20" rows="5"></textarea></td>';
             html += '<td><input type="number" name="number_target[]" id="" value=""></td>';
             html += '<td><input type="number" name="number_get[]" id="" value=""></td>';
             // html += '<td><div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="1" data-fouc>Rất tự tin</label></div>';
             // html += '<div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="2" data-fouc>Tự tin</label></div>';
             // html += '<div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input-styled" name="stacked-radio-left" value="3" data-fouc>Không tự tin</label></div></td>';
-            html += '<td><textarea name="duties_activities[]" id="" cols="30" rows="10"></textarea></td>';
-            html += '<td><textarea name="skill[]" id="" cols="30" rows="10"></textarea></td>';
-            html += '<td><textarea name="" id="" cols="30" rows="10" disabled></textarea></td>';
+            html += '<td><textarea name="duties_activities[]" id="" cols="20" rows="10"></textarea></td>';
+            html += '<td><textarea name="skill[]" id="" cols="20" rows="10"></textarea></td>';
+            html += '<td><textarea name="" id="" cols="20" rows="10" disabled></textarea></td>';
             html += '</tr>';
 
             $("#tbody").append(html);

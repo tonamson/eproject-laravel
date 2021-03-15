@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CheckInOutController extends Controller
 {
@@ -25,8 +27,13 @@ class CheckInOutController extends Controller
         $user = auth()->user();
         $check_in_date = date('Y-m-d');
         $check_in_at = date('Y-m-d H:i:s');
-        $latitude = $request->input('latitude1');
-        $longitude = $request->input('longitude1');
+        $latitude = $request->input('latitude');
+        $longitude = $request->input('longitude');
+        $image = $request->input('image_64');
+
+        if(empty($image)) {
+            return redirect()->back()->with('error', 'Vui lòng chụp hình!');
+        }
 
         if(empty($latitude) || empty($longitude)) {
             return redirect()->back()->with('error', 'Vui lòng bật GPS theo hướng dẫn!');
@@ -49,18 +56,31 @@ class CheckInOutController extends Controller
 
         $res2 = 6378.8 * (2 * asin(sqrt($val))); //for kilomet
 
-        if($res2 > 0.5) {
-            return redirect()->back()->with('error', 'Bạn cách xa văn phòng quá 500m!');
+        // if($res2 > 0.5) {
+        //     return redirect()->back()->with('error', 'Bạn cách xa văn phòng quá 500m!');
+        // }
+
+        $image_name = "";
+
+        if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
+            $data = substr($image, strpos($image, ',') + 1);
+        
+            $data = base64_decode($data);
+
+            $image_name = date("YmdHis");
+
+            Storage::disk('custom')->put($image_name.".png", $data);
         }
 
-        $body = [
+        $data_request = [
             "staff_id" => $user->id,
             'staff_code' => $user->code,
             'check_in_day' => $check_in_date,
-            'check_in_at' => $check_in_at
+            'check_in_at' => $check_in_at,
+            'image' => $image_name.".png"
         ];
 
-        $response = Http::post('http://localhost:8888/check-in-out/create', $body);
+        $response = Http::post('http://localhost:8888/check-in-out/create', $data_request);
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Save success") {
