@@ -182,7 +182,7 @@
             </tbody>
         </table>
 
-        <table class="table datatable-basic2" id="tb_dkp" style="display: none">
+        <table class="table datatable-basic" id="tb_dkp" style="display: none">
              <thead>
                 <tr>
                     <th>Tên nhân viên</th>

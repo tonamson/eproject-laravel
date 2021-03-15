@@ -123,7 +123,7 @@
             </tbody>
         </table>
 
-        <table class="table datatable-basic2" id="tb_department" style="display: none">
+        <table class="table datatable-basic" id="tb_department" style="display: none">
              <thead>
                 <tr>
                     <th>Phòng ban</th>
