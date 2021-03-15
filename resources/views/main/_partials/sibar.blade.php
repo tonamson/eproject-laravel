@@ -79,9 +79,9 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item nav-item-submenu <?php echo $url[0] == "staff" ? "nav-item-open" : "" ?>">
+                    <li class="nav-item nav-item-submenu <?php echo $url[0] == "staff" && $url[1] !== "view-profile" ? "nav-item-open" : "" ?>">
                         <a href="#" class="nav-link"><i class="icon-user"></i> <span>Nhân viên</span></a>
-                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "staff" ? "block" : "none" ?>">
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "staff" && $url[1] !== "view-profile" ? "block" : "none" ?>">
                             <li class="nav-item">
                                 <a href="{{ action('StaffController@index') }}" class="nav-link">
                                     <i class="icon-list"></i>

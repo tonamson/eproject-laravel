@@ -17,11 +17,10 @@
 
 @section('js')    
     <!-- Theme JS files -->
-    <link href="{{ asset('assets_chart/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    {{-- <link href="{{ asset('assets_chart/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets_chart/css/bootstrap_limitless.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets_chart/css/layout.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets_chart/css/components.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets_chart/css/colors.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets_chart/css/colors.min.css') }}" rel="stylesheet" type="text/css"> --}}
     
     <script src="{{ asset('global_assets/js/plugins/visualization/d3/d3.min.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/visualization/c3/c3.min.js') }}"></script>
