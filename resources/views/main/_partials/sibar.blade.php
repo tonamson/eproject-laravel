@@ -242,12 +242,6 @@
                                 <span>Tính lương</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('getListContract', ['del' => true]) }}" class="nav-link">
-                                <i class="icon-trash"></i>
-                                <span>Thùng rác</span>
-                            </a>
-                        </li>
                     </ul>
                 </li>
                 @endif

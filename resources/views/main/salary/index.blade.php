@@ -26,6 +26,7 @@
         <table class="table datatable-basic">
             <thead>
             <tr>
+                <td>Mã</td>
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
                 <th>Trạng thái</th>
@@ -35,6 +36,7 @@
             <tbody>
             @foreach($data as $item)
                 <tr>
+                    <td>{{ $item->id }}</td>
                     <td>{{ $item->fromDate }}</td>
                     <td>{{ $item->toDate }}</td>
                     <td>{{ $item->status == 'pending' ? 'Chưa khóa' : 'Đã khóa' }}</td>
@@ -47,6 +49,10 @@
 
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a href="{{ route('getDetailSalary', ['id' => $item->id]) }}" class="dropdown-item">Chi tiết</a>
+                                    @if($item->status == 'pending')
+                                        <a href="javascript:void(0)" onclick="deleteSalary({{ $item->id }})" class="dropdown-item">Xóa bảng tính</a>
+                                        <a href="javascript:void(0)" onclick="setSuccessSalary({{ $item->id }})" class="dropdown-item">Hoàn tất bảng lương</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -61,4 +67,18 @@
 @endsection
 
 @section('scripts')
+    <script>
+        function deleteSalary(id) {
+            let conf = confirm('Bạn có chắc muốn xóa bảng tính ID: ' + id);
+            if (conf) {
+                window.location.href = '{{ route('getDeleteSalary') }}/' + id;
+            }
+        }
+        function setSuccessSalary(id) {
+            let conf = confirm('Bạn có chắc muốn chuyển sang hoàn tất bảng lương ID: ' + id);
+            if (conf) {
+                window.location.href = '{{ route('getChangeStatusSuccessSalary') }}/' + id;
+            }
+        }
+    </script>
 @endsection

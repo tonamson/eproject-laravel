@@ -75,4 +75,61 @@ class SalaryController extends Controller
 
         return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Tính lương thất bại: ' . $body->message]);
     }
+
+    public function getDeleteSalary($id)
+    {
+        $response = Http::get(config('app.api_url') . '/salary/detail', [
+            'id' => $id
+        ]);
+        $body = json_decode($response->body(), false);
+        $salary = null;
+        if ($body->isSuccess) {
+            $salary = $body->data;
+        }
+        if ($salary) {
+            if ($salary->status == 'pending') {
+                $response = Http::get(config('app.api_url') . '/salary/delete', [
+                    'id' => $id
+                ]);
+                $body = json_decode($response->body(), false);
+                if ($body->isSuccess) {
+                    return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa thành công']);
+                } else {
+                    return redirect()->back()->with('message', ['type' => 'danger', 'message' => $body->message]);
+                }
+            } else {
+                return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Chỉ có thể xóa bảng tính chưa khóa']);
+            }
+        }
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy bảng tính lương']);
+    }
+
+    public function getChangeStatusSuccessSalary($id)
+    {
+        $response = Http::get(config('app.api_url') . '/salary/detail', [
+            'id' => $id
+        ]);
+        $body = json_decode($response->body(), false);
+        $salary = null;
+        if ($body->isSuccess) {
+            $salary = $body->data;
+        }
+        if ($salary) {
+            if ($salary->status == 'pending') {
+                $response = Http::post(config('app.api_url') . '/salary/update-status', [
+                    'id' => $id,
+                    'status' => 'success',
+                ]);
+                $body = json_decode($response->body(), false);
+                if ($body->isSuccess) {
+                    return redirect()->back()->with('message', ['type' => 'success', 'message' => $body->message]);
+                } else {
+                    return redirect()->back()->with('message', ['type' => 'danger', 'message' => $body->message]);
+                }
+            } else {
+                return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Chỉ có thể chuyển bảng tính chưa khóa']);
+            }
+        }
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy bảng tính lương']);
+    }
 }

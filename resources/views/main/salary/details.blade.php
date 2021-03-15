@@ -24,73 +24,88 @@
             <h5 class="card-title">Chi tiết bảng tính lương</h5>
         </div>
         <div class="card-body">
-            <table class="table datatable-basic">
-                <thead>
-                <tr>
-                    <th>Mã nhân viên</th>
-                    <th>Tên nhân viên</th>
-                    <th>Tổng công</th>
-                    <th>Lương</th>
-                    <th>Thao tác</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($data as $item)
-                    <tr>
-                        <td>{{ $item->staff->id }}</td>
-                        <td>{{ $item->staff->firstname . ' '. $item->staff->lastname }}</td>
-                        <td>
-                            @php
-                                $total_working_of_day = 0;
-                                if(isset($item->details)) {
-                                    foreach($item->details as $detail){
-                                        $total_working_of_day += $detail->total_working_of_day;
-                                    }
-                                }
-                            @endphp
-                            {{ number_format($total_working_of_day) }}
-                        </td>
-                        <td>{{ number_format($item->salary) }}</td>
-                        <td>
-                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">Chi tiết</button>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-
-            <!-- Full width modal -->
-            <div id="modalDetail" class="modal fade" tabindex="-1">
-                <div class="modal-dialog modal-full">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Chi tiết bảng lương</h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-
-                        <div class="modal-body">
-                            <table class="table datatable-detail">
-                                <thead>
-                                <tr>
-                                    <th>Mã nhân viên</th>
-                                    <th>Tên nhân viên</th>
-                                    <th>Ngày chấm công</th>
-                                    <th>Công chuẩn của tháng</th>
-                                    <th>Lương</th>
-                                    <th>Lương 1 ngày</th>
-                                    <th>Công đã làm</th>
-                                    <th>Hệ số</th>
-                                    <th>Tổng tiền</th>
-                                </tr>
-                                </thead>
-                                <tbody id="dataDetail"></tbody>
-                            </table>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @php
+                        $total_salary = 0;
+                    @endphp
+                    @foreach($data as $item)
+                        @if($total_salary += $item->salary) @endif
+                    @endforeach
+                    <h3>Tổng chi lương: <b class="text-success">{{ number_format($total_salary) }} VND</b></h3>
                 </div>
             </div>
-            <!-- /full width modal -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table datatable-basic">
+                        <thead>
+                        <tr>
+                            <th>Mã nhân viên</th>
+                            <th>Tên nhân viên</th>
+                            <th>Tổng công</th>
+                            <th>Lương</th>
+                            <th>Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($data as $item)
+                            <tr>
+                                <td>{{ $item->staff->id }}</td>
+                                <td>{{ $item->staff->firstname . ' '. $item->staff->lastname }}</td>
+                                <td>
+                                    @php
+                                        $total_working_of_day = 0;
+                                        if(isset($item->details)) {
+                                            foreach($item->details as $detail){
+                                                $total_working_of_day += $detail->total_working_of_day;
+                                            }
+                                        }
+                                    @endphp
+                                    {{ number_format($total_working_of_day) }}
+                                </td>
+                                <td>{{ number_format($item->salary) }}</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">Chi tiết</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
 
+                    <!-- Full width modal -->
+                    <div id="modalDetail" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog modal-full">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Chi tiết bảng lương</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <table class="table datatable-detail">
+                                        <thead>
+                                        <tr>
+                                            <th>Mã nhân viên</th>
+                                            <th>Tên nhân viên</th>
+                                            <th>Ngày chấm công</th>
+                                            <th>Công chuẩn của tháng</th>
+                                            <th>Lương</th>
+                                            <th>Lương 1 ngày</th>
+                                            <th>Công đã làm</th>
+                                            <th>Hệ số</th>
+                                            <th>Tổng tiền</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="dataDetail"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /full width modal -->
+
+                </div>
+            </div>
         </div>
     </div>
 
