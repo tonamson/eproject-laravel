@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['check_login'])->group(function () {
     Route::get('/', 'ViewmenuController@index');
 
-    Route::get('/about', 'AboutcompanyController@index');
+    Route::get('/about/index', 'AboutcompanyController@index');
 
     Route::group(['prefix' => 'view-menu'], function () {
         Route::get('/time-leave', 'ViewmenuController@timeLeave');
