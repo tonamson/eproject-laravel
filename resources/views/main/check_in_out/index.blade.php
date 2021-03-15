@@ -105,7 +105,7 @@
    
     <style>
     #video {
-        width: 65%;
+        width: 350px;
     }
       
     .is-hidden {
@@ -188,7 +188,7 @@
           if (!img) {
             img = document.createElement("img");
             img.id = 'screenshot';
-            img.style.width = '65%';
+            img.style.width = '350px';
           }
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
