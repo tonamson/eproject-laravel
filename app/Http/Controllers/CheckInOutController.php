@@ -24,7 +24,6 @@ class CheckInOutController extends Controller
 
     public function create(Request $request)
     {
-        echo date("YmdHis") . substr(microtime(), 2, 4);die;
         $user = auth()->user();
         $check_in_date = date('Y-m-d');
         $check_in_at = date('Y-m-d H:i:s');
