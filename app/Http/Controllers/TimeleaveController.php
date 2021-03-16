@@ -637,11 +637,68 @@ class TimeleaveController extends Controller
         $response = Http::get('http://localhost:8888/time-leave/get-all-staff-time', $data_request);
         $body = json_decode($response->body(), true);
 
+        $response = Http::get('http://localhost:8888/time-leave/summary-staff-time', $data_request);
+        $summary = json_decode($response->body(), true);
+
+        // dd($summary);
+
         return view('main.time_leave.all_staff_time')
             ->with('data', $body['data'])
+            ->with('summary', $summary['data'])
             ->with('year', $year)
             ->with('month', $month)
             ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Lưới công', 'url' => '#']]);
+    }
+
+    public function getDetailStaffTime(Request $request) {
+        $staff_id = $request->input('staff_id');
+        $month = $request->input('month');
+        $year = $request->input('year');
+        if(!$month) {
+            $month = date("m");
+        }
+        if(!$year) {
+            $year = date("Y");
+        }
+        $date = $year . '-' . $month . '-' . '01';
+        $data_request = ['y_m' => $date];
+
+        $response = Http::get('http://localhost:8888/time-leave/get-all-staff-time', $data_request);
+        $body = json_decode($response->body(), true);
+
+        $html = "";
+        foreach ($body['data'] as $check_in_out) {
+            if($check_in_out['staff_id'] == $staff_id) {
+                if($check_in_out['special_date_id'] !== null) $color = "#ffe7e7";
+                else if($check_in_out['day_of_week'] == 1 or $check_in_out['day_of_week'] == 7) $color = "#d3ffd4";
+                else $color = "";
+
+                $check_in_out['is_manager'] == 1 ? $manager = "Quản lý" : $manager = "Nhân viên";
+                $check_in_out['day_of_week'] !== 1 ? $day_of_week = "Thứ " . $check_in_out['day_of_week'] : $day_of_week = "Chủ Nhật";
+                $check_in_out['special_date_id'] !== null ? $day_of_week .= "(Ngày lễ)" : '';
+                
+
+                $html .= "
+                <tr style='background-color: ".$color."'>
+                    <td>". $check_in_out['code'] ."</td>
+                    <td>". $check_in_out['full_name'] ."</td>
+                    <td>". $check_in_out['department_name'] ."</td>
+                    <td>". $manager ."</td>
+                    <td>". $check_in_out['check_in_day'] ."</td>
+                    <td>". $day_of_week ."</td>
+                    <td class='text-center' style='max-width: 100px;'>". $check_in_out['check_in'] ." <img width='80px' src='../images/check_in/".$check_in_out['image_check_in']."' </td>
+                    <td class='text-center' style='max-width: 100px;'>". $check_in_out['check_out'] ." <img width='80px' src='../images/check_in/".$check_in_out['image_check_out']."' </td>
+                    <td>". $check_in_out['in_late'] ."</td>
+                    <td>". $check_in_out['out_soon'] ."</td>
+                    <td>". $check_in_out['number_time'] * $check_in_out['multiply'] ."</td>
+                    <td>". $check_in_out['time'] ."</td>
+                    <td>". $check_in_out['ot'] ."</td>
+                </tr>";
+            }
+        }
+ 
+        echo $html;
+        die;
     }
 
     public function doneLeave(Request $request) {

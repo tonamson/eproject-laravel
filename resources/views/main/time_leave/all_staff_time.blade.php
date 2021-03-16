@@ -63,82 +63,109 @@
 
         <table class="table datatable-basic">
             <thead>
-                <tr>
-                    <td>Mã nhân viên</td>
-                    <td>Họ tên</td>
-                    <td>Phòng ban</td>
-                    <td>Chức vụ</td>
-                    <th>Ngày</th>
-                    <th>Thứ</th>
-                    <th class="text-center">Giờ vào</th>
-                    <th class="text-center">Giờ ra</th>
-                    <th>Đi Trễ</th>
-                    <th>Về Sớm</th>
-                    <th>Công</th>
-                    <th>Tổng giờ</th>
-                    <th>Tăng ca</th>
-                </tr>
+            <tr>
+                <th>Tên nhân viên</th>
+                <th>Phòng ban</th>
+                <th>Chức vụ</th>
+                <th>Thời gian làm việc</th>
+                <th>Thời gian đi trễ</th>
+                <th>Thời gian về sớm</th>
+                <th>Thời gian tăng ca</th>
+                <th>Ngày đi làm</th>
+                <th>Ngày nghỉ đi làm</th>
+                <th>Ngày lễ đi làm</th>
+                <th>Tổng công</th>
+                <th>Tổng công được tính</th>
+                <th>Chi tiết</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach ($data as $check_in_out)
-                    <tr style="
-                        <?php 
-                            if($check_in_out['special_date_id'] !== null) echo "background-color: #ffe7e7";
-                            else if($check_in_out['day_of_week'] == 1 or $check_in_out['day_of_week'] == 7)  echo "background-color: #d3ffd4";
-                        ?>
-                    ">
-                        <td>{{ $check_in_out['code'] }}</td>
-                        <td>{{ $check_in_out['full_name'] }}</td>
-                        <td>{{ $check_in_out['department_name'] }}</td>
-                        <td>{{ $check_in_out['is_manager'] == 1 ? "Quản lý" : "Nhân viên" }}</td>
-                        <td>{{ $check_in_out['check_in_day'] }}</td>
-                        <td>
-                            <?php 
-                                if($check_in_out['day_of_week'] == 1) {
-                                    echo 'Chủ Nhật';
-                                } else {
-                                    echo 'Thứ ' . $check_in_out['day_of_week'];
-                                }
-                            ?>
-                            <?php 
-                                if($check_in_out['special_date_id'] !== null) {
-                                    echo '(Ngày lễ)';
-                                }
-                            ?>
-                        </td>
-                        <td class="text-center" style="max-width: 100px;">
-                            {{ $check_in_out['check_in'] }}
-                            <img src="../images/check_in/{{ $check_in_out['image_check_in'] }}" width="80px" alt="">
-                        </td>
-                        <td class="text-center" style="max-width: 100px;">
-                            {{ $check_in_out['check_out'] }}
-                            <img src="../images/check_in/{{ $check_in_out['image_check_out'] }}" width="80px" alt="">
-                        </td>
-                        <td>{{ $check_in_out['in_late'] }}</td>
-                        <td>{{ $check_in_out['out_soon'] }}</td>
-                        <td>{{ $check_in_out['number_time'] * $check_in_out['multiply'] }}</td>
-                        <td>{{ $check_in_out['time'] }}</td>
-                        <td>{{ $check_in_out['ot'] }}</td>
-                    </tr>
-                @endforeach       
+            @foreach($summary as $item)
+                <tr>
+                    <td>{{ $item['full_name'] }}</td>
+                    <td>{{ $item['department_name'] }}</td>
+                    <td>{{ $item['is_manager'] == 1 ? "Quản lý" : "Nhân viên" }}</td>
+                    <td>{{ $item['sum_time'] }}</td>
+                    <td>{{ $item['sum_in_late'] }}</td>
+                    <td>{{ $item['sum_out_soon'] }}</td>
+                    <td>{{ $item['sum_ot'] }}</td>
+                    <td>{{ $item['total_normal'] }}</td>
+                    <td>{{ $item['total_day_off'] }}</td>
+                    <td>{{ $item['total_day_special'] }}</td>
+                    <td>{{ $item['total_number_time'] }}</td>
+                    <td>{{ $item['total_number_time_all'] }}</td>
+                    <td><button id="{{ $item['staff_id'] }}" class="btn btn-primary open-detail">Chi tiết</button></td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
     <!-- /basic datatable -->
+
+    <!-- Full width modal -->
+    <div id="modalDetail" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-full">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chi Tiết </h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <table class="table datatable-detail">
+                        <thead>
+                            <tr>
+                                <td>Mã nhân viên</td>
+                                <td>Họ tên</td>
+                                <td>Phòng ban</td>
+                                <td>Chức vụ</td>
+                                <th>Ngày</th>
+                                <th>Thứ</th>
+                                <th class="text-center">Giờ vào</th>
+                                <th class="text-center">Giờ ra</th>
+                                <th>Đi Trễ</th>
+                                <th>Về Sớm</th>
+                                <th>Công</th>
+                                <th>Tổng giờ</th>
+                                <th>Tăng ca</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detail">
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /full width modal -->
 @endsection
 
 @section('scripts')
     <script>
         $(document).ready(function(){
-            $('#register_leave').click(function(){
-                var request = new Request('http://localhost:8888/staff/updateDayOfLeave');
+            $('.open-detail').click(function() {
+                var staff_id = $(this).attr('id');
+                var month = <?php echo $month ?>;
+                var year = <?php echo $year ?>;
 
-                fetch(request, {mode: 'no-cors'}).then(function(response) {
-                    return response.json();
-                }).then(function(j) {
-                    console.log(JSON.stringify(j));
-                }).catch(function(error) {
-                    console.log('Request failed', error)
+                $.ajax({
+                    url: '{{ action('TimeleaveController@getDetailStaffTime') }}',
+                    Type: 'POST',
+                    datatype: 'text',
+                    data:
+                    {
+                        staff_id: staff_id,
+                        month: month,
+                        year: year
+                    },
+                    cache: false,
+                    success: function (data)
+                    {
+                        console.log(data);
+                        $('#detail').empty().append(data);
+                        $('#modalDetail').modal();
+                    }
                 });
             });
         });
