@@ -67,6 +67,7 @@
                     <td>Mã nhân viên</td>
                     <td>Họ tên</td>
                     <td>Phòng ban</td>
+                    <td>Chức vụ</td>
                     <th>Ngày</th>
                     <th>Thứ</th>
                     <th class="text-center">Giờ vào</th>
@@ -89,6 +90,7 @@
                         <td>{{ $check_in_out['code'] }}</td>
                         <td>{{ $check_in_out['full_name'] }}</td>
                         <td>{{ $check_in_out['department_name'] }}</td>
+                        <td>{{ $check_in_out['is_manager'] == 1 ? "Quản lý" : "Nhân viên" }}</td>
                         <td>{{ $check_in_out['check_in_day'] }}</td>
                         <td>
                             <?php 

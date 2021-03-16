@@ -76,7 +76,7 @@ class SpecialDateController extends Controller
         }
 
         if($day_special_from > $day_special_to) {
-            return redirect()->back()->with('error', 'Từ ngày không được nhỏ hơn đến ngày! Vui lòng thử lại');
+            return redirect()->back()->with('error', 'Từ ngày không được lớn hơn đến ngày! Vui lòng thử lại');
         }
 
         if(strlen($note) > 300) {

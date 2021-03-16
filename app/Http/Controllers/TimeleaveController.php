@@ -33,7 +33,6 @@ class TimeleaveController extends Controller
 
         $response = Http::post('http://localhost:8888/time-leave/list', $data_request);
         $body = json_decode($response->body(), true);
-        //dd($body['data'][0]['time']);
 
         return view('main.time_leave.index')
             ->with('data', $body['data'])
@@ -471,6 +470,7 @@ class TimeleaveController extends Controller
 
         $response = Http::post('http://localhost:8888/time-leave/get-staff-approve', $data_request);
         $body = json_decode($response->body(), true);
+        // dd($body);
 
         return view('main.time_leave.approve')
             ->with('data', $body['data'])
@@ -642,5 +642,20 @@ class TimeleaveController extends Controller
             ->with('year', $year)
             ->with('month', $month)
             ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Lưới công', 'url' => '#']]);
+    }
+
+    public function doneLeave(Request $request) {
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+
+        if($from_date > $to_date) {
+            return redirect()->back()->with('error', 'Từ ngày không được lớn hơn đến ngày! Vui lòng thử lại');
+        }
+
+        $data_request = ['from_date' => $from_date, 'to_date' => $to_date];
+
+        Http::get('http://localhost:8888/time-leave/done-leave', $data_request);
+        
+        return redirect()->back()->with('success', 'Chốt phép thành công');
     }
 }

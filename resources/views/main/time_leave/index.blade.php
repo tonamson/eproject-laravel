@@ -226,8 +226,9 @@
                                     <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
                                 @endif
                             </td>
-      
-                            @if($time_leave['isApproved'] == 0 || ($time_leave['isApproved'] == 2 && auth()->user()->is_manager == 1))
+                            @if($time_leave['done'] == 1)
+                                <td><span class="badge badge-danger">Đã chốt</span></td>    
+                            @elseif($time_leave['isApproved'] == 0 || ($time_leave['isApproved'] == 2 && auth()->user()->is_manager == 1))
                                 <?php
                                     $date1=date_create($time_leave['createdAt']);
                                     $date2=date_create(date('Y-m-d'));
@@ -292,7 +293,9 @@
                                     <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
                                 @endif
                             </td>
-                            @if($time_leave['isApproved'] == 0 || ($time_leave['isApproved'] == 2 && auth()->user()->is_manager == 1))
+                            @if($time_leave['done'] == 1)
+                                <td><span class="badge badge-danger">Đã chốt</span></td>    
+                            @elseif($time_leave['isApproved'] == 0 || ($time_leave['isApproved'] == 2 && auth()->user()->is_manager == 1))
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-dkp" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
