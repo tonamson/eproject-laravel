@@ -56,9 +56,9 @@ class CheckInOutController extends Controller
 
         $res2 = 6378.8 * (2 * asin(sqrt($val))); //for kilomet
 
-        // if($res2 > 0.5) {
-        //     return redirect()->back()->with('error', 'Bạn cách xa văn phòng quá 500m!');
-        // }
+        if($res2 > 0.5) {
+            return redirect()->back()->with('error', 'Bạn cách xa văn phòng quá 500m!');
+        }
 
         $image_name = "";
 
@@ -67,7 +67,7 @@ class CheckInOutController extends Controller
         
             $data = base64_decode($data);
 
-            $image_name = date("YmdHis");
+            $image_name = date("YmdHis") . substr(microtime(), 2, 4);
 
             Storage::disk('custom')->put($image_name.".png", $data);
         }

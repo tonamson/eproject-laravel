@@ -106,11 +106,11 @@
                         </td>
                         <td class="text-center" style="max-width: 100px;">
                             {{ $check_in_out['check_in'] }}
-                            <img src="{{ asset('images/check_in/20210315202246.png') }}" width="80px" alt="">
+                            <img src="../images/check_in/{{ $check_in_out['image_check_in'] }}" width="80px" alt="">
                         </td>
                         <td class="text-center" style="max-width: 100px;">
                             {{ $check_in_out['check_out'] }}
-                            <img src="{{ asset('images/check_in/20210315202246.png') }}" width="80px" alt="">
+                            <img src="../images/check_in/{{ $check_in_out['image_check_out'] }}" width="80px" alt="">
                         </td>
                         <td>{{ $check_in_out['in_late'] }}</td>
                         <td>{{ $check_in_out['out_soon'] }}</td>
