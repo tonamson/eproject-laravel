@@ -114,8 +114,8 @@
             <thead>
                 <tr>
                     <th>Ngày</th>
-                    <th>Giờ vào</th>
-                    <th>Giờ ra</th>
+                    <th class="text-center">Giờ vào</th>
+                    <th class="text-center">Giờ ra</th>
                     <th>Tổng thời gian làm việc</th>
                     <th>Ngày công</th>
                     <th>Ngày công được tính</th>
@@ -146,8 +146,14 @@
                                 }
                             ?>
                         </td>
-                        <td>{{ $check_in_out['check_in'] }}</td>
-                        <td>{{ $check_in_out['check_out'] }}</td>
+                        <td class="text-center" style="max-width: 100px;">
+                            {{ $check_in_out['check_in'] }}
+                            <img src="{{ asset('images/check_in/20210315202246.png') }}" width="80px" alt="">
+                        </td>
+                        <td class="text-center" style="max-width: 100px;">
+                            {{ $check_in_out['check_out'] }}
+                            <img src="{{ asset('images/check_in/20210315202246.png') }}" width="80px" alt="">
+                        </td>
                         <td>{{ $check_in_out['time'] }}</td>
                         <td>{{ $check_in_out['number_time'] }}</td>
                         <td>{{ $check_in_out['number_time'] * $check_in_out['multiply'] }}</td>
