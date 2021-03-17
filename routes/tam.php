@@ -116,6 +116,11 @@ Route::middleware(['check_login'])->group(function () {
             Route::get('/all-staff-time', 'TimeleaveController@getAllStaffTime');
 
             Route::get('/detail-staff-time', 'TimeleaveController@getDetailStaffTime');
+
+            Route::get('/all-time-leave', 'TimeleaveController@getAllTimeLeave');
+
+            Route::get('/detail-time-leave', 'TimeleaveController@getDetailTimeLeave');
+            
         });
     });
 

@@ -647,7 +647,7 @@ class TimeleaveController extends Controller
             ->with('summary', $summary['data'])
             ->with('year', $year)
             ->with('month', $month)
-            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Lưới công', 'url' => '#']]);
+            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tổng hợp chấm công', 'url' => '#']]);
     }
 
     public function getDetailStaffTime(Request $request) {
@@ -697,6 +697,93 @@ class TimeleaveController extends Controller
             }
         }
  
+        echo $html;
+        die;
+    }
+
+    public function getAllTimeLeave(Request $request) {
+        $month = $request->input('month');
+        $year = $request->input('year');
+        if(!$month) {
+            $month = date("m");
+        }
+        if(!$year) {
+            $year = date("Y");
+        }
+        $date = $year . '-' . $month . '-' . '01';
+
+        $data_request = ['y_m' => $date];
+
+        $response = Http::get('http://localhost:8888/time-leave/summary-time-leave', $data_request);
+        $summary = json_decode($response->body(), true);
+
+        return view('main.time_leave.all_time_leave')
+        ->with('summary', $summary['data'])
+        ->with('year', $year)
+        ->with('month', $month)
+        ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tổng hợp công phép', 'url' => '#']]);
+    }
+
+    public function getDetailTimeLeave(Request $request) {
+        $staff_id = $request->input('staff_id');
+        $month = $request->input('month');
+        $year = $request->input('year');
+        if(!$month) {
+            $month = date("m");
+        }
+        if(!$year) {
+            $year = date("Y");
+        }
+        $date = $year . '-' . $month . '-' . '01';
+        $data_request = ['y_m' => $date];
+
+        $data_request = ['department' => 2, 'day_time_leave' => $date, 'is_manager' => 1, 'staff_id' => 5];
+
+        $response = Http::post('http://localhost:8888/time-leave/get-staff-approve', $data_request);
+        $body = json_decode($response->body(), true);
+
+        $html = "";
+        foreach ($body['data'] as $time_leave) {
+            if($time_leave['staff_id'] == $staff_id) {
+                if($time_leave['special_date_id'] !== null) $color = "#ffe7e7";
+                else if($time_leave['day_of_week'] == 1 or $time_leave['day_of_week'] == 7) $color = "#d3ffd4";
+                else $color = "";
+
+                $time_leave['is_manager'] == 1 ? $manager = "Quản lý" : $manager = "Nhân viên";
+                $time_leave['day_of_week'] !== 1 ? $day_of_week = "Thứ " . $time_leave['day_of_week'] : $day_of_week = "Chủ Nhật";
+                $time_leave['special_date_id'] !== null ? $day_of_week .= "(Ngày lễ)" : '';
+                $time_leave['time'] == "08:00:00" ? $time = '1' : $time = '0.5';
+                $time_leave['time'] == "08:00:00" ? $time_multi = 1 * $time_leave['multiply'] . '' : $time_multi = 0.5 * $time_leave['multiply'];
+                if(strlen($time_leave['note']) > 20) {
+                    $note = substr($time_leave['note'], 0, 30) . '...';
+                } else {
+                    $note = $time_leave['note'];
+                }
+                $time_leave['type'] == 0 ? $type = "Bổ sung công" : $type = "Đăng kí phép";
+
+                if($time_leave['is_approved'] == 0)
+                    $approve = '<span class="badge badge-warning">Chưa phê duyệt</span>';
+                elseif($time_leave['is_approved'] == 2)
+                    $approve = '<span class="badge badge-success">Quản lý đã phê duyệt</span>';
+                else
+                    $approve = '<span class="badge badge-primary">Giám đốc đã phê duyệt</span>';
+
+                $html .= "
+                <tr style='background-color: ".$color."'>
+                    <td>". $time_leave['firstname'] . ' ' . $time_leave['lastname'] ."</td>
+                    <td>". $time_leave['name_vn'] ."</td>
+                    <td>". $manager ."</td>
+                    <td>". $time_leave['day_time_leave'] ."</td>
+                    <td>". $day_of_week ."</td>
+                    <td>". $type ."</td>
+                    <td>". $time ."</td>
+                    <td>". $time_multi ."</td>
+                    <td>". $note ."</td>
+                    <td>". $approve ."</td>
+                </tr>";
+            }
+        }
+
         echo $html;
         die;
     }

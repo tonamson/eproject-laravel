@@ -338,7 +338,7 @@
                 </div>
             </div>
         @endif
-        @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
+        @if(auth()->user()->is_manager == 1)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('TimeleaveController@approveTimeLeave') }}">
@@ -359,7 +359,17 @@
                 <div class="outer">
                     <a href="{{ action('TimeleaveController@getAllStaffTime') }}">
                         <i class="icon-8x icon-paragraph-left2"></i>
-                        <p>Lưới Công</p> 
+                        <p>Tổng Hợp Chấm Công</p> 
+                    </a>
+                </div>
+            </div>
+        @endif
+        @if(auth()->user()->department == 2)
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('TimeleaveController@getAllTimeLeave') }}">
+                        <i class="icon-8x icon-paragraph-left2"></i>
+                        <p>Tổng Hợp Công Phép</p> 
                     </a>
                 </div>
             </div>

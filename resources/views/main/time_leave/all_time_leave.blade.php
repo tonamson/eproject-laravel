@@ -24,7 +24,7 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Tổng Hợp Chấm Công</h1>
+        <h1 class="pt-3 pl-3 pr-3">Tổng Hợp Công Phép</h1>
         <div class="card-body">
             @if (\Session::has('success'))
                 <div class="">
@@ -67,15 +67,15 @@
                 <th>Tên nhân viên</th>
                 <th>Phòng ban</th>
                 <th>Chức vụ</th>
-                <th>Thời gian làm việc</th>
-                <th>Thời gian đi trễ</th>
-                <th>Thời gian về sớm</th>
-                <th>Thời gian tăng ca</th>
-                <th>Ngày đi làm</th>
-                <th>Ngày nghỉ đi làm</th>
-                <th>Ngày lễ đi làm</th>
-                <th>Tổng công</th>
-                <th>Tổng công được tính</th>
+                <th>Bổ sung công / Đăng kí phép</th>
+                <th>Bổ sung công</th>
+                <th>Bổ sung công đã duyệt</th>
+                <th>Số công bổ sung đã duyệt</th>
+
+                <th>Đăng kí phép</th>
+                <th>Đăng kí phép đã duyệt</th>
+                <th>Số công đăng kí phép đã duyệt</th>
+             
                 <th>Chi tiết</th>
             </tr>
             </thead>
@@ -85,15 +85,14 @@
                     <td>{{ $item['full_name'] }}</td>
                     <td>{{ $item['department_name'] }}</td>
                     <td>{{ $item['is_manager'] == 1 ? "Quản lý" : "Nhân viên" }}</td>
-                    <td>{{ $item['sum_time'] }}</td>
-                    <td>{{ $item['sum_in_late'] }}</td>
-                    <td>{{ $item['sum_out_soon'] }}</td>
-                    <td>{{ $item['sum_ot'] }}</td>
-                    <td>{{ $item['total_normal'] }}</td>
-                    <td>{{ $item['total_day_off'] }}</td>
-                    <td>{{ $item['total_day_special'] }}</td>
+                    <td>{{ $item['number_time_leave'] }}</td>
                     <td>{{ $item['total_number_time'] }}</td>
-                    <td>{{ $item['total_number_time_all'] }}</td>
+                    <td>{{ $item['number_time_approved'] }}</td>
+                    <td>{{ $item['number_time_time_approved'] }}</td>
+                    <td>{{ $item['total_number_leave'] }}</td>
+                    <td>{{ $item['number_leave_approved'] }}</td>
+                    <td>{{ $item['number_time_leave_approved'] }}</td>
+ 
                     <td><button id="{{ $item['staff_id'] }}" class="btn btn-primary open-detail">Chi tiết</button></td>
                 </tr>
             @endforeach
@@ -115,19 +114,16 @@
                     <table class="table datatable-detail">
                         <thead>
                             <tr>
-                                <td>Mã nhân viên</td>
-                                <td>Họ tên</td>
-                                <td>Phòng ban</td>
-                                <td>Chức vụ</td>
-                                <th>Ngày</th>
-                                <th>Thứ</th>
-                                <th class="text-center">Giờ vào</th>
-                                <th class="text-center">Giờ ra</th>
-                                <th>Đi Trễ</th>
-                                <th>Về Sớm</th>
-                                <th>Công</th>
-                                <th>Tổng giờ</th>
-                                <th>Tăng ca</th>
+                                <th>Tên nhân viên</th>
+                                <th>Phòng ban</th>
+                                <th>Chức vụ</th>
+                                <th>Ngày </th>
+                                <th>Thứ </th>
+                                <th>Loại </th>
+                                <th>Ngày công</th>
+                                <th>Ngày công được tính</th>
+                                <th>Ghi chú</th>
+                                <th>Phê duyệt</th>
                             </tr>
                         </thead>
                         <tbody id="detail">
@@ -150,7 +146,7 @@
                 var year = <?php echo $year ?>;
 
                 $.ajax({
-                    url: '{{ action('TimeleaveController@getDetailStaffTime') }}',
+                    url: '{{ action('TimeleaveController@getDetailTimeLeave') }}',
                     Type: 'POST',
                     datatype: 'text',
                     data:

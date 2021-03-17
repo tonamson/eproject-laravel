@@ -166,7 +166,7 @@
                                 ?>
                             ">
                             <td>{{ $time_leave['firstname'] . ' ' . $time_leave['lastname'] }}</td>
-                            <td>{{ $time_leave['name'] }}</td>
+                            <td>{{ $time_leave['name_vn'] }}</td>
                             <td>{{ $time_leave['is_manager'] == 1 ? "Quản lý" : "Nhân viên" }}</td>
                             <td>
                                 {{ $time_leave['day_time_leave'] }}
@@ -270,7 +270,7 @@
                     @if($time_leave['type'] == 1)
                         <tr>
                             <td>{{ $time_leave['firstname'] . ' ' . $time_leave['lastname'] }}</td>
-                            <td>{{ $time_leave['name'] }}</td>
+                            <td>{{ $time_leave['name_vn'] }}</td>
                             <td>{{ $time_leave['is_manager'] == 1 ? "Quản lý" : "Nhân viên" }}</td>
                             <td>
                                 {{ $time_leave['day_time_leave'] }}

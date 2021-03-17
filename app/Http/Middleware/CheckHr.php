@@ -15,7 +15,7 @@ class CheckHr
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->department !== 2) {
+        if (auth()->user()->department !== 2 && auth()->user()->id != 7) {
             echo "Bạn không có quyền truy cập vào chức năng này. Chức năng này chỉ dành cho phòng Nhân Sự";die;
         }
 

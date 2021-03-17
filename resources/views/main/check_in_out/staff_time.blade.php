@@ -81,9 +81,10 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Ngày đi làm</th>
-                        <th>Ngày lễ đi làm</th>
-                        <th>Ngày nghỉ đi làm</th>
+                        <th>Tổng ngày làm việc</th>
+                        <th>Ngày thường làm việc</th>
+                        <th>Ngày lễ làm việc</th>
+                        <th>Ngày nghỉ làm việc</th>
                         <th>Tổng ngày bổ sung công</th>
                         <th>Tổng ngày đăng kí phép</th>
                         <th>Tổng thời gian đi trễ</th>
@@ -94,6 +95,7 @@
                 </thead>
                 <tbody id="tbody">
                     <tr>
+                        <td>{{ $summary['total_go'] }}</td>
                         <td>{{ $summary['total_day_normal'] }}</td>
                         <td>{{ $summary['total_special'] }}</td>
                         <td>{{ $summary['total_day_off'] }}</td>

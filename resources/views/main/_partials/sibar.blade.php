@@ -52,7 +52,7 @@
                     </a>
                 </li>
 
-                @if(auth()->user()->department == 2)
+                @if(auth()->user()->department == 2 or auth()->user()->department == 5)
                     <li class="nav-item">
                         <a href="{{ action('DashboardController@index') }}" class="nav-link">
                             <i class="icon-stats-growth"></i>
@@ -168,7 +168,7 @@
                     <a href="#" class="nav-link"><i class="icon-stack"></i> <span>Công Phép</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $display ?>">
-                        @if(auth()->user()->department == 2 or auth()->user()->id == 7)
+                        @if(auth()->user()->department == 2 or auth()->user()->id == 7 or auth()->user()->department == 5)
                             <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
                                 <i class="icon-calendar2"></i>
                                 <span>Quản Lý Ngày Lễ</span>
@@ -177,7 +177,7 @@
                         @if(auth()->user()->is_manager == 1)
                             <a href="{{ action('SpecialDateController@requestOverTime') }}" class="nav-link">
                                 <i class="icon-calendar2"></i>
-                                @if(auth()->user()->id == 7)
+                                @if(auth()->user()->id == 7 or auth()->user()->department == 5)
                                     <span>Danh Sách Đề Xuất Tăng Ca</span>
                                 @else
                                     <span>Đề Xuất Tăng Ca</span>
@@ -204,7 +204,7 @@
                                 </a>
                             </li>
                         @endif
-                        @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
+                        @if(auth()->user()->is_manager == 1)
                             <li class="nav-item">
                                 <a href="{{ action('TimeleaveController@approveTimeLeave') }}" class="nav-link">
                                     <i class="icon-checkbox-checked"></i>
@@ -217,11 +217,19 @@
                                 </a>
                             </li>
                         @endif
-                        @if(auth()->user()->department == 2)
+                        @if(auth()->user()->department == 2 or auth()->user()->id == 7)
                             <li class="nav-item">
                                 <a href="{{ action('TimeleaveController@getAllStaffTime') }}" class="nav-link">
                                     <i class="icon-paragraph-left2"></i>
-                                    <span>Lưới Công</span>
+                                    <span>Tổng Hợp Chấm Công</span>
+                                </a>
+                            </li>
+                        @endif
+                        @if(auth()->user()->department == 2 or auth()->user()->id == 7)
+                            <li class="nav-item">
+                                <a href="{{ action('TimeleaveController@getAllTimeLeave') }}" class="nav-link">
+                                    <i class="icon-paragraph-left2"></i>
+                                    <span>Tổng Hợp Công Phép</span>
                                 </a>
                             </li>
                         @endif
