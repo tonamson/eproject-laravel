@@ -737,7 +737,7 @@ class TimeleaveController extends Controller
         $date = $year . '-' . $month . '-' . '01';
         $data_request = ['y_m' => $date];
 
-        $data_request = ['department' => 2, 'day_time_leave' => $date, 'is_manager' => 1, 'staff_id' => 5];
+        $data_request = ['department' => 5, 'day_time_leave' => $date, 'is_manager' => 1, 'staff_id' => 5];
 
         $response = Http::post('http://localhost:8888/time-leave/get-staff-approve', $data_request);
         $body = json_decode($response->body(), true);

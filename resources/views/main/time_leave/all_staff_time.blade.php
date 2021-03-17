@@ -71,9 +71,9 @@
                 <th>Thời gian đi trễ</th>
                 <th>Thời gian về sớm</th>
                 <th>Thời gian tăng ca</th>
-                <th>Ngày đi làm</th>
-                <th>Ngày nghỉ đi làm</th>
-                <th>Ngày lễ đi làm</th>
+                <th>Ngày thường làm việc</th>
+                <th>Ngày nghỉ làm việc</th>
+                <th>Ngày lễ làm việc</th>
                 <th>Tổng công</th>
                 <th>Tổng công được tính</th>
                 <th>Chi tiết</th>

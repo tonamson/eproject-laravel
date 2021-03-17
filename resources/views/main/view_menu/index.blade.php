@@ -288,7 +288,7 @@
 
 <div class="container-fluid fluid-view-menu">
     <div class="row text-center">
-        @if(auth()->user()->department == 2)
+        @if(auth()->user()->department == 2 || auth()->user()->department == 5)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('DashboardController@index') }}">
@@ -298,7 +298,7 @@
                 </div>
             </div>
         @endif
-        @if(auth()->user()->department == 2)
+        @if(auth()->user()->department == 2 || auth()->user()->department == 5)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('ViewmenuController@department') }}">
@@ -325,7 +325,7 @@
             </div>
         @endif
 
-        @if(auth()->user()->department == 2 or auth()->user()->is_manager == 1)
+        @if(auth()->user()->department == 2 or auth()->user()->is_manager == 1 || auth()->user()->department == 5)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('TransferController@list') }}">
@@ -336,7 +336,7 @@
             </div>
         @endif
 
-        @if(auth()->user()->department == 2)
+        @if(auth()->user()->department == 2 || auth()->user()->department == 5)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('ViewmenuController@contract') }}">

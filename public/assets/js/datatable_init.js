@@ -20,7 +20,7 @@ var DatatableBasic = function () {
             dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
             language: {
                 search: '<span>Tìm kiếm:</span> _INPUT_',
-                searchPlaceholder: 'Gõ từ khóa cần tìm...',
+                searchPlaceholder: 'Nhập từ khóa cần tìm...',
                 lengthMenu: '<span>Hiển thị:</span> _MENU_',
                 infoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
                 info: "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",

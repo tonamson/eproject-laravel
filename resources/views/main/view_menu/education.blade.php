@@ -288,7 +288,7 @@
 
 <div class="container-fluid fluid-view-menu">
     <div class="row text-center">
-        @if(auth()->user()->department == 2)
+        @if(auth()->user()->department == 2 || auth()->user()->department == 5)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('EducationController@index') }}">

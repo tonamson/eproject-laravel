@@ -131,7 +131,7 @@
                     </li>
                 @endif
 
-                @if(auth()->user()->department == 2)
+                @if(auth()->user()->department == 2 or auth()->user()->department == 5)
                     <li class="nav-item nav-item-submenu <?php echo $url[0] == "contract" || $url[1] == "contract" ? "nav-item-open" : "" ?>">
                         <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span>Hợp đồng</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "contract" || $url[1] == "contract" ? "block" : "none" ?>">
@@ -178,7 +178,7 @@
                             <a href="{{ action('SpecialDateController@requestOverTime') }}" class="nav-link">
                                 <i class="icon-calendar2"></i>
                                 @if(auth()->user()->id == 7 or auth()->user()->department == 5)
-                                    <span>Danh Sách Đề Xuất Tăng Ca</span>
+                                    <span>Quản lý Tăng Ca</span>
                                 @else
                                     <span>Đề Xuất Tăng Ca</span>
                                 @endif
@@ -236,7 +236,7 @@
                     </ul>
                 </li>
 
-                @if(auth()->user()->department == 2)
+                @if(auth()->user()->department == 2 or auth()->user()->department == 5)
                 <li class="nav-item nav-item-submenu <?php echo $url[0] == "salary" || $url[1] == "salary" ? "nav-item-open" : "" ?>">
                     <a href="#" class="nav-link"><i class="icon-cash3"></i> <span>Lương</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "salary" || $url[1] == "salary" ? "block" : "none" ?>">

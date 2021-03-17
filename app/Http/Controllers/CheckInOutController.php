@@ -41,10 +41,10 @@ class CheckInOutController extends Controller
 
         //Converting to radians
         // 590 cmt8
-        // $lati1 = deg2rad('10.7863823');
-        // $longi1 = deg2rad('106.6641083');
-        $lati1 = deg2rad('10.778933');
-        $longi1 = deg2rad('106.6880956');
+        $lati1 = deg2rad('10.7863823');
+        $longi1 = deg2rad('106.6641083');
+        // $lati1 = deg2rad('10.778933');
+        // $longi1 = deg2rad('106.6880956');
         $lati2 = deg2rad($latitude);
         $longi2 = deg2rad($longitude);
 
