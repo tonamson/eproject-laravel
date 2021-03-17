@@ -137,7 +137,7 @@ class CheckInOutController extends Controller
 
         $calendar = array();
         foreach ($body_special['data'] as $value) {
-            if($value['is_approved'] == 1) {
+            if($value['is_approved'] == 1 or $value['type_day'] == 1) {
                 $arr = array();
                 $arr['title'] = $value['note'];
                 $arr['start'] = $value['day_special_from'];

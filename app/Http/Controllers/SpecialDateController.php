@@ -58,6 +58,18 @@ class SpecialDateController extends Controller
             return redirect()->back()->with('error', 'Ngày bắt đầu không được nhỏ hơn ngày hiện tại! Vui lòng thử lại');
         }
 
+        if($type_day == 1) {
+            if(date('w', strtotime($day_special_from)) == 6 or date('w', strtotime($day_special_from)) == 0) {
+                return redirect()->back()->with('error', 'Không được đặt ngày lễ có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
+            }
+            while($day_special_from < $day_special_to) {
+                if(date('w', strtotime($day_special_from)) == 6 or date('w', strtotime($day_special_from)) == 0) {
+                    return redirect()->back()->with('error', 'Không được đặt ngày lễ có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
+                }
+                $day_special_from = date('Y-m-d', strtotime($day_special_from. ' + 1 days'));
+            }            
+        }
+
         foreach ($body_check['data'] as $value) {
             if($value['type_day'] == 2 && $value['department_request'] == auth()->user()->department) {
                 if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
