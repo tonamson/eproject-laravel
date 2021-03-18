@@ -802,4 +802,32 @@ class TimeleaveController extends Controller
         
         return redirect()->back()->with('success', 'Chốt phép thành công');
     }
+
+    public function getAllTimeInMonth(Request $request) {
+        $month = $request->input('month');
+        $year = $request->input('year');
+        if(!$month) {
+            $month = date("m");
+        }
+        if(!$year) {
+            $year = date("Y");
+        }
+        $date = $year . '-' . $month . '-' . '01';
+
+        $data_request = ['y_m' => $date];
+
+        $response = Http::get('http://localhost:8888/time-leave/summary-time-leave', $data_request);
+        $summary_time_leave = json_decode($response->body(), true);
+
+        $response = Http::get('http://localhost:8888/time-leave/summary-staff-time', $data_request);
+        $summary_staff_time = json_decode($response->body(), true);
+
+        // return view('main.time_leave.all_staff_time')
+        //     ->with('data', $body['data'])
+        //     ->with('summary', $summary['data'])
+        //     ->with('year', $year)
+        //     ->with('month', $month)
+        //     ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tổng hợp chấm công', 'url' => '#']]);
+
+    }
 }
