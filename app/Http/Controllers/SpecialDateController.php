@@ -47,6 +47,13 @@ class SpecialDateController extends Controller
         $day_special_to = $request->input('day_special_to');
         $note = $request->input('note');
         $type_day = $request->input('type_day');
+        $staff_ot = $request->input('staff_ot');
+
+        if($type_day == 2) {
+            if(!$staff_ot) {
+                return redirect()->back()->with('error', 'Vui lòng chọn Nhân viên tăng ca');
+            }
+        }
         
         $date = date("Y-m-d");
         $data_request = ['special_date_from' => $date, 'staff_request' => auth()->user()->id, 'department_request' => auth()->user()->department];
@@ -54,8 +61,8 @@ class SpecialDateController extends Controller
         $response_check = Http::get('http://localhost:8888/special-date/get-request-ot?', $data_request);
         $body_check = json_decode($response_check->body(), true);
         
-        if($day_special_from < date('Y-m-d')) {
-            return redirect()->back()->with('error', 'Ngày bắt đầu không được nhỏ hơn ngày hiện tại! Vui lòng thử lại');
+        if($day_special_from < date('Y-m-d', strtotime(date("Y-m-d"). ' + 3 days'))) {
+            return redirect()->back()->with('error', 'Ngày bắt đầu phải lớn hơn ngày hiện tại ít nhất 3 ngày! Vui lòng thử lại');
         }
 
         if($type_day == 1) {
@@ -106,6 +113,15 @@ class SpecialDateController extends Controller
             $data_request['staff_request'] = auth()->user()->id;
             $data_request['department_request'] = auth()->user()->department;
             $data_request['is_approved'] = 0;
+
+            if($staff_ot) {
+                $string_staff_ot = implode(',', $staff_ot);
+
+                if(strpos(implode(',', $staff_ot),"all")) {
+                    $string_staff_ot = "all";
+                }
+            }
+            $data_request['string_staff_ot'] = $string_staff_ot;
         }
 
         $response = Http::post('http://localhost:8888/special-date/add', $data_request);
@@ -153,13 +169,46 @@ class SpecialDateController extends Controller
 
         if($body['data']['typeDay'] == 2) {
             $title = "Tăng Ca";
-        }        
+        }
+
+        $param_request = ['department' => auth()->user()->department];
+        $response = Http::get('http://localhost:8888/staff/find-staff-department', $param_request);
+        $data_staff = json_decode($response->body(), true);
+        $check_staff = explode(',', $body['data']['staffOt']);
+        
+
+        if($body['data']['staffOt'] == 'all') 
+            $options = "<option value='all' selected>Tất cả nhân viên trong phòng ban</option>";
+        else
+            $options = "<option value='all' >Tất cả nhân viên trong phòng ban</option>";
+
+        foreach ($data_staff['data'] as $item) {
+            $selected = "";
+            if(in_array($item['id'] . '', $check_staff)) {
+                $selected = "selected";
+            }
+            
+            $options .= "<option ".$selected." value='" . $item['id'] . "'>" . $item['firstname'] . " " . $item['lastname'] . " || " . $item['code']."</option>";
+        }
+
+        $change_staff = '';
+        if($body['data']['typeDay'] == 2) {
+            $change_staff = '<div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Nhân viên tăng ca: </label>
+                                <div class="col-lg-9">
+                                    <select name="staff_ot[]" multiple="multiple" class="form-control select" data-fouc>
+                                        '.$options.'
+                                    </select>
+                                </div>
+                            </div>';
+        }
 
         $html = "<input type='hidden' name='id_update' value='". $id ."'>";
         $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Chỉnh Sửa Ngày '.$title.'</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
         $html.= '<span aria-hidden="true">&times;</span></button></div>';
         $html.= '
             <div class="modal-body">
+                '.$change_staff.'
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Từ ngày:</label>
                     <div class="col-lg-9">
@@ -187,6 +236,9 @@ class SpecialDateController extends Controller
             </div>
 
             <script>
+                $(".select").select2({
+                    minimumResultsForSearch: Infinity
+                });
                 $(".day_leave").daterangepicker({
                     singleDatePicker: true,
                     locale: {
@@ -241,7 +293,7 @@ class SpecialDateController extends Controller
         }
 
         if(strlen($note) > 300) {
-            return redirect()->back()->with('error', 'Mô tả ngày lễ không được vượt quá 300 kí tự');
+            return redirect()->back()->with('error', 'Mô tả không được vượt quá 300 kí tự');
         }
         
         $data_request = [
@@ -250,6 +302,17 @@ class SpecialDateController extends Controller
             'day_special_to' => $day_special_to,
             'note' => $note,
         ];
+
+        $staff_ot = $request->input('staff_ot');
+        if($staff_ot) {
+            $string_staff_ot = implode(',', $staff_ot);
+
+            if(in_array("all", $staff_ot)) {
+                $string_staff_ot = "all";
+            }
+
+            $data_request['string_staff_ot'] = $string_staff_ot;
+        }
 
         $response = Http::post('http://localhost:8888/special-date/update', $data_request);
         $body = json_decode($response->body(), true);
@@ -281,6 +344,10 @@ class SpecialDateController extends Controller
         $response = Http::get('http://localhost:8888/special-date/get-request-ot?', $data_request);
         $body = json_decode($response->body(), true);
 
+        $param_request = ['department' => auth()->user()->department];
+        $response = Http::get('http://localhost:8888/staff/find-staff-department', $param_request);
+        $data_staff = json_decode($response->body(), true);
+
         $calendar = array();
         foreach ($body['data'] as $value) {
             if($value['is_approved'] == 1 or $value['type_day'] == 1) {
@@ -307,6 +374,7 @@ class SpecialDateController extends Controller
             ->with('year', $year)
             ->with('calendar', json_encode($calendar))
             ->with('staff', $body_get_department['data'])
+            ->with('data_staff', $data_staff['data'])
             ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tăng ca', 'url' => '#']]);
     }
 
@@ -323,9 +391,36 @@ class SpecialDateController extends Controller
 
         $title = "Lễ";
 
+        $staff_will_ot = '';
         if($body['data']['type_day'] == 2) {
             $title = "Tăng Ca";
+            if($body['data']['staff_ot'] == 'all') {
+                $staff_will_ot = '<label class="col-form-label" style="color: #046A38">Tất cả nhân viên trong phòng ban '.$body['data']['name_department_request'].'</label>';
+            } else {
+                $param_request = ['department' => $body['data']['department_request']];
+                $response = Http::get('http://localhost:8888/staff/find-staff-department', $param_request);
+                $data_staff = json_decode($response->body(), true);
+                $check_staff = explode(',', $body['data']['staff_ot']);
+    
+                foreach ($data_staff['data'] as $item) {
+                    if(in_array($item['id'] . '', $check_staff)) {
+                        $staff_will_ot .= '<label class="col-form-label" style="color: #046A38">'. $item['firstname'] . " " . $item['lastname'] . " || " . $item['code'].'</label><br>';
+                    }
+                }
+            }
         }     
+
+        $footer = '';
+        if(auth()->user()->id == 7) {
+            $footer = '<div class="modal-footer">
+                            <button type="submit" name="btn_approve" value="1" class="btn btn-success">Duyệt</button>
+                            <button type="submit" name="btn_reject" value="-1" class="btn btn-danger">Từ chối</button>
+                        </div>';
+        } else {
+            $footer = '<div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        </div>';
+        }
         
         $html = "<input type='hidden' name='id_update' value='". $id ."'>";
         $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Chi Tiết Đề Xuất '.$title.'</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
@@ -333,21 +428,21 @@ class SpecialDateController extends Controller
         $html.= '
             <div class="modal-body">
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Nhân viên đề xuất:</label>
+                    <label class="col-lg-3 col-form-label">Tên quản lý phòng ban:</label>
                     <div class="col-lg-9">
                         <label class="col-form-label">'.$body['data']['full_name_staff_request'].'</label>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label">Mã nhân viên:</label>
-                    <div class="col-lg-9">
-                        <label class="col-form-label">'.$body['data']['code'].'</label>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Phòng ban đề xuất:</label>
                     <div class="col-lg-9">
                         <label class="col-form-label">'.$body['data']['name_department_request'].'</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Nhân viên tăng ca: </label>
+                    <div class="col-lg-9">
+                        '.$staff_will_ot.'
                     </div>
                 </div>
                 <div class="form-group row">
@@ -370,10 +465,7 @@ class SpecialDateController extends Controller
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="submit" name="btn_approve" value="1" class="btn btn-success">Duyệt</button>
-                <button type="submit" name="btn_reject" value="-1" class="btn btn-danger">Từ chối</button>
-            </div>
+            '.$footer.'
 
             <script>
                 $(".day_leave").daterangepicker({

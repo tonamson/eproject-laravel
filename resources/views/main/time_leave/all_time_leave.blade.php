@@ -70,11 +70,11 @@
                 <th>Bổ sung công / Đăng kí phép</th>
                 <th>Bổ sung công</th>
                 <th>Bổ sung công đã duyệt</th>
-                <th>Số công bổ sung đã duyệt</th>
+                <th style="background-color: #ffffe7">Số công bổ sung đã duyệt</th>
 
                 <th>Đăng kí phép</th>
                 <th>Đăng kí phép đã duyệt</th>
-                <th>Số công đăng kí phép đã duyệt</th>
+                <th style="background-color: #ffffe7">Số công đăng kí phép đã duyệt</th>
              
                 <th>Chi tiết</th>
             </tr>
@@ -88,10 +88,10 @@
                     <td>{{ $item['number_time_leave'] }}</td>
                     <td>{{ $item['total_number_time'] }}</td>
                     <td>{{ $item['number_time_approved'] }}</td>
-                    <td>{{ $item['number_time_time_approved'] }}</td>
+                    <td style="background-color: #ffffe7">{{ $item['number_time_time_approved'] }}</td>
                     <td>{{ $item['total_number_leave'] }}</td>
                     <td>{{ $item['number_leave_approved'] }}</td>
-                    <td>{{ $item['number_time_leave_approved'] }}</td>
+                    <td style="background-color: #ffffe7">{{ $item['number_time_leave_approved'] }}</td>
  
                     <td><button id="{{ $item['staff_id'] }}" class="btn btn-primary open-detail">Chi tiết</button></td>
                 </tr>
