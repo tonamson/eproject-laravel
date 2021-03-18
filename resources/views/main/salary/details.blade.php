@@ -43,7 +43,22 @@
                             <th>Mã nhân viên</th>
                             <th>Tên nhân viên</th>
                             <th>Tổng công</th>
-                            <th>Lương</th>
+                            <th>Lương cơ bản</th>
+                            <th>Lương tăng ca</th>
+                            <th>Các khoản phụ cấp</th>
+                            <th>Các khoản khấu trừ</th>
+                            <th>
+                                <p>Thu nhập chịu thuế</p>
+                                <p>= Tổng lương - Các khoản được miễn</p>
+                            </th>
+                            <th>
+                                <p>Thu nhập tính thuế</p>
+                                <p>= Thu nhập chịu thuế - Các khoản được trừ (BHXH và các khoản giảm trừ gia cảnh)</p>
+                            </th>
+                            <th>
+                                <p>Lương thực nhận</p>
+                                <p>= Tổng lương + phụ cấp - Các khoản khấu trừ - Thuế TNCN</p>
+                            </th>
                             <th>Thao tác</th>
                         </tr>
                         </thead>
@@ -63,6 +78,12 @@
                                     @endphp
                                     {{ number_format($total_working_of_day) }}
                                 </td>
+                                <td>{{ number_format($item->salary) }}</td> <!-- lương cơ bản -->
+                                <td>{{ number_format($item->salaryOt) }}</td> <!-- lương tăng ca -->
+                                <td>{{ number_format($item->salary) }}</td>
+                                <td>{{ number_format($item->salary) }}</td>
+                                <td>{{ number_format($item->salary) }}</td>
+                                <td>{{ number_format($item->salary) }}</td>
                                 <td>{{ number_format($item->salary) }}</td>
                                 <td>
                                     <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">Chi tiết</button>
@@ -89,11 +110,16 @@
                                             <th>Tên nhân viên</th>
                                             <th>Ngày chấm công</th>
                                             <th>Công chuẩn của tháng</th>
-                                            <th>Lương</th>
+                                            <th>Lương hợp đồng</th>
+                                            <th>Hệ số</th>
                                             <th>Lương 1 ngày</th>
                                             <th>Công đã làm</th>
-                                            <th>Hệ số</th>
-                                            <th>Tổng tiền</th>
+                                            <th>Thành tiền lương ngày công</th>
+                                            <th>Lương 1 giờ</th>
+                                            <th>Tổng giờ tăng ca</th>
+                                            <th>Thành tiền lương tăng ca</th>
+                                            <th>Lương tăng ca chịu thuế</th>
+                                            <th>Tổng lương</th>
                                         </tr>
                                         </thead>
                                         <tbody id="dataDetail"></tbody>
@@ -123,6 +149,7 @@
         function loadDetailStaff(id) {
             let dataTable = $('.datatable-detail').DataTable();
             $('#dataDetail').html('');
+            dataTable.clear().draw();
             json_data.forEach(item => {
                 if (item.staffId === id && item.details != null && item.details.length > 0) {
                     item.details.forEach(detail => {
@@ -132,10 +159,15 @@
                             `${detail.day_detail}`,
                             `${detail.standard_days}`,
                             `${detail.contract.salary.format()}`,
+                            `${detail.multiply_day.format()}`,
                             `${detail.salary_per_day.format()}`,
                             `${detail.total_working_of_day}`,
-                            `${detail.multiply_day.format()}`,
-                            `${detail.salary_of_day.format()}`
+                            `${detail.salary_of_day.format()}`,
+                            `${detail.salary_by_one_hour.format()}`,
+                            `${detail.ot_hours}`,
+                            `${detail.salary_of_ot.format()}`,
+                            `${detail.salary_of_ot_tax.format()}`,
+                            `${detail.total_salary.format()}`,
                         ]).draw(false);
                     });
                     return;

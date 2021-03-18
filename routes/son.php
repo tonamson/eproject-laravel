@@ -6,8 +6,6 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('login', 'AuthenticateController@getLogin');
     Route::post('login', 'AuthenticateController@postDoLogin')->name('postLogin');
     Route::get('logout', 'AuthenticateController@getLogout');
-
-
 });
 
 Route::group(['prefix' => 'contract'], function () {

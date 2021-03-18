@@ -17,7 +17,7 @@ class ContractController extends Controller
         $body = json_decode($response->body(), false);
         $data = [];
         if ($body->isSuccess) {
-            $data = $body->data;
+            $data = $body->data ?? [];
         }
         return view('main.contract.index', [
             'data' => $data,

@@ -73,51 +73,99 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header header-elements-inline">
-                        <h5 class="card-title">Chi tiết hợp đồng</h5>
+                        <h5 class="card-title">Các khoản phụ cấp</h5>
                         <div class="header-elements">
                             <a href="javascript:void(0)" onclick="addOption()" class="text-default"><i title="Thêm chi tiết" class="icon-stack-plus "></i></a>
                         </div>
                     </div>
                     <div class="card-body" id="options">
+                        <div class="row mb-1">
+                            <div class="col-md-4">Tên</div>
+                            <div class="col-md-4">Tính thuế</div>
+                            <div class="col-md-4">Giá trị</div>
+                        </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Tên</label>
                                     <input type="text" name="details[0][name]" class="form-control" value="Lương cơ bản">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Giá</label>
+                                    <input type="checkbox" name="details[0][is_tax]" class="form-control" checked>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
                                     <input type="number" onkeyup="changeDetailContract()" name="details[0][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="0">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Tên</label>
                                     <input type="text" name="details[1][name]" class="form-control" value="Tiền đi lại">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Giá</label>
+                                    <input type="checkbox" name="details[1][is_tax]" class="form-control" checked>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
                                     <input type="number" onkeyup="changeDetailContract()" name="details[1][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="0">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Tên</label>
-                                    <input type="text" name="details[2][name]" class="form-control" value="Phí gửi xe">
+                                    <input type="text" name="details[2][name]" class="form-control" value="Tiền đồng phục">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Giá</label>
+                                    <input type="checkbox" name="details[2][is_tax]" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
                                     <input type="number" onkeyup="changeDetailContract()" name="details[2][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="text" name="details[3][name]" class="form-control" value="Tiền ăn">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="checkbox" name="details[3][is_tax]" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="number" onkeyup="changeDetailContract()" name="details[3][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="text" name="details[4][name]" class="form-control" value="Phụ cấp điện thoại">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="checkbox" name="details[4][is_tax]" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="number" onkeyup="changeDetailContract()" name="details[4][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="0">
                                 </div>
                             </div>
                         </div>
@@ -137,15 +185,18 @@
             optionIndex++;
             $('#options').append(`
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label>Tên</label>
                                 <input type="text" name="details[${optionIndex}][name]" class="form-control" value="">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label>Giá</label>
+                                <input type="checkbox" name="details[${optionIndex}][is_tax]" class="form-control" checked>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <input type="number" onkeypress="changeDetailContract()" name="details[${optionIndex}][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="0">
                             </div>
                         </div>

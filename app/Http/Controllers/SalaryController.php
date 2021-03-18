@@ -34,6 +34,7 @@ class SalaryController extends Controller
         if ($body->isSuccess) {
             $data = $body->data;
         }
+
         return view('main.salary.details', [
             'data' => $data,
         ]);
@@ -41,7 +42,23 @@ class SalaryController extends Controller
 
     public function getCreate()
     {
-        return view('main.salary.create');
+        $response = Http::get(config('app.api_url') . '/staff/list', []);
+        $listStaffResponse = json_decode($response->body(), false);
+        $responseSalaryOption = Http::get(config('app.api_url') . '/salary-option/list', []);
+        $listSalaryOptionResponse = json_decode($responseSalaryOption->body(), false);
+        $listStaff = [];
+        $listSalaryOption = [];
+        if ($listStaffResponse->isSuccess) {
+            $listStaff = $listStaffResponse->data;
+        }
+        if ($listSalaryOptionResponse->isSuccess) {
+            $listSalaryOption = $listSalaryOptionResponse->data;
+        }
+
+        return view('main.salary.create', [
+            'listStaff' => $listStaff,
+            'listSalaryOption' => $listSalaryOption,
+        ]);
     }
 
     public function postCalculatedSalary(Request $request)
@@ -58,6 +75,7 @@ class SalaryController extends Controller
             'to_date.date_format' => 'Ngày kết thúc sai định dạng: YYYY-MM-DD',
         ];
         $data = $request->all();
+        dd($data);
         $validate = Validator::make($data, $rule, $message);
 
         if ($validate->fails()) {

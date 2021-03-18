@@ -64,7 +64,7 @@ class CheckInOutController extends Controller
 
         if (preg_match('/^data:image\/(\w+);base64,/', $image)) {
             $data = substr($image, strpos($image, ',') + 1);
-        
+
             $data = base64_decode($data);
 
             $image_name = date("YmdHis");
@@ -115,7 +115,7 @@ class CheckInOutController extends Controller
 
         $response_special = Http::get('http://localhost:8888/special-date/get-request-ot?', $data_request_special);
         $body_special = json_decode($response_special->body(), true);
-        
+
         $date = $year . '-' . $month . '-' . '01';
         $data_request = ['staff_id' => $user->id, 'y_m' => $date];
 
@@ -188,21 +188,21 @@ class CheckInOutController extends Controller
             if($value['check_out']) {
                 $arr = array();
                 $title = 'Check out: ' . $value['check_out'];
-    
+
                 $arr['title'] = $title;
                 $arr['start'] = $value['check_in_day_no_format'];
                 $arr['color'] = '#4caf50';
-    
+
                 array_push($calendar, $arr);
             }
 
             if($value['check_in']) {
                 $arr = array();
                 $title = 'Check in: ' . $value['check_in'];
-    
+
                 $arr['title'] = $title;
                 $arr['start'] = $value['check_in_day_no_format'];
-    
+
                 array_push($calendar, $arr);
             }
 
