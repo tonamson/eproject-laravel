@@ -41,10 +41,10 @@ class CheckInOutController extends Controller
 
         //Converting to radians
         // 590 cmt8
-        // $lati1 = deg2rad('10.7863823');
-        // $longi1 = deg2rad('106.6641083');
-        $lati1 = deg2rad('10.778933');
-        $longi1 = deg2rad('106.6880956');
+        $lati1 = deg2rad('10.7863823');
+        $longi1 = deg2rad('106.6641083');
+        // $lati1 = deg2rad('10.778933');
+        // $longi1 = deg2rad('106.6880956');
         $lati2 = deg2rad($latitude);
         $longi2 = deg2rad($longitude);
 
@@ -56,9 +56,9 @@ class CheckInOutController extends Controller
 
         $res2 = 6378.8 * (2 * asin(sqrt($val))); //for kilomet
 
-        // if($res2 > 0.5) {
-        //     return redirect()->back()->with('error', 'Bạn cách xa văn phòng quá 500m!');
-        // }
+        if($res2 > 0.5) {
+            return redirect()->back()->with('error', 'Bạn cách xa văn phòng quá 500m!');
+        }
 
         $image_name = "";
 
@@ -67,7 +67,7 @@ class CheckInOutController extends Controller
 
             $data = base64_decode($data);
 
-            $image_name = date("YmdHis");
+            $image_name = date("YmdHis") . substr(microtime(), 2, 4);
 
             Storage::disk('custom')->put($image_name.".png", $data);
         }
@@ -137,20 +137,33 @@ class CheckInOutController extends Controller
 
         $calendar = array();
         foreach ($body_special['data'] as $value) {
-            $arr = array();
-            $arr['title'] = $value['note'];
-            $arr['start'] = $value['day_special_from'];
-            $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['day_special_to'])));
-            if($value['type_day'] == 1) {
-                $arr['color'] = '#EF5350';
-            } else {
-                $arr['color'] = '#046A38';
-            }
+            $check = false;
+            if($value['staff_ot']) {
+                $arr_id_ot = explode(',', $value['staff_ot']);
 
-            array_push($calendar, $arr);
+                if(in_array(auth()->user()->id . '', $arr_id_ot) or $value['staff_ot'] == 'all') {
+                    $check = true;
+                }
+            }
+            
+            if(($value['is_approved'] == 1 && $check == true ) or $value['type_day'] == 1) {
+                
+                $arr = array();
+                $arr['title'] = $value['note'];
+                $arr['start'] = $value['day_special_from'];
+                $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['day_special_to'])));
+                if($value['type_day'] == 1) {
+                    $arr['color'] = '#EF5350';
+                } else {
+                    $arr['color'] = '#046A38';
+                }
+    
+                array_push($calendar, $arr);
+            }     
         }
 
         $summary = [];
+        $summary['total_go'] = 0;
         $summary['total_number_time'] = 0;
         $summary['total_number_time_all'] = 0;
         $summary['total_special'] = 0;
@@ -206,6 +219,7 @@ class CheckInOutController extends Controller
                 array_push($calendar, $arr);
             }
 
+            $summary['total_go'] += 1;
             $summary['total_number_time'] += $value['number_time'];
             $summary['total_number_time_all'] += ($value['number_time'] * $value['multiply']);
 

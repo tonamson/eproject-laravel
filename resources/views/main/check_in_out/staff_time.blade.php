@@ -37,9 +37,7 @@
             </h4>
             <div class="header-elements">
                 <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
+
                 </div>
             </div>
         </div>
@@ -83,9 +81,10 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Ngày đi làm</th>
-                        <th>Ngày lễ đi làm</th>
-                        <th>Ngày nghỉ đi làm</th>
+                        <th>Tổng ngày làm việc</th>
+                        <th>Ngày thường làm việc</th>
+                        <th>Ngày lễ làm việc</th>
+                        <th>Ngày nghỉ làm việc</th>
                         <th>Tổng ngày bổ sung công</th>
                         <th>Tổng ngày đăng kí phép</th>
                         <th>Tổng thời gian đi trễ</th>
@@ -96,6 +95,7 @@
                 </thead>
                 <tbody id="tbody">
                     <tr>
+                        <td>{{ $summary['total_go'] }}</td>
                         <td>{{ $summary['total_day_normal'] }}</td>
                         <td>{{ $summary['total_special'] }}</td>
                         <td>{{ $summary['total_day_off'] }}</td>
@@ -148,11 +148,11 @@
                         </td>
                         <td class="text-center" style="max-width: 100px;">
                             {{ $check_in_out['check_in'] }}
-                            <img src="{{ asset('images/check_in/20210315202246.png') }}" width="80px" alt="">
+                            <img src="../images/check_in/{{ $check_in_out['image_check_in'] }}" width="80px" alt="">
                         </td>
                         <td class="text-center" style="max-width: 100px;">
                             {{ $check_in_out['check_out'] }}
-                            <img src="{{ asset('images/check_in/20210315202246.png') }}" width="80px" alt="">
+                            <img src="../images/check_in/{{ $check_in_out['image_check_out'] }}" width="80px" alt="">
                         </td>
                         <td>{{ $check_in_out['time'] }}</td>
                         <td>{{ $check_in_out['number_time'] }}</td>

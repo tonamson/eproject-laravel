@@ -99,6 +99,8 @@ Route::middleware(['check_login'])->group(function () {
 
         Route::get('/detailLeave', 'TimeleaveController@detailLeave');
 
+        Route::post('/done-leave', 'TimeleaveController@doneLeave');
+
         // Approve time leave
         Route::middleware(['check_hr_or_manager'])->group(function () {
             Route::get('/approve-time-leave', 'TimeleaveController@approveTimeLeave');
@@ -113,6 +115,12 @@ Route::middleware(['check_login'])->group(function () {
         Route::middleware(['check_hr'])->group(function () {
             Route::get('/all-staff-time', 'TimeleaveController@getAllStaffTime');
 
+            Route::get('/detail-staff-time', 'TimeleaveController@getDetailStaffTime');
+
+            Route::get('/all-time-leave', 'TimeleaveController@getAllTimeLeave');
+
+            Route::get('/detail-time-leave', 'TimeleaveController@getDetailTimeLeave');
+            
         });
     });
 

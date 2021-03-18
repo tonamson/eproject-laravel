@@ -288,7 +288,7 @@
 
 <div class="container-fluid fluid-view-menu">
     <div class="row text-center">
-        @if(auth()->user()->department == 2)
+        @if(auth()->user()->department == 2 || auth()->user()->department == 5)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('SpecialDateController@index') }}">
@@ -298,13 +298,13 @@
                 </div>
             </div>
         @endif
-        @if(auth()->user()->is_manager == 1)
+        @if(auth()->user()->is_manager == 1 || auth()->user()->department == 5)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('SpecialDateController@requestOverTime') }}">
                         <i class="icon-8x icon-calendar2"></i>
                         @if(auth()->user()->id == 7)
-                            <p>Danh Sách Đề Xuất Tăng Ca</p>
+                            <p>Quản Lý Tăng Ca</p>
                         @else
                             <p>Đề Xuất Tăng Ca</p>
                         @endif
@@ -338,7 +338,7 @@
                 </div>
             </div>
         @endif
-        @if(auth()->user()->is_manager == 1 or auth()->user()->department == 2)
+        @if(auth()->user()->is_manager == 1)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('TimeleaveController@approveTimeLeave') }}">
@@ -354,12 +354,22 @@
                 </div>
             </div>
         @endif
-        @if(auth()->user()->department == 2)
+        @if(auth()->user()->department == 2 || auth()->user()->department == 5)
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('TimeleaveController@getAllStaffTime') }}">
                         <i class="icon-8x icon-paragraph-left2"></i>
-                        <p>Lưới Công</p> 
+                        <p>Tổng Hợp Chấm Công</p> 
+                    </a>
+                </div>
+            </div>
+        @endif
+        @if(auth()->user()->department == 2 || auth()->user()->department == 5)
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('TimeleaveController@getAllTimeLeave') }}">
+                        <i class="icon-8x icon-paragraph-left2"></i>
+                        <p>Tổng Hợp Công Phép</p> 
                     </a>
                 </div>
             </div>

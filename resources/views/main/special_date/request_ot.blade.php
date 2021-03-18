@@ -29,6 +29,10 @@
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
 
+    <script src="{{ asset('global_assets/js/plugins/extensions/jquery_ui/interactions.min.js') }}"></script>
+	<script src="{{ asset('global_assets/js/plugins/forms/selects/select2.min.js') }}"></script>
+	<script src="{{ asset('global_assets/js/demo_pages/form_select2.js') }}"></script>
+
 	<!-- /theme JS files -->
 @endsection
 
@@ -93,21 +97,28 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group row">
-                                <label class="col-lg-4 col-form-label">Tên nhân viên đề xuất:</label>
+                                <label class="col-lg-4 col-form-label">Tên quản lý phòng ban:</label>
                                 <div class="col-lg-8">
                                     <div class="col-form-label">{{ auth()->user()->firstname . ' ' . auth()->user()->lastname }}</div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-lg-4 col-form-label">Mã nhân viên:</label>
-                                <div class="col-lg-8">
-                                    <div class="col-form-label">{{ auth()->user()->code }}</div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-4 col-form-label">Phòng ban đề xuất:</label>
                                 <div class="col-lg-8">
                                     <div class="col-form-label">{{ $staff[0][2] }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Chọn nhân viên tăng ca: </label>
+                                <div class="col-lg-8">
+                                    <select name="staff_ot[]" multiple="multiple" class="form-control select" data-fouc>
+                                        <optgroup label="Phòng ban {{ $staff[0][2] }}">
+                                            <option value="all">Tất cả nhân viên trong phòng ban</option>
+                                            @foreach ($data_staff as $item)
+                                                <option value="{{ $item['id'] }}">{{ $item['firstname'] }} {{ $item['lastname'] }} || {{ $item['code'] }}</option>
+                                            @endforeach
+										</optgroup>					
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -142,13 +153,15 @@
             <thead>
                 <tr>
                     <th>STT</th>
-                    <th>Nhân viên đề xuất</th>
-                    <th>Mã nhân viên</th>
+                    <th>Họ tên quản lý phòng ban</th>
                     <th>Phòng ban đề xuất</th>
                     <th>Từ Ngày</th>
                     <th>Đến Ngày</th>
                     <th>Trạng thái</th>
-                    <th class="text-center">Sửa / Xóa</th>
+                    <th>Sửa / Xóa</th>
+                    @if(auth()->user()->id != 7)
+                        <th>Chi tiết</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -158,7 +171,6 @@
                         <tr>
                             <td><?php echo $count; $count++ ?></td>
                             <td><?php echo $special_date['full_name_staff_request'] ?></td>
-                            <td><?php echo $special_date['code'] ?></td>
                             <td><?php echo $special_date['name_department_request'] ?></td>
                             <td><?php echo $special_date['day_special_from'] ?></td>
                             <td><?php echo $special_date['day_special_to'] ?></td>
@@ -171,7 +183,7 @@
                                     <span class="badge badge-primary" style="background-color: #046A38">Đã duyệt</span>
                                 @endif
                             </td>
-                            <td class="text-center">
+                            <td>
                                 @if(auth()->user()->id != 7)
                                     @if($special_date['is_approved'] == 1)
                                         <span class="badge badge-primary">Đã duyệt. Không thể chỉnh sửa!</span>
@@ -195,6 +207,13 @@
                                     @endif
                                 @endif
                             </td>
+                            @if(auth()->user()->id != 7)
+                                <td>
+                                    <div class="from-group d-flex">
+                                        <a class="btn btn-info open-detail-approve-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @endif
                 @endforeach   

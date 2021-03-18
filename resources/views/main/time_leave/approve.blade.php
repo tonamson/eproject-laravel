@@ -11,6 +11,13 @@
         #tb_dkp_wrapper {
             display: none;
         }
+        .swal2-icon.swal2-warning:before {
+            display: none;
+        }
+
+        .swal2-icon.swal2-warning {
+            font-size: 2rem !important;
+        }
     </style>
 @endsection
 
@@ -24,6 +31,7 @@
     <script src="{{ asset('global_assets/js/demo_pages/picker_date.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatable_init.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @endsection
 
 @section('content')
@@ -62,20 +70,32 @@
             @endif
             <form action="{{ action('TimeleaveController@approveTimeLeave') }}" method="GET">
                 @csrf
-                <div class="form-group d-flex">
-                    <div class="">
-                        <select class="form-control" name="month" id="month">
-                            @for($i = 1; $i <= 12; $i++)
-                                <option value="{{ $i }}" <?php echo $month == $i ? 'selected' : ''?>>Tháng {{ $i }}</option>
-                            @endfor
-                        </select>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group d-flex">
+                            <div class="">
+                                <select class="form-control" name="month" id="month">
+                                    @for($i = 1; $i <= 12; $i++)
+                                        <option value="{{ $i }}" <?php echo $month == $i ? 'selected' : ''?>>Tháng {{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="ml-2">
+                                <input class="form-control" type="number" value="<?php echo $year ?>" name="year" id="year">
+                            </div>
+                            <div class="ml-3">
+                                <input class="form-control btn btn-primary" type="submit" value="Search">
+                            </div>
+                        </div>
                     </div>
-                    <div class="ml-2">
-                        <input class="form-control" type="number" value="<?php echo $year ?>" name="year" id="year">
-                    </div>
-                    <div class="ml-3">
-                        <input class="form-control btn btn-primary" type="submit" value="Search">
-                    </div>
+
+                    @if(auth()->user()->id == 7 or auth()->user()->department == 2)
+                        <div class="col-12 col-md-6">
+                            <div class="float-right">
+                                <input type="button" class="form-control btn btn-danger"  data-toggle="modal" data-target="#exampleModalCenter" value="Chốt công phép">
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </form>
 
@@ -88,11 +108,46 @@
             </ul>
         </div>
 
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form id="form-done-leave" action="{{ action('TimeleaveController@doneLeave') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Chốt Công Phép</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Từ ngày:</label>
+                                <div class="col-lg-9">
+                                    <input id="from_date" type="text" class="form-control day_leave" name="from_date" value="" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Đến ngày:</label>
+                                <div class="col-lg-9">
+                                    <input id="to_date" type="text" class="form-control day_leave" name="to_date" value="" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-danger" onclick="doneLeave()">Chốt công phép</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>
+        </div>
+
         <table class="table datatable-basic" id="tb_bsc">
             <thead>
                 <tr>
                     <th>Tên nhân viên</th>
                     <th>Phòng ban</th>
+                    <th>Chức vụ</th>
                     <th>Ngày </th>
                     <th>Ngày công</th>
                     <th>Ngày công được tính</th>
@@ -111,7 +166,8 @@
                                 ?>
                             ">
                             <td>{{ $time_leave['firstname'] . ' ' . $time_leave['lastname'] }}</td>
-                            <td>{{ $time_leave['name'] }}</td>
+                            <td>{{ $time_leave['name_vn'] }}</td>
+                            <td>{{ $time_leave['is_manager'] == 1 ? "Quản lý" : "Nhân viên" }}</td>
                             <td>
                                 {{ $time_leave['day_time_leave'] }}
                                 <?php 
@@ -145,16 +201,24 @@
                                 @endif
                             </td>
                             <td>
-                                @if($time_leave['is_approved'] == 1)
+                                <?php
+                                    $date1=date_create($time_leave['created_at']);
+                                    $date2=date_create(date('Y-m-d'));
+                                    $diff=date_diff($date1,$date2);
+                                ?>
+                                @if($time_leave['done'] == 1)
+                                    <span class="badge badge-danger">Đã chốt</span>
+                                @elseif($time_leave['is_approved'] == 1)
                                     Giám đốc đã phê duyệt
                                 @elseif($time_leave['is_approved'] == 2 && auth()->user()->id !== 7)
-                                    Chờ Giám đốc phê duyệt
+                                    @if($diff->format("%a") > 1)
+                                        <div class="from-group d-flex">
+                                            Đã quá 2 ngày kể từ khi bổ sung công
+                                        </div>
+                                    @else
+                                        Chờ Giám đốc phê duyệt
+                                    @endif
                                 @elseif( (auth()->user()->id == 7 || (auth()->user()->is_manager == 1 && auth()->user()->department != 2)) || auth()->user()->is_manager == 1 && auth()->user()->department == 2 && $time_leave['department_id'] == 2 )
-                                    <?php
-                                        $date1=date_create($time_leave['created_at']);
-                                        $date2=date_create(date('Y-m-d'));
-                                        $diff=date_diff($date1,$date2);
-                                    ?>
                                     @if($diff->format("%a") > 1)
                                         <div class="from-group d-flex">
                                             Đã quá 2 ngày kể từ khi bổ sung công
@@ -163,7 +227,13 @@
                                         <div class="from-group d-flex">
                                             <a class="btn btn-info open-detail-time-leave" id="{{ $time_leave['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
                                         </div>
-                                    @endif                   
+                                    @endif 
+                                @else
+                                    @if($diff->format("%a") > 1)
+                                        <div class="from-group d-flex">
+                                            Đã quá 2 ngày kể từ khi bổ sung công
+                                        </div>
+                                    @endif        
                                 @endif
                             </td>
                             {{-- @if($time_leave['is_approved'] == 0)
@@ -187,6 +257,7 @@
                 <tr>
                     <th>Tên nhân viên</th>
                     <th>Phòng ban</th>
+                    <th>Chức vụ</th>
                     <th>Ngày </th>
                     <th>Ngày công</th>
                     <th>Ghi chú</th>
@@ -199,7 +270,8 @@
                     @if($time_leave['type'] == 1)
                         <tr>
                             <td>{{ $time_leave['firstname'] . ' ' . $time_leave['lastname'] }}</td>
-                            <td>{{ $time_leave['name'] }}</td>
+                            <td>{{ $time_leave['name_vn'] }}</td>
+                            <td>{{ $time_leave['is_manager'] == 1 ? "Quản lý" : "Nhân viên" }}</td>
                             <td>
                                 {{ $time_leave['day_time_leave'] }}
                                 <?php 
@@ -232,8 +304,10 @@
                                 @endif
                             </td>
                             <td>
-                                @if($time_leave['is_approved'] == 1)
-                                   
+                                @if($time_leave['done'] == 1)
+                                    <span class="badge badge-danger">Đã chốt</span>
+                                @elseif($time_leave['is_approved'] == 1)
+                                    Giám đốc đã phê duyệt
                                 @elseif($time_leave['is_approved'] == 2 && auth()->user()->id !== 7)
                                     Chờ Giám đốc phê duyệt
                                 @elseif( (auth()->user()->id == 7 || (auth()->user()->is_manager == 1 && auth()->user()->department != 2)) || auth()->user()->is_manager == 1 && auth()->user()->department == 2 && $time_leave['department_id'] == 2 )
@@ -267,6 +341,30 @@
 
 @section('scripts')
     <script>
+        function doneLeave(row_number) {
+            let from_date = document.getElementById("from_date").value;
+            let to_date = document.getElementById("to_date").value;
+
+            console.log(year);
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn chốt công phép từ ' + from_date + ' đến ' + to_date + '?',
+                text: "Công phép sau khi chốt sẽ không thể điều chỉnh. Đồng thời hoàn phép cho những đăng kí phép của nhân viên chưa được duyệt!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#form-done-leave").submit();
+                }
+            });
+        }
+        $('.day_leave').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
 
         $( "#btn_tb_bsc" ).click(function() {
             $('#tb_dkp').hide();
