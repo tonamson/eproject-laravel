@@ -822,20 +822,47 @@ class TimeleaveController extends Controller
         $response = Http::get('http://localhost:8888/time-leave/summary-staff-time', $data_request);
         $summary_staff_time = json_decode($response->body(), true);
 
-        $result = [];
-        foreach ($summary_staff_time as $value) {
-            # code...
+        $response = Http::get('http://localhost:8888/staff/findStaffDepartment');
+        $body = json_decode($response->body(), true);
+        $data_staff = $body['data'];
+
+        foreach ($summary_staff_time['data'] as $staff_time) {
+            for ($i = 0; $i < count($data_staff); $i++) { 
+                if($staff_time['staff_id'] == $data_staff[$i][3]){
+                    $data_staff[$i]['total_number_time_all'] = $staff_time['total_number_time_all'];
+                }
+            }
         }
 
-        dd($summary_staff_time);
+        foreach ($summary_time_leave['data'] as $staff_time) {
+            for ($i = 0; $i < count($data_staff); $i++) { 
+                if($staff_time['staff_id'] == $data_staff[$i][3]){
+                    $data_staff[$i]['number_time_time_approved'] = $staff_time['number_time_time_approved'];
+                    $data_staff[$i]['number_time_leave_approved'] = $staff_time['number_time_leave_approved'];
+                }
+            }
+        }
 
+        for ($i = 0; $i < count($data_staff); $i++) { 
+            $data_staff[$i]['total'] = 0;
+            if(isset($data_staff[$i]['total_number_time_all'])) {
+                $data_staff[$i]['total'] += $data_staff[$i]['total_number_time_all'];
+            }
+            if(isset($data_staff[$i]['number_time_time_approved'])) {
+                $data_staff[$i]['total'] += $data_staff[$i]['number_time_time_approved'];
+            }
+            if(isset($data_staff[$i]['number_time_leave_approved'])) {
+                $data_staff[$i]['total'] += $data_staff[$i]['number_time_leave_approved'];
+            }
+        }
 
         return view('main.time_leave.all_time')
+            ->with('data_staff', $data_staff)
             ->with('summary_staff_time', $summary_staff_time['data'])
             ->with('summary_time_leave', $summary_time_leave['data'])
             ->with('year', $year)
             ->with('month', $month)
-            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tổng hợp chấm công', 'url' => '#']]);
+            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tổng công theo tháng', 'url' => '#']]);
 
     }
 }

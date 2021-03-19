@@ -24,7 +24,7 @@
 @section('content')
     <!-- Basic datatable -->
     <div class="card">
-        <h1 class="pt-3 pl-3 pr-3">Tổng Hợp Chấm Công</h1>
+        <h1 class="pt-3 pl-3 pr-3">Tổng Công Theo Tháng</h1>
         <div class="card-body">
             @if (\Session::has('success'))
                 <div class="">
@@ -67,34 +67,22 @@
                 <th>Tên nhân viên</th>
                 <th>Phòng ban</th>
                 <th>Chức vụ</th>
-                <th>Thời gian làm việc</th>
-                <th>Thời gian đi trễ</th>
-                <th>Thời gian về sớm</th>
-                <th>Thời gian tăng ca</th>
-                <th>Ngày thường làm việc</th>
-                <th>Ngày nghỉ làm việc</th>
-                <th>Ngày lễ làm việc</th>
-                <th>Tổng công</th>
-                <th style="background-color: #ffffe7">Tổng công được tính</th>
-                <th>Chi tiết</th>
+                <th>Tổng công chấm công được tính</th>
+                <th>Tổng công bổ sung đã duyệt</th>
+                <th>Tổng công đăng kí phép đã duyệt</th>
+                <th style="background-color: #ffffe7">Tổng công</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($summary as $item)
+            @foreach($data_staff as $staff)
                 <tr>
-                    <td>{{ $item['full_name'] }}</td>
-                    <td>{{ $item['department_name'] }}</td>
-                    <td>{{ $item['is_manager'] == 1 ? "Quản lý" : "Nhân viên" }}</td>
-                    <td>{{ $item['sum_time'] }}</td>
-                    <td>{{ $item['sum_in_late'] }}</td>
-                    <td>{{ $item['sum_out_soon'] }}</td>
-                    <td>{{ $item['sum_ot'] }}</td>
-                    <td>{{ $item['total_normal'] }}</td>
-                    <td>{{ $item['total_day_off'] }}</td>
-                    <td>{{ $item['total_day_special'] }}</td>
-                    <td>{{ $item['total_number_time'] }}</td>
-                    <td style="background-color: #ffffe7">{{ $item['total_number_time_all'] }}</td>
-                    <td><button id="{{ $item['staff_id'] }}" class="btn btn-primary open-detail">Chi tiết</button></td>
+                    <td>{{ $staff[0] }}</td>
+                    <td>{{ $staff[1] }}</td>
+                    <td>{{ $staff[2] == 1 ? "Quản lý" : "Nhân viên" }}</td>
+                    <td>{{ isset($staff['total_number_time_all']) ? $staff['total_number_time_all'] : '0' }}</td>
+                    <td>{{ isset($staff['number_time_time_approved']) ? $staff['number_time_time_approved'] : '0' }}</td>
+                    <td>{{ isset($staff['number_time_leave_approved']) ? $staff['number_time_leave_approved'] : '0' }}</td>
+                    <td style="background-color: #ffffe7">{{ isset($staff['total']) ? $staff['total'] : '0' }}</td>
                 </tr>
             @endforeach
             </tbody>
@@ -143,31 +131,31 @@
 
 @section('scripts')
     <script>
-        $(document).ready(function(){
-            $('.open-detail').click(function() {
-                var staff_id = $(this).attr('id');
-                var month = <?php echo $month ?>;
-                var year = <?php echo $year ?>;
+        // $(document).ready(function(){
+        //     $('.open-detail').click(function() {
+        //         var staff_id = $(this).attr('id');
+        //         var month = <?php echo $month ?>;
+        //         var year = <?php echo $year ?>;
 
-                $.ajax({
-                    url: '{{ action('TimeleaveController@getDetailStaffTime') }}',
-                    Type: 'POST',
-                    datatype: 'text',
-                    data:
-                    {
-                        staff_id: staff_id,
-                        month: month,
-                        year: year
-                    },
-                    cache: false,
-                    success: function (data)
-                    {
-                        $('#detail').empty().append(data);
-                        $('#modalDetail').modal();
-                    }
-                });
-            });
-        });
+        //         $.ajax({
+        //             url: '{{ action('TimeleaveController@getDetailStaffTime') }}',
+        //             Type: 'POST',
+        //             datatype: 'text',
+        //             data:
+        //             {
+        //                 staff_id: staff_id,
+        //                 month: month,
+        //                 year: year
+        //             },
+        //             cache: false,
+        //             success: function (data)
+        //             {
+        //                 $('#detail').empty().append(data);
+        //                 $('#modalDetail').modal();
+        //             }
+        //         });
+        //     });
+        // });
 
     </script>
 @endsection
