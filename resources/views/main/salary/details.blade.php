@@ -43,6 +43,7 @@
                             <th>Mã nhân viên</th>
                             <th>Tên nhân viên</th>
                             <th>Tổng công</th>
+                            <th>Lương CB</th>
                             <th>Lương trong tháng</th>
                             <th>Lương tăng ca</th>
                             <th>Các khoản phụ cấp</th>
@@ -78,21 +79,22 @@
                                     @endphp
                                     {{ number_format($total_working_of_day) }}
                                 </td>
+                                <td>{{ number_format($item->baseSalaryContract) }}</td> <!-- lương cơ bản -->
                                 <td>{{ number_format($item->salary) }}</td> <!-- lương cơ bản -->
                                 <td>{{ number_format($item->salaryOt) }}</td> <!-- lương tăng ca -->
                                 <td>{{ number_format($item->totalAllowance) }}</td>
                                 <td>{{ number_format($item->totalInsurance) }}</td>
-                                <td>{{ number_format($item->salary) }}</td>
-                                <td>{{ number_format($item->salary) }}</td>
-                                <td>{{ number_format($item->salary) }}</td>
+                                <td>{{ number_format(0) }}</td>
+                                <td>{{ number_format(0) }}</td>
+                                <td>{{ number_format(0) }}</td>
                                 <td>
                                     <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">
                                         Chi tiết lương
                                     </button>
-                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">
+                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetailAllowance" onclick="loadDetailAllowanceStaff({{ $item->staff->id }})">
                                         Chi tiết phụ cấp
                                     </button>
-                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">
+                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetailInsurance" onclick="loadDetailInsuranceStaff({{ $item->staff->id }})">
                                         Chi tiết khấu trừ
                                     </button>
                                 </td>
@@ -132,6 +134,53 @@
                                         </tr>
                                         </thead>
                                         <tbody id="dataDetail"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modalDetailAllowance" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog modal-full">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Chi tiết phụ cấp : <strong class="staff_name"></strong></h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <table class="table datatable-detail-allowance">
+                                        <thead>
+                                        <tr>
+                                            <th>Tên phụ cấp</th>
+                                            <th>Loại</th>
+                                            <th>Giá trị</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="dataDetailAllowance"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modalDetailInsurance" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog modal-full">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Chi tiết phụ cấp : <strong class="staff_name"></strong></h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <table class="table datatable-detail-insurance">
+                                        <thead>
+                                        <tr>
+                                            <th>Tên khấu trừ</th>
+                                            <th>Loại</th>
+                                            <th>Giá trị</th>
+                                            <th>Thành tiền</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="dataDetailInsurance"></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -178,6 +227,47 @@
                             `${detail.salary_of_ot_300.format()}`,
                             `${detail.total_salary_ot.format()}`,
                             `${(detail.total_salary + detail.total_salary_ot).format()}`,
+                        ]).draw(false);
+                    });
+                    return;
+                }
+            });
+        }
+
+        function loadDetailAllowanceStaff(id) {
+            let dataTable = $('.datatable-detail-allowance').DataTable();
+            $('#dataDetailAllowance').html('');
+            dataTable.clear().draw();
+            json_data.forEach(item => {
+                if (item.staffId === id && item.allowanceDetails != null && item.allowanceDetails.length > 0) {
+                    $('.staff_name').html(item.staff.firstname + ' ' + item.staff.lastname);
+                    let details = JSON.parse(item.allowanceDetails);
+                    details.forEach(detail => {
+                        dataTable.row.add([
+                            `${detail.name}`,
+                            `${detail.unit === 'PERCENT' ? '%' : 'VND'}`,
+                            `${Number(detail.value).format()}`,
+                        ]).draw(false);
+                    });
+                    return;
+                }
+            });
+        }
+
+        function loadDetailInsuranceStaff(id) {
+            let dataTable = $('.datatable-detail-insurance').DataTable();
+            $('#dataDetailInsurance').html('');
+            dataTable.clear().draw();
+            json_data.forEach(item => {
+                if (item.staffId === id && item.insuranceDetails != null && item.insuranceDetails.length > 0) {
+                    $('.staff_name').html(item.staff.firstname + ' ' + item.staff.lastname);
+                    let details = JSON.parse(item.insuranceDetails);
+                    details.forEach(detail => {
+                        dataTable.row.add([
+                            `${detail.name}`,
+                            `${detail.unit === 'PERCENT' ? '%' : 'VND'}`,
+                            `${Number(detail.value * 100).format()}`,
+                            `${Number(detail.value * item.baseSalaryContract).format()}`,
                         ]).draw(false);
                     });
                     return;
