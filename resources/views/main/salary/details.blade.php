@@ -166,7 +166,7 @@
                             `${detail.contract.staff.firstname + ' ' + detail.contract.staff.lastname}`,
                             `${detail.day_detail}`,
                             `${detail.standard_days}`,
-                            `${detail.contract.salary.format()}`,
+                            `${detail.contract.baseSalary.format()}`,
                             `${detail.salary_per_day.format()}`,
                             `${detail.total_working_of_day}`,
                             `${detail.total_salary.format()}`,
