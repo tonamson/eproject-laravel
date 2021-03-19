@@ -120,6 +120,8 @@ Route::middleware(['check_login'])->group(function () {
             Route::get('/all-time-leave', 'TimeleaveController@getAllTimeLeave');
 
             Route::get('/detail-time-leave', 'TimeleaveController@getDetailTimeLeave');
+
+            Route::get('/all-time-leave', 'TimeleaveController@getAllTimeInMonth');
             
         });
     });

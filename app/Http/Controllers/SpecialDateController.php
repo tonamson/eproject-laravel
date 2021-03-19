@@ -78,18 +78,18 @@ class SpecialDateController extends Controller
         }
 
         foreach ($body_check['data'] as $value) {
-            if($value['type_day'] == 2 && $value['department_request'] == auth()->user()->department) {
-                if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
-                    return redirect()->back()->with('error', 'Ngày tăng ca không được chồng chéo nhau!');
-                }
-            }
+            // if($value['type_day'] == 2 && $value['department_request'] == auth()->user()->department) {
+            //     if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
+            //         return redirect()->back()->with('error', 'Ngày tăng ca không được chồng chéo nhau!');
+            //     }
+            // }
 
             if($value['type_day'] == 1) {
                 if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
                     if($type_day == 1)
                         return redirect()->back()->with('error', 'Ngày lễ không được chồng chéo nhau!');
-                    else 
-                        return redirect()->back()->with('error', 'Ngày tăng ca không được chồng chéo ngày lễ!');
+                    // else 
+                    //     return redirect()->back()->with('error', 'Ngày tăng ca không được chồng chéo ngày lễ!');
                 }
             }
         }
@@ -204,6 +204,7 @@ class SpecialDateController extends Controller
         }
 
         $html = "<input type='hidden' name='id_update' value='". $id ."'>";
+        $html.= "<input type='hidden' name='type_day' value='". $body['data']['typeDay'] ."'>";
         $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Chỉnh Sửa Ngày '.$title.'</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
         $html.= '<span aria-hidden="true">&times;</span></button></div>';
         $html.= '
@@ -260,6 +261,7 @@ class SpecialDateController extends Controller
         $day_special_from = $request->input('day_special_from');
         $day_special_to = $request->input('day_special_to');
         $note = $request->input('note');
+        $type_day = $request->input('type_day');
 
         $date = date("Y-m-d");
         $data_request = ['special_date_from' => $date, 'staff_request' => auth()->user()->id, 'department_request' => auth()->user()->department];
@@ -267,8 +269,8 @@ class SpecialDateController extends Controller
         $response_check = Http::get('http://localhost:8888/special-date/get-request-ot?', $data_request);
         $body_check = json_decode($response_check->body(), true);
         
-        if($day_special_from < date('Y-m-d')) {
-            return redirect()->back()->with('error', 'Ngày bắt đầu không được nhỏ hơn ngày hiện tại! Vui lòng thử lại');
+        if($day_special_from < date('Y-m-d', strtotime(date("Y-m-d"). ' + 3 days'))) {
+            return redirect()->back()->with('error', 'Ngày bắt đầu phải lớn hơn ngày hiện tại ít nhất 3 ngày! Vui lòng thử lại');
         }
 
         foreach ($body_check['data'] as $value) {
@@ -276,14 +278,14 @@ class SpecialDateController extends Controller
                 continue;
             }
             
-            if($value['type_day'] == 2 && $value['department_request'] == auth()->user()->department) {
+            // if($value['type_day'] == 2 && $value['department_request'] == auth()->user()->department) {
+            //     if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
+            //         return redirect()->back()->with('error', 'Ngày tăng ca không được chồng chéo nhau!');
+            //     }
+            // }
+            if($value['type_day'] == 1 && $type_day == 1) {
                 if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
-                    return redirect()->back()->with('error', 'Ngày tăng ca không được chồng chéo nhau!');
-                }
-            }
-            if($value['type_day'] == 1) {
-                if(($value['day_special_from'] >= $day_special_from && $value['day_special_from'] <= $day_special_to) || ($value['day_special_to'] >= $day_special_from && $value['day_special_to'] <= $day_special_to)) {
-                    return redirect()->back()->with('error', 'Ngày tăng ca và ngày lễ không được chồng chéo nhau!');
+                    return redirect()->back()->with('error', 'Ngày lễ không được chồng chéo nhau!');
                 }
             }
         }
