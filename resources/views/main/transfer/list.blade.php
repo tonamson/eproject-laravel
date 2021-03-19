@@ -63,12 +63,12 @@
                         <input class="form-control" type="number" value="<?php echo $year ?>" name="year" id="year">
                     </div>
                     <div class="ml-3">
-                        <input class="form-control btn btn-primary" type="submit" value="Search">
+                        <input class="form-control btn btn-primary" type="submit" value="Tìm Kiếm">
                     </div>
                 </div>
             </form>
             
-            @if(auth()->user()->department == 2)
+            @if(auth()->user()->department == 2 & auth()->user()->is_manager !=0 )
                 <div class="form-group d-flex">
                     <div class="">
                         <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Tạo mới</button>
@@ -124,7 +124,15 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                                        <div class="form-group" hidden>
+                                            <label>Hr approved:(*)</label>
+                                            @if(auth()->user()->is_manager == 1)
+											<input type="hidden" class="form-control" name="txthr" value="0" >
+                                            @else
+											<input type="hidden" class="form-control" name="txthr" value="1" >
+                                            @endif
+										</div>
+                                 </div>
 
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
@@ -159,7 +167,7 @@
             </thead>
             <tbody>
                 <?php $count = 1; ?>
-                @if(auth()->user()->is_manager == 1)
+                @if(auth()->user()->is_manager == 1 and auth()->user()->department ==2)
                 @foreach ($data as $transfer)
                      <tr>
                         <td><?php echo $count; $count++ ?></td>
@@ -230,6 +238,83 @@
                             </td>
                         @endif
                     </tr>
+                @endforeach 
+
+                <!-- tach theo phong ban va id -->
+
+                @elseif(auth()->user()->is_manager == 1 and auth()->user()->department !=2)
+                @foreach ($data as $transfer)
+                    @if($transfer['hr_approved'] == 0)
+                     <tr>
+                        <td><?php echo $count; $count++ ?></td>
+                        <td><?php echo $transfer['staff_transfer'] ?></td>
+                        <td><?php echo $transfer['old_department_name'] ?></td>
+                        <td><?php echo $transfer['new_department_name'] ?></td>
+                        <td>
+                            <?php echo $transfer['old_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                        </td>
+                        <td>
+                            <?php echo $transfer['new_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                        </td>
+                        <td>
+                            <?php echo $transfer['manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                        </td>
+                        <td style="max-width: 160px;"> 
+                            <?php 
+                                if(strlen($transfer['note']) > 40) echo substr($transfer['note'], 0, 40) . '...';
+                                else echo $transfer['note'];
+                            ?>
+                        </td>
+                        <td><?php echo $transfer['created_at'] ?></td>
+                        @if(auth()->user()->department == 2 )
+                            @if($transfer['old_manager_approved'] == 0 && $transfer['new_manager_approved'] == 0)
+                                <td>
+                                    <div class="from-group d-flex">
+                                        <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                        <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                    </div>
+                                    @if(auth()->user()->is_manager == 1)
+                                        <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                    @endif
+                                </td>
+                            @elseif($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1 && $transfer['manager_approved'] == 1)
+                                <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
+                            @else
+                                @if(auth()->user()->is_manager == 1)
+                                    <td>
+                                        <div class="from-group d-flex">
+                                            <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td style="max-width: 160px;">Đã có ít nhất một quản lý phê duyệt, không thể chỉnh sửa</td>
+                                @endif
+                            @endif
+                        <!-- Hth     -->
+                        @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 and $transfer['new_manager_approved'] == 0)
+                                <td style="max-width: 160px;">Các Quản lý chưa phê duyệt hết</td>
+                        @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 )
+                                <td style="max-width: 160px;">Quản lý cũ chưa phê duyệt</td>
+                        @elseif(auth()->user()->department == 5 and  $transfer['new_manager_approved'] == 0)
+                                <td style="max-width: 160px;">Quản lý mới chưa phê duyệt</td>
+                        @elseif(auth()->user()->department == 5 and $transfer['manager_approved'] == 1)
+                                <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
+                        @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
+                        <td>
+                            <div class="from-group d-flex">
+                                <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                            </div>
+                        </td>
+                        <!-- Hth     -->
+                        @else
+                            <td>
+                                <div class="from-group d-flex">
+                                    <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                </div>
+                            </td>
+                        @endif
+                    </tr>
+                    @endif
                 @endforeach 
 
                 <!-- Tach theo id nhan vien dang nhap -->
@@ -313,7 +398,7 @@
                     @endif
                 @endforeach 
             
-                @endif
+            @endif
             </tbody>
         </table>
 
