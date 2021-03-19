@@ -373,6 +373,14 @@
                     </a>
                 </div>
             </div>
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ action('TimeleaveController@getAllTimeInMonth') }}">
+                        <i class="icon-8x icon-paragraph-left2"></i>
+                        <p>Tổng Công Theo Tháng</p> 
+                    </a>
+                </div>
+            </div>
         @endif
         <div class="no-tool text-center">
             <?php

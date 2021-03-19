@@ -224,12 +224,16 @@
                                     <span>Tổng Hợp Chấm Công</span>
                                 </a>
                             </li>
-                        @endif
-                        @if(auth()->user()->department == 2 or auth()->user()->id == 7)
                             <li class="nav-item">
                                 <a href="{{ action('TimeleaveController@getAllTimeLeave') }}" class="nav-link">
                                     <i class="icon-paragraph-left2"></i>
                                     <span>Tổng Hợp Công Phép</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ action('TimeleaveController@getAllTimeInMonth') }}" class="nav-link">
+                                    <i class="icon-paragraph-left2"></i>
+                                    <span>Tổng Công Theo Tháng</span>
                                 </a>
                             </li>
                         @endif
