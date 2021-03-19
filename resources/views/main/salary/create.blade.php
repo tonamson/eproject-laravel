@@ -116,15 +116,10 @@
                                     <tbody>
                                     @foreach($listSalaryOption as $index => $item)
                                         @if($item->type === 'ALLOWANCE')
-                                            <input type="hidden" name="options[{{ $index }}][type]" value="{{ $item->type }}">
-                                            <input type="hidden" name="options[{{ $index }}][key]" value="{{ $item->key }}">
-                                            <input type="hidden" name="options[{{ $index }}][name]" value="{{ $item->name }}">
-                                            <input type="hidden" name="options[{{ $index }}][have_tax]" value="{{ $item->have_tax }}">
-                                            <input type="hidden" name="options[{{ $index }}][unit]" value="{{ $item->unit }}">
                                             <tr>
                                                 <td>{{ $item->name }}</td>
                                                 <td>
-                                                    <input type="checkbox" value="" {{ $item->have_tax ? 'checked' : '' }} disabled>
+                                                    <input type="checkbox" {{ $item->have_tax ? 'checked' : '' }} disabled>
                                                 </td>
                                                 <td>
                                                     @if($item->unit == 'NUMBER')
@@ -134,7 +129,12 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="options[{{ $index }}][value]" value="{{ $item->value }}">
+                                                    <input type="hidden" name="options[{{ $index }}][type]" value="{{ $item->type }}">
+                                                    <input type="hidden" name="options[{{ $index }}][key]" value="{{ $item->key }}">
+                                                    <input type="hidden" name="options[{{ $index }}][name]" value="{{ $item->name }}">
+                                                    <input type="hidden" name="options[{{ $index }}][have_tax]" value="{{ $item->have_tax }}">
+                                                    <input type="hidden" name="options[{{ $index }}][unit]" value="{{ $item->unit }}">
+                                                    <input type="number" class="form-control" name="options[{{ $index }}][value]" value="{{ $item->value }}">
                                                 </td>
                                             </tr>
                                         @endif
@@ -154,11 +154,6 @@
                                     <tbody>
                                     @foreach($listSalaryOption as $index => $item)
                                         @if($item->type === 'INSURANCE')
-                                            <input type="hidden" name="options[{{ $index }}][type]" value="{{ $item->type }}">
-                                            <input type="hidden" name="options[{{ $index }}][key]" value="{{ $item->key }}">
-                                            <input type="hidden" name="options[{{ $index }}][name]" value="{{ $item->name }}">
-                                            <input type="hidden" name="options[{{ $index }}][have_tax]" value="{{ $item->have_tax }}">
-                                            <input type="hidden" name="options[{{ $index }}][unit]" value="{{ $item->unit }}">
                                             <tr>
                                                 <td>{{ $item->name }}</td>
                                                 <td>
@@ -169,7 +164,12 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="options[{{ $index }}][value]" value="{{ $item->value }}">
+                                                    <input type="hidden" name="options[{{ $index }}][type]" value="{{ $item->type }}">
+                                                    <input type="hidden" name="options[{{ $index }}][key]" value="{{ $item->key }}">
+                                                    <input type="hidden" name="options[{{ $index }}][name]" value="{{ $item->name }}">
+                                                    <input type="hidden" name="options[{{ $index }}][have_tax]" value="{{ $item->have_tax }}">
+                                                    <input type="hidden" name="options[{{ $index }}][unit]" value="{{ $item->unit }}">
+                                                    <input type="number" class="form-control" name="options[{{ $index }}][value]" value="{{ $item->value }}">
                                                 </td>
                                             </tr>
                                         @endif

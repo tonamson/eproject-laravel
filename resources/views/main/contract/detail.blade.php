@@ -16,7 +16,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header header-elements-inline">
                     <h5 class="card-title">Chi tiết hợp đồng</h5>
@@ -73,45 +73,11 @@
                     </div>
                     <div class="form-group">
                         <label>Lương:</label>
-                        <input type="number" class="form-control" name="salary" value="{{ $contract->salary }}" readonly>
+                        <input type="number" class="form-control" name="salary" value="{{ $contract->baseSalary }}" readonly>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h5 class="card-title">Các khoản phụ cấp</h5>
-                </div>
-                <div class="card-body" id="options">
-                    <div class="row">
-                        <div class="col-md-4">Tên</div>
-                        <div class="col-md-4">Tính thuế</div>
-                        <div class="col-md-4">Giá trị</div>
-                    </div>
-                    @foreach($contract->details as $index => $detail)
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <input type="text" name="details[{{ $index }}][name]" class="form-control" value="{{ $detail->name }}" readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <input type="checkbox" name="details[{{ $index }}][is_tax]" class="form-control" {{ $detail->is_tax ? 'checked' : '' }} disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <input type="number" name="details[{{ $index }}][price]" pattern="(^\d+\.?\d+$)|(^\d+%$)" class="form-control" value="{{ $detail->price }}" readonly>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-
     </div>
 @endsection
 

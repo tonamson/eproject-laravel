@@ -43,7 +43,7 @@
                             <th>Mã nhân viên</th>
                             <th>Tên nhân viên</th>
                             <th>Tổng công</th>
-                            <th>Lương cơ bản</th>
+                            <th>Lương trong tháng</th>
                             <th>Lương tăng ca</th>
                             <th>Các khoản phụ cấp</th>
                             <th>Các khoản khấu trừ</th>
@@ -80,13 +80,21 @@
                                 </td>
                                 <td>{{ number_format($item->salary) }}</td> <!-- lương cơ bản -->
                                 <td>{{ number_format($item->salaryOt) }}</td> <!-- lương tăng ca -->
-                                <td>{{ number_format($item->salary) }}</td>
-                                <td>{{ number_format($item->salary) }}</td>
+                                <td>{{ number_format($item->totalAllowance) }}</td>
+                                <td>{{ number_format($item->totalInsurance) }}</td>
                                 <td>{{ number_format($item->salary) }}</td>
                                 <td>{{ number_format($item->salary) }}</td>
                                 <td>{{ number_format($item->salary) }}</td>
                                 <td>
-                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">Chi tiết</button>
+                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">
+                                        Chi tiết lương
+                                    </button>
+                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">
+                                        Chi tiết phụ cấp
+                                    </button>
+                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">
+                                        Chi tiết khấu trừ
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
@@ -106,19 +114,20 @@
                                     <table class="table datatable-detail">
                                         <thead>
                                         <tr>
-                                            <th>Mã nhân viên</th>
                                             <th>Tên nhân viên</th>
                                             <th>Ngày chấm công</th>
                                             <th>Công chuẩn của tháng</th>
                                             <th>Lương hợp đồng</th>
-                                            <th>Hệ số</th>
                                             <th>Lương 1 ngày</th>
                                             <th>Công đã làm</th>
                                             <th>Thành tiền lương ngày công</th>
                                             <th>Lương 1 giờ</th>
+{{--                                            <th>Hệ số</th>--}}
                                             <th>Tổng giờ tăng ca</th>
+                                            <th>Tăng ca 150%</th>
+                                            <th>Tăng ca 200%</th>
+                                            <th>Tăng ca 300%</th>
                                             <th>Thành tiền lương tăng ca</th>
-                                            <th>Lương tăng ca chịu thuế</th>
                                             <th>Tổng lương</th>
                                         </tr>
                                         </thead>
@@ -154,20 +163,21 @@
                 if (item.staffId === id && item.details != null && item.details.length > 0) {
                     item.details.forEach(detail => {
                         dataTable.row.add([
-                            `${detail.contract.staff.code}`,
                             `${detail.contract.staff.firstname + ' ' + detail.contract.staff.lastname}`,
                             `${detail.day_detail}`,
                             `${detail.standard_days}`,
                             `${detail.contract.salary.format()}`,
-                            `${detail.multiply_day.format()}`,
                             `${detail.salary_per_day.format()}`,
                             `${detail.total_working_of_day}`,
-                            `${detail.salary_of_day.format()}`,
-                            `${detail.salary_by_one_hour.format()}`,
-                            `${detail.ot_hours}`,
-                            `${detail.salary_of_ot.format()}`,
-                            `${detail.salary_of_ot_tax.format()}`,
                             `${detail.total_salary.format()}`,
+                            `${detail.salary_by_one_hour.format()}`,
+                            // `${detail.multiply_day.format()}`,
+                            `${detail.ot_hours}`,
+                            `${detail.salary_of_ot_150.format()}`,
+                            `${detail.salary_of_ot_200.format()}`,
+                            `${detail.salary_of_ot_300.format()}`,
+                            `${detail.total_salary_ot.format()}`,
+                            `${(detail.total_salary + detail.total_salary_ot).format()}`,
                         ]).draw(false);
                     });
                     return;

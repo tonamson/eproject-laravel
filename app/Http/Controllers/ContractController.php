@@ -65,10 +65,7 @@ class ContractController extends Controller
             'staffId' => 'required',
             'startDate' => 'required|date_format:Y-m-d',
             'endDate' => 'required|date_format:Y-m-d|after_or_equal:startDate',
-            'salary' => 'required|numeric',
-            'details' => 'required|array',
-            'details.*.name' => 'required',
-            'details.*price' => 'required|numeric',
+            'baseSalary' => 'required|numeric',
         ];
         $message = [
             'staffId.required' => 'Mã nhân viên không để rỗng',
@@ -77,12 +74,8 @@ class ContractController extends Controller
             'startDate.date_format' => 'Ngày bắt đầu sai định dạng: YYYY-MM-DD',
             'endDate.date_format' => 'Ngày kết thúc sai định dạng: YYYY-MM-DD',
             'endDate.after_or_equal' => 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
-            'salary.required' => 'Tổng lương không để rỗng',
-            'salary.numeric' => 'Tổng lương chỉ chấp nhận số',
-            'details.required' => 'Chi tiết hợp đồng không để rỗng',
-            'details.array' => 'Chi tiết hợp đồng chỉ chấp nhận mảng',
-            'details.*.name.required' => 'Tên chi tiết không để rỗng',
-            'details.*.price.required' => 'Giá không để rỗng',
+            'baseSalary.required' => 'Tổng lương không để rỗng',
+            'baseSalary.numeric' => 'Tổng lương chỉ chấp nhận số',
         ];
         $data = $request->all();
         $validate = Validator::make($data, $rule, $message);
