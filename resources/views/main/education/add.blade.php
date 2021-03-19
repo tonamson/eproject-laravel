@@ -163,7 +163,7 @@
 							</div>
 							<div class="text-left">
 								<button type="submit" class="btn btn-primary">Lưu <i class="icon-paperplane ml-2"></i></button>
-                                <button type="reset" class="btn btn-success">Reset <i class="icon-paperplane ml-2"></i></button>
+                                <button type="reset" class="btn btn-success">Làm mới <i class="icon-paperplane ml-2"></i></button>
 							</div>
 						</form>
 					</div>
