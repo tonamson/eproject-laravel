@@ -122,14 +122,14 @@
                     </li>
                 @endif
 
-                @if(auth()->user()->department == 2 or auth()->user()->is_manager == 1)
+                
                     <li class="nav-item">
                         <a href="{{ action('TransferController@list') }}" class="nav-link">
                             <i class="icon-transmission"></i>
                             <span>Điều Chuyển</span>
                         </a>
                     </li>
-                @endif
+               
 
                 @if(auth()->user()->department == 2 or auth()->user()->department == 5)
                     <li class="nav-item nav-item-submenu <?php echo $url[0] == "contract" || $url[1] == "contract" ? "nav-item-open" : "" ?>">

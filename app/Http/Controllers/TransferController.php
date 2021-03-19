@@ -24,10 +24,12 @@ class TransferController extends Controller
 
         $response = Http::get('http://localhost:8888/transfer/list', $data_request);
         $body = json_decode($response->body(), true);
+    //  dd($body);
 
         $response = Http::get(config('app.api_url') . '/staff/list', []);
         $listStaff = json_decode($response->body(), false);
 
+    
         $response = Http::get('http://localhost:8888/department/list');
         $body_department = json_decode($response->body(), true);
         $data_department = $body_department['data'];
@@ -37,7 +39,7 @@ class TransferController extends Controller
             'listDepartment' => $data_department,
             'year' => $year,
             'month' => $month,
-            'data' => $body['data'],
+            'data' => $body['data'] ?? [],
             'breadcrumbs' => [['text' => 'Điều chuyển', 'url' => '../view-menu/transfer']]
         ]);
     }
@@ -91,6 +93,10 @@ class TransferController extends Controller
             'staff_id' => $id_staff_transfer,
             'new_department' => $new_department,
             'created_by' => $id_staff_create,
+            'oldManagerApproved'=>"0",
+            'newManagerApproved'=>"0",
+            'managerApproved'=>"0",
+            'del'=>"0",
             'note' => $note,
             'created_at' => date('Y-m-d')
         ];
@@ -98,6 +104,7 @@ class TransferController extends Controller
         $response = Http::post('http://localhost:8888/transfer/create', $data_request);
         $body = json_decode($response->body(), true);
 
+       
         if($body['message'] == "Save success") {
             return redirect()->back()->with('success', 'Tạo điều chuyển thành công!');
         } 
@@ -267,7 +274,7 @@ class TransferController extends Controller
         $body = json_decode($response->body(), true);
 
         if($body['data'] == "Approve Success") {
-            return redirect()->back()->with('success', 'Phê duyệt thành công, khi quản lý còn lại phê duyệt, nhân viên sẽ chuyển phòng ban!');
+            return redirect()->back()->with('success', 'Phê duyệt thành công, khi quản lý còn lại và Giám đốc phê duyệt, nhân viên sẽ chuyển phòng ban!');
         } else if($body['data'] == "Staff changed department") {
             return redirect()->back()->with('success', 'Phê duyệt thành công, nhân viên đã chuyển phòng ban!');
         } else {
