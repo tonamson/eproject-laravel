@@ -822,12 +822,20 @@ class TimeleaveController extends Controller
         $response = Http::get('http://localhost:8888/time-leave/summary-staff-time', $data_request);
         $summary_staff_time = json_decode($response->body(), true);
 
-        // return view('main.time_leave.all_staff_time')
-        //     ->with('data', $body['data'])
-        //     ->with('summary', $summary['data'])
-        //     ->with('year', $year)
-        //     ->with('month', $month)
-        //     ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tổng hợp chấm công', 'url' => '#']]);
+        $result = [];
+        foreach ($summary_staff_time as $value) {
+            # code...
+        }
+
+        dd($summary_staff_time);
+
+
+        return view('main.time_leave.all_time')
+            ->with('summary_staff_time', $summary_staff_time['data'])
+            ->with('summary_time_leave', $summary_time_leave['data'])
+            ->with('year', $year)
+            ->with('month', $month)
+            ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tổng hợp chấm công', 'url' => '#']]);
 
     }
 }
