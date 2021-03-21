@@ -64,6 +64,7 @@ class TransferController extends Controller
         $id_staff_create = $request->input('id_staff_create');
         $old_department = $request->input('old_department');
         $new_department = $request->input('new_department');
+        $hr_approved =$request->input('txthr');
         $note = $request->input('note');      
 
         if(!$id_staff_transfer) {
@@ -96,14 +97,16 @@ class TransferController extends Controller
             'oldManagerApproved'=>"0",
             'newManagerApproved'=>"0",
             'managerApproved'=>"0",
+            'hr_approved'=>$hr_approved,
             'del'=>"0",
             'note' => $note,
             'created_at' => date('Y-m-d')
         ];
 
+
         $response = Http::post('http://localhost:8888/transfer/create', $data_request);
         $body = json_decode($response->body(), true);
-
+// dd($body);
        
         if($body['message'] == "Save success") {
             return redirect()->back()->with('success', 'Tạo điều chuyển thành công!');
@@ -173,10 +176,17 @@ class TransferController extends Controller
             }
         }
 
+        $html_hr = '';
+         
+                $html_hr .= '<option value="0" selected>Xác nhận</option>';
+            
+                $html_hr .= '<option value="1">Không xác nhận</option>';
+           
+
         $html = '<input type="hidden" name="id_update" value="'.$id.'">';
         $html.= '
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Tạo Điều Chuyển Mới</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">Cập Nhật Điều Chuyển Mới</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -206,8 +216,19 @@ class TransferController extends Controller
                     <select class="form-control new_department" name="new_department_update">
                         '.$html_list_department.'
                     </select>
-                </div>
+                </div>   
             </div>
+
+            <div class="form-group row">
+            <label class="col-lg-3 col-form-label">Xác nhận:(*)</label>
+            <div class="col-lg-9">
+                <select class="form-control txthr" name="txthr">
+                '.$html_hr.'
+                </select>
+            </div>   
+            </div>
+
+            
 
             <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
@@ -233,6 +254,7 @@ class TransferController extends Controller
         $id_update = $request->input('id_update');
         $old_department = $request->input('old_department_update');
         $new_department = $request->input('new_department_update');
+        $hr_approved =$request->input('txthr');
         $note = $request->input('note_update');
 
         if($old_department == $new_department) {
@@ -246,12 +268,15 @@ class TransferController extends Controller
         $data_request = [
             'id' => $id_update,
             'new_department' => $new_department,
+            'hr_approved'=>$hr_approved,
             'note' => $note
         ];
 
 
         $response = Http::post('http://localhost:8888/transfer/update', $data_request);
         $body = json_decode($response->body(), true);
+
+        // dd($data_request);
 
         if($body['message'] == "Update success") {
             return redirect()->back()->with('success', 'Chỉnh sửa điều chuyển thành công!');

@@ -42,7 +42,7 @@
                     <td>{{ $item->staff->firstname . ' ' . $item->staff->lastname}}</td>
                     <td>{{ $item->startDate }}</td>
                     <td>{{ $item->endDate }}</td>
-                    <td>{{ number_format($item->salary) }}</td>
+                    <td>{{ number_format($item->baseSalary) }}</td>
                     <td>{{ $item->createAt }}</td>
                     <td class="text-center">
                         <div class="list-icons">
