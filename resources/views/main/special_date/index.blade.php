@@ -126,16 +126,17 @@
                     <th>Mô tả</th>
                     <th>Loại</th>
                     <th class="text-center">Sửa / Xóa</th>
+                    <th style="max-width: 100px">Bổ sung công ngày lễ cho toàn nhân viên</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $count = 1; ?>
                 @foreach ($data as $special_date)
-                    @if($special_date['typeDay'] == 1)
+                    @if($special_date['type_day'] == 1)
                         <tr>
                             <td><?php echo $count; $count++ ?></td>
-                            <td><?php echo $special_date['daySpecialFrom'] ?></td>
-                            <td><?php echo $special_date['daySpecialTo'] ?></td>
+                            <td><?php echo $special_date['day_special_from'] ?></td>
+                            <td><?php echo $special_date['day_special_to'] ?></td>
                             <td>
                                 <?php 
                                     if(strlen($special_date['note']) > 40) echo substr($special_date['note'], 0, 40) . '...';
@@ -146,13 +147,24 @@
                                 <span class="badge badge-danger">Ngày lễ</span>
                             </td>
                             <td class="text-center">
-                                @if(date("Y-m-d") < $special_date['daySpecialFrom'])
+                                @if(date("Y-m-d") < $special_date['day_special_from'])
                                     <div class="from-group">
                                         <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
                                         <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                 @else 
                                     <span class="badge badge-primary">Ngày lễ đã diễn ra!</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if(date("Y-m-d") > $special_date['day_special_to'])
+                                    @if($special_date['detail_id'])
+                                        <a href="{{ action('TimeSpecialController@details') }}?id_special_date={{ $special_date['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Chi tiết</a>
+                                    @else
+                                        <a href="{{ action('TimeSpecialController@create') }}?id={{ $special_date['id'] }}" class="btn btn-warning ml-2" style="color: white; cursor: pointer;">Bổ sung</a>
+                                    @endif
+                                @else
+                                    <span class="">Kết thúc lễ mới được bổ sung công lễ!</span>
                                 @endif
                             </td>
                         </tr>

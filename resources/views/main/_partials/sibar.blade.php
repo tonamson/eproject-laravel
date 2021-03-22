@@ -169,10 +169,12 @@
 
                     <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $display ?>">
                         @if(auth()->user()->department == 2 or auth()->user()->id == 7 or auth()->user()->department == 5)
-                            <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
-                                <i class="icon-calendar2"></i>
-                                <span>Quản Lý Ngày Lễ</span>
-                            </a>
+                            <li class="nav-item">
+                                <a href="{{ action('SpecialDateController@index') }}" class="nav-link">
+                                    <i class="icon-calendar2"></i>
+                                    <span>Quản Lý Ngày Lễ</span>
+                                </a>
+                            </li>
                         @endif
                         @if(auth()->user()->is_manager == 1)
                             <a href="{{ action('SpecialDateController@requestOverTime') }}" class="nav-link">
