@@ -41,7 +41,7 @@
                     </div>
                 </div>
             @endif
-            <form action="{{ action('TimeleaveController@getAllStaffTime') }}" method="GET">
+            <form action="{{ action('TimeleaveController@getAllTimeInMonth') }}" method="GET">
                 @csrf
                 <div class="form-group d-flex">
                     <div class="">

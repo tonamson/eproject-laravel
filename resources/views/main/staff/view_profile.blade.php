@@ -221,7 +221,7 @@
                                                 <td><?php echo $count_ct ?></td>
                                                 <td><?php $date=date_create($contract['startDate']);echo date_format($date,"d/m/Y");?></td>
                                                 <td><?php $date=date_create($contract['endDate']);echo date_format($date,"d/m/Y");?></td>
-                                                <td>{{ number_format($contract['salary']) }} vnđ</td>
+                                                <td>{{ number_format($contract['baseSalary']) }} vnđ</td>
                                                 <td><?php $date=date_create($contract['createAt']);echo date_format($date,"d/m/Y");?></td>
                                             </tr>
                                             <?php $count_ct++; ?> 
