@@ -43,21 +43,21 @@
                             <th>Mã nhân viên</th>
                             <th>Tên nhân viên</th>
                             <th>Tổng công</th>
-                            <th>Lương CB</th>
-                            <th>Lương trong tháng</th>
-                            <th>Lương tăng ca</th>
-                            <th>Các khoản phụ cấp</th>
-                            <th>Các khoản khấu trừ</th>
+                            <th>Lương CB (1)</th>
+                            <th>Lương trong tháng (2)</th>
+                            <th>Lương tăng ca (3)</th>
+                            <th>Các khoản phụ cấp (4)</th>
+                            <th>Các khoản khấu trừ (5)</th>
                             <th>
-                                <p>Thu nhập chịu thuế</p>
+                                <p>Thu nhập chịu thuế (6)</p>
                                 <p>= Tổng lương - Các khoản được miễn</p>
                             </th>
                             <th>
-                                <p>Thu nhập tính thuế</p>
+                                <p>Thu nhập tính thuế (7)</p>
                                 <p>= Thu nhập chịu thuế - Các khoản được trừ (BHXH và các khoản giảm trừ gia cảnh)</p>
                             </th>
                             <th>
-                                <p>Lương thực nhận</p>
+                                <p>Lương thực nhận (8)</p>
                                 <p>= Tổng lương + phụ cấp - Các khoản khấu trừ - Thuế TNCN</p>
                             </th>
                             <th>Thao tác</th>
