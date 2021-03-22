@@ -70,6 +70,7 @@
                 <th>Tổng công chấm công được tính</th>
                 <th>Tổng công bổ sung đã duyệt</th>
                 <th>Tổng công đăng kí phép đã duyệt</th>
+                <th>Tổng công ngày lễ</th>
                 <th style="background-color: #ffffe7">Tổng công</th>
             </tr>
             </thead>
@@ -82,6 +83,7 @@
                     <td>{{ isset($staff['total_number_time_all']) ? $staff['total_number_time_all'] : '0' }}</td>
                     <td>{{ isset($staff['number_time_time_approved']) ? $staff['number_time_time_approved'] : '0' }}</td>
                     <td>{{ isset($staff['number_time_leave_approved']) ? $staff['number_time_leave_approved'] : '0' }}</td>
+                    <td>{{ $staff['total_number_time_special'] }}</td>
                     <td style="background-color: #ffffe7">{{ isset($staff['total']) ? $staff['total'] : '0' }}</td>
                 </tr>
             @endforeach

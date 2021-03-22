@@ -826,6 +826,26 @@ class TimeleaveController extends Controller
         $body = json_decode($response->body(), true);
         $data_staff = $body['data'];
 
+        $from = $year . '-' . $month . '-' . '01';
+        $to = $year . '-' . $month . '-' . date("t");
+        $data_request_time_special = ['from_date' => $from, 'to_date' => $to];
+
+        $response = Http::get('http://localhost:8888/time-special/get-time-special-from-to?', $data_request_time_special);
+        $time_specials = json_decode($response->body(), true);
+
+        for ($i = 0; $i < count($data_staff); $i++) { 
+            $data_staff[$i]['total_number_time_special'] = 0;
+        }
+
+        foreach ($time_specials['data'] as $time_special) {
+            for ($i = 0; $i < count($data_staff); $i++) { 
+                if($time_special['staff_id'] == $data_staff[$i][3]){
+                    $data_staff[$i]['total_number_time_special'] += $time_special['number_time'];
+                }
+            }
+        }
+
+
         foreach ($summary_staff_time['data'] as $staff_time) {
             for ($i = 0; $i < count($data_staff); $i++) { 
                 if($staff_time['staff_id'] == $data_staff[$i][3]){
@@ -853,6 +873,9 @@ class TimeleaveController extends Controller
             }
             if(isset($data_staff[$i]['number_time_leave_approved'])) {
                 $data_staff[$i]['total'] += $data_staff[$i]['number_time_leave_approved'];
+            }
+            if(isset($data_staff[$i]['total_number_time_special'])) {
+                $data_staff[$i]['total'] += $data_staff[$i]['total_number_time_special'];
             }
         }
 
