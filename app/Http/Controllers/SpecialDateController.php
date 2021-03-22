@@ -18,16 +18,16 @@ class SpecialDateController extends Controller
         $date = $year . '-' . $month . '-' . '01';
         $data_request = ['special_date_from' => $date];
 
-        $response = Http::get('http://localhost:8888/special-date/list?', $data_request);
+        $response = Http::get('http://localhost:8888/special-date/list-special-date?', $data_request);
         $body = json_decode($response->body(), true);
 
         $calendar = array();
         foreach ($body['data'] as $value) {
-            if($value['typeDay'] == 1) {
+            if($value['type_day'] == 1) {
                 $arr = array();
                 $arr['title'] = $value['note'];
-                $arr['start'] = $value['daySpecialFrom'];
-                $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['daySpecialTo'])));
+                $arr['start'] = $value['day_special_from'];
+                $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['day_special_to'])));
                 $arr['color'] = '#EF5350';
 
                 array_push($calendar, $arr);

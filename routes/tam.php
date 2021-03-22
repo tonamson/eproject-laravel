@@ -73,6 +73,12 @@ Route::middleware(['check_login'])->group(function () {
 
             Route::get('/delete', 'SpecialDateController@deleteSpecialDate');
         });
+
+        Route::group(['prefix' => 'time-special'], function () {
+            Route::get('/create', 'TimeSpecialController@create');
+
+            Route::get('/details', 'TimeSpecialController@details');
+        });
     });
 
     Route::middleware(['check_manager'])->group(function () {
