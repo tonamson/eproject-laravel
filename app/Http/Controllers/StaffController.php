@@ -32,7 +32,6 @@ class StaffController extends Controller
 
     public function createStaff(Request $request)
     {
-
         $rule = [
             'txtCode' => 'bail|required|unique:staff,code|min:3|max:20',
             'txtFname' => 'bail|required',
@@ -56,7 +55,7 @@ class StaffController extends Controller
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
             'txtPhone.numeric' => 'Số Phone phải là số',
             'txtNote.max' => 'Ghi chú không quá 500 ký tự',
-           
+
         ];
         $data = $request->all();
         $validate = Validator::make($data, $rule, $message);
@@ -84,7 +83,7 @@ class StaffController extends Controller
         $idPhotoBack = null;
         $note = $request->input('txtNote');
         $user = auth()->user();
-    //  $dayOfLeave =request(0);
+        //  $dayOfLeave =request(0);
 
         //Photo
         $now = Carbon::now();
@@ -336,7 +335,7 @@ class StaffController extends Controller
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
             'txtPhone.numeric' => 'Số Phone phải là số',
             'txtNote.max' => 'Ghi chú không quá 500 ký tự',
-           
+
         ];
         $data = $request->all();
         $validate = Validator::make($data, $rule, $message);
@@ -373,13 +372,13 @@ class StaffController extends Controller
 
         //Photo
         $now = Carbon::now();
-     
+
             if (request()->hasFile('txtPhoto')) {
                 // random name cho ảnh
                 $file_name_random = function ($key) {
                     $ext = request()->file($key)->getClientOriginalExtension();
                     $str_random = (string)Str::uuid();
-    
+
                     return $str_random . '.' . $ext;
                 };
                 $image = $file_name_random('txtPhoto');
@@ -442,14 +441,14 @@ class StaffController extends Controller
             'createdAt' =>$createdAt,
             'updatedBy' => $user->id,
             "status" => 0,
-        ];   
+        ];
 
         if(!$password) {
             $data_request['password'] = $password_old;
         } else {
             $data_request['password'] = md5($password);
         }
- 
+
         $response = Http::post('http://localhost:8888/staff/update', $data_request);
        // dd($response);
         $body = json_decode($response->body(), true);
