@@ -35,9 +35,13 @@ class SalaryController extends Controller
             $data = $body->data;
         }
 
-        return view('main.salary.details', [
-            'data' => $data,
-        ]);
+        if (count($data) > 0) {
+            return view('main.salary.details', [
+                'data' => $data,
+            ]);
+        }
+
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy ID']);
     }
 
     public function getCreate()
@@ -75,7 +79,7 @@ class SalaryController extends Controller
             'to_date.date_format' => 'Ngày kết thúc sai định dạng: YYYY-MM-DD',
         ];
         $data = $request->all();
-        return response()->json($data);
+
         $validate = Validator::make($data, $rule, $message);
 
         if ($validate->fails()) {

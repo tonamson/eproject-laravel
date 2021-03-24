@@ -65,7 +65,7 @@ class ContractController extends Controller
             'staffId' => 'required',
             'startDate' => 'required|date_format:Y-m-d',
             'endDate' => 'required|date_format:Y-m-d|after_or_equal:startDate',
-            'baseSalary' => 'required|numeric',
+            'baseSalary' => 'required|numeric|min:0',
         ];
         $message = [
             'staffId.required' => 'Mã nhân viên không để rỗng',
@@ -74,8 +74,9 @@ class ContractController extends Controller
             'startDate.date_format' => 'Ngày bắt đầu sai định dạng: YYYY-MM-DD',
             'endDate.date_format' => 'Ngày kết thúc sai định dạng: YYYY-MM-DD',
             'endDate.after_or_equal' => 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
-            'baseSalary.required' => 'Tổng lương không để rỗng',
-            'baseSalary.numeric' => 'Tổng lương chỉ chấp nhận số',
+            'baseSalary.required' => 'Lương không để rỗng',
+            'baseSalary.numeric' => 'lương chỉ chấp nhận số',
+            'baseSalary.min' => 'Lương không nhỏ hơn :min'
         ];
         $data = $request->all();
         $validate = Validator::make($data, $rule, $message);
@@ -92,7 +93,7 @@ class ContractController extends Controller
                 'message' => 'Lưu hợp đồng thành công.'
             ]);
         }
-        return redirect()->back()->with('message', ['type' => 'danger', 'message' => $body->message]);
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => "Lưu hợp đồng thất bại."]);
     }
 
     public function stopContract($id)

@@ -74,10 +74,13 @@
                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="true">Nhân viên</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#allowance" role="tab" aria-controls="allowance" aria-selected="false">Phụ cấp</a>
+                                <a class="nav-link" id="allowance-tab" data-toggle="tab" href="#allowance" role="tab" aria-controls="allowance" aria-selected="false">Phụ cấp</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#insurance" role="tab" aria-controls="insurance" aria-selected="false">Bảo hiểm</a>
+                                <a class="nav-link" id="insurance-tab" data-toggle="tab" href="#insurance" role="tab" aria-controls="insurance" aria-selected="false">Bảo hiểm</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="tax-tab" data-toggle="tab" href="#tax" role="tab" aria-controls="tax" aria-selected="false">Thuế</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
@@ -132,9 +135,10 @@
                                                     <input type="hidden" name="options[{{ $index }}][type]" value="{{ $item->type }}">
                                                     <input type="hidden" name="options[{{ $index }}][key]" value="{{ $item->key }}">
                                                     <input type="hidden" name="options[{{ $index }}][name]" value="{{ $item->name }}">
-                                                    <input type="hidden" name="options[{{ $index }}][have_tax]" value="{{ $item->have_tax }}">
+                                                    <input type="hidden" name="options[{{ $index }}][have_tax]" value="{{ $item->have_tax ? 1 : 0 }}">
                                                     <input type="hidden" name="options[{{ $index }}][unit]" value="{{ $item->unit }}">
                                                     <input type="number" class="form-control" name="options[{{ $index }}][value]" value="{{ $item->value }}">
+                                                    <input type="hidden" name="options[{{ $index }}][min_tax]" value="{{ $item->min_tax }}">
                                                 </td>
                                             </tr>
                                         @endif
@@ -167,8 +171,45 @@
                                                     <input type="hidden" name="options[{{ $index }}][type]" value="{{ $item->type }}">
                                                     <input type="hidden" name="options[{{ $index }}][key]" value="{{ $item->key }}">
                                                     <input type="hidden" name="options[{{ $index }}][name]" value="{{ $item->name }}">
-                                                    <input type="hidden" name="options[{{ $index }}][have_tax]" value="{{ $item->have_tax }}">
+                                                    <input type="hidden" name="options[{{ $index }}][have_tax]" value="{{ $item->have_tax ? 1 : 0 }}">
                                                     <input type="hidden" name="options[{{ $index }}][unit]" value="{{ $item->unit }}">
+                                                    <input type="number" class="form-control" name="options[{{ $index }}][value]" value="{{ $item->value }}">
+                                                    <input type="hidden" name="options[{{ $index }}][min_tax]" value="{{ $item->min_tax }}">
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="tax" role="tabpanel" aria-labelledby="tax-tab">
+                                <table class="table datatable-basic">
+                                    <thead>
+                                    <tr>
+                                        <th>Tên</th>
+                                        <th>Đơn vị tính</th>
+                                        <th>Giá trị</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($listSalaryOption as $index => $item)
+                                        @if($item->type === 'TAX')
+                                            <tr>
+                                                <td>{{ $item->name }}</td>
+                                                <td>
+                                                    @if($item->unit == 'NUMBER')
+                                                        Đồng
+                                                    @elseif($item->unit == 'PERCENT')
+                                                        Phần trăm
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="options[{{ $index }}][type]" value="{{ $item->type }}">
+                                                    <input type="hidden" name="options[{{ $index }}][key]" value="{{ $item->key }}">
+                                                    <input type="hidden" name="options[{{ $index }}][name]" value="{{ $item->name }}">
+                                                    <input type="hidden" name="options[{{ $index }}][have_tax]" value="{{ $item->have_tax ? 1 : 0 }}">
+                                                    <input type="hidden" name="options[{{ $index }}][unit]" value="{{ $item->unit }}">
+                                                    <input type="hidden" name="options[{{ $index }}][min_tax]" value="{{ $item->min_tax }}">
                                                     <input type="number" class="form-control" name="options[{{ $index }}][value]" value="{{ $item->value }}">
                                                 </td>
                                             </tr>

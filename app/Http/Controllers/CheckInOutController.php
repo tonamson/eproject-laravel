@@ -30,6 +30,8 @@ class CheckInOutController extends Controller
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
         $image = $request->input('image_64');
+        $latitude = '10.7863823';
+        $longitude = '106.6641083';
 
         if(empty($image)) {
             return redirect()->back()->with('error', 'Vui lòng chụp hình!');
@@ -145,9 +147,9 @@ class CheckInOutController extends Controller
                     $check = true;
                 }
             }
-            
+
             if(($value['is_approved'] == 1 && $check == true ) or $value['type_day'] == 1) {
-                
+
                 $arr = array();
                 $arr['title'] = $value['note'];
                 $arr['start'] = $value['day_special_from'];
@@ -157,9 +159,9 @@ class CheckInOutController extends Controller
                 } else {
                     $arr['color'] = '#046A38';
                 }
-    
+
                 array_push($calendar, $arr);
-            }     
+            }
         }
 
         $summary = [];

@@ -43,22 +43,23 @@
                             <th>Mã nhân viên</th>
                             <th>Tên nhân viên</th>
                             <th>Tổng công</th>
-                            <th>Lương CB</th>
-                            <th>Lương trong tháng</th>
-                            <th>Lương tăng ca</th>
-                            <th>Các khoản phụ cấp</th>
-                            <th>Các khoản khấu trừ</th>
+                            <th>Lương CB (1)</th>
+                            <th>Lương trong tháng (2)</th>
+                            <th>Lương tăng ca (3)</th>
+                            <th>Các khoản phụ cấp (4)</th>
+                            <th>Các khoản khấu trừ (5)</th>
                             <th>
-                                <p>Thu nhập chịu thuế</p>
-                                <p>= Tổng lương - Các khoản được miễn</p>
+                                <p>Thu nhập chịu thuế (6)</p>
+                                <p>= 2 + 3 + 4 (PC tính thuế) - 4 (PC không tính thuế)</p>
                             </th>
                             <th>
-                                <p>Thu nhập tính thuế</p>
-                                <p>= Thu nhập chịu thuế - Các khoản được trừ (BHXH và các khoản giảm trừ gia cảnh)</p>
+                                <p>Thu nhập tính thuế (7)</p>
+                                <p>= 6 - 5 - (Các khoản giảm trừ gia cảnh)</p>
                             </th>
+                            <th>Thuế TNCC (8)</th>
                             <th>
-                                <p>Lương thực nhận</p>
-                                <p>= Tổng lương + phụ cấp - Các khoản khấu trừ - Thuế TNCN</p>
+                                <p>Lương thực nhận (9)</p>
+                                <p>= 2 + 3 + 4 - 5 - 8</p>
                             </th>
                             <th>Thao tác</th>
                         </tr>
@@ -84,9 +85,10 @@
                                 <td>{{ number_format($item->salaryOt) }}</td> <!-- lương tăng ca -->
                                 <td>{{ number_format($item->totalAllowance) }}</td>
                                 <td>{{ number_format($item->totalInsurance) }}</td>
-                                <td>{{ number_format(0) }}</td>
-                                <td>{{ number_format(0) }}</td>
-                                <td>{{ number_format(0) }}</td>
+                                <td>{{ number_format($item->incomeTax) }}</td>
+                                <td>{{ number_format($item->taxableIncome) }}</td>
+                                <td>{{ number_format($item->personalTax) }}</td>
+                                <td>{{ number_format($item->salaryActuallyReceived) }}</td>
                                 <td>
                                     <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">
                                         Chi tiết lương
@@ -118,19 +120,22 @@
                                         <tr>
                                             <th>Tên nhân viên</th>
                                             <th>Ngày chấm công</th>
-                                            <th>Công chuẩn của tháng</th>
-                                            <th>Lương hợp đồng</th>
-                                            <th>Lương 1 ngày</th>
-                                            <th>Công đã làm</th>
-                                            <th>Thành tiền lương ngày công</th>
-                                            <th>Lương 1 giờ</th>
+                                            <th>Công chuẩn của tháng (1)</th>
+                                            <th>Lương hợp đồng (2)</th>
+                                            <th>Lương 1 ngày (4)</th>
+                                            <th>Công đã làm (5)</th>
+                                            <th>Thành tiền lương ngày công (6)</th>
+                                            <th>Lương 1 giờ (7)</th>
 {{--                                            <th>Hệ số</th>--}}
-                                            <th>Tổng giờ tăng ca</th>
-                                            <th>Tăng ca 150%</th>
-                                            <th>Tăng ca 200%</th>
-                                            <th>Tăng ca 300%</th>
-                                            <th>Thành tiền lương tăng ca</th>
-                                            <th>Tổng lương</th>
+                                            <th>Tổng giờ tăng ca (8)</th>
+                                            <th>Tăng ca 150% (9)</th>
+                                            <th>Tăng ca 200% (10)</th>
+                                            <th>Tăng ca 300% (11)</th>
+                                            <th>
+                                                <p>Thành tiền lương tăng ca (12)</p>
+                                                <p>= </p>
+                                            </th>
+                                            <th>Tổng lương (13)</th>
                                         </tr>
                                         </thead>
                                         <tbody id="dataDetail"></tbody>
@@ -266,7 +271,7 @@
                         dataTable.row.add([
                             `${detail.name}`,
                             `${detail.unit === 'PERCENT' ? '%' : 'VND'}`,
-                            `${Number(detail.value * 100).format()}`,
+                            `${Number(detail.value * 100).toFixed(1)}`,
                             `${Number(detail.value * item.baseSalaryContract).format()}`,
                         ]).draw(false);
                     });
