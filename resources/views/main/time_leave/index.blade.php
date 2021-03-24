@@ -88,9 +88,12 @@
 
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <button class="nav-link active" id="btn_tb_bsc">Bổ sung công</button>
+                    <button class="nav-link active" id="btn_tb_bsc" style="border: 1px solid gainsboro;">Bổ sung công</button>
                 <li class="nav-item">
-                  <button class="nav-link" id="btn_tb_dkp">Đăng kí phép</button>
+                    <button class="nav-link" id="btn_tb_dkp" style="border: 1px solid gainsboro;">Đăng kí phép năm tính lương</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="btn_leave_other" style="border: 1px solid gainsboro;">Đăng kí phép khác</button>
                 </li>
             </ul>
         </div>
@@ -467,6 +470,65 @@
             </tbody>
         </table>
 
+        <table class="table datatable-basic" id="tb_leave_other" style="display: none">
+            <thead>
+                <tr>
+                    <th>Từ ngày </th>
+                    <th>Đến ngày</th>
+                    <th>Loại phép</th>
+                    <th>Ghi chú</th>
+                    <th>Phê duyệt</th>
+                    <th>Sửa / Xóa</th>
+                </tr>
+                    
+            </thead>
+            <tbody>
+                @foreach ($leave_other as $item)
+                    <tr>
+                        <td>{{ $item['fromDate'] }}</td>
+                        <td>{{ $item['toDate'] }}</td>
+                        <td>
+                            <?php 
+                                if($item['typeLeave'] == 2) echo "Nghỉ không lương";
+                                else if($item['typeLeave'] == 3) echo "Nghỉ ốm đau ngắn ngày";
+                                else if($item['typeLeave'] == 4) echo "Nghỉ ốm đau dài ngày";
+                                else if($item['typeLeave'] == 5) echo "Nghỉ thai sản";
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                                if(strlen($item['note']) > 20) echo substr($item['note'], 0, 30) . '...';
+                                else echo $item['note'];    
+                            ?>
+                        </td>
+                        <td>
+                            @if($item['isApproved'] == 0)
+                                <span class="badge badge-warning">Chưa phê duyệt</span>
+                            @elseif($item['isApproved'] == 2)
+                                <span class="badge badge-success">Quản lý đã phê duyệt</span>
+                            @else
+                                <span class="badge badge-primary">Giám đốc đã phê duyệt</span>
+                            @endif
+                        </td>
+                        @if($item['done'] == 1)
+                            <td><span class="badge badge-danger">Đã chốt</span></td>    
+                        @elseif($item['isApproved'] == 0 || ($item['isApproved'] == 2 && auth()->user()->is_manager == 1))
+                            <td>
+                                <div class="from-group d-flex">
+                                    <a class="btn btn-info open-detail-dkp" id="{{ $item['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                    <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $item['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                </div>
+                            </td>
+                        @elseif($item['isApproved'] == 2)
+                            <td>Quản lý đã phê duyệt, chờ giám đốc phê duyệt!</td>
+                        @else
+                            <td>Giám đốc đã phê duyệt, không thể chỉnh sửa!</td>
+                        @endif
+                    </tr>                        
+                @endforeach         
+            </tbody>
+        </table>
+        
         <div id="bsc-modal" class="modal fade" role="dialog"> <!-- modal bsc -->
             <div class="modal-dialog">
               <div class="modal-content">
@@ -552,19 +614,37 @@
         $( "#btn_tb_bsc" ).click(function() {
             $('#tb_dkp').hide();
             $('#tb_dkp_wrapper').hide();
+            $('#tb_leave_other').hide();
+            $('#tb_leave_other_wrapper').hide();
             $('#tb_bsc').show();
             $('#tb_bsc_wrapper').show();
             $(this).addClass('active');
             $('#btn_tb_dkp').removeClass('active');
+            $('#btn_leave_other').removeClass('active');
         });
 
         $( "#btn_tb_dkp" ).click(function() {
             $('#tb_bsc').hide();
             $('#tb_bsc_wrapper').hide();
+            $('#tb_leave_other').hide();
+            $('#tb_leave_other_wrapper').hide();
             $('#tb_dkp').show();
             $('#tb_dkp_wrapper').show();
             $(this).addClass('active');
             $('#btn_tb_bsc').removeClass('active');
+            $('#btn_leave_other').removeClass('active');
+        });
+
+        $( "#btn_leave_other" ).click(function() {
+            $('#tb_bsc').hide();
+            $('#tb_bsc_wrapper').hide();
+            $('#tb_dkp').hide();
+            $('#tb_dkp_wrapper').hide();
+            $('#tb_leave_other').show();
+            $('#tb_leave_other_wrapper').show();
+            $(this).addClass('active');
+            $('#btn_tb_bsc').removeClass('active');
+            $('#btn_tb_dkp').removeClass('active');
         });
 
         $('.open-detail-time-leave').click(function() {

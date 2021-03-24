@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use DateTime;
 
 class TimeleaveController extends Controller
 {
@@ -34,8 +35,14 @@ class TimeleaveController extends Controller
         $response = Http::post('http://localhost:8888/time-leave/list', $data_request);
         $body = json_decode($response->body(), true);
 
+        $data_request_leave_other = ['staff_id' => $user->id, 'month_get' => $date];
+
+        $response = Http::get('http://localhost:8888/leave-other/list', $data_request_leave_other);
+        $leave_other = json_decode($response->body(), true);
+
         return view('main.time_leave.index')
             ->with('data', $body['data'])
+            ->with('leave_other', $leave_other['data'])
             ->with('year', $year)
             ->with('month', $month)
             ->with('staff', $body_get_department['data'])
@@ -308,70 +315,190 @@ class TimeleaveController extends Controller
     {
         $user = auth()->user();
 
-        if($user->day_of_leave == 0) {
-            return redirect()->back()->with('error', 'Bạn đã hết ngày phép');
-        }
+        $type_of_leave = $request->input('type_of_leave');
 
-        $day_leave = $request->input('day_leave');
-        $number_day_leave = $request->input('number_day_leave');
-        $note_dkp = $request->input('note_dkp');
-
-        if(strlen($note_dkp) > 300) {
-            return redirect()->back()->with('error', 'Lý do không được vượt quá 300 kí tự');
-        }
-
-        if($number_day_leave == 1)
-            $time = "08:00:00";
-        else
-            $time = "04:00:00";
-
-        $is_approved = 0;
-        if($user->is_manager == 1) {
-            $is_approved = 2;
-        }
-
-        if(date('w', strtotime($day_leave)) == 6 or date('w', strtotime($day_leave)) == 0) {
-            return redirect()->back()->with('error', 'Đăng kí phép thất bại! ' . $day_leave . ' là Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
-        }
-
-        $check_special_day = [
-            'day_check' => $day_leave
-        ];
-
-        $response = Http::get('http://localhost:8888/special-date/check-day', $check_special_day);
-        $body = json_decode($response->body(), true);
-
-        if($body['data'] == "Yes") {
-            return redirect()->back()->with('error', 'Đăng kí phép thất bại! ' . $day_leave . ' là ngày lễ! Vui lòng chỉnh sửa');
-        }
-        
-        $data_request = [
-            "staff_id" => $user->id,
-            'staff_code' => $user->code,
-            'day_time_leave' => $day_leave,
-            'time' => $time,
-            'type' => true,
-            'note' => $note_dkp,
-            'is_approved' => $is_approved
-        ];
-
-        $response = Http::post('http://localhost:8888/time-leave/addLeave', $data_request);
-        $body = json_decode($response->body(), true);
-
-        if($body['message'] == "Save success") {
-            if($user->department == 2 && $user->is_manager == 1) {
-                return redirect()->back()->with('success', 'Đăng kí phép thành công! Vì là cấp quản lý HR nên đăng kí phép tự động phê duyệt');
-            } else if($user->department == 2) {
-                return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi quản lý phê duyệt');
-            } else {
-                return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi phê duyệt');
+        if($type_of_leave == 0) {
+            if($user->day_of_leave == 0) {
+                return redirect()->back()->with('error', 'Bạn đã hết ngày phép');
             }
-        } 
-        else if($body['data'] == "Added time") {
-            return redirect()->back()->with('error', 'Đăng kí phép thất bại! Bạn đã đi làm và chấm công ngày ' . $day_leave . ' rồi! Vui lòng chỉnh sửa');
-        }
-        else {
-            return redirect()->back()->with('error', 'Đăng kí phép thất bại! Bạn đã Đăng kí phép / Bổ sung công ngày ' . $day_leave . ' rồi! Vui lòng chỉnh sửa');
+    
+            $day_leave = $request->input('day_leave');
+            $number_day_leave = $request->input('number_day_leave');
+            $note_dkp = $request->input('note_dkp');
+    
+            if(strlen($note_dkp) > 300) {
+                return redirect()->back()->with('error', 'Lý do không được vượt quá 300 kí tự');
+            }
+    
+            if($number_day_leave == 1)
+                $time = "08:00:00";
+            else
+                $time = "04:00:00";
+    
+            $is_approved = 0;
+            if($user->is_manager == 1) {
+                $is_approved = 2;
+            }
+    
+            if(date('w', strtotime($day_leave)) == 6 or date('w', strtotime($day_leave)) == 0) {
+                return redirect()->back()->with('error', 'Đăng kí phép thất bại! ' . $day_leave . ' là Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
+            }
+    
+            $check_special_day = [
+                'day_check' => $day_leave
+            ];
+    
+            $response = Http::get('http://localhost:8888/special-date/check-day', $check_special_day);
+            $body = json_decode($response->body(), true);
+    
+            if($body['data'] == "Yes") {
+                return redirect()->back()->with('error', 'Đăng kí phép thất bại! ' . $day_leave . ' là ngày lễ! Vui lòng chỉnh sửa');
+            }
+            
+            $data_request = [
+                "staff_id" => $user->id,
+                'staff_code' => $user->code,
+                'day_time_leave' => $day_leave,
+                'time' => $time,
+                'type' => true,
+                'note' => $note_dkp,
+                'is_approved' => $is_approved
+            ];
+    
+            $response = Http::post('http://localhost:8888/time-leave/addLeave', $data_request);
+            $body = json_decode($response->body(), true);
+    
+            if($body['message'] == "Save success") {
+                if($user->is_manager == 1) {
+                    return redirect()->back()->with('success', 'Đăng kí phép thành công! Vì là cấp quản lý nên đăng kí phép tự động phê duyệt');
+                } else {
+                    return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi phê duyệt');
+                }
+            } 
+            else if($body['data'] == "Added time") {
+                return redirect()->back()->with('error', 'Đăng kí phép thất bại! Bạn đã đi làm và chấm công ngày ' . $day_leave . ' rồi! Vui lòng chỉnh sửa');
+            }
+            else {
+                return redirect()->back()->with('error', 'Đăng kí phép thất bại! Bạn đã Đăng kí phép / Bổ sung công ngày ' . $day_leave . ' rồi! Vui lòng chỉnh sửa');
+            }
+        } else {
+            $day_leave_from = $request->input('day_leave_from');
+            $day_leave_to = $request->input('day_leave_to');
+            $image_leave = $request->input('image_leave');
+            $note_dkp = $request->input('note_dkp');
+
+            if($day_leave_from > $day_leave_to) {
+                return redirect()->back()->with('error', 'Từ ngày không được lớn hơn đến ngày');
+            }
+
+            $data_check = [
+                "staff_id" => $user->id,
+                'day_leave_from' => $day_leave_from,
+                'day_leave_to' => $day_leave_to
+            ];
+
+            $response = Http::post('http://localhost:8888/leave-other/check-list-time-leave', $data_check);
+            $time_leave_exists = json_decode($response->body(), true);
+
+            if(count($time_leave_exists['data']) > 0) {
+                return redirect()->back()->with('error', 'Đã có bổ sung công hoặc đăng kí phép năm tính lương vào trong số ngày đăng kí phép trên! Vui lòng thử lại');
+            }
+
+
+            //Validate day of other leave
+            switch ($type_of_leave) {
+                case '2':
+                    $origin = new DateTime($day_leave_from);
+                    $target = new DateTime($day_leave_to);
+                    $interval = $origin->diff($target);
+                    if($interval->format('%a') > 32) {
+                        return redirect()->back()->with('error', 'Loại phép nghỉ không lương chỉ được đăng kí tối đa 31 ngày');
+                    }
+                    break;
+                case '3':
+                    $origin = new DateTime($day_leave_from);
+                    $target = new DateTime($day_leave_to);
+                    $interval = $origin->diff($target);
+                    if($interval->format('%a') > 6) {
+                        return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau ngắn ngày chỉ được đăng kí tối đa 7 ngày');
+                    }
+                    break;
+                case '4':
+                    $origin = new DateTime($day_leave_from);
+                    $target = new DateTime($day_leave_to);
+                    $interval = $origin->diff($target);
+                    if($interval->format('%a') > 32) {
+                        return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau dài ngày chỉ được đăng kí tối đa 31 ngày');
+                    }
+                    break;
+                case '5':
+                    $origin = new DateTime($day_leave_from);
+                    $target = new DateTime($day_leave_to);
+                    $interval = $origin->diff($target);
+                    if($interval->format('%a') > 184) {
+                        return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau dài ngày chỉ được đăng kí tối đa 6 tháng');
+                    }
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+
+            if(strlen($note_dkp) > 300) {
+                return redirect()->back()->with('error', 'Lý do không được vượt quá 300 kí tự');
+            }
+
+            $is_approved = 0;
+            if($user->is_manager == 1) {
+                $is_approved = 2;
+            }
+
+            //Photo
+            $now = Carbon::now();
+
+            if(request()->hasFile('image_leave')) {
+                // random name cho ảnh
+                $file_name_random = function ($key) {
+                    $ext = request()->file($key)->getClientOriginalExtension();
+                    $str_random = (string)Str::uuid();
+
+                    return $str_random . '.' . $ext;
+                };
+
+                $image = $file_name_random('image_leave');
+                if (request()->file('image_leave')->move('./images/other_leave/' . $now->format('dmY') . '/', $image)) {
+                    // gán path ảnh vào model để lưu
+                    $image_time = '/images/other_leave/' . $now->format('dmY') . '/' . $image;
+                }
+            } else {
+                return redirect()->back()->with('error', 'Vui lòng bổ sung hình ảnh');
+            }
+
+            $data_request = [
+                "staff_id" => $user->id,
+                'type_leave' => $type_of_leave,
+                'day_leave_from' => $day_leave_from,
+                'day_leave_to' => $day_leave_to,
+                'image' => $image_time,
+                'note' => $note_dkp,
+                'is_approved' => $is_approved,
+                'created_at' => date("Y-m-d")
+            ];
+
+            $response = Http::post('http://localhost:8888/leave-other/add', $data_request);
+            $body = json_decode($response->body(), true);
+
+            if($body['message'] == "Save success") {
+                if($user->is_manager == 1) {
+                    return redirect()->back()->with('success', 'Đăng kí phép thành công! Vì là cấp quản lý nên đăng kí phép tự động phê duyệt');
+                } else {
+                    return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi phê duyệt');
+                }
+            }
+            else {
+                return redirect()->back()->with('error', 'Đăng kí phép thất bại!');
+            }
         }
     }
 

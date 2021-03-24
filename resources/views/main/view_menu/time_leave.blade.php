@@ -302,7 +302,7 @@
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('SpecialDateController@requestOverTime') }}">
-                        <i class="icon-8x icon-calendar2"></i>
+                        <i class="icon-8x icon-calendar22"></i>
                         @if(auth()->user()->id == 7)
                             <p>Quản Lý Tăng Ca</p>
                         @else
@@ -358,7 +358,7 @@
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('TimeleaveController@getAllStaffTime') }}">
-                        <i class="icon-8x icon-paragraph-left2"></i>
+                        <i class="icon-8x icon-list"></i>
                         <p>Tổng Hợp Chấm Công</p> 
                     </a>
                 </div>
@@ -368,7 +368,7 @@
             <div class="col-6 col-md-3 text-center col-max">
                 <div class="outer">
                     <a href="{{ action('TimeleaveController@getAllTimeLeave') }}">
-                        <i class="icon-8x icon-paragraph-left2"></i>
+                        <i class="icon-8x icon-list2"></i>
                         <p>Tổng Hợp Công Phép</p> 
                     </a>
                 </div>

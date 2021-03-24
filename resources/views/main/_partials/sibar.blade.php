@@ -178,7 +178,7 @@
                         @endif
                         @if(auth()->user()->is_manager == 1)
                             <a href="{{ action('SpecialDateController@requestOverTime') }}" class="nav-link">
-                                <i class="icon-calendar2"></i>
+                                <i class="icon-calendar22"></i>
                                 @if(auth()->user()->id == 7 or auth()->user()->department == 5)
                                     <span>Quản lý Tăng Ca</span>
                                 @else
@@ -222,13 +222,13 @@
                         @if(auth()->user()->department == 2 or auth()->user()->id == 7)
                             <li class="nav-item">
                                 <a href="{{ action('TimeleaveController@getAllStaffTime') }}" class="nav-link">
-                                    <i class="icon-paragraph-left2"></i>
+                                    <i class="icon-list"></i>
                                     <span>Tổng Hợp Chấm Công</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ action('TimeleaveController@getAllTimeLeave') }}" class="nav-link">
-                                    <i class="icon-paragraph-left2"></i>
+                                    <i class="icon-list2"></i>
                                     <span>Tổng Hợp Công Phép</span>
                                 </a>
                             </li>
