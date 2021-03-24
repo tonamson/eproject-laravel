@@ -496,6 +496,9 @@ class TimeleaveController extends Controller
                     return redirect()->back()->with('success', 'Đăng kí phép thành công! Vui lòng đợi phê duyệt');
                 }
             }
+            else if($body['data'] == "Added time") {
+                return redirect()->back()->with('error', 'Đăng kí phép thất bại! Bạn đã có đi làm và chấm công trong những ngày bạn đăng kí phép rồi! Vui lòng chỉnh sửa');
+            }
             else {
                 return redirect()->back()->with('error', 'Đăng kí phép thất bại!');
             }
@@ -531,6 +534,12 @@ class TimeleaveController extends Controller
         $html.= '<span aria-hidden="true">&times;</span></button></div>';
         $html.= '
             <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Loại phép:</label>
+                    <div class="col-lg-9 col-form-label">
+                        Phép năm tính lương
+                    </div>
+                </div>
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Ngày đăng kí phép:</label>
                     <div class="col-lg-9">
@@ -597,10 +606,13 @@ class TimeleaveController extends Controller
 
         $response = Http::post('http://localhost:8888/time-leave/get-staff-approve', $data_request);
         $body = json_decode($response->body(), true);
-        // dd($body);
+
+        $response = Http::post('http://localhost:8888/leave-other/get-staff-approve', $data_request);
+        $leave_other = json_decode($response->body(), true);
 
         return view('main.time_leave.approve')
             ->with('data', $body['data'])
+            ->with('leave_other', $leave_other['data'])
             ->with('year', $year)
             ->with('month', $month)
             ->with('staff', $body_get_department['data'])
@@ -622,7 +634,7 @@ class TimeleaveController extends Controller
             $title = 'Nhân Viên Bổ Sung Công';
             $day_time_leave = 'Ngày bổ sung công';
         } else {
-            $title = 'Nhân Viên Đăng Kí Phép';
+            $title = 'Nhân Viên Đăng Kí Phép Năm Tính Lương';
             $day_time_leave = 'Ngày đăng kí phép';
         }
 
@@ -670,6 +682,12 @@ class TimeleaveController extends Controller
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Loại phép:</label>
+                    <div class="col-lg-9 col-form-label">
+                        Phép năm tính lương
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-lg-3 col-form-label">'.$day_time_leave.':</label>
                     <div class="col-lg-9 col-form-label">
                         '.$body['data'][0][1].'
@@ -697,7 +715,122 @@ class TimeleaveController extends Controller
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Lý do:</label>
                     <div class="col-lg-9">
-                        <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="10" placeholder="VD: Bận việc gia đình, Đi học, ..." readonly>'.$body['data'][0][4].'</textarea>
+                        <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="5" placeholder="VD: Bận việc gia đình, Đi học, ..." readonly>'.$body['data'][0][4].'</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary">Duyệt</button>
+            </div>
+
+            <script>
+                $(".day_leave_update").daterangepicker({
+                    singleDatePicker: true,
+                    locale: {
+                        format: "YYYY-MM-DD"
+                    }
+                });
+            </script>
+        ';
+       
+        echo $html;
+        die;
+    }
+
+    public function detailOtherLeaveApprove(Request $request)
+    {
+        $id = $request->input('id');
+        
+        $data_request = [
+            "id" => $id
+        ];
+
+        $response = Http::get('http://localhost:8888/leave-other/detail-time-staff-approve', $data_request);
+        $body = json_decode($response->body(), true);
+
+        if($body['data'][0][3] == 2) {
+            $type_leave = 'Nghỉ không lương';
+        } else if($body['data'][0][3] == 3){
+            $type_leave = 'Nghỉ không lương';
+        } else if($body['data'][0][3] == 4){
+            $type_leave = 'Nghỉ không lương';
+        } else {
+            $type_leave = 'Nghỉ không lương';
+        }
+
+        if($body['data'][0][5] == 1) {
+            $approved = '
+                Giám đốc đã duyệt
+            ';
+        } else if($body['data'][0][5] == 2) {
+            $approved = '
+                Quản lý đã duyệt
+            ';
+        } else {
+            $approved = '
+                Chưa duyệt
+            ';
+        }
+        
+        $html = "<input type='hidden' name='id' value='". $id ."'>";
+        $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Nhân Viên Đăng Kí Phép</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+        $html.= '<span aria-hidden="true">&times;</span></button></div>';
+        $html.= '
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Tên nhân viên:</label>
+                    <div class="col-lg-9 col-form-label">
+                        '.$body['data'][0][6]. ' ' .$body['data'][0][7].'
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Mã nhân viên:</label>
+                    <div class="col-lg-9 col-form-label">
+                        '.$body['data'][0][8].'
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Phòng ban:</label>
+                    <div class="col-lg-9 col-form-label">
+                        '.$body['data'][0][11].'
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Loại phép:</label>
+                    <div class="col-lg-9 col-form-label">
+                        '.$type_leave.'
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Từ ngày:</label>
+                    <div class="col-lg-9 col-form-label">
+                        '.$body['data'][0][1].'
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Đến ngày:</label>
+                    <div class="col-lg-9 col-form-label">
+                        '.$body['data'][0][2].'
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Hình ảnh:</label>
+                    <div class="col-lg-9">
+                        <img src="..'.$body['data'][0][12].'" alt=""  style="max-height: 250px; max-width: 200px">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Trạng thái:</label>
+                    <div class="col-lg-9 col-form-label">
+                        '.$approved.'
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Lý do:</label>
+                    <div class="col-lg-9">
+                        <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="5" placeholder="VD: Bận việc gia đình, Đi học, ..." readonly>'.$body['data'][0][4].'</textarea>
                     </div>
                 </div>
             </div>
@@ -738,6 +871,34 @@ class TimeleaveController extends Controller
         ];
 
         $response = Http::post('http://localhost:8888/time-leave/approve-time-leave', $data_request);
+        $body = json_decode($response->body(), true);
+
+        if($body['message'] == "Approve success") {
+            return redirect()->back()->with('success', 'Duyệt thành công!');
+        } 
+        else {
+            return redirect()->back()->with('error', 'Duyệt thất bại');
+        }
+    }
+
+    public function approvedLeaveOther(Request $request)
+    {
+        $id = $request->input('id');
+        $is_approved = 2;
+        $date = null;
+
+        if(auth()->user()->id == 7) {
+            $is_approved = 1;
+            $date = date('Y-m-d');
+        }
+        
+        $data_request = [
+            "id" => $id,
+            "is_approved" => $is_approved,
+            "day_approved" => $date
+        ];
+
+        $response = Http::post('http://localhost:8888/leave-other/approve-time-leave', $data_request);
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Approve success") {

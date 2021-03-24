@@ -113,7 +113,11 @@ Route::middleware(['check_login'])->group(function () {
 
             Route::get('/detail-staff-approve', 'TimeleaveController@detailStaffApprove');
 
+            Route::get('/detail-other-leave-approve', 'TimeleaveController@detailOtherLeaveApprove');          
+
             Route::post('/approve-time-leave', 'TimeleaveController@approvedTimeLeave');
+
+            Route::post('/approve-leave-other', 'TimeleaveController@approvedLeaveOther');
 
         });
 
