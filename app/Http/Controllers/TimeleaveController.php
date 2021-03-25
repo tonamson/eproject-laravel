@@ -476,6 +476,7 @@ class TimeleaveController extends Controller
             }
 
             $data_request = [
+                'id_update' => null,
                 "staff_id" => $user->id,
                 'type_leave' => $type_of_leave,
                 'day_leave_from' => $day_leave_from,
@@ -561,6 +562,29 @@ class TimeleaveController extends Controller
                         <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="10" placeholder="VD: Bận việc gia đình, Đi học, ..." required>'.$body['data']['note'].'</textarea>
                     </div>
                 </div>
+
+                <div class="des-leave des-leave0">
+                    <h3>Mô tả chi tiết</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Số ngày nghỉ tối đa một lần</b>
+                                <p>1 ngày / 1 lần đăng kí</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Thông tin phép</b>
+                                <p>
+                                    <b>1. Diễn giải: </b>Nhân viên sử dụng ngày phép năm để sử dụng việc riêng. <br>
+                                    <b>2. Đối tượng áp dụng: </b> Nhân viên đã ký hợp đồng chính thức với Công ty. <br>
+                                    <b>3. Hồ sơ yêu cầu: </b> Không. <br>
+                                    <b>4. Lương: </b> Được công ty trả lương những ngày nghỉ.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -579,6 +603,371 @@ class TimeleaveController extends Controller
        
         echo $html;
         die;
+    }
+
+    public function detailLeaveOther(Request $request)
+    {
+        $id = $request->input('id');
+        
+        $data_request = [
+            "id" => $id
+        ];
+
+        $response = Http::get('http://localhost:8888/leave-other/get-detail', $data_request);
+        $body = json_decode($response->body(), true);
+        // dd($body['data']);
+
+        if($body['data']['typeLeave'] == 2){
+            $option1 = '<option value="2" selected>Nghỉ không lương</option>';
+            $display1 = '';
+        } else {
+            $option1 = '<option value="2">Nghỉ không lương</option>';
+            $display1 = 'style = "display: none"';
+        }
+
+        if($body['data']['typeLeave'] == 3) {
+            $option2 = '<option value="3" selected>Nghỉ ốm đau ngắn ngày</option>';
+            $display2 = '';
+        } else {
+            $option2 = '<option value="3">Nghỉ ốm đau ngắn ngày</option>';
+            $display2 = 'style = "display: none"';
+        }                     
+
+        if($body['data']['typeLeave'] == 4){
+            $option3 = '<option value="4" selected>Nghỉ ốm dài ngày</option>';
+            $display3 = '';
+        }else {
+            $option3 = '<option value="4">Nghỉ ốm dài ngày</option>';
+            $display3 = 'style = "display: none"';
+        }
+            
+
+        if($body['data']['typeLeave'] == 5) {
+            $option4 = '<option value="5" selected>Nghỉ thai sản</option>';
+            $display4 = '';
+        } else {
+            $option4 = '<option value="5">Nghỉ thai sản</option>';
+            $display4 = 'style = "display: none"';
+        }            
+        
+        $html = "<input type='hidden' name='id_update' value='". $id ."'>";
+        $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Đăng Kí Phép</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+        $html.= '<span aria-hidden="true">&times;</span></button></div>';
+        $html.= '
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Loại phép:</label>
+                    <div class="col-lg-9">
+                        <select class="form-control type_of_leave" name="type_of_leave" id="type_of_leave" required>
+                            '.$option1.'
+                            '.$option2.'
+                            '.$option3.'
+                            '.$option4.'
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Từ ngày:</label>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control day_leave_update" name="day_leave_from" value="'.$body['data']['fromDate'].'" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Đến ngày:</label>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control day_leave_update" name="day_leave_to" value="'.$body['data']['toDate'].'" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Hình ảnh cũ:</label>
+                    <div class="col-lg-9">
+                        <img src="..'.$body['data']['image'].'" alt="" style="max-height: 250px; max-width: 200px">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Hình ảnh mới:</label>
+                    <div class="col-lg-9">
+                        <input type="file" class="" name="image_leave">
+                        <input type="hidden" class="" name="txtImageOld" value="'.$body['data']['image'].'">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">Lý do:</label>
+                    <div class="col-lg-9">
+                        <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="3" placeholder="VD: Bận việc gia đình, Đi học, ..." required>'.$body['data']['note'].'</textarea>
+                    </div>
+                </div>
+
+                <div class="des-leave des-leave2" '.$display1.'>
+                    <h3>Mô tả chi tiết</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Số ngày nghỉ tối đa một lần</b>
+                                <p>1 tháng</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Thông tin phép</b>
+                                <p>
+                                    <b>1. Diễn giải: </b>Nhân viên đã dùng hết phép năm trong 01 chu kỳ và khi không đáp ứng các điều kiện để sử dụng các loại phép còn lại (nghỉ việc riêng hưởng lương, nghỉ phép bảo hiểm). <br>
+                                    <b>2. Đối tượng áp dụng: </b> Áp dụng cho tất cả nhân viên có nhu cầu nghỉ việc riêng (ông/ bà mất, nghỉ ốm đau không có chỉ định của bác sĩ và giấy nghỉ hưởng chế độ bảo hiểm, nghỉ khám nghĩa vụ quận sự...) <br>
+                                    <b>3. Hồ sơ yêu cầu: </b> Không. <br>
+                                    <b>4. Lương: </b> không được hưởng lương các ngày nghỉ. <br>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="des-leave des-leave3" '.$display2.'>
+                    <h3>Mô tả chi tiết</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Số ngày nghỉ tối đa một lần</b>
+                                <p>7 ngày</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Thông tin phép</b>
+                                <p>
+                                    <b>1. Diễn giải: </b>Bản thân nghỉ ốm đau theo chỉ định của Bác sĩ và được bệnh viện cấp giấy nghỉ hưởng bảo hiểm xã hội (theo mẫu C65) hoặc giấy ra viện trong thời gian nghỉ. <br>
+                                    <b>2. Đối tượng áp dụng: </b> Nhân viên đang tham gia Bảo hiểm bắt buộc tại Công ty. <br>
+                                    <b>3. Hồ sơ yêu cầu: </b> Yêu cầu gửi Giấy nghỉ hưởng bảo hiểm xã hội (theo mẫu C65)/ giấy ra viện bản chính. Cơ quan BHXH chỉ thanh toán tiền lương các ngày nghỉ khi nhân viên gửi đầy đủ các hồ sơ hợp lệ theo yêu cầu về cho Công Ty.. <br>
+                                    <b>4. Lương: </b> Cơ quan BHXH tính & trả tiền lương các ngày nghỉ căn cứ trên hồ sơ mà cá nhân nộp lên cho Công ty (tính theo mức lương tham gia Bảo hiểm bắt buộc hàng tháng). <br>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="des-leave des-leave4" '.$display3.'>
+                    <h3>Mô tả chi tiết</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Số ngày nghỉ tối đa một lần</b>
+                                <p>1 tháng</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Thông tin phép</b>
+                                <p>
+                                    <b>1. Diễn giải: </b>Chỉ áp dụng đối với các cá nhân mắc các bệnh thuộc danh mục các bệnh cần chữa trị dài ngày do Bộ Y Tế ban hành theo chỉ định của bác sĩ, bệnh viên đăng ký khám chữa bệnh. <br>
+                                    <b>2. Đối tượng áp dụng: </b> Nhân viên đang tham gia Bảo hiểm bắt buộc tại Công ty. <br>
+                                    <b>3. Hồ sơ yêu cầu: </b> Yêu cầu gửi Giấy ra viện (bản chính) đối với trường hợp điều trị nội trú; Biên bản hội chẩn của bệnh viện (bản chính hoặc bản sao có chứng thực và Giấy xác nhận đợt điều trị (bản chính) trú đối với trường hợp điều trị ngoại trú. Cơ quan BHXH chỉ thanh toán tiền lương các ngày nghỉ khi nhân viên gửi đầy đủ các hồ sơ hợp lệ theo yêu cầu về cho Công Ty. <br>
+                                    <b>4. Lương: </b> Cơ quan BHXH tính & trả tiền lương các ngày nghỉ căn cứ trên hồ sơ mà cá nhân nộp lên cho Công ty (tính theo mức lương tham gia Bảo hiểm bắt buộc hàng tháng)
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="des-leave des-leave5" '.$display4.'>
+                    <h3>Mô tả chi tiết</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Số ngày nghỉ tối đa một lần</b>
+                                <p>6 tháng</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Thông tin phép</b>
+                                <p>
+                                    <b>1. Diễn giải: </b>Nghỉ sinh con hưởng chế độ Thai sản theo quy định của Nhà nước. <br>
+                                    <b>2. Đối tượng áp dụng: </b> Nhân viên có thời gian tham gia bảo hiểm xã hội từ đủ 6 tháng trở lên trong thời gian 12 tháng trước khi sinh con hoặc nhận con nuôi. <br>
+                                    <b>3. Hồ sơ yêu cầu: </b> Yêu cầu gửi Giấy khai sinh /chứng sinh /trích lục giấy khai của con (01 bản sao chứng thực, 01 bản/ 01con). Cơ quan BHXH chỉ thanh toán tiền lương các ngày nghỉ khi nhân viên gửi đầy đủ các hồ sơ hợp lệ theo yêu cầu về cho Công Ty. thời gian gửi hồ sơ: ngay sau khi có đủ giấy tờ và không vượt quá thời gian nghỉ thai sản. <br>
+                                    <b>4. Lương: </b> Không được Công ty trả lương những ngày nghỉ, chỉ được cơ quan bảo hiểm tính & trả tiền chế độ (dựa trên mức lương tham gia Bảo hiểm bắt buộc hàng tháng) các ngày nghỉ căn cứ trên hồ sơ mà cá nhân nộp lên cho Công ty
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary">Sửa</button>
+            </div>
+
+            <script>
+                $(".day_leave_update").daterangepicker({
+                    singleDatePicker: true,
+                    locale: {
+                        format: "YYYY-MM-DD"
+                    }
+                });
+
+                $(".type_of_leave").change(function() {
+                    let type_of_leave = $(this).val();
+                    if(type_of_leave == 0) {
+                        $(".leave-basic").show();
+                        $(".leave-long").hide();
+                    } else {
+                        $(".leave-basic").hide();
+                        $(".leave-long").show();
+                    }
+        
+                    switch (type_of_leave) {
+                        case "0":
+                            $(".des-leave").hide();
+                            $(".des-leave0").show();
+                            break;
+                        case "2":
+                            $(".des-leave").hide();
+                            $(".des-leave2").show();
+                            break;
+                        case "3":
+                            $(".des-leave").hide();
+                            $(".des-leave3").show();
+                            break;
+                        case "4":
+                            $(".des-leave").hide();
+                            $(".des-leave4").show();
+                            break;
+                        case "5":
+                            $(".des-leave").hide();
+                            $(".des-leave5").show();
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            </script>
+        ';
+       
+        echo $html;
+        die;
+    }
+
+    public function updateLeaveOther(Request $request)
+    {
+        $user = auth()->user();
+
+        $type_of_leave = $request->input('type_of_leave');
+        $id_update = $request->input('id_update');
+        $note_bsc = $request->input('note_bsc_update');
+        $image_time = $request->input('txtImageOld') ? $request->input('txtImageOld') : '';
+        $day_leave_from = $request->input('day_leave_from');
+        $day_leave_to = $request->input('day_leave_to');
+
+        if($day_leave_from > $day_leave_to) {
+            return redirect()->back()->with('error', 'Từ ngày không được lớn hơn đến ngày');
+        }
+
+        $data_check = [
+            "staff_id" => $user->id,
+            'day_leave_from' => $day_leave_from,
+            'day_leave_to' => $day_leave_to
+        ];
+
+        $response = Http::post('http://localhost:8888/leave-other/check-list-time-leave', $data_check);
+        $time_leave_exists = json_decode($response->body(), true);
+
+        if(count($time_leave_exists['data']) > 0) {
+            return redirect()->back()->with('error', 'Đã có bổ sung công hoặc đăng kí phép năm tính lương vào trong số ngày đăng kí phép trên! Vui lòng thử lại');
+        }
+
+        //Validate day of other leave
+        switch ($type_of_leave) {
+            case '2':
+                $origin = new DateTime($day_leave_from);
+                $target = new DateTime($day_leave_to);
+                $interval = $origin->diff($target);
+                if($interval->format('%a') > 32) {
+                    return redirect()->back()->with('error', 'Loại phép nghỉ không lương chỉ được đăng kí tối đa 31 ngày');
+                }
+                break;
+            case '3':
+                $origin = new DateTime($day_leave_from);
+                $target = new DateTime($day_leave_to);
+                $interval = $origin->diff($target);
+                if($interval->format('%a') > 6) {
+                    return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau ngắn ngày chỉ được đăng kí tối đa 7 ngày');
+                }
+                break;
+            case '4':
+                $origin = new DateTime($day_leave_from);
+                $target = new DateTime($day_leave_to);
+                $interval = $origin->diff($target);
+                if($interval->format('%a') > 32) {
+                    return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau dài ngày chỉ được đăng kí tối đa 31 ngày');
+                }
+                break;
+            case '5':
+                $origin = new DateTime($day_leave_from);
+                $target = new DateTime($day_leave_to);
+                $interval = $origin->diff($target);
+                if($interval->format('%a') > 184) {
+                    return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau dài ngày chỉ được đăng kí tối đa 6 tháng');
+                }
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        if(strlen($note_bsc) > 300) {
+            return redirect()->back()->with('error', 'Lý do không được vượt quá 300 kí tự');
+        }
+
+        $is_approved = 0;
+        if($user->is_manager == 1) {
+            $is_approved = 2;
+        }
+
+        //Photo
+        $now = Carbon::now();
+
+        if(request()->hasFile('image_leave')) {
+            // random name cho ảnh
+            $file_name_random = function ($key) {
+                $ext = request()->file($key)->getClientOriginalExtension();
+                $str_random = (string)Str::uuid();
+
+                return $str_random . '.' . $ext;
+            };
+
+            $image = $file_name_random('image_leave');
+            if (request()->file('image_leave')->move('./images/other_leave/' . $now->format('dmY') . '/', $image)) {
+                // gán path ảnh vào model để lưu
+                $image_time = '/images/other_leave/' . $now->format('dmY') . '/' . $image;
+            }
+        }
+
+        $data_request = [
+            'id_update' => $id_update,
+            "staff_id" => $user->id,
+            'type_leave' => $type_of_leave,
+            'day_leave_from' => $day_leave_from,
+            'day_leave_to' => $day_leave_to,
+            'image' => $image_time,
+            'note' => $note_bsc,
+            'is_approved' => $is_approved,
+            'created_at' => date("Y-m-d")
+        ];
+
+        $response = Http::post('http://localhost:8888/leave-other/add', $data_request);
+        $body = json_decode($response->body(), true);
+
+        if($body['message'] == "Save success") {
+            return redirect()->back()->with('success', 'Chỉnh sửa thành công! Vui lòng đợi phê duyệt');
+        }
+        else if($body['data'] == "Added time") {
+            return redirect()->back()->with('error', 'Chỉnh sửa đăng kí phép thất bại! Bạn đã có đi làm và chấm công trong những ngày bạn đăng kí phép rồi! Vui lòng chỉnh sửa');
+        }
+        else {
+            return redirect()->back()->with('error', 'Chỉnh sửa đăng kí phép thất bại!');
+        }
     }
 
     //Approve time leave
@@ -617,6 +1006,19 @@ class TimeleaveController extends Controller
             ->with('month', $month)
             ->with('staff', $body_get_department['data'])
             ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Duyệt Công Phép', 'url' => '#']]);  
+    }
+
+    public function deleteLeaveOther(Request $request)
+    {
+        $id = $request->input('id');
+        
+        $data_request = [
+            "id" => $id
+        ];
+
+        Http::post('http://localhost:8888/leave-other/delete-leave-other', $data_request);
+
+        return redirect()->back()->with('success', 'Xóa thành công!');
     }
 
     public function detailStaffApprove(Request $request)
@@ -752,11 +1154,11 @@ class TimeleaveController extends Controller
         if($body['data'][0][3] == 2) {
             $type_leave = 'Nghỉ không lương';
         } else if($body['data'][0][3] == 3){
-            $type_leave = 'Nghỉ không lương';
+            $type_leave = 'Nghỉ chữa bệnh ngắn ngày';
         } else if($body['data'][0][3] == 4){
-            $type_leave = 'Nghỉ không lương';
+            $type_leave = 'Nghỉ chữa bệnh dài ngày';
         } else {
-            $type_leave = 'Nghỉ không lương';
+            $type_leave = 'Nghỉ thai sản';
         }
 
         if($body['data'][0][5] == 1) {
@@ -898,7 +1300,7 @@ class TimeleaveController extends Controller
             "day_approved" => $date
         ];
 
-        $response = Http::post('http://localhost:8888/leave-other/approve-time-leave', $data_request);
+        $response = Http::post('http://localhost:8888/leave-other/approve-leave-other', $data_request);
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Approve success") {
