@@ -204,8 +204,31 @@ class TimeleaveController extends Controller
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label">Lý do:</label>
                     <div class="col-lg-9">
-                        <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="10" placeholder="VD: Quên check in, Quên check out, ..." required>'.$body['data']['note'].'</textarea>
+                        <textarea class="form-control" name="note_bsc_update" id="note_bsc_update" cols="20" rows="5" placeholder="VD: Quên check in, Quên check out, ..." required>'.$body['data']['note'].'</textarea>
                     </div>
+                </div>
+
+                <div class="des-bsc">
+                    <h3>Mô tả chi tiết</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Số ngày công bổ sung tối đa một lần</b>
+                                <p>1 công hoặc 0.5 công / 1 lần bổ sung</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Thông tin bổ sung công</b>
+                                <p>
+                                    <b>1. Diễn giải: </b>Nhân viên sử dụng để bổ sung công cho những ngày có đi làm nhưng quên chấm công ra vào. Được cộng bù công nếu quản lý phòng ban và giám đốc phê duyệt. <br>
+                                    <b>2. Đối tượng áp dụng: </b> Nhân viên đã ký hợp đồng chính thức với Công ty. <br>
+                                    <b>3. Hồ sơ yêu cầu: </b> Không. <br>
+                                    <b>4. Lương: </b> Được công ty trả lương những ngày có đi làm nhưng quên chấm công.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class="modal-footer">
