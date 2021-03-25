@@ -500,6 +500,9 @@ class TimeleaveController extends Controller
             else if($body['data'] == "Added time") {
                 return redirect()->back()->with('error', 'Đăng kí phép thất bại! Bạn đã có đi làm và chấm công trong những ngày bạn đăng kí phép rồi! Vui lòng chỉnh sửa');
             }
+            else if($body['data'] == "Duplicate leave") {
+                return redirect()->back()->with('error', 'Đăng kí phép thất bại! Bạn không thể đăng kí phép chồng chéo nhau! Vui lòng chỉnh sửa');
+            }
             else {
                 return redirect()->back()->with('error', 'Đăng kí phép thất bại!');
             }
@@ -965,6 +968,9 @@ class TimeleaveController extends Controller
         else if($body['data'] == "Added time") {
             return redirect()->back()->with('error', 'Chỉnh sửa đăng kí phép thất bại! Bạn đã có đi làm và chấm công trong những ngày bạn đăng kí phép rồi! Vui lòng chỉnh sửa');
         }
+        else if($body['data'] == "Duplicate leave") {
+            return redirect()->back()->with('error', 'Chỉnh sửa đăng kí phép thất bại! Bạn không thể đăng kí phép chồng chéo nhau! Vui lòng chỉnh sửa');
+        }
         else {
             return redirect()->back()->with('error', 'Chỉnh sửa đăng kí phép thất bại!');
         }
@@ -1427,9 +1433,9 @@ class TimeleaveController extends Controller
         $date = $year . '-' . $month . '-' . '01';
         $data_request = ['y_m' => $date];
 
-        $data_request = ['department' => 5, 'day_time_leave' => $date, 'is_manager' => 1, 'staff_id' => 5];
+        $data_request = ['month_get' => $date, 'staff_id' => $staff_id];
 
-        $response = Http::post('http://localhost:8888/time-leave/get-staff-approve', $data_request);
+        $response = Http::get('http://localhost:8888/time-leave/detail-time-leave-all', $data_request);
         $body = json_decode($response->body(), true);
 
         $html = "";
@@ -1441,15 +1447,33 @@ class TimeleaveController extends Controller
 
                 $time_leave['is_manager'] == 1 ? $manager = "Quản lý" : $manager = "Nhân viên";
                 $time_leave['day_of_week'] !== 1 ? $day_of_week = "Thứ " . $time_leave['day_of_week'] : $day_of_week = "Chủ Nhật";
+                $time_leave['day_of_week'] == null ? $day_of_week = "" : $day_of_week = $day_of_week;
                 $time_leave['special_date_id'] !== null ? $day_of_week .= "(Ngày lễ)" : '';
                 $time_leave['time'] == "08:00:00" ? $time = '1' : $time = '0.5';
+                $time_leave['time'] == null ? $time = '' : $time = $time;
                 $time_leave['time'] == "08:00:00" ? $time_multi = 1 * $time_leave['multiply'] . '' : $time_multi = 0.5 * $time_leave['multiply'];
-                if(strlen($time_leave['note']) > 20) {
-                    $note = substr($time_leave['note'], 0, 30) . '...';
-                } else {
-                    $note = $time_leave['note'];
+                $time_leave['time'] == null ? $time_multi = '' : $time_multi = $time_multi;
+
+                switch ($time_leave['type']) {
+                    case '1':
+                        $type = "Đăng kí phép (Phép năm tính lương)";
+                        break;
+                    case '2':
+                        $type = "Đăng kí phép (Nghỉ không lương)";
+                        break;
+                    case '3':
+                        $type = "Đăng kí phép (Nghỉ ốm đau ngắn ngày)";
+                        break;
+                    case '4':
+                        $type = "Đăng kí phép (Nghỉ ốm dài ngày)";
+                        break;
+                    case '5':
+                        $type = "Đăng kí phép (Nghỉ thai sản)";
+                        break;
+                    default:
+                        $type = "Bổ sung công";
+                        break;
                 }
-                $time_leave['type'] == 0 ? $type = "Bổ sung công" : $type = "Đăng kí phép";
 
                 if($time_leave['is_approved'] == 0)
                     $approve = '<span class="badge badge-warning">Chưa phê duyệt</span>';
@@ -1468,7 +1492,6 @@ class TimeleaveController extends Controller
                     <td>". $type ."</td>
                     <td>". $time ."</td>
                     <td>". $time_multi ."</td>
-                    <td>". $note ."</td>
                     <td>". $approve ."</td>
                 </tr>";
             }
