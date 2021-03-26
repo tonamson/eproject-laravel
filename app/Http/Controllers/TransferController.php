@@ -247,6 +247,105 @@ class TransferController extends Controller
         die;
     }
 
+    public function detail1(Request $request)
+    {
+        $id = $request->input('id');
+        
+        $data_request = [
+            "id" => $id
+        ];
+
+        $response = Http::get('http://localhost:8888/transfer/detail', $data_request);
+        $body = json_decode($response->body(), true);
+
+        $data_request_staff = [
+            "id" => $body['data']['staffId']
+        ];
+
+        $response_staff = Http::get('http://localhost:8888/staff/one', $data_request_staff);
+        $body_staff = json_decode($response_staff->body(), true);
+
+        $data_request_old_department = ['id' => $body_staff['data']['department']];
+
+        $response_old_department = Http::get('http://localhost:8888/department/detail', $data_request_old_department);
+        $department_old = json_decode($response_old_department->body(), true);
+        $department_old_name = $department_old['data']['name'];
+
+        $response = Http::get(config('app.api_url') . '/staff/list', []);
+        $listStaff = json_decode($response->body(), false);
+
+        $response = Http::get('http://localhost:8888/department/list');
+        $body_department = json_decode($response->body(), true);
+        $data_department = $body_department['data'];
+
+        $html_list_staff = '';
+        foreach ($listStaff->data as $staff) {
+            if($body['data']['staffId'] == $staff->id) {
+                $html_list_staff .= '<option value="'.$staff->id.'" selected>'.$staff->firstname .' '. $staff->lastname.'</option>';
+            }
+        }
+
+        $html_list_department = '';
+        foreach ($data_department as $department) {
+            if($body['data']['newDepartment'] == $department['id']) {
+                $html_list_department .= '<option value="'.$department['id'].'" selected>'.$department['name'].'</option>';
+            } else {
+                $html_list_department .= '<option value="'.$department['id'].'">'.$department['name'].'</option>';
+            }
+        }
+           
+
+        $html = '<input type="hidden" name="id_update" value="'.$id.'">';
+        $html.= '
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Chi Tiết Điều Chuyển</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Tên nhân viên</label>
+                <div class="col-lg-9">
+                    <select class="form-control select-search select_staff_transfer" name="staff_id_update"  id="selected_staff" readonly="true">
+                        '.$html_list_staff.'
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Phòng ban hiện tại:</label>
+                <div class="col-lg-9">
+                    <select class="form-control old_department" name="old_department_update" readonly="true">
+                        <option value="'.$id.'">'.$department_old_name.'</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
+                <div class="col-lg-9">
+                    <select class="form-control new_department" name="new_department_update">
+                        '.$html_list_department.'
+                    </select>
+                </div>   
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Ghi chú:</label>
+                <div class="col-lg-9" >
+                    <textarea class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        </div>
+        ';
+       
+        echo $html;
+        die;
+    }
+
     public function update(Request $request)
     {
         $user = auth()->user();
@@ -297,6 +396,7 @@ class TransferController extends Controller
 
         $response = Http::get('http://localhost:8888/transfer/approve', $data_request);
         $body = json_decode($response->body(), true);
+        dd($data_request);
 
         if($body['data'] == "Approve Success") {
             return redirect()->back()->with('success', 'Phê duyệt thành công, khi quản lý còn lại và Giám đốc phê duyệt, nhân viên sẽ chuyển phòng ban!');

@@ -48,6 +48,7 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/delete-transfer', 'TransferController@delete');
 
         Route::get('/detail-transfer', 'TransferController@detail');
+        Route::get('/detail-transfer1', 'TransferController@detail1');
 
         Route::post('/update-transfer', 'TransferController@update');
 

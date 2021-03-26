@@ -157,15 +157,16 @@
                     <th>Tên nhân viên</th>
                     <th>Phòng ban hiện tại</th>
                     <th>Phòng ban điều chuyển</th>
+                    <th>Lương đề xuất</th>
                     <th>Quản lý phòng ban hiện tại phê duyệt</th>
                     <th>Quản lý phòng ban điều chuyển phê duyệt</th>
                     <th>Giám đốc phê duyệt</th>
-                    <th>Ghi chú</th>
-                    <th>Ngày tạo</th>
                     <th class="text-center">Sửa / Xóa</th>
+                    <th>Chi tiết</th>
                 </tr>
             </thead>
             <tbody>
+       
                 <?php $count = 1; ?>
                 @if(auth()->user()->is_manager == 1 and auth()->user()->department ==2)
                 @foreach ($data as $transfer)
@@ -174,6 +175,8 @@
                         <td><?php echo $transfer['staff_transfer'] ?></td>
                         <td><?php echo $transfer['old_department_name'] ?></td>
                         <td><?php echo $transfer['new_department_name'] ?></td>
+                        
+                        <td><?php echo $transfer['new_salary'] ?></td>
                         <td>
                             <?php echo $transfer['old_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
                         </td>
@@ -183,13 +186,6 @@
                         <td>
                             <?php echo $transfer['manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
                         </td>
-                        <td style="max-width: 160px;"> 
-                            <?php 
-                                if(strlen($transfer['note']) > 40) echo substr($transfer['note'], 0, 40) . '...';
-                                else echo $transfer['note'];
-                            ?>
-                        </td>
-                        <td><?php echo $transfer['created_at'] ?></td>
                         @if(auth()->user()->department == 2 )
                             @if($transfer['old_manager_approved'] == 0 && $transfer['new_manager_approved'] == 0)
                                 <td>
@@ -237,6 +233,11 @@
                                 </div>
                             </td>
                         @endif
+                        <td>
+                            <div class="from-group d-flex">
+                                <a class="btn btn-info open-detail-transfer1" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach 
 
@@ -442,6 +443,29 @@
                     }
                 });
             });
+
+            $('.open-detail-transfer1').click(function() {
+                var id = $(this).attr('id');
+
+                $.ajax({
+                    url: '{{ action('TransferController@detail1') }}',
+                    Type: 'POST',
+                    datatype: 'text',
+                    data:
+                    {
+                        id: id,
+                    },
+                    cache: false,
+                    success: function (data)
+                    {
+                        console.log(data);
+                        $('#html_pending').empty().append(data);
+                        $('#bsc-modal').modal();
+                    }
+                });
+            });
+       
+           
 
             $( ".select_staff_transfer" ).change(function() {
                 var old_department = $('option:selected', this).attr('old_department');
