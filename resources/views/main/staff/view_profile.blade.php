@@ -27,6 +27,14 @@
             .infomation-staff {
                 margin-left: 80px;
             }
+
+            .ml-1920-5 {
+                margin-left: 3.75rem !important;
+            }
+
+            .mr-1920-5 {
+                margin-right: 3.75rem !important;
+            }
         }
 
     </style>
@@ -34,7 +42,7 @@
 
 @section('content')
 
-<div class="row ml-5 mr-5">
+<div class="row mr-lg-1 ml-1920-5 mr-1920-5">
     <div class="col-lg-4">
         <div class="wrapper" style="border: 1px solid gray">
             {{-- @dd($data[0]); --}}

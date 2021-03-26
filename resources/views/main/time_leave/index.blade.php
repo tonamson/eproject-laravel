@@ -140,6 +140,29 @@
                                     <textarea class="form-control" name="note_bsc" id="note_bsc" cols="20" rows="10" placeholder="VD: Quên check in, Quên check out, ..." required></textarea>
                                 </div>
                             </div>
+
+                            <div class="des-bsc">
+                                <h3>Mô tả chi tiết</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>
+                                            <b>Số ngày công bổ sung tối đa một lần</b>
+                                            <p>1 công hoặc 0.5 công / 1 lần bổ sung</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Thông tin bổ sung công</b>
+                                            <p>
+                                                <b>1. Diễn giải: </b>Nhân viên sử dụng để bổ sung công cho những ngày có đi làm nhưng quên chấm công ra vào. Được cộng bù công nếu quản lý phòng ban và giám đốc phê duyệt. <br>
+                                                <b>2. Đối tượng áp dụng: </b> Nhân viên đã ký hợp đồng chính thức với Công ty. <br>
+                                                <b>3. Hồ sơ yêu cầu: </b> Không. <br>
+                                                <b>4. Lương: </b> Được công ty trả lương những ngày có đi làm nhưng quên chấm công.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -166,7 +189,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Loại phép:</label>
                                 <div class="col-lg-9">
-                                    <select class="form-control" name="type_of_leave" id="type_of_leave" required>
+                                    <select class="form-control type_of_leave" name="type_of_leave" id="type_of_leave" required>
                                         <option value="0" selected>Phép năm tính lương</option>
                                         <option value="2">Nghỉ không lương</option>
                                         <option value="3">Nghỉ ốm đau ngắn ngày</option>
@@ -515,8 +538,8 @@
                         @elseif($item['isApproved'] == 0 || ($item['isApproved'] == 2 && auth()->user()->is_manager == 1))
                             <td>
                                 <div class="from-group d-flex">
-                                    <a class="btn btn-info open-detail-dkp" id="{{ $item['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                    <a href="{{ action('TimeleaveController@deleteTime') }}?id={{ $item['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                    <a class="btn btn-info open-detail-leave-other" id="{{ $item['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
+                                    <a href="{{ action('TimeleaveController@deleteLeaveOther') }}?id={{ $item['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                 </div>
                             </td>
                         @elseif($item['isApproved'] == 2)
@@ -528,7 +551,7 @@
                 @endforeach         
             </tbody>
         </table>
-        
+
         <div id="bsc-modal" class="modal fade" role="dialog"> <!-- modal bsc -->
             <div class="modal-dialog">
               <div class="modal-content">
@@ -548,6 +571,19 @@
                 <form action="{{ action('TimeleaveController@updateTime') }}" method="post" class="form-horizontal" enctype="multipart/form-data">
                     @csrf
                     <div id="html_pending">
+                        
+                    </div>
+                </form> <!-- end form -->
+              </div>
+            </div>
+        </div> <!-- end modal dkp -->
+
+        <div id="dkp-leave-other" class="modal fade" role="dialog"> <!-- modal dkp -->
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form action="{{ action('TimeleaveController@updateLeaveOther') }}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    @csrf
+                    <div id="html_pending3">
                         
                     </div>
                 </form> <!-- end form -->
@@ -575,7 +611,7 @@
             }
         });
 
-        $('#type_of_leave').change(function() {
+        $('.type_of_leave').change(function() {
             let type_of_leave = $(this).val();
             if(type_of_leave == 0) {
                 $('.leave-basic').show();
@@ -685,6 +721,27 @@
                     console.log(data);
                     $('#html_pending').empty().append(data);
                     $('#bsc-modal').modal();
+                }
+            });
+        });
+
+        $('.open-detail-leave-other').click(function() {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '{{ action('TimeleaveController@detailLeaveOther') }}',
+                Type: 'POST',
+                datatype: 'text',
+                data:
+                {
+                    id: id,
+                },
+                cache: false,
+                success: function (data)
+                {
+                    console.log(data);
+                    $('#html_pending3').empty().append(data);
+                    $('#dkp-leave-other').modal();
                 }
             });
         });

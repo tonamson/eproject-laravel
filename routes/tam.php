@@ -108,6 +108,12 @@ Route::middleware(['check_login'])->group(function () {
 
         Route::post('/done-leave', 'TimeleaveController@doneLeave');
 
+        Route::get('/detail-leave-other', 'TimeleaveController@detailLeaveOther');
+
+        Route::post('/update-leave-other', 'TimeleaveController@updateLeaveOther');
+
+        Route::get('/delete-leave-other', 'TimeleaveController@deleteLeaveOther');   
+
         // Approve time leave
         Route::middleware(['check_hr_or_manager'])->group(function () {
             Route::get('/approve-time-leave', 'TimeleaveController@approveTimeLeave');

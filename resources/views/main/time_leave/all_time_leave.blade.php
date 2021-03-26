@@ -122,7 +122,6 @@
                                 <th>Loại </th>
                                 <th>Ngày công</th>
                                 <th>Ngày công được tính</th>
-                                <th>Ghi chú</th>
                                 <th>Phê duyệt</th>
                             </tr>
                         </thead>

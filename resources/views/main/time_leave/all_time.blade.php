@@ -67,10 +67,10 @@
                 <th>Tên nhân viên</th>
                 <th>Phòng ban</th>
                 <th>Chức vụ</th>
-                <th>Tổng công chấm công được tính</th>
-                <th>Tổng công bổ sung đã duyệt</th>
-                <th>Tổng công đăng kí phép đã duyệt</th>
-                <th>Tổng công ngày lễ</th>
+                <th>Công chấm công</th>
+                <th>Công bổ sung đã duyệt</th>
+                <th>Công đăng kí phép đã duyệt</th>
+                <th>Công ngày lễ</th>
                 <th style="background-color: #ffffe7">Tổng công</th>
             </tr>
             </thead>

@@ -157,14 +157,17 @@
                                 @endif
                             </td>
                             <td>
-                                @if(date("Y-m-d") > $special_date['day_special_to'])
+                                <?php
+                                    $date_check = date("Y-m-d", strtotime('+2 days', strtotime($special_date['day_special_to'])));   
+                                ?>
+                                @if(date("Y-m-d") > $date_check)
                                     @if($special_date['detail_id'])
                                         <a href="{{ action('TimeSpecialController@details') }}?id_special_date={{ $special_date['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Chi tiết</a>
                                     @else
                                         <a href="{{ action('TimeSpecialController@create') }}?id={{ $special_date['id'] }}" class="btn btn-warning ml-2" style="color: white; cursor: pointer;">Bổ sung</a>
                                     @endif
                                 @else
-                                    <span class="">Kết thúc lễ mới được bổ sung công lễ!</span>
+                                    <span class="">Sau kết thúc lễ 3 ngày mới được bổ sung công lễ!</span>
                                 @endif
                             </td>
                         </tr>
