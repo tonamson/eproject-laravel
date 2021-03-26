@@ -80,7 +80,6 @@ class SalaryController extends Controller
         ];
         $data = $request->all();
         $data['staffs'] = array_values($data['staffs']);
-        return response()->json($data);
 
         $validate = Validator::make($data, $rule, $message);
 
