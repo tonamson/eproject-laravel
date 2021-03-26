@@ -67,13 +67,13 @@
                 <th>Tên nhân viên</th>
                 <th>Phòng ban</th>
                 <th>Chức vụ</th>
-                <th>Thời gian làm việc</th>
-                <th>Thời gian đi trễ</th>
-                <th>Thời gian về sớm</th>
-                <th>Thời gian tăng ca</th>
-                <th>Ngày thường làm việc</th>
-                <th>Ngày nghỉ làm việc</th>
-                <th>Ngày lễ làm việc</th>
+                <th>Làm việc</th>
+                <th>Đi trễ</th>
+                <th>Về sớm</th>
+                <th>Tăng ca</th>
+                <th>Ngày thường</th>
+                <th>Ngày nghỉ</th>
+                <th>Ngày lễ</th>
                 <th>Tổng công</th>
                 <th style="background-color: #ffffe7">Tổng công được tính</th>
                 <th>Chi tiết</th>
