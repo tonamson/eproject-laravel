@@ -59,6 +59,9 @@
                     </div>
                 </div>
             </form>
+            <div class="export">
+                <a href ="{{ action('ExportController@exportStaffTime') }}?y_m={{ $y_m }}" class="btn btn-success export" id="export-button"> Export file </a>
+            </div>
         </div>
 
         <table class="table datatable-basic">

@@ -1490,13 +1490,12 @@ class TimeleaveController extends Controller
         $response = Http::get('http://localhost:8888/time-leave/summary-staff-time', $data_request);
         $summary = json_decode($response->body(), true);
 
-        // dd($summary);
-
         return view('main.time_leave.all_staff_time')
             ->with('data', $body['data'])
             ->with('summary', $summary['data'])
             ->with('year', $year)
             ->with('month', $month)
+            ->with('y_m', $date)
             ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tổng hợp chấm công', 'url' => '#']]);
     }
 
@@ -1571,6 +1570,7 @@ class TimeleaveController extends Controller
         ->with('summary', $summary['data'])
         ->with('year', $year)
         ->with('month', $month)
+        ->with('y_m', $date)
         ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Tổng hợp công phép', 'url' => '#']]);
     }
 
@@ -1623,6 +1623,12 @@ class TimeleaveController extends Controller
                         break;
                     case '5':
                         $type = "Đăng kí phép (Nghỉ thai sản)";
+                        break;
+                    case '6':
+                        $type = "Đăng kí phép (Nghỉ kết hôn)";
+                        break;
+                    case '7':
+                        $type = "Đăng kí phép (Nghỉ ma chay)";
                         break;
                     default:
                         $type = "Bổ sung công";

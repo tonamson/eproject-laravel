@@ -166,4 +166,8 @@ Route::middleware(['check_login'])->group(function () {
 
         });
     });
+
+    Route::get('export-staff-time', 'ExportController@exportStaffTime')->name('exportStaffTime');
+    Route::get('export-time-leave', 'ExportController@exportTimeLeave')->name('exportTimeLeave');
+    Route::get('export-special-date', 'ExportController@exportSpecialDate')->name('exportSpecialDate');
 });
