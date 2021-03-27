@@ -56,204 +56,308 @@
 		                	</div>
 	                	</div>
 					</div>
-                    @if (\Session::has('success'))
-                        <div class="">
-                            <div class="alert alert-success">
-                                {!! \Session::get('success') !!}
-                            </div>
-                        </div>
-                     @endif
-
-                    @if (\Session::has('error'))
-                        <div class="">
-                            <div class="alert alert-danger">
-                                {!! \Session::get('error') !!}
-                            </div>
-                        </div>
-                    @endif
-
-                    @if($errors->any())
-                    <div class="alert alert-danger border-0 alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                        <p><b>Dữ liệu đầu vào không chính xác:</b></p>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
 					<div class="card-body">
-						<form action="{{ route('postAddStaff') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-							<div class="row">
-                            <div class="col-md-6">
-									<fieldset>
-					                	<legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Imformation</legend>
+                        <form action="{{ route('postAddStaff') }}" method="post" enctype="multipart/form-data">
+                            @if(session('message'))
+                                <div class="alert alert-{{ session('message') }} border-0 alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                                    {{ session('message') }}
+                                </div>
+                            @endif
+            
+                            @if($errors->any())
+                                <div class="alert alert-danger border-0 alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                                    <p><b>Dữ liệu đầu vào không chính xác:</b></p>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            @csrf
+                        
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="true">Nhân viên</a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link" id="allowance-tab" data-toggle="tab" href="#allowance" role="tab" aria-controls="allowance" aria-selected="false">Bằng cấp</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab">
+                                            <table class="table datatable-basic">
+                                                @csrf
+                                                <div class="row">
+                                                <div class="col-md-6">
+                                                        <fieldset>
+                                                            <legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Thông tin</legend>
+                    
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Mã Nhân viên:(*)</label>
+                                                                        <input type="text" class="form-control" name="txtCode" value="{{ old('txtCode') }}" require  placeholder="Nhập Mã Nhân viên">
+                                                                    </div>
+                                                                </div>
+                    
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Phân Quyền:(*)</label>
+                                                                        <!-- <input type="text" class="form-control" name="txtGender"> -->
+                                                                        <select class="form-control" name="txtisManager" color="red" >
+                                                                            <option value="0">Nhân viên</option>
+                                                                            <option value="1">Quản lý</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                    
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Họ nhân viên:</label>
+                                                                        <input type="text" class="form-control" name="txtLname" value="{{ old('txtLname') }}" placeholder="Nhập Họ">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Tên Nhân viên:(*)</label>
+                                                                        <input type="text" class="form-control" name="txtFname" value="{{ old('txtFname') }}" require  placeholder="Nhập Tên">
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                    
+                                                            <div class="row">
+                                                            <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Phòng Ban:(*)</label>
+                                                                        <select class="form-control form-control-select2" name="txtDepartment" value="{{ old('txtDepartment') }}" color="red"  data-fouc>
+                                                                        @foreach($data_department as $dep)
+                                                                        <option value="{{ $dep['id'] }}">{{ $dep['name'] }}</option>
+                                                                        @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Ngày sinh:</label>
+                                                                      <input type="Date" class="form-control" name="txtDob"  value="{{ old('txtDob') }}">
+                                                                    </div>
+                                                                </div>
+                                                            
+                                                            </div>
+                    
+                                                            <div class="row">
+                                                            <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Ngày Vào:(*)</label>
+                                                                        <input type="Date" class="form-control" name="txtJoinat" value="{{ old('txtJoinat') }}">
+                                                                    </div>
+                                                                </div>
+                                                            
+                    
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Giới tính:(*)</label>
+                                                                        <select class="form-control" name="txtGender" color="red" >
+                                                                            <option value="1">Nam</option>
+                                                                            <option value="0">Nữ</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                    
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Khu vực:(*)</label>
+                                                                        <!-- <input type="text" class="form-control" name="txtGender"> -->
+                                                                        <select id="province" class="form-control form-control-select2" color="red"  data-fouc >
+                                                                        @foreach($data_reg as $reg)
+                                                                        <option value="{{$reg['id']}}">{{ $reg['name'] }}</option>
+                                                                        @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                    
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Thành Phố/Huyện/Xã:(*)</label>
+                                                                        <select id="district" class="form-control form-control-select2" name="txtRegional" color="red" data-fouc >
+                                                                        @foreach($data_district as $district)
+                                                                        <option value="{{$district['id']}}">{{ $district['name'] }}</option>
+                                                                        @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                    
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Điện thoại:</label>
+                                                                        <input type="number" class="form-control" name="txtPhone" value="{{ old('txtPhone') }}" placeholder="Nhập số điện thoại">
+                                                                    </div>
+                                                                </div>
+                    
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Email:</label>
+                                                                        <input type="text" class="form-control" name="txtEmail" value="{{ old('txtEmail') }}" placeholder="Nhập Email abc12@exam.com">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                    
+                                                        </fieldset>
+                                                    </div>
+                    
+                                                    <div class="col-md-6">
+                                                        <fieldset>
+                                                            <legend class="font-weight-semibold"><i class="icon-paperplane mr-2"></i> Hình ảnh</legend>
+                    
+                                                            <div class="form-group" hidden>
+                                                                <label>Mật Khẩu:(*)</label>
+                                                                <input type="password" class="form-control" name="txtPass"  value="<?php echo md5(123123);?>" require>
+                                                            </div>
+                    
+                                                            <div class="form-group">
+                                                                <label>CMND:(*)</label>
+                                                                <input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" value="{{ old('txtIDNumber') }}"  require>
+                                                            </div>
+                    
+                                                            <div class="form-group">
+                                                                <label>Hình ảnh:</label>
+                                                                <input type="file" class="form-input-styled" name="txtPhoto" data-fouc>
+                                                            </div>
+                    
+                                                            <div class="form-group">
+                                                                <label>Mặt trước CMND:</label>
+                                                                <input type="file" class="form-input-styled" name="txtIDPhoto" data-fouc>
+                                                            </div>
+                    
+                                                            <div class="form-group">
+                                                                <label>Mặt sau CMND:</label>
+                                                                <input type="file" class="form-input-styled"  name="txtIDPhoto2" data-fouc>
+                                                            </div>
+                    
+                                                            <div class="form-group">
+                                                                <label>Ghi chú:</label>
+                                                                <textarea rows="5" cols="5" class="form-control" name="txtNote" value="{{ old('txtNote') }}" placeholder="Nhập Ghi chú" ></textarea>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                                
+                                            </table>
+                                        </div>
+                                        {{-- TAB 2 --}}
+                                        <div class="tab-pane fade" id="allowance" role="tabpanel" aria-labelledby="allowance-tab">
+                                            <table class="table datatable-basic">
+                                                @csrf
+                                                <div class="row">
+                                                <div class="col-md-6">
+                                                        <fieldset>
+                                                            <legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Thông tin</legend>
+                    
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                <label>ID Nhân viên:(*)</label>
+                                                                <select class="form-control" name="txtStaffID" color="red">
+                                                                    @foreach($data_staff as $staff)
+                                                                    <option value="{{ $staff['id'] }}">{{ $staff['lastname'] }} {{ $staff['firstname'] }} || {{ $staff['id'] }} </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Cấp Bậc:</label>
+                                                                       <input type="text" class="form-control" name="txtLevel" value="{{ old('txtLevel') }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                    
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Tên Cấp Bậc:</label>
+                                                                    <select id="txtLevelName" class="form-control form-control-select2"  name="txtLevelName" color="red"  data-fouc >
+                                                                        <option value="Tiểu học">Tiểu học</option>
+                                                                        <option value="Trung học cơ sở">THCS</option>
+                                                                        <option value="Trung học phổ thông">THPT</option>
+                                                                        <option value="Đại học">Đại học</option>
+                                                                        <option value="Thạc sĩ">Thạc sĩ</option>
+                                                                        <option value="Tiến sĩ">Tiến sĩ</option>
+                                                                        <option value="Phó giáo sư">Phó Giáo sư</option>
+                                                                        <option value="Giáo sư">Giáo sư</option>
+                                                                        <option value="Khác">Khác</option>
+                                                                    </select>
+                                                                    </div>
+                                                                </div>
+                    
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Tên Trường:(chữ hoa*)</label>
+                                                                    <input type="text" class="form-control uppercaseText" id="txtSchool" name="txtSchool" value="{{ old('txtSchool') }}" require>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                    
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Chuyên ngành:(*)</label>
+                                                                    <input type="text" class="form-control" name="txtFieldOfStudy" value="{{ old('txtFieldOfStudy') }}" require>
+                                                                    </div>
+                                                                </div>
+                    
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Năm tốt nghiện:(*)</label>
+                                                                    <input type="text" class="form-control" name="txtGraduatedYear" value="{{ old('txtGraduatedYear') }}" require>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                    
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Xếp loại:</label>
+                                                                    <input type="text" class="form-control" name="txtGrade"  value="{{ old('txtGrade') }}" >
+                                                                    </div>
+                                                                </div>
+                    
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                    <label>Hình thức học:</label>
+                                                                    <input type="text" class="form-control" name="txtModeOf"  value="{{ old('txtModeOf') }}" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                    
+                                                           
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </table>
+                                        </div>                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-success" type="submit">Tạo mới <i class="icon-paperplane ml-2"></i></button>
+                                    <button type="reset" class="btn btn-primary">Nhập lại <i class="icon-paperplane ml-2"></i></button>
+                                </div>
+                            </div>
+                        </form>
 
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label>Mã Nhân viên:(*)</label>
-													<input type="text" class="form-control" name="txtCode" value="{{ old('txtCode') }}" require  placeholder="Nhập Mã Nhân viên">
-												</div>
-											</div>
-
-                                            <div class="col-md-6">
-												<div class="form-group">
-                                                <label>Phân Quyền:(*)</label>
-                                                    <!-- <input type="text" class="form-control" name="txtGender"> -->
-                                                    <select class="form-control" name="txtisManager" color="red" >
-                                                        <option value="0">Nhân viên</option>
-                                                        <option value="1">Quản lý</option>
-                                                    </select>
-					                            </div>
-											</div>
-										</div>
-
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-                                                    <label>Họ nhân viên:</label>
-                                                    <input type="text" class="form-control" name="txtLname" value="{{ old('txtLname') }}" placeholder="Nhập Họ">
-												</div>
-											</div>
-                                            <div class="col-md-6">
-												<div class="form-group">
-                                                    <label>Tên Nhân viên:(*)</label>
-                                                    <input type="text" class="form-control" name="txtFname" value="{{ old('txtFname') }}" require  placeholder="Nhập Tên">
-												</div>
-											</div>
-											
-										</div>
-
-										<div class="row">
-                                        <div class="col-md-6">
-												<div class="form-group">
-                                                <label>Phòng Ban:(*)</label>
-                                                    <select class="form-control form-control-select2" name="txtDepartment" value="{{ old('txtDepartment') }}" color="red"  data-fouc>
-                                                    @foreach($data_department as $dep)
-                                                    <option value="{{ $dep['id'] }}">{{ $dep['name'] }}</option>
-                                                    @endforeach
-                                                    </select>
-												</div>
-											</div>
-                                            
-                                            <div class="col-md-6">
-												<div class="form-group">
-                                                <label>Ngày sinh:</label>
-                                                  <input type="Date" class="form-control" name="txtDob"  value="{{ old('txtDob') }}">
-					                            </div>
-											</div>
-										
-										</div>
-
-                                        <div class="row">
-                                        <div class="col-md-6">
-												<div class="form-group">
-                                                    <label>Ngày Vào:(*)</label>
-                                                    <input type="Date" class="form-control" name="txtJoinat" value="{{ old('txtJoinat') }}">
-												</div>
-											</div>
-										
-
-											<div class="col-md-6">
-												<div class="form-group">
-                                                    <label>Giới tính:(*)</label>
-                                                    <select class="form-control" name="txtGender" color="red" >
-                                                        <option value="1">Nam</option>
-                                                        <option value="0">Nữ</option>
-                                                    </select>
-												</div>
-											</div>
-										</div>
-
-                                        <div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-                                                <label>Khu vực:(*)</label>
-                                                    <!-- <input type="text" class="form-control" name="txtGender"> -->
-                                                    <select id="province" class="form-control form-control-select2" color="red"  data-fouc >
-                                                    @foreach($data_reg as $reg)
-                                                    <option value="{{$reg['id']}}">{{ $reg['name'] }}</option>
-                                                    @endforeach
-                                                    </select>
-					                            </div>
-											</div>
-
-											<div class="col-md-6">
-												<div class="form-group">
-                                                <label>Thành Phố/Huyện/Xã:(*)</label>
-                                                    <select id="district" class="form-control form-control-select2" name="txtRegional" color="red" data-fouc >
-                                                    @foreach($data_district as $district)
-                                                    <option value="{{$district['id']}}">{{ $district['name'] }}</option>
-                                                    @endforeach
-                                                    </select>
-												</div>
-											</div>
-										</div>
-
-                                        <div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-                                                    <label>Điện thoại:</label>
-                                                    <input type="number" class="form-control" name="txtPhone" value="{{ old('txtPhone') }}" placeholder="Nhập số điện thoại">
-					                            </div>
-											</div>
-
-											<div class="col-md-6">
-												<div class="form-group">
-                                                    <label>Email:</label>
-                                                    <input type="text" class="form-control" name="txtEmail" value="{{ old('txtEmail') }}" placeholder="Nhập Email abc12@exam.com">
-												</div>
-											</div>
-										</div>
-
-									</fieldset>
-								</div>
-
-								<div class="col-md-6">
-									<fieldset>
-										<legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Imformation</legend>
-
-										<div class="form-group" hidden>
-                                            <label>Mật Khẩu:(*)</label>
-											<input type="password" class="form-control" name="txtPass"  value="<?php echo md5(123123);?>" require>
-										</div>
-
-										<div class="form-group">
-                                            <label>CMND:(*)</label>
-											<input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" value="{{ old('txtIDNumber') }}"  require>
-										</div>
-
-										<div class="form-group">
-                                            <label>Hình ảnh:</label>
-											<input type="file" class="form-input-styled" name="txtPhoto" data-fouc>
-										</div>
-
-                                        <div class="form-group">
-                                            <label>Mặt trước CMND:</label>
-											<input type="file" class="form-input-styled" name="txtIDPhoto" data-fouc>
-										</div>
-
-                                        <div class="form-group">
-                                            <label>Mặt sau CMND:</label>
-											<input type="file" class="form-input-styled"  name="txtIDPhoto2" data-fouc>
-										</div>
-
-										<div class="form-group">
-											<label>Ghi chú:</label>
-											<textarea rows="5" cols="5" class="form-control" name="txtNote" value="{{ old('txtNote') }}" placeholder="Nhập Ghi chú" ></textarea>
-										</div>
-									</fieldset>
-								</div>
-							</div>
-							<div class="text-right">
-								<button type="submit" class="btn btn-primary">Lưu <i class="icon-paperplane ml-2"></i></button>
-                                <button type="reset" class="btn btn-success">Reset <i class="icon-paperplane ml-2"></i></button>
-							</div>
-						</form>
 					</div>
 				</div>
 				<!-- /2 columns form -->

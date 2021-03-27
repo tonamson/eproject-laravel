@@ -240,17 +240,17 @@
 
                                         <div class="form-group">
                                             <label>Hình ảnh:</label>
-                                            <p><img width="70px" height="70px" src="{{ asset($data['photo']) }}"></p>
+                                            <p><img width="100px" height="120px" src="{{ asset($data['photo']) }}"></p>
 										</div>
 
 										<div class="form-group">
                                             <label>Mặt trước CMND:</label>
-                                            <p><img width="70px" height="70px" src="{{ asset($data['idPhoto']) }}"></p>
+                                            <p><img width="200px" height="135px" src="{{ asset($data['idPhoto']) }}"></p>
 										</div>
 
                                         <div class="form-group">
                                             <label>Mặt sau CMND:</label>
-                                            <p><img width="70px" height="70px" src="{{ asset($data['idPhotoBack']) }}"></p>
+                                            <p><img width="200px" height="135px" src="{{ asset($data['idPhotoBack']) }}"></p>
 										</div>
 
 										<div class="form-group">

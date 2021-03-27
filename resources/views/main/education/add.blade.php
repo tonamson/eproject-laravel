@@ -113,6 +113,7 @@
 											<div class="col-md-6">
 												<div class="form-group">
                                                 <label>Tên Cấp Bậc:</label>
+                                                
                                                 <input type="text" class="form-control" name="txtLevelName" value="{{ old('txtLevelName') }}">
 												</div>
 											</div>
