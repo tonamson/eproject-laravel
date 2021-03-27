@@ -60,7 +60,7 @@
                 </div>
             </form>
             <div class="export">
-                <a href ="{{ action('ExportController@exportStaffTime') }}?y_m={{ $y_m }}" class="btn btn-success export" id="export-button"> Export file </a>
+                <a href ="{{ action('ExportController@exportStaffTime') }}?y_m={{ $y_m }}" class="btn btn-success export" id="export-button"> Xuất Excel </a>
             </div>
         </div>
 

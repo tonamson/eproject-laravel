@@ -69,7 +69,7 @@
 
             <div class="form-group d-flex">
                 <div class="export">
-                    <a href ="{{ action('ExportController@exportSpecialDate') }}?y={{ $year }}" class="btn btn-success export" id="export-button"> Export file </a>
+                    <a href ="{{ action('ExportController@exportSpecialDate') }}?y={{ $year }}" class="btn btn-success export" id="export-button"> Xuất Excel </a>
                </div>
                <div class=" ml-1">
                     <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Tạo ngày lễ mới</button>

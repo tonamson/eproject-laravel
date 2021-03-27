@@ -60,7 +60,7 @@
                 </div>
             </form>
             <div class="export">
-                <a href ="{{ action('ExportController@exportTimeLeave') }}?y_m={{ $y_m }}" class="btn btn-success export" id="export-button"> Export file </a>
+                <a href ="{{ action('ExportController@exportTimeLeave') }}?y_m={{ $y_m }}" class="btn btn-success export" id="export-button"> Xuất Excel </a>
            </div>
         </div>
 
@@ -74,7 +74,6 @@
                 <th>Bổ sung công</th>
                 <th>Bổ sung công đã duyệt</th>
                 <th style="background-color: #ffffe7">Số công bổ sung đã duyệt</th>
-
                 <th>Đăng kí phép</th>
                 <th>Đăng kí phép đã duyệt</th>
                 <th style="background-color: #ffffe7">Số công đăng kí phép đã duyệt</th>
