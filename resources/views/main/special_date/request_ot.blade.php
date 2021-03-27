@@ -33,6 +33,14 @@
 	<script src="{{ asset('global_assets/js/plugins/forms/selects/select2.min.js') }}"></script>
 	<script src="{{ asset('global_assets/js/demo_pages/form_select2.js') }}"></script>
 
+    <!-- Theme JS files -->
+	<script src="{{ asset('global_assets/js/plugins/forms/styling/uniform.min.js') }}"></script>
+	<script src="{{ asset('global_assets/js/plugins/notifications/pnotify.min.js') }}"></script>
+	<script src="{{ asset('global_assets/js/plugins/forms/selects/bootstrap_multiselect.js') }}"></script>
+
+	<script src="{{ asset('global_assets/js/demo_pages/form_multiselect.js') }}"></script>
+	<!-- /theme JS files -->
+
 	<!-- /theme JS files -->
 @endsection
 
@@ -66,7 +74,7 @@
                         <input class="form-control" type="number" value="<?php echo $year ?>" name="year" id="year">
                     </div>
                     <div class="ml-3">
-                        <input class="form-control btn btn-primary" type="submit" value="Search">
+                        <input class="form-control btn btn-primary" type="submit" value="Tìm kiếm">
                     </div>
                 </div>
             </form>
@@ -111,13 +119,10 @@
                             <div class="form-group row">
                                 <label class="col-lg-4 col-form-label">Chọn nhân viên tăng ca: </label>
                                 <div class="col-lg-8">
-                                    <select name="staff_ot[]" multiple="multiple" class="form-control select" data-fouc>
-                                        <optgroup label="Phòng ban {{ $staff[0][2] }}">
-                                            <option value="all">Tất cả nhân viên trong phòng ban</option>
-                                            @foreach ($data_staff as $item)
-                                                <option value="{{ $item['id'] }}">{{ $item['firstname'] }} {{ $item['lastname'] }} || {{ $item['code'] }}</option>
-                                            @endforeach
-										</optgroup>					
+                                    <select name="staff_ot[]" class="form-control multiselect-full-featured" multiple="multiple" data-fouc>
+                                        @foreach ($data_staff as $item)
+                                            <option value="{{ $item['id'] }}">{{ $item['firstname'] }} {{ $item['lastname'] }} || {{ $item['code'] }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

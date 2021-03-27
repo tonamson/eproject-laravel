@@ -84,7 +84,7 @@
                                 <input class="form-control" type="number" value="<?php echo $year ?>" name="year" id="year">
                             </div>
                             <div class="ml-3">
-                                <input class="form-control btn btn-primary" type="submit" value="Search">
+                                <input class="form-control btn btn-primary" type="submit" value="Tìm kiếm">
                             </div>
                         </div>
                     </div>
@@ -354,6 +354,8 @@
                                 else if($item['type_leave'] == 3) echo "Nghỉ ốm đau ngắn ngày";
                                 else if($item['type_leave'] == 4) echo "Nghỉ ốm đau dài ngày";
                                 else if($item['type_leave'] == 5) echo "Nghỉ thai sản";
+                                else if($item['type_leave'] == 6) echo "Nghỉ kết hôn";
+                                else if($item['type_leave'] == 7) echo "Nghỉ ma chay";
                             ?>
                         </td>
                         <td>
@@ -428,7 +430,7 @@
             console.log(year);
             Swal.fire({
                 title: 'Bạn có chắc chắn muốn chốt công phép từ ' + from_date + ' đến ' + to_date + '?',
-                text: "Công phép sau khi chốt sẽ không thể điều chỉnh. Đồng thời hoàn phép cho những đăng kí phép của nhân viên chưa được duyệt!",
+                text: "Công phép sau khi chốt sẽ không thể điều chỉnh. Đồng thời hoàn phép cho những đăng kí phép năm tính lương của nhân viên chưa được duyệt!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Có',

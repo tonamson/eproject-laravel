@@ -92,7 +92,7 @@ var BootstrapMultiselect = function() {
         // Full featured example
         $('.multiselect-full-featured').multiselect({
             includeSelectAllOption: true,
-            enableFiltering: true
+            enableFiltering: true,
         });
 
         // With max height
@@ -445,7 +445,7 @@ var BootstrapMultiselect = function() {
         $('.multiselect-order-options').multiselect({
             buttonText: function(options) {
                 if (options.length == 0) {
-                    return 'None selected';
+                    return 'Chưa chọn';
                 }
                 else if (options.length > 3) {
                     return options.length + ' selected';

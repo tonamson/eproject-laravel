@@ -66,14 +66,15 @@ class SpecialDateController extends Controller
         }
 
         if($type_day == 1) {
-            if(date('w', strtotime($day_special_from)) == 6 or date('w', strtotime($day_special_from)) == 0) {
+            $day_from_check = $day_special_from;
+            if(date('w', strtotime($day_from_check)) == 6 or date('w', strtotime($day_from_check)) == 0) {
                 return redirect()->back()->with('error', 'Không được đặt ngày lễ có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
             }
-            while($day_special_from < $day_special_to) {
-                if(date('w', strtotime($day_special_from)) == 6 or date('w', strtotime($day_special_from)) == 0) {
+            while($day_from_check <= $day_special_to) {
+                if(date('w', strtotime($day_from_check)) == 6 or date('w', strtotime($day_from_check)) == 0) {
                     return redirect()->back()->with('error', 'Không được đặt ngày lễ có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
                 }
-                $day_special_from = date('Y-m-d', strtotime($day_special_from. ' + 1 days'));
+                $day_from_check = date('Y-m-d', strtotime($day_from_check. ' + 1 days'));
             }            
         }
 
@@ -177,10 +178,7 @@ class SpecialDateController extends Controller
         $check_staff = explode(',', $body['data']['staffOt']);
         
 
-        if($body['data']['staffOt'] == 'all') 
-            $options = "<option value='all' selected>Tất cả nhân viên trong phòng ban</option>";
-        else
-            $options = "<option value='all' >Tất cả nhân viên trong phòng ban</option>";
+        $options = "";
 
         foreach ($data_staff['data'] as $item) {
             $selected = "";
@@ -196,7 +194,7 @@ class SpecialDateController extends Controller
             $change_staff = '<div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Nhân viên tăng ca: </label>
                                 <div class="col-lg-9">
-                                    <select name="staff_ot[]" multiple="multiple" class="form-control select" data-fouc>
+                                    <select name="staff_ot[]" class="form-control multiselect-full-featured" multiple="multiple" data-fouc>
                                         '.$options.'
                                     </select>
                                 </div>
@@ -240,6 +238,12 @@ class SpecialDateController extends Controller
                 $(".select").select2({
                     minimumResultsForSearch: Infinity
                 });
+
+                $(".multiselect-full-featured").multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: true
+                });
+                
                 $(".day_leave").daterangepicker({
                     singleDatePicker: true,
                     locale: {
@@ -306,6 +310,12 @@ class SpecialDateController extends Controller
         ];
 
         $staff_ot = $request->input('staff_ot');
+        if($type_day == 2) {
+            if(!$staff_ot) {
+                return redirect()->back()->with('error', 'Vui lòng chọn Nhân viên tăng ca');
+            }
+        }
+
         if($staff_ot) {
             $string_staff_ot = implode(',', $staff_ot);
 
@@ -320,10 +330,16 @@ class SpecialDateController extends Controller
         $body = json_decode($response->body(), true);
 
         if($body['message'] == "Update Special Date success") {
-            return redirect()->back()->with('success', 'Chỉnh sửa ngày lễ thành công!');
+            if($type_day == 2)
+                return redirect()->back()->with('success', 'Chỉnh sửa đề xuất tăng ca thành công!');
+            else 
+                return redirect()->back()->with('success', 'Chỉnh sửa ngày lễ thành công!');
         } 
         else {
-            return redirect()->back()->with('error', 'Chỉnh sửa ngày lễ thất bại!');
+            if($type_day == 2)
+                return redirect()->back()->with('error', 'Chỉnh sửa đề xuất tăng ca thất bại!');
+            else 
+                return redirect()->back()->with('error', 'Chỉnh sửa ngày lễ thất bại!');
         }
     }
 

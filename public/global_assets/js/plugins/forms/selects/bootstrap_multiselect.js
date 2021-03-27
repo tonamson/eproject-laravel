@@ -233,7 +233,7 @@
 
         defaults: {
             /**
-             * Default text function will either print 'None selected' in case no
+             * Default text function will either print 'Chưa chọn' in case no
              * option is selected or a list of the selected options up to a length
              * of 3 selected options.
              *
@@ -405,7 +405,7 @@
             maxHeight: false,
             includeSelectAllOption: false,
             includeSelectAllIfMoreThan: 0,
-            selectAllText: ' Select all',
+            selectAllText: ' Chọn tất cả',
             selectAllValue: 'multiselect-all',
             selectAllName: false,
             selectAllNumber: true,
@@ -415,14 +415,14 @@
             enableFullValueFiltering: false,
             enableClickableOptGroups: false,
             enableCollapsibleOptGroups: false,
-            filterPlaceholder: 'Search',
+            filterPlaceholder: 'Tìm kiếm',
             // possible options: 'text', 'value', 'both'
             filterBehavior: 'text',
             includeFilterClearBtn: true,
             preventInputChangeEvent: false,
-            nonSelectedText: 'None selected',
-            nSelectedText: 'selected',
-            allSelectedText: 'All selected',
+            nonSelectedText: 'Chưa chọn',
+            nSelectedText: 'Đã chọn',
+            allSelectedText: 'Đã chọn tất cả',
             numberDisplayed: 3,
             disableIfEmpty: false,
             disabledText: '',

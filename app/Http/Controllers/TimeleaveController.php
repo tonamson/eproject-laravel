@@ -427,6 +427,18 @@ class TimeleaveController extends Controller
                 return redirect()->back()->with('error', 'Đã có bổ sung công hoặc đăng kí phép năm tính lương vào trong số ngày đăng kí phép trên! Vui lòng thử lại');
             }
 
+            if($type_of_leave == 6 or $type_of_leave == 7) {
+                $day_from_check = $day_leave_from;
+                if(date('w', strtotime($day_from_check)) == 6 or date('w', strtotime($day_from_check)) == 0) {
+                    return redirect()->back()->with('error', 'Không được đặt ngày lễ có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
+                }
+                while($day_from_check <= $day_leave_to) {
+                    if(date('w', strtotime($day_from_check)) == 6 or date('w', strtotime($day_from_check)) == 0) {
+                        return redirect()->back()->with('error', 'Không được đặt ngày lễ có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
+                    }
+                    $day_from_check = date('Y-m-d', strtotime($day_from_check. ' + 1 days'));
+                }            
+            }
 
             //Validate day of other leave
             switch ($type_of_leave) {
@@ -442,8 +454,8 @@ class TimeleaveController extends Controller
                     $origin = new DateTime($day_leave_from);
                     $target = new DateTime($day_leave_to);
                     $interval = $origin->diff($target);
-                    if($interval->format('%a') > 6) {
-                        return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau ngắn ngày chỉ được đăng kí tối đa 7 ngày');
+                    if($interval->format('%a') > 2) {
+                        return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau ngắn ngày chỉ được đăng kí tối đa 3 ngày');
                     }
                     break;
                 case '4':
@@ -462,7 +474,22 @@ class TimeleaveController extends Controller
                         return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau dài ngày chỉ được đăng kí tối đa 6 tháng');
                     }
                     break;
-                
+                case '6':
+                    $origin = new DateTime($day_leave_from);
+                    $target = new DateTime($day_leave_to);
+                    $interval = $origin->diff($target);
+                    if($interval->format('%a') > 2) {
+                        return redirect()->back()->with('error', 'Loại phép nghỉ kết hôn chỉ được đăng kí tối đa 3 ngày');
+                    }
+                    break;
+                case '7':
+                    $origin = new DateTime($day_leave_from);
+                    $target = new DateTime($day_leave_to);
+                    $interval = $origin->diff($target);
+                    if($interval->format('%a') > 2) {
+                        return redirect()->back()->with('error', 'Loại phép nghỉ ma chay chỉ được đăng kí tối đa 3 ngày');
+                    }
+                    break;
                 default:
                     # code...
                     break;
@@ -641,7 +668,6 @@ class TimeleaveController extends Controller
 
         $response = Http::get('http://localhost:8888/leave-other/get-detail', $data_request);
         $body = json_decode($response->body(), true);
-        // dd($body['data']);
 
         if($body['data']['typeLeave'] == 2){
             $option1 = '<option value="2" selected>Nghỉ không lương</option>';
@@ -665,16 +691,31 @@ class TimeleaveController extends Controller
         }else {
             $option3 = '<option value="4">Nghỉ ốm dài ngày</option>';
             $display3 = 'style = "display: none"';
-        }
-            
+        }       
 
         if($body['data']['typeLeave'] == 5) {
-            $option4 = '<option value="5" selected>Nghỉ thai sản</option>';
+            $option4 = '<option value="5" selected>Thai sản</option>';
             $display4 = '';
         } else {
-            $option4 = '<option value="5">Nghỉ thai sản</option>';
+            $option4 = '<option value="5">Thai sản</option>';
             $display4 = 'style = "display: none"';
-        }            
+        }    
+        
+        if($body['data']['typeLeave'] == 6) {
+            $option6 = '<option value="6" selected>Kết hôn</option>';
+            $display6 = '';
+        } else {
+            $option6 = '<option value="6">Kết hôn</option>';
+            $display6 = 'style = "display: none"';
+        } 
+        
+        if($body['data']['typeLeave'] == 7) {
+            $option7 = '<option value="7" selected>Ma chay</option>';
+            $display7 = '';
+        } else {
+            $option7 = '<option value="7">Ma chay</option>';
+            $display7 = 'style = "display: none"';
+        } 
         
         $html = "<input type='hidden' name='id_update' value='". $id ."'>";
         $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Đăng Kí Phép</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
@@ -689,6 +730,8 @@ class TimeleaveController extends Controller
                             '.$option2.'
                             '.$option3.'
                             '.$option4.'
+                            '.$option6.'
+                            '.$option7.'
                         </select>
                     </div>
                 </div>
@@ -816,6 +859,53 @@ class TimeleaveController extends Controller
                         </tr>
                     </table>
                 </div>
+
+                <div class="des-leave des-leave6" '.$display6.'>
+                    <h3>Mô tả chi tiết</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Số ngày nghỉ tối đa một lần</b>
+                                <p>3 ngày</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Thông tin phép</b>
+                                <p>
+                                    <b>1. Diễn giải: </b>Bản thân kết hôn. <br>
+                                    <b>2. Đối tượng áp dụng: </b> Nhân viên đã ký hợp đồng lao động chính thức với Công ty. <br>
+                                    <b>3. Hồ sơ yêu cầu: </b> Yêu cầu upload hình chụp giấy đăng ký kết hôn (Công ty chỉ tính & trả lương khi nhân viên upload hình chụp giấy đăng ký kết hôn lên hệ thống). Nếu không bổ sung hồ sơ hợp lệ, những ngày nghỉ đã đăng ký được tính là nghỉ phép không hưởng lương. <br>
+                                    <b>4. Lương: </b> Được công ty tính & trả lương 03 ngày nghỉ
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="des-leave des-leave7" '.$display7.'>
+                    <h3>Mô tả chi tiết</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Số ngày nghỉ tối đa một lần</b>
+                                <p>3 ngày</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Thông tin phép</b>
+                                <p>
+                                    <b>1. Diễn giải: </b>Bố mẹ (cả bên vợ hoặc chồng), vợ, chồng hoặc con cái mất. <br>
+                                    <b>2. Đối tượng áp dụng: </b> Nhân viên đã ký hợp đồng lao động chính thức với Công ty. <br>
+                                    <b>3. Hồ sơ yêu cầu: </b> Yêu cầu upload hình chụp giấy chứng tử của người mất (Công ty chỉ tính & trả lương khi nhân viên upload hình chụp giấy chứng tử lên hệ thống). Nếu không bổ sung hồ sơ hợp lệ, những ngày nghỉ đã đăng ký được tính là nghỉ phép không hưởng lương. <br>
+                                    <b>4. Lương: </b> Được công ty tính & trả lương 03 ngày nghỉ
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
             </div>
 
             
@@ -863,6 +953,14 @@ class TimeleaveController extends Controller
                             $(".des-leave").hide();
                             $(".des-leave5").show();
                             break;
+                        case "6":
+                            $(".des-leave").hide();
+                            $(".des-leave6").show();
+                            break;
+                        case "7":
+                            $(".des-leave").hide();
+                            $(".des-leave7").show();
+                            break;
                         default:
                             break;
                     }
@@ -902,6 +1000,19 @@ class TimeleaveController extends Controller
             return redirect()->back()->with('error', 'Đã có bổ sung công hoặc đăng kí phép năm tính lương vào trong số ngày đăng kí phép trên! Vui lòng thử lại');
         }
 
+        if($type_of_leave == 6 or $type_of_leave == 7) {
+            $day_from_check = $day_leave_from;
+            if(date('w', strtotime($day_from_check)) == 6 or date('w', strtotime($day_from_check)) == 0) {
+                return redirect()->back()->with('error', 'Không được đặt ngày lễ có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
+            }
+            while($day_from_check <= $day_leave_to) {
+                if(date('w', strtotime($day_from_check)) == 6 or date('w', strtotime($day_from_check)) == 0) {
+                    return redirect()->back()->with('error', 'Không được đặt ngày lễ có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
+                }
+                $day_from_check = date('Y-m-d', strtotime($day_from_check. ' + 1 days'));
+            }            
+        }
+
         //Validate day of other leave
         switch ($type_of_leave) {
             case '2':
@@ -916,8 +1027,8 @@ class TimeleaveController extends Controller
                 $origin = new DateTime($day_leave_from);
                 $target = new DateTime($day_leave_to);
                 $interval = $origin->diff($target);
-                if($interval->format('%a') > 6) {
-                    return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau ngắn ngày chỉ được đăng kí tối đa 7 ngày');
+                if($interval->format('%a') > 2) {
+                    return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau ngắn ngày chỉ được đăng kí tối đa 3 ngày');
                 }
                 break;
             case '4':
@@ -934,6 +1045,22 @@ class TimeleaveController extends Controller
                 $interval = $origin->diff($target);
                 if($interval->format('%a') > 184) {
                     return redirect()->back()->with('error', 'Loại phép nghỉ ốm đau dài ngày chỉ được đăng kí tối đa 6 tháng');
+                }
+                break;
+            case '6':
+                $origin = new DateTime($day_leave_from);
+                $target = new DateTime($day_leave_to);
+                $interval = $origin->diff($target);
+                if($interval->format('%a') > 2) {
+                    return redirect()->back()->with('error', 'Loại phép nghỉ kết hôn chỉ được đăng kí tối đa 3 ngày');
+                }
+                break;
+            case '7':
+                $origin = new DateTime($day_leave_from);
+                $target = new DateTime($day_leave_to);
+                $interval = $origin->diff($target);
+                if($interval->format('%a') > 2) {
+                    return redirect()->back()->with('error', 'Loại phép nghỉ ma chay chỉ được đăng kí tối đa 3 ngày');
                 }
                 break;
             
@@ -1186,8 +1313,12 @@ class TimeleaveController extends Controller
             $type_leave = 'Nghỉ chữa bệnh ngắn ngày';
         } else if($body['data'][0][3] == 4){
             $type_leave = 'Nghỉ chữa bệnh dài ngày';
-        } else {
+        } else if($body['data'][0][3] == 5){
             $type_leave = 'Nghỉ thai sản';
+        } else if($body['data'][0][3] == 6){
+            $type_leave = 'Nghỉ kết hôn';
+        } else if($body['data'][0][3] == 7){
+            $type_leave = 'Nghỉ ma chay';
         }
 
         if($body['data'][0][5] == 1) {

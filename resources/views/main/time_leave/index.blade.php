@@ -72,7 +72,7 @@
                         <input class="form-control" type="number" value="<?php echo $year ?>" name="year" id="year">
                     </div>
                     <div class="ml-3">
-                        <input class="form-control btn btn-primary" type="submit" value="Search">
+                        <input class="form-control btn btn-primary" type="submit" value="Tìm kiếm">
                     </div>
                 </div>
             </form>
@@ -194,7 +194,9 @@
                                         <option value="2">Nghỉ không lương</option>
                                         <option value="3">Nghỉ ốm đau ngắn ngày</option>
                                         <option value="4">Nghỉ ốm dài ngày</option>
-                                        <option value="5">Nghỉ thai sản</option>
+                                        <option value="5">Thai sản</option>
+                                        <option value="6">Kết hôn</option>
+                                        <option value="7">Ma chay</option>
                                     </select>
                                 </div>
                             </div>
@@ -300,7 +302,7 @@
                                     <tr>
                                         <td>
                                             <b>Số ngày nghỉ tối đa một lần</b>
-                                            <p>7 ngày</p>
+                                            <p>3 ngày</p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -357,6 +359,52 @@
                                                 <b>2. Đối tượng áp dụng: </b> Nhân viên có thời gian tham gia bảo hiểm xã hội từ đủ 6 tháng trở lên trong thời gian 12 tháng trước khi sinh con hoặc nhận con nuôi. <br>
                                                 <b>3. Hồ sơ yêu cầu: </b> Yêu cầu gửi Giấy khai sinh /chứng sinh /trích lục giấy khai của con (01 bản sao chứng thực, 01 bản/ 01con). Cơ quan BHXH chỉ thanh toán tiền lương các ngày nghỉ khi nhân viên gửi đầy đủ các hồ sơ hợp lệ theo yêu cầu về cho Công Ty. thời gian gửi hồ sơ: ngay sau khi có đủ giấy tờ và không vượt quá thời gian nghỉ thai sản. <br>
                                                 <b>4. Lương: </b> Không được Công ty trả lương những ngày nghỉ, chỉ được cơ quan bảo hiểm tính & trả tiền chế độ (dựa trên mức lương tham gia Bảo hiểm bắt buộc hàng tháng) các ngày nghỉ căn cứ trên hồ sơ mà cá nhân nộp lên cho Công ty
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="des-leave des-leave6" style="display: none">
+                                <h3>Mô tả chi tiết</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>
+                                            <b>Số ngày nghỉ tối đa một lần</b>
+                                            <p>3 ngày</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Thông tin phép</b>
+                                            <p>
+                                                <b>1. Diễn giải: </b>Bản thân kết hôn. <br>
+                                                <b>2. Đối tượng áp dụng: </b> Nhân viên đã ký hợp đồng lao động chính thức với Công ty. <br>
+                                                <b>3. Hồ sơ yêu cầu: </b> Yêu cầu upload hình chụp giấy đăng ký kết hôn (Công ty chỉ tính & trả lương khi nhân viên upload hình chụp giấy đăng ký kết hôn lên hệ thống). Nếu không bổ sung hồ sơ hợp lệ, những ngày nghỉ đã đăng ký được tính là nghỉ phép không hưởng lương. <br>
+                                                <b>4. Lương: </b> Được công ty tính & trả lương 03 ngày nghỉ
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="des-leave des-leave7" style="display: none">
+                                <h3>Mô tả chi tiết</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>
+                                            <b>Số ngày nghỉ tối đa một lần</b>
+                                            <p>3 ngày</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Thông tin phép</b>
+                                            <p>
+                                                <b>1. Diễn giải: </b>Bố mẹ (cả bên vợ hoặc chồng), vợ, chồng hoặc con cái mất. <br>
+                                                <b>2. Đối tượng áp dụng: </b> Nhân viên đã ký hợp đồng lao động chính thức với Công ty. <br>
+                                                <b>3. Hồ sơ yêu cầu: </b> Yêu cầu upload hình chụp giấy chứng tử của người mất (Công ty chỉ tính & trả lương khi nhân viên upload hình chụp giấy chứng tử lên hệ thống). Nếu không bổ sung hồ sơ hợp lệ, những ngày nghỉ đã đăng ký được tính là nghỉ phép không hưởng lương. <br>
+                                                <b>4. Lương: </b> Được công ty tính & trả lương 03 ngày nghỉ
                                             </p>
                                         </td>
                                     </tr>
@@ -641,6 +689,14 @@
                 case "5":
                     $('.des-leave').hide();
                     $('.des-leave5').show();
+                    break;
+                case "6":
+                    $('.des-leave').hide();
+                    $('.des-leave6').show();
+                    break;
+                case "7":
+                    $('.des-leave').hide();
+                    $('.des-leave7').show();
                     break;
                 default:
                     break;

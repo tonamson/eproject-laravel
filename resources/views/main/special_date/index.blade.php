@@ -62,7 +62,7 @@
                         <input class="form-control" type="number" value="<?php echo $year ?>" name="year" id="year">
                     </div>
                     <div class="ml-3">
-                        <input class="form-control btn btn-primary" type="submit" value="Search">
+                        <input class="form-control btn btn-primary" type="submit" value="Tìm kiếm">
                     </div>
                 </div>
             </form>
