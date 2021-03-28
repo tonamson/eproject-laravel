@@ -225,6 +225,12 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                     <div class="col-md-6">
                                         <fieldset>
                                             <legend class="font-weight-semibold"><i class="icon-paperplane mr-2"></i> Hình ảnh</legend>
+
+                                            <div class="form-group" hidden>
+                                                <label>Mật Khẩu:(*)</label>
+                                                <input type="password" class="form-control" name="txtPass"  value="<?php echo md5(123456);?>" require>
+                                            </div>
+    
                                             <div class="form-group">
                                                 <label>CMND:(*)</label>
                                                 <input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" value="{{ old('txtIDNumber') }}">

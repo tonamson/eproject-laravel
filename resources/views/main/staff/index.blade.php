@@ -48,7 +48,7 @@
                     <th>Tên</th>
                     <th>Họ</th>
                     <th>Phòng Ban</th>
-                    <th>Is_Manager</th>
+                    <th>Chức vụ</th>
                     <th>Ngày vào</th>
                     <th>Ngày sinh</th>
                     <th>Giới tính</th>

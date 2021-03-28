@@ -103,7 +103,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item nav-item-submenu <?php echo $url[0] == "education" || $url[1] == "education" ? "nav-item-open" : "" ?>">
+                    <li hidden class="nav-item nav-item-submenu <?php echo $url[0] == "education" || $url[1] == "education" ? "nav-item-open" : "" ?>">
                         <a href="#" class="nav-link"><i class="icon-graduation"></i> <span>Bằng Cấp</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "education" || $url[1] == "education" ? "block" : "none" ?>">
                         <li class="nav-item">

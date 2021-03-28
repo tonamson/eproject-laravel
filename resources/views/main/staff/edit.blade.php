@@ -265,6 +265,14 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                 <label>Ghi chú:</label>
                                                 <textarea rows="5" cols="5" class="form-control" name="txtNote" placeholder="Nhập Ghi chú">{{ $data['note'] }}</textarea>
                                             </div>
+                                            <div class="form-group" hidden>
+                                                <label>Createby:</label>
+                                                <textarea  class="form-control" name="txtCreateBy">{{ $data['createdBy'] }}</textarea>
+                                            </div>
+                                            <div class="form-group" hidden>
+                                                <label>Createat:</label>
+                                                <textarea  class="form-control" name="txtCreatedAt" >{{ $data['createdAt'] }}</textarea>
+                                            </div>
                                         </fieldset>
                                     </div>
                                 </div>
