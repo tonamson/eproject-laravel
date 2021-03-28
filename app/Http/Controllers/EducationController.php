@@ -159,7 +159,7 @@ class EducationController extends Controller
         $response = Http::post('http://localhost:8888/education/update', $data_request);
         $body = json_decode($response->body(), true);
         //   dd($body);
-        if ($body['isSuccess'] == "Update success") {
+        if ($body['isSuccess']) {
             return redirect()->back()->with('message', 'Cập nhật thành công!');
         }
         return redirect()->back()->with('message', 'Cập nhật thất bại');

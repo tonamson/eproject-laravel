@@ -510,11 +510,14 @@ class StaffController extends Controller
         $body = json_decode($response->body(), true);
 
         if ($body['isSuccess']) {
+            foreach ($data['education'] as $education) {
+                $response = Http::post('http://localhost:8888/education/update', $education);
+                $body = json_decode($response->body(), true);
+            }
+
             return redirect()->back()
                 ->with('message', ['type' => 'success', 'message' => 'Cập nhật thành công!']);
-
         }
-
         return redirect()->back()
             ->with('message', ['type' => 'danger', 'message' => 'Cập nhật thất bại']);
 

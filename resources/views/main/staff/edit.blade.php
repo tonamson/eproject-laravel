@@ -369,6 +369,8 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
             optionIndex++;
             $('#education').append(`
                     <hr>
+                    <input type="hidden" value="{{$data['id']}}" name="education[${optionIndex}][staffId]"/>
+
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
