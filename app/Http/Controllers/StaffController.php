@@ -10,19 +10,20 @@ use Illuminate\Support\Facades\Validator;
 
 class StaffController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         $response = Http::get('http://localhost:8888/department/list', []);
         $body = json_decode($response->body(), true);
         $dsPhongBan = [];
-        if($body['isSuccess']){
-            $dsPhongBan=$body['data'];
+        if ($body['isSuccess']) {
+            $dsPhongBan = $body['data'];
         }
         $response = Http::get('http://localhost:8888/staff/list');
         $body = json_decode($response->body(), true);
         $data_staff = $body['data'];
 
-        return view('main.staff.index',[
+        return view('main.staff.index', [
             'data_staff' => $data_staff,
             'data_department' => $dsPhongBan,
             'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '#']]
@@ -33,18 +34,20 @@ class StaffController extends Controller
     public function createStaff(Request $request)
     {
         $rule = [
-            'txtCode' => 'bail|required|unique:staff,code|min:3|max:20',
-            'txtFname' => 'bail|required',
-            'txtJoinat' => 'bail|required',
-            'txtDob' => 'bail|required',
+            'txtCode' => 'required|unique:staff,code|min:3|max:20',
+            'txtFname' => 'required',
+            'txtDob' => 'required|date_format:Y-m-d|before:'.now()->format('Y-m-d'),
+            'txtJoinat' => 'required|date_format:Y-m-d|after:'.now()->subDay()->format('Y-m-d'),
             'txtIDNumber' => 'bail|required|unique:staff,id_number',
             'txtEmail' => 'bail|email',
             'txtPhone' => 'bail|numeric',
             'txtNote' => 'bail|max:500',
 
-            'txtSchool' => 'bail|required|min:3|max:100',
-            'txtFieldOfStudy' => 'bail|required',
-            'txtGraduatedYear' => 'bail|required',
+//            'education.*.txtLevel' => 'required|numeric',
+//            'education.*.txtLevelName' => 'required',
+//            'education.*.txtSchool' => 'required|min:3|max:100',
+//            'education.*.txtFieldOfStudy' => 'required',
+//            'education.*.txtGraduatedYear' => 'required|numeric|min:1940|max:'.now()->year,
         ];
         $message = [
             'txtCode.required' => 'Mã nhân viên không để rỗng',
@@ -53,20 +56,29 @@ class StaffController extends Controller
             'txtCode.min' => 'Mã nhân viên tối thiểu 3 ký tự',
             'txtFname.required' => 'Tên Nhân viên không để rỗng',
             'txtJoinat.required' => 'Ngày vào không để rỗng',
+            'txtJoinat.after' => 'Ngày vào phải sau ngày: '.now()->subDay()->format('Y-m-d'),
             'txtDob.required' => 'Ngày sinh nhật không để rỗng',
+            'txtDob.date_format' => 'Ngày sinh nhật sai định dạng',
+            'txtDob.before' => 'Ngày sinh nhật phải trước ngày: '.now()->format('Y-m-d'),
             'txtIDNumber.required' => 'Số CMND không để rỗng',
             'txtIDNumber.unique' => 'Số CMND đã tồn tại',
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
             'txtPhone.numeric' => 'Số Phone phải là số',
             'txtNote.max' => 'Ghi chú không quá 500 ký tự',
 
-            'txtSchool.required' => 'Tên trường không để rỗng',
-            'txtSchool.max' => 'Tên Trường tối đa 100 ký tự',
-            'txtFieldOfStudy.required' => 'Chuyên ngành không để rổng',
-            'txtGraduatedYear.required' => 'Năm tốt nghiệp không để rỗng',
+            'education.*.txtLevel.required' => 'Cấp bậc không để rỗng',
+            'education.*.txtLevel.numeric' => 'Cấp bậc chỉ chấp nhận số',
+            'education.*.txtSchool.required' => 'Tên trường không để rỗng',
+            'education.*.txtSchool.max' => 'Tên Trường tối đa 100 ký tự',
+            'education.*.txtFieldOfStudy.required' => 'Chuyên ngành không để rỗng',
+            'education.*.txtGraduatedYear.required' => 'Năm tốt nghiệp không để rỗng',
+            'education.*.txtGraduatedYear.numeric' => 'Năm tốt nghiệp chỉ chấp nhận số',
+            'education.*.txtGraduatedYear.min' => 'Năm tốt nghiệp nhỏ nhất :min',
+            'education.*.txtGraduatedYear.max' => 'Năm tốt nghiệp lớn nhất :max',
 
         ];
         $data = $request->all();
+        $data['txtPass'] = md5(123456);
         $validate = Validator::make($data, $rule, $message);
 
         if ($validate->fails()) {
@@ -84,14 +96,14 @@ class StaffController extends Controller
         $regional = $request->input('txtRegional');
         $phoneNumber = $request->input('txtPhone');
         $email = $request->input('txtEmail');
-        $password =  $request->input('txtPass');
+        $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
         $photo = null;
         $idPhoto = null;
         $idPhotoBack = null;
         $note = $request->input('txtNote');
         $user = auth()->user();
-        
+
         $staffId = $request->input('txtStaffID');
         $level = $request->input('txtLevel');
         $levelName = $request->input('txtLevelName');
@@ -153,132 +165,135 @@ class StaffController extends Controller
 
         $data_request = [
             'code' => $code,
-            'firstname' =>$firstname,
-            'lastname' =>$lastname,
-            'department' =>$department,
-            'isManager'=>boolval($isManager),
-            'joinedAt' =>$joinedAt,
-            'dob'=>$dob,
-            'gender'=>$gender,
-            'regional' =>$regional,
-            'phoneNumber' =>$phoneNumber,
-            'email' =>$email,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'department' => $department,
+            'isManager' => boolval($isManager),
+            'joinedAt' => $joinedAt,
+            'dob' => $dob,
+            'gender' => $gender,
+            'regional' => $regional,
+            'phoneNumber' => $phoneNumber,
+            'email' => $email,
             'password' => $password,
-            'idNumber' =>$idNumber,
-            'photo' =>$photo,
-            'idPhoto' =>$idPhoto,
-            'idPhotoBack' =>$idPhotoBack,
-            "dayOfLeave"=>0,
-            'note' =>$note,
+            'idNumber' => $idNumber,
+            'photo' => $photo,
+            'idPhoto' => $idPhoto,
+            'idPhotoBack' => $idPhotoBack,
+            "dayOfLeave" => 0,
+            'note' => $note,
             "createdBy" => $user->id,
             "status" => 0,
 
             'staffId' => $staffId,
-            'level' =>$level,
-            'levelName' =>$levelName,
-            'school' =>$school,
-            'fieldOfStudy'=>$fieldOfStudy,
-            'graduatedYear' =>$graduatedYear,
-            'grade'=>$grade,
-            'modeOfStudy'=>$modeOfStudy,
+            'level' => $level,
+            'levelName' => $levelName,
+            'school' => $school,
+            'fieldOfStudy' => $fieldOfStudy,
+            'graduatedYear' => $graduatedYear,
+            'grade' => $grade,
+            'modeOfStudy' => $modeOfStudy,
         ];
 
         $response = Http::post('http://localhost:8888/staff/add', $data_request);
-        
-       dd($response);
-        $response = Http::post('http://localhost:8888/education/add', $data_request);
-       $body= json_decode($response->body(), true);
+        $staffBody = json_decode($response->body(), true);
+        if ($staffBody['isSuccess']) {
 
-       if( $body['isSuccess'] == "Save success"){
-           return redirect()->back()->with('message', 'Thêm thành công!');
-       }
-       return redirect()->back()->with('message','Thêm thất bại');
+            $response = Http::post('http://localhost:8888/education/add', $data_request);
+            $body = json_decode($response->body(), true);
+
+            if ($body['isSuccess'] == "Save success") {
+                return redirect()->back()
+                    ->with('message', ['type' => 'success', 'message' => 'Thêm thành công!']);
+            } else {
+                return redirect()->back()
+                    ->with('message', ['type' => 'danger', 'message' => 'Thêm văn bằng thất bại.']);
+            }
+        } else {
+            return redirect()->back()
+                ->with('message', ['type' => 'danger', 'message' => $staffBody['message']]);
+        }
     }
 
-    public function vaddStaff() {
-
+    public function vaddStaff()
+    {
         $response = Http::get('http://localhost:8888/department/list', []);
         $body = json_decode($response->body(), true);
         $dsPhongBan = [];
-        if($body['isSuccess']){
-            $dsPhongBan=$body['data'];
+        if ($body['isSuccess']) {
+            $dsPhongBan = $body['data'];
         }
 
-        $response = Http::get('http://localhost:8888/regional/list',[]);
+        $response = Http::get('http://localhost:8888/regional/list', []);
         $body = json_decode($response->body(), true);
         $dsKhuvuc = [];
-        if($body['isSuccess']){
-            $dsKhuvuc=$body['data'];
+        if ($body['isSuccess']) {
+            $dsKhuvuc = $body['data'];
         }
 
-        $response = Http::get('http://localhost:8888/regional/list-district',['parent' => 3410]);
+        $response = Http::get('http://localhost:8888/regional/list-district', ['parent' => 3410]);
         $body = json_decode($response->body(), true);
         $district_default = [];
-        if($body['isSuccess']){
-            $district_default=$body['data'];
+        if ($body['isSuccess']) {
+            $district_default = $body['data'];
         }
 
-        $response = Http::get('http://localhost:8888/staff/list');
-        $body = json_decode($response->body(), true);
-        $data_staff = $body['data'];
-
-        return view('main.staff.add',[
-            'data_staff' => $data_staff,
+        return view('main.staff.add', [
             'data_reg' => $dsKhuvuc,
             'data_department' => $dsPhongBan,
             'data_district' => $district_default,
             'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Thêm nhân viên', 'url' => '#']]
         ]);
-        return view('main.staff.add');
     }
 
     // Get & Post Update Staff
 
-    public function getDetail(Request $request) {
+    public function getDetail(Request $request)
+    {
         $data_request = $request->all();
 
         $response = Http::get('http://localhost:8888/staff/one', $data_request);
         $body = json_decode($response->body(), true);
-        if($body['isSuccess']){
-            $staff=$body['data'];
+        if ($body['isSuccess']) {
+            $staff = $body['data'];
         }
 
-        $response = Http::get('http://localhost:8888/regional/get-one',['id' => $staff['regional']]);
+        $response = Http::get('http://localhost:8888/regional/get-one', ['id' => $staff['regional']]);
         $body = json_decode($response->body(), true);
         $district_default = [];
-        if($body['isSuccess']){
-            $district_selected=$body['data'];
+        if ($body['isSuccess']) {
+            $district_selected = $body['data'];
         }
 
-        $response = Http::get('http://localhost:8888/regional/list',[]);
+        $response = Http::get('http://localhost:8888/regional/list', []);
         $body = json_decode($response->body(), true);
         $dsKhuvuc = [];
-        if($body['isSuccess']){
-            $dsKhuvuc=$body['data'];
+        if ($body['isSuccess']) {
+            $dsKhuvuc = $body['data'];
         }
 
-        $response = Http::get('http://localhost:8888/regional/list-district',['parent' => $district_selected['parent']]);
+        $response = Http::get('http://localhost:8888/regional/list-district', ['parent' => $district_selected['parent']]);
         $body = json_decode($response->body(), true);
         $district_default = [];
-        if($body['isSuccess']){
-            $district_default=$body['data'];
+        if ($body['isSuccess']) {
+            $district_default = $body['data'];
         }
 
         $response = Http::get('http://localhost:8888/department/list', []);
         $body = json_decode($response->body(), true);
         $dsPhongBan = [];
-        if($body['isSuccess']){
-            $dsPhongBan=$body['data'];
+        if ($body['isSuccess']) {
+            $dsPhongBan = $body['data'];
         }
 
         $response = Http::get('http://localhost:8888/education/list', []);
         $body = json_decode($response->body(), true);
-        $data_education=[];
-        if($body['isSuccess']){
+        $data_education = [];
+        if ($body['isSuccess']) {
             $data_education = $body['data'];
         }
 
-        if($body['isSuccess']){
+        if ($body['isSuccess']) {
             return view('main/staff/detail', [
                 'data' => $staff,
                 'data_department' => $dsPhongBan,
@@ -289,48 +304,47 @@ class StaffController extends Controller
                 'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '../staff/index'], ['text' => 'Chi tiết nhân viên', 'url' => '#']]
             ]);
         }
-        return redirect()->back()->with('message','Khong tim nhan vien');
+        return redirect()->back()->with('message', 'Khong tim nhan vien');
     }
 
-    public function getEditStaff(Request $request) {
-
+    public function getEditStaff(Request $request)
+    {
         //chinh
         $data_request = $request->all();
 
         $response = Http::get('http://localhost:8888/staff/one', $data_request);
         $body = json_decode($response->body(), true);
-        if($body['isSuccess']){
-            $staff=$body['data'];
+        if ($body['isSuccess']) {
+            $staff = $body['data'];
         }
 
-        $response = Http::get('http://localhost:8888/regional/get-one',['id' => $staff['regional']]);
+        $response = Http::get('http://localhost:8888/regional/get-one', ['id' => $staff['regional']]);
         $body = json_decode($response->body(), true);
-        $district_default = [];
-        if($body['isSuccess']){
-            $district_selected=$body['data'];
+        if ($body['isSuccess']) {
+            $district_selected = $body['data'];
         }
 
-        $response = Http::get('http://localhost:8888/regional/list',[]);
+        $response = Http::get('http://localhost:8888/regional/list', []);
         $body = json_decode($response->body(), true);
         $dsKhuvuc = [];
-        if($body['isSuccess']){
-            $dsKhuvuc=$body['data'];
+        if ($body['isSuccess']) {
+            $dsKhuvuc = $body['data'];
         }
 
-        $response = Http::get('http://localhost:8888/regional/list-district',['parent' => $district_selected['parent']]);
+        $response = Http::get('http://localhost:8888/regional/list-district', ['parent' => $district_selected['parent']]);
         $body = json_decode($response->body(), true);
         $district_default = [];
-        if($body['isSuccess']){
-            $district_default=$body['data'];
+        if ($body['isSuccess']) {
+            $district_default = $body['data'];
         }
 
         $response = Http::get('http://localhost:8888/department/list', []);
         $body = json_decode($response->body(), true);
         $dsPhongBan = [];
-        if($body['isSuccess']){
-            $dsPhongBan=$body['data'];
+        if ($body['isSuccess']) {
+            $dsPhongBan = $body['data'];
         }
-        if($body['isSuccess']){
+        if ($body['isSuccess']) {
             return view('main/staff/edit', [
                 'data' => $staff,
                 'data_department' => $dsPhongBan,
@@ -340,11 +354,12 @@ class StaffController extends Controller
                 'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Danh sách nhân viên', 'url' => '../staff/index'], ['text' => 'Cập nhật nhân viên', 'url' => '#']]
             ]);
         }
-        return redirect()->back()->with('message','Khong tim nhan vien');
+        return redirect()->back()->with('message', 'Khong tim nhan vien');
     }
 
 
-    public function postEditStaff(Request $request) {
+    public function postEditStaff(Request $request)
+    {
 
         $rule = [
             // 'txtCode' => 'bail|required|unique:staff,code|min:3|max:20',
@@ -379,8 +394,7 @@ class StaffController extends Controller
         }
 
 
-
-        $id=$request->input('txtID');
+        $id = $request->input('txtID');
         $code = $request->input('txtCode');
         $firstname = $request->input('txtFname');
         $lastname = $request->input('txtLname');
@@ -395,32 +409,32 @@ class StaffController extends Controller
         $password_old = $request->input('txtPassOld');
         $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
-        $photo = $request->input('txtImagesOld')? $request->input('txtImagesOld'): '';
-        $idPhoto =$request->input('txtImagesOld2')? $request->input('txtImagesOld2'): '';
-        $idPhotoBack =$request->input('txtImagesOld3')? $request->input('txtImagesOld3'): '';
+        $photo = $request->input('txtImagesOld') ? $request->input('txtImagesOld') : '';
+        $idPhoto = $request->input('txtImagesOld2') ? $request->input('txtImagesOld2') : '';
+        $idPhotoBack = $request->input('txtImagesOld3') ? $request->input('txtImagesOld3') : '';
         $note = $request->input('txtNote');
-        $createdBy=$request->input('txtCreateBy');
-        $createdAt=$request->input('txtCreatedAt');
+        $createdBy = $request->input('txtCreateBy');
+        $createdAt = $request->input('txtCreatedAt');
         $user = auth()->user();
 
 
         //Photo
         $now = Carbon::now();
 
-            if (request()->hasFile('txtPhoto')) {
-                // random name cho ảnh
-                $file_name_random = function ($key) {
-                    $ext = request()->file($key)->getClientOriginalExtension();
-                    $str_random = (string)Str::uuid();
+        if (request()->hasFile('txtPhoto')) {
+            // random name cho ảnh
+            $file_name_random = function ($key) {
+                $ext = request()->file($key)->getClientOriginalExtension();
+                $str_random = (string)Str::uuid();
 
-                    return $str_random . '.' . $ext;
-                };
-                $image = $file_name_random('txtPhoto');
-                if (request()->file('txtPhoto')->move('./images/user/avatar/' . $now->format('dmY') . '/', $image)) {
-                    // gán path ảnh vào model để lưu
-                    $photo = '/images/user/avatar/' . $now->format('dmY') . '/' . $image;
-                }
+                return $str_random . '.' . $ext;
+            };
+            $image = $file_name_random('txtPhoto');
+            if (request()->file('txtPhoto')->move('./images/user/avatar/' . $now->format('dmY') . '/', $image)) {
+                // gán path ảnh vào model để lưu
+                $photo = '/images/user/avatar/' . $now->format('dmY') . '/' . $image;
             }
+        }
 
         if (request()->hasFile('txtIDPhoto')) {
             // random name cho ảnh
@@ -453,47 +467,48 @@ class StaffController extends Controller
         }
 
         $data_request = [
-            'id'=>$id,
+            'id' => $id,
             'code' => $code,
-            'firstname' =>$firstname,
-            'lastname' =>$lastname,
-            'department' =>$department,
-            'isManager'=>boolval($isManager),
-            'joinedAt' =>$joinedAt,
-            'dob'=>$dob,
-            'gender'=>$gender,
-            'regional' =>$regional,
-            'phoneNumber' =>$phoneNumber,
-            'email' =>$email,
-            'idNumber' =>$idNumber,
-            'photo' =>$photo,
-            'idPhoto' =>$idPhoto,
-            'idPhotoBack' =>$idPhotoBack,
-            "dayOfLeave"=>0,
-            'note' =>$note,
-            'createdBy' =>$createdBy,
-            'createdAt' =>$createdAt,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'department' => $department,
+            'isManager' => boolval($isManager),
+            'joinedAt' => $joinedAt,
+            'dob' => $dob,
+            'gender' => $gender,
+            'regional' => $regional,
+            'phoneNumber' => $phoneNumber,
+            'email' => $email,
+            'idNumber' => $idNumber,
+            'photo' => $photo,
+            'idPhoto' => $idPhoto,
+            'idPhotoBack' => $idPhotoBack,
+            "dayOfLeave" => 0,
+            'note' => $note,
+            'createdBy' => $createdBy,
+            'createdAt' => $createdAt,
             'updatedBy' => $user->id,
             "status" => 0,
         ];
 
-        if(!$password) {
+        if (!$password) {
             $data_request['password'] = $password_old;
         } else {
             $data_request['password'] = md5($password);
         }
 
         $response = Http::post('http://localhost:8888/staff/update', $data_request);
-       // dd($response);
+        // dd($response);
         $body = json_decode($response->body(), true);
 
-        if( $body['isSuccess'] == "Update success"){
+        if ($body['isSuccess'] == "Update success") {
             return redirect()->back()->with('message', 'Cập nhật thành công!');
         }
-        return redirect()->back()->with('message','Cập nhật thất bại');
+        return redirect()->back()->with('message', 'Cập nhật thất bại');
     }
 
-    public function viewProfile(Request $request) {
+    public function viewProfile(Request $request)
+    {
         $params = [
             'staff_id' => auth()->user()->id,
         ];
@@ -515,16 +530,17 @@ class StaffController extends Controller
         ]);
     }
 
-    public function changePassword(Request $request) {
+    public function changePassword(Request $request)
+    {
         $pass_old = md5($request->input('pass_old'));
         $pass_new = md5($request->input('pass_new'));
 
-        if(strlen($request->input('pass_new')) > 20) {
-            return redirect()->back()->with('error','Mật khẩu mới không được dài quá 20 kí tự');
+        if (strlen($request->input('pass_new')) > 20) {
+            return redirect()->back()->with('error', 'Mật khẩu mới không được dài quá 20 kí tự');
         }
 
-        if($request->input('pass_new') != $request->input('comfirm_pass')) {
-            return redirect()->back()->with('error','Mật khẩu mới và xác nhận mật khẩu không giống nhau');
+        if ($request->input('pass_new') != $request->input('comfirm_pass')) {
+            return redirect()->back()->with('error', 'Mật khẩu mới và xác nhận mật khẩu không giống nhau');
         }
 
         $params = [
@@ -536,15 +552,16 @@ class StaffController extends Controller
         $response = Http::post('http://localhost:8888/staff/change-password', $params);
         $body = json_decode($response->body(), true);
 
-        if($body['data'] == "Change password Success") {
-            return redirect()->back()->with('success','Đổi mật khẩu thành công');
+        if ($body['data'] == "Change password Success") {
+            return redirect()->back()->with('success', 'Đổi mật khẩu thành công');
         } else {
-            return redirect()->back()->with('error','Mật khẩu cũ không chính xác');
+            return redirect()->back()->with('error', 'Mật khẩu cũ không chính xác');
         }
     }
 
-    public function loadRegional(Request $request) {
-        $parent =$request->input('parent');
+    public function loadRegional(Request $request)
+    {
+        $parent = $request->input('parent');
 
         $params = [
             'parent' => $parent
@@ -557,19 +574,20 @@ class StaffController extends Controller
         exit;
     }
 
-    public function listUndo(){
+    public function listUndo()
+    {
 
         $response = Http::get('http://localhost:8888/department/list', []);
         $body = json_decode($response->body(), true);
         $dsPhongBan = [];
-        if($body['isSuccess']){
-            $dsPhongBan=$body['data'];
+        if ($body['isSuccess']) {
+            $dsPhongBan = $body['data'];
         }
         $response = Http::get('http://localhost:8888/staff/listUndo');
         $body = json_decode($response->body(), true);
         $data_staff = $body['data'];
 
-        return view('main.staff.listUndo',[
+        return view('main.staff.listUndo', [
             'data_staff' => $data_staff,
             'data_department' => $dsPhongBan,
             'breadcrumbs' => [['text' => 'Nhân viên', 'url' => '../view-menu/staff'], ['text' => 'Nhân viên đã xóa', 'url' => '#']]
@@ -599,6 +617,4 @@ class StaffController extends Controller
         }
         return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Khôi phục nhân viên thất bại.']);
     }
-
-
 }
