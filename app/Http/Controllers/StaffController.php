@@ -39,8 +39,8 @@ class StaffController extends Controller
             'txtDob' => 'required|date_format:Y-m-d|before:' . now()->format('Y-m-d'),
             'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
             'txtIDNumber' => 'bail|required|unique:staff,id_number',
-            'txtEmail' => 'bail|email',
-            'txtPhone' => 'bail|numeric',
+            'txtEmail' => 'required|email',
+            'txtPhone' => 'required|numeric',
             'txtNote' => 'bail|max:500',
 
             'education.*.level' => 'required|numeric',
@@ -63,7 +63,8 @@ class StaffController extends Controller
             'txtIDNumber.required' => 'Số CMND không để rỗng',
             'txtIDNumber.unique' => 'Số CMND đã tồn tại',
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
-            'txtPhone.numeric' => 'Số Phone phải là số',
+            'txtPhone.required' => 'Số điện thoại không để rỗng',
+            'txtPhone.numeric' => 'Số điện thoại chỉ chấp nhận số',
             'txtNote.max' => 'Ghi chú không quá 500 ký tự',
 
             'education.*.level.required' => 'Cấp bậc không để rỗng',
@@ -76,7 +77,6 @@ class StaffController extends Controller
             'education.*.graduatedYear.numeric' => 'Năm tốt nghiệp chỉ chấp nhận số',
             'education.*.graduatedYear.min' => 'Năm tốt nghiệp nhỏ nhất :min',
             'education.*.graduatedYear.max' => 'Năm tốt nghiệp lớn nhất :max',
-
         ];
         $data = $request->all();
         $data['txtPass'] = md5(123456);
@@ -325,9 +325,16 @@ class StaffController extends Controller
         if ($body['isSuccess']) {
             $dsPhongBan = $body['data'];
         }
+
+        $response_edu = Http::get('http://localhost:8888/education/get-education-by-staff-id', [
+            'staff_id' => $data_request['id']
+        ]);
+        $body_edu = json_decode($response_edu->body(), true);
+
         if ($body['isSuccess']) {
             return view('main/staff/edit', [
                 'data' => $staff,
+                'data_edu' => $body_edu['data'] ?? [],
                 'data_department' => $dsPhongBan,
                 'data_reg' => $dsKhuvuc,
                 'data_district' => $district_default,
@@ -338,35 +345,57 @@ class StaffController extends Controller
         return redirect()->back()->with('message', 'Khong tim nhan vien');
     }
 
-
     public function postEditStaff(Request $request)
     {
-
         $rule = [
-            // 'txtCode' => 'bail|required|unique:staff,code|min:3|max:20',
-            'txtFname' => 'bail|required',
-            'txtJoinat' => 'bail|required',
-            'txtDob' => 'bail|required',
-            // 'txtIDNumber' => 'bail|required|unique:staff,idNumber',
-            'txtEmail' => 'bail|email',
-            'txtPhone' => 'bail|numeric',
+            'txtCode' => 'required|min:3|max:20',
+            'txtFname' => 'required',
+            'txtDob' => 'required|date_format:Y-m-d|before:' . now()->format('Y-m-d'),
+            'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
+            'txtIDNumber' => 'bail|required',
+            'txtEmail' => 'required|email',
+            'txtPhone' => 'required|numeric',
             'txtNote' => 'bail|max:500',
+
+            'education.*.staffId' => 'required|numeric',
+            'education.*.level' => 'required|numeric',
+            'education.*.levelName' => 'required',
+            'education.*.school' => 'required|min:3|max:100',
+            'education.*.fieldOfStudy' => 'required',
+            'education.*.graduatedYear' => 'required|numeric|min:1940|max:' . now()->year,
         ];
         $message = [
-            // 'txtCode.required' => 'Mã nhân viên không để rỗng',
-            // 'txtCode.unique' => 'Mã nhân viên đã tồn tại',
-            // 'txtCode.max' => 'Mã nhân viên tối đa 20 ký tự',
+            'txtCode.required' => 'Mã nhân viên không để rỗng',
+            'txtCode.unique' => 'Mã nhân viên đã tồn tại',
+            'txtCode.max' => 'Mã nhân viên tối đa 20 ký tự',
             'txtCode.min' => 'Mã nhân viên tối thiểu 3 ký tự',
             'txtFname.required' => 'Tên Nhân viên không để rỗng',
             'txtJoinat.required' => 'Ngày vào không để rỗng',
+            'txtJoinat.after' => 'Ngày vào phải sau ngày: ' . now()->subDay()->format('Y-m-d'),
             'txtDob.required' => 'Ngày sinh nhật không để rỗng',
+            'txtDob.date_format' => 'Ngày sinh nhật sai định dạng',
+            'txtDob.before' => 'Ngày sinh nhật phải trước ngày: ' . now()->format('Y-m-d'),
             'txtIDNumber.required' => 'Số CMND không để rỗng',
-            // 'txtIDNumber.unique' => 'Số CMND đã tồn tại',
+            'txtIDNumber.unique' => 'Số CMND đã tồn tại',
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
-            'txtPhone.numeric' => 'Số Phone phải là số',
+            'txtPhone.required' => 'Số điện thoại không để rỗng',
+            'txtPhone.numeric' => 'Số điện thoại chỉ chấp nhận số',
             'txtNote.max' => 'Ghi chú không quá 500 ký tự',
 
+            'education.*.staffId.required' => 'Mã nhân viên không để rỗng',
+            'education.*.staffId.numeric' => 'Mã nhân viên chỉ chấp nhận số',
+            'education.*.level.required' => 'Cấp bậc không để rỗng',
+            'education.*.level.numeric' => 'Cấp bậc chỉ chấp nhận số',
+            'education.*.levelName.required' => 'Tên cấp bậc không để rỗng',
+            'education.*.school.required' => 'Tên trường không để rỗng',
+            'education.*.school.max' => 'Tên Trường tối đa 100 ký tự',
+            'education.*.fieldOfStudy.required' => 'Chuyên ngành không để rỗng',
+            'education.*.graduatedYear.required' => 'Năm tốt nghiệp không để rỗng',
+            'education.*.graduatedYear.numeric' => 'Năm tốt nghiệp chỉ chấp nhận số',
+            'education.*.graduatedYear.min' => 'Năm tốt nghiệp nhỏ nhất :min',
+            'education.*.graduatedYear.max' => 'Năm tốt nghiệp lớn nhất :max',
         ];
+
         $data = $request->all();
         $validate = Validator::make($data, $rule, $message);
 
@@ -390,14 +419,13 @@ class StaffController extends Controller
         $password_old = $request->input('txtPassOld');
         $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
-        $photo = $request->input('txtImagesOld') ? $request->input('txtImagesOld') : '';
-        $idPhoto = $request->input('txtImagesOld2') ? $request->input('txtImagesOld2') : '';
-        $idPhotoBack = $request->input('txtImagesOld3') ? $request->input('txtImagesOld3') : '';
+        $photo = null;
+        $idPhoto = null;
+        $idPhotoBack = null;
         $note = $request->input('txtNote');
         $createdBy = $request->input('txtCreateBy');
         $createdAt = $request->input('txtCreatedAt');
         $user = auth()->user();
-
 
         //Photo
         $now = Carbon::now();
@@ -462,7 +490,7 @@ class StaffController extends Controller
             'email' => $email,
             'idNumber' => $idNumber,
             'photo' => $photo,
-            'idPhoto' => $idPhoto,
+            'idPhoto' => $idPhoto ?? null,
             'idPhotoBack' => $idPhotoBack,
             "dayOfLeave" => 0,
             'note' => $note,
@@ -479,13 +507,17 @@ class StaffController extends Controller
         }
 
         $response = Http::post('http://localhost:8888/staff/update', $data_request);
-        // dd($response);
         $body = json_decode($response->body(), true);
 
-        if ($body['isSuccess'] == "Update success") {
-            return redirect()->back()->with('message', 'Cập nhật thành công!');
+        if ($body['isSuccess']) {
+            return redirect()->back()
+                ->with('message', ['type' => 'success', 'message' => 'Cập nhật thành công!']);
+
         }
-        return redirect()->back()->with('message', 'Cập nhật thất bại');
+
+        return redirect()->back()
+            ->with('message', ['type' => 'danger', 'message' => 'Cập nhật thất bại']);
+
     }
 
     public function viewProfile(Request $request)
