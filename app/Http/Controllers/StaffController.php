@@ -41,6 +41,10 @@ class StaffController extends Controller
             'txtEmail' => 'bail|email',
             'txtPhone' => 'bail|numeric',
             'txtNote' => 'bail|max:500',
+
+            'txtSchool' => 'bail|required|min:3|max:100',
+            'txtFieldOfStudy' => 'bail|required',
+            'txtGraduatedYear' => 'bail|required',
         ];
         $message = [
             'txtCode.required' => 'Mã nhân viên không để rỗng',
@@ -55,6 +59,11 @@ class StaffController extends Controller
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
             'txtPhone.numeric' => 'Số Phone phải là số',
             'txtNote.max' => 'Ghi chú không quá 500 ký tự',
+
+            'txtSchool.required' => 'Tên trường không để rỗng',
+            'txtSchool.max' => 'Tên Trường tối đa 100 ký tự',
+            'txtFieldOfStudy.required' => 'Chuyên ngành không để rổng',
+            'txtGraduatedYear.required' => 'Năm tốt nghiệp không để rỗng',
 
         ];
         $data = $request->all();
@@ -76,13 +85,22 @@ class StaffController extends Controller
         $phoneNumber = $request->input('txtPhone');
         $email = $request->input('txtEmail');
         $password =  $request->input('txtPass');
-
         $idNumber = $request->input('txtIDNumber');
         $photo = null;
         $idPhoto = null;
         $idPhotoBack = null;
         $note = $request->input('txtNote');
         $user = auth()->user();
+        
+        $staffId = $request->input('txtStaffID');
+        $level = $request->input('txtLevel');
+        $levelName = $request->input('txtLevelName');
+        $school = $request->input('txtSchool');
+        $fieldOfStudy = $request->input('txtFieldOfStudy');
+        $graduatedYear = $request->input('txtGraduatedYear');
+        $grade = $request->input('txtGrade');
+        $modeOfStudy = $request->input('txtModeOf');
+
         //  $dayOfLeave =request(0);
 
         //Photo
@@ -154,16 +172,27 @@ class StaffController extends Controller
             'note' =>$note,
             "createdBy" => $user->id,
             "status" => 0,
+
+            'staffId' => $staffId,
+            'level' =>$level,
+            'levelName' =>$levelName,
+            'school' =>$school,
+            'fieldOfStudy'=>$fieldOfStudy,
+            'graduatedYear' =>$graduatedYear,
+            'grade'=>$grade,
+            'modeOfStudy'=>$modeOfStudy,
         ];
 
         $response = Http::post('http://localhost:8888/staff/add', $data_request);
-        $body = json_decode($response->body(), true);
-        if($body['isSuccess']) {
-            return redirect()->back()->with('success', 'Thêm thành công!');
-        }
-        else {
-            return redirect()->back()->with('error', 'Thêm thất bại');
-        }
+        
+       dd($response);
+        $response = Http::post('http://localhost:8888/education/add', $data_request);
+       $body= json_decode($response->body(), true);
+
+       if( $body['isSuccess'] == "Save success"){
+           return redirect()->back()->with('message', 'Thêm thành công!');
+       }
+       return redirect()->back()->with('message','Thêm thất bại');
     }
 
     public function vaddStaff() {
@@ -189,7 +218,12 @@ class StaffController extends Controller
             $district_default=$body['data'];
         }
 
+        $response = Http::get('http://localhost:8888/staff/list');
+        $body = json_decode($response->body(), true);
+        $data_staff = $body['data'];
+
         return view('main.staff.add',[
+            'data_staff' => $data_staff,
             'data_reg' => $dsKhuvuc,
             'data_department' => $dsPhongBan,
             'data_district' => $district_default,
