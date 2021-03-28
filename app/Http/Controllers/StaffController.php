@@ -36,18 +36,18 @@ class StaffController extends Controller
         $rule = [
             'txtCode' => 'required|unique:staff,code|min:3|max:20',
             'txtFname' => 'required',
-            'txtDob' => 'required|date_format:Y-m-d|before:'.now()->format('Y-m-d'),
-            'txtJoinat' => 'required|date_format:Y-m-d|after:'.now()->subDay()->format('Y-m-d'),
+            'txtDob' => 'required|date_format:Y-m-d|before:' . now()->format('Y-m-d'),
+            'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
             'txtIDNumber' => 'bail|required|unique:staff,id_number',
             'txtEmail' => 'bail|email',
             'txtPhone' => 'bail|numeric',
             'txtNote' => 'bail|max:500',
 
-//            'education.*.txtLevel' => 'required|numeric',
-//            'education.*.txtLevelName' => 'required',
-//            'education.*.txtSchool' => 'required|min:3|max:100',
-//            'education.*.txtFieldOfStudy' => 'required',
-//            'education.*.txtGraduatedYear' => 'required|numeric|min:1940|max:'.now()->year,
+            'education.*.level' => 'required|numeric',
+            'education.*.levelName' => 'required',
+            'education.*.school' => 'required|min:3|max:100',
+            'education.*.fieldOfStudy' => 'required',
+            'education.*.graduatedYear' => 'required|numeric|min:1940|max:' . now()->year,
         ];
         $message = [
             'txtCode.required' => 'Mã nhân viên không để rỗng',
@@ -56,25 +56,26 @@ class StaffController extends Controller
             'txtCode.min' => 'Mã nhân viên tối thiểu 3 ký tự',
             'txtFname.required' => 'Tên Nhân viên không để rỗng',
             'txtJoinat.required' => 'Ngày vào không để rỗng',
-            'txtJoinat.after' => 'Ngày vào phải sau ngày: '.now()->subDay()->format('Y-m-d'),
+            'txtJoinat.after' => 'Ngày vào phải sau ngày: ' . now()->subDay()->format('Y-m-d'),
             'txtDob.required' => 'Ngày sinh nhật không để rỗng',
             'txtDob.date_format' => 'Ngày sinh nhật sai định dạng',
-            'txtDob.before' => 'Ngày sinh nhật phải trước ngày: '.now()->format('Y-m-d'),
+            'txtDob.before' => 'Ngày sinh nhật phải trước ngày: ' . now()->format('Y-m-d'),
             'txtIDNumber.required' => 'Số CMND không để rỗng',
             'txtIDNumber.unique' => 'Số CMND đã tồn tại',
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
             'txtPhone.numeric' => 'Số Phone phải là số',
             'txtNote.max' => 'Ghi chú không quá 500 ký tự',
 
-            'education.*.txtLevel.required' => 'Cấp bậc không để rỗng',
-            'education.*.txtLevel.numeric' => 'Cấp bậc chỉ chấp nhận số',
-            'education.*.txtSchool.required' => 'Tên trường không để rỗng',
-            'education.*.txtSchool.max' => 'Tên Trường tối đa 100 ký tự',
-            'education.*.txtFieldOfStudy.required' => 'Chuyên ngành không để rỗng',
-            'education.*.txtGraduatedYear.required' => 'Năm tốt nghiệp không để rỗng',
-            'education.*.txtGraduatedYear.numeric' => 'Năm tốt nghiệp chỉ chấp nhận số',
-            'education.*.txtGraduatedYear.min' => 'Năm tốt nghiệp nhỏ nhất :min',
-            'education.*.txtGraduatedYear.max' => 'Năm tốt nghiệp lớn nhất :max',
+            'education.*.level.required' => 'Cấp bậc không để rỗng',
+            'education.*.level.numeric' => 'Cấp bậc chỉ chấp nhận số',
+            'education.*.levelName.required' => 'Tên cấp bậc không để rỗng',
+            'education.*.school.required' => 'Tên trường không để rỗng',
+            'education.*.school.max' => 'Tên Trường tối đa 100 ký tự',
+            'education.*.fieldOfStudy.required' => 'Chuyên ngành không để rỗng',
+            'education.*.graduatedYear.required' => 'Năm tốt nghiệp không để rỗng',
+            'education.*.graduatedYear.numeric' => 'Năm tốt nghiệp chỉ chấp nhận số',
+            'education.*.graduatedYear.min' => 'Năm tốt nghiệp nhỏ nhất :min',
+            'education.*.graduatedYear.max' => 'Năm tốt nghiệp lớn nhất :max',
 
         ];
         $data = $request->all();
@@ -103,17 +104,6 @@ class StaffController extends Controller
         $idPhotoBack = null;
         $note = $request->input('txtNote');
         $user = auth()->user();
-
-        $staffId = $request->input('txtStaffID');
-        $level = $request->input('txtLevel');
-        $levelName = $request->input('txtLevelName');
-        $school = $request->input('txtSchool');
-        $fieldOfStudy = $request->input('txtFieldOfStudy');
-        $graduatedYear = $request->input('txtGraduatedYear');
-        $grade = $request->input('txtGrade');
-        $modeOfStudy = $request->input('txtModeOf');
-
-        //  $dayOfLeave =request(0);
 
         //Photo
         $now = Carbon::now();
@@ -163,7 +153,7 @@ class StaffController extends Controller
             }
         }
 
-        $data_request = [
+        $data_staff = [
             'code' => $code,
             'firstname' => $firstname,
             'lastname' => $lastname,
@@ -184,31 +174,22 @@ class StaffController extends Controller
             'note' => $note,
             "createdBy" => $user->id,
             "status" => 0,
-
-            'staffId' => $staffId,
-            'level' => $level,
-            'levelName' => $levelName,
-            'school' => $school,
-            'fieldOfStudy' => $fieldOfStudy,
-            'graduatedYear' => $graduatedYear,
-            'grade' => $grade,
-            'modeOfStudy' => $modeOfStudy,
         ];
 
-        $response = Http::post('http://localhost:8888/staff/add', $data_request);
+        $response = Http::post('http://localhost:8888/staff/add', $data_staff);
         $staffBody = json_decode($response->body(), true);
         if ($staffBody['isSuccess']) {
+            $staffDetail = $staffBody['data'];
 
-            $response = Http::post('http://localhost:8888/education/add', $data_request);
-            $body = json_decode($response->body(), true);
+            $educations = $data['education'];
 
-            if ($body['isSuccess'] == "Save success") {
-                return redirect()->back()
-                    ->with('message', ['type' => 'success', 'message' => 'Thêm thành công!']);
-            } else {
-                return redirect()->back()
-                    ->with('message', ['type' => 'danger', 'message' => 'Thêm văn bằng thất bại.']);
+            foreach ($educations as $education) {
+                $education['staffId'] = $staffDetail['id'];
+                Http::post('http://localhost:8888/education/add', $education);
             }
+
+            return redirect()->back()
+                ->with('message', ['type' => 'success', 'message' => 'Thêm thành công!']);
         } else {
             return redirect()->back()
                 ->with('message', ['type' => 'danger', 'message' => $staffBody['message']]);

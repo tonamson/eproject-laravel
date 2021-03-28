@@ -270,13 +270,13 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Cấp Bậc:</label>
-                                                        <input type="text" class="form-control" name="education[0][txtLevel]">
+                                                        <input type="text" class="form-control" name="education[0][level]" value="1">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Tên Cấp Bậc:</label>
-                                                        <select id="txtLevelName" class="form-control" name="education[0][txtLevelName]">
+                                                        <select id="txtLevelName" class="form-control" name="education[0][levelName]">
                                                             <option value="Tiểu học">Tiểu học</option>
                                                             <option value="Trung học cơ sở">THCS</option>
                                                             <option value="Trung học phổ thông">THPT</option>
@@ -292,31 +292,31 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Tên Trường: (*)</label>
-                                                        <input type="text" class="form-control text-uppercase" id="txtSchool" name="education[0][txtSchool]">
+                                                        <input type="text" class="form-control text-uppercase" id="txtSchool" name="education[0][school]" value="happy polla">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Chuyên ngành: (*)</label>
-                                                        <input type="text" class="form-control" name="education[0][txtFieldOfStudy]">
+                                                        <input type="text" class="form-control" name="education[0][fieldOfStudy]" value="bán thuốc">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Năm tốt nghiệp:(*)</label>
-                                                        <input type="text" class="form-control" name="education[0][txtGraduatedYear]">
+                                                        <input type="text" class="form-control" name="education[0][graduatedYear]" value="2021">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Xếp loại:</label>
-                                                        <input type="text" class="form-control" name="education[0][txtGrade]">
+                                                        <input type="text" class="form-control" name="education[0][grade]" value="giỏi">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Hình thức học:</label>
-                                                        <input type="text" class="form-control" name="education[0][txtModeOf]">
+                                                        <input type="text" class="form-control" name="education[0][modeOfStudy]" value="không biết">
                                                     </div>
                                                 </div>
                                             </div>
@@ -354,13 +354,13 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Cấp Bậc:</label>
-                                <input type="text" class="form-control" name="education[${optionIndex}][txtLevel]">
+                                <input type="text" class="form-control" name="education[${optionIndex}][level]">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Tên Cấp Bậc:</label>
-                                <select id="txtLevelName" class="form-control" name="education[${optionIndex}][txtLevelName]">
+                                <select id="txtLevelName" class="form-control" name="education[${optionIndex}][levelName]">
                                     <option value="Tiểu học">Tiểu học</option>
                                     <option value="Trung học cơ sở">THCS</option>
                                     <option value="Trung học phổ thông">THPT</option>
@@ -376,31 +376,31 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Tên Trường: (*)</label>
-                                <input type="text" class="form-control text-uppercase" id="txtSchool" name="education[${optionIndex}][txtSchool]">
+                                <input type="text" class="form-control text-uppercase" id="txtSchool" name="education[${optionIndex}][school]">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Chuyên ngành: (*)</label>
-                                <input type="text" class="form-control" name="education[${optionIndex}][txtFieldOfStudy]">
+                                <input type="text" class="form-control" name="education[${optionIndex}][fieldOfStudy]">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Năm tốt nghiệp:(*)</label>
-                                <input type="text" class="form-control" name="education[${optionIndex}][txtGraduatedYear]">
+                                <input type="text" class="form-control" name="education[${optionIndex}][graduatedYear]">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Xếp loại:</label>
-                                <input type="text" class="form-control" name="education[${optionIndex}][txtGrade]">
+                                <input type="text" class="form-control" name="education[${optionIndex}][grade]">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Hình thức học:</label>
-                                <input type="text" class="form-control" name="education[${optionIndex}][txtModeOf]">
+                                <input type="text" class="form-control" name="education[${optionIndex}][modeOfStudy]">
                             </div>
                         </div>
                     </div>
