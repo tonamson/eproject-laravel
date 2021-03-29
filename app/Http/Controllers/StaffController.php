@@ -351,7 +351,7 @@ class StaffController extends Controller
             'txtCode' => 'required|min:3|max:20',
             'txtFname' => 'required',
             'txtDob' => 'required|date_format:Y-m-d|before:' . now()->format('Y-m-d'),
-            'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
+            // 'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
             'txtIDNumber' => 'bail|required',
             'txtEmail' => 'required|email',
             'txtPhone' => 'required|numeric',
@@ -371,7 +371,7 @@ class StaffController extends Controller
             'txtCode.min' => 'Mã nhân viên tối thiểu 3 ký tự',
             'txtFname.required' => 'Tên Nhân viên không để rỗng',
             'txtJoinat.required' => 'Ngày vào không để rỗng',
-            'txtJoinat.after' => 'Ngày vào phải sau ngày: ' . now()->subDay()->format('Y-m-d'),
+            // 'txtJoinat.after' => 'Ngày vào phải sau ngày: ' . now()->subDay()->format('Y-m-d'),
             'txtDob.required' => 'Ngày sinh nhật không để rỗng',
             'txtDob.date_format' => 'Ngày sinh nhật sai định dạng',
             'txtDob.before' => 'Ngày sinh nhật phải trước ngày: ' . now()->format('Y-m-d'),
@@ -419,9 +419,9 @@ class StaffController extends Controller
         $password_old = $request->input('txtPassOld');
         $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
-        $photo = null;
-        $idPhoto = null;
-        $idPhotoBack = null;
+        $photo = $request->input('txtImagesOld') ? $request->input('txtImagesOld') : '';
+        $idPhoto = $request->input('txtImagesOld2') ? $request->input('txtImagesOld2') : '';
+        $idPhotoBack = $request->input('txtImagesOld3') ? $request->input('txtImagesOld3') : '';
         $note = $request->input('txtNote');
         $createdBy = $request->input('txtCreateBy');
         $createdAt = $request->input('txtCreatedAt');
@@ -490,7 +490,7 @@ class StaffController extends Controller
             'email' => $email,
             'idNumber' => $idNumber,
             'photo' => $photo,
-            'idPhoto' => $idPhoto ?? null,
+            'idPhoto' => $idPhoto,
             'idPhotoBack' => $idPhotoBack,
             "dayOfLeave" => 0,
             'note' => $note,

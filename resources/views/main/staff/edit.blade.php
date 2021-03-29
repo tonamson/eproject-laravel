@@ -237,28 +237,35 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                 <input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" value="{{ $data['idNumber'] }}">
                                             </div>
 
+                                            <div class="form-group" hidden>
+                                                <label>Hình ảnh:</label>
+                                                <input type="text" class="form-input-styled" name="txtImagesOld" value="{{$data['photo']}}" data-fouc>
+                                            </div>
+    
                                             <div class="form-group">
                                                 <label>Hình ảnh:</label>
-                                                @isset($data['photo'])
-                                                    <p><img width="50px" height="50px" src="{{ asset($data['photo']) }}"></p>
-                                                @endisset
-                                                <input type="file" class="form-input-styled" name="txtPhoto">
+                                                <p><img width="50px" height="50px" src="{{ asset($data['photo']) }}"></p>
+                                                <input type="file" class="form-input-styled" name="txtPhoto" data-fouc>
                                             </div>
-
+    
+                                            <div class="form-group" hidden>
+                                                <label>Mặt trước CMND:</label>
+                                                <input type="text" class="form-input-styled" name="txtImagesOld2" value="{{$data['idPhoto']}}" data-fouc>
+                                            </div>
                                             <div class="form-group">
                                                 <label>Mặt trước CMND:</label>
-                                                @isset($data['idPhoto'])
-                                                    <p><img width="50px" height="50px" src="{{ asset($data['idPhoto']) }}"></p>
-                                                @endisset
-                                                <input type="file" class="form-input-styled" name="txtIDPhoto">
+                                                <p><img width="50px" height="50px" src="{{ asset($data['idPhoto']) }}"></p>
+                                                <input type="file" class="form-input-styled" name="txtIDPhoto" data-fouc>
                                             </div>
-
+    
+                                            <div class="form-group" hidden>
+                                                <label>Mặt sau CMND:</label>
+                                                <input type="text" class="form-input-styled" name="txtImagesOld3" value="{{$data['idPhotoBack']}}" data-fouc>
+                                            </div>
                                             <div class="form-group">
                                                 <label>Mặt sau CMND:</label>
-                                                @isset($data['idPhotoBack'])
-                                                    <p><img width="50px" height="50px" src="{{ asset($data['idPhotoBack']) }}"></p>
-                                                @endisset
-                                                <input type="file" class="form-input-styled" name="txtIDPhoto2">
+                                                <p><img width="50px" height="50px" src="{{ asset($data['idPhotoBack']) }}"></p>
+                                                <input type="file" class="form-input-styled" name="txtIDPhoto2" data-fouc>
                                             </div>
 
                                             <div class="form-group">
@@ -274,7 +281,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                 <textarea  class="form-control" name="txtCreatedAt" >{{ $data['createdAt'] }}</textarea>
                                             </div>
                                         </fieldset>
-                                    </div>
+                                    </div>v
                                 </div>
                             </div>
                             {{-- TAB 2 --}}
