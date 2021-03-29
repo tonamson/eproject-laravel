@@ -120,6 +120,7 @@
                                         <tr>
                                             <th>Tên nhân viên</th>
                                             <th>Ngày chấm công</th>
+                                            <th>Ghi chú</th>
                                             <th>Công chuẩn của tháng (1)</th>
                                             <th>Lương hợp đồng (2)</th>
                                             <th>Lương 1 ngày (4)</th>
@@ -219,6 +220,7 @@
                         dataTable.row.add([
                             `${detail.contract.staff.firstname + ' ' + detail.contract.staff.lastname}`,
                             `${detail.day_detail}`,
+                            `${detail.type_note}`,
                             `${detail.standard_days}`,
                             `${detail.contract.baseSalary.format()}`,
                             `${detail.salary_per_day.format()}`,
