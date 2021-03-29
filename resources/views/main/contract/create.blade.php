@@ -74,20 +74,6 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Hộ khẩu thường trú:</label>
-                                    <input type="text" class="form-control" name="address1" value="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Nơi ở hiện tại:</label>
-                                    <input type="text" class="form-control" name="address2" value="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Lương cơ bản:</label>
