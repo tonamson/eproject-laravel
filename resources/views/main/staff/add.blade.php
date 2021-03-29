@@ -181,7 +181,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Khu vực:(*)</label>
+                                                        <label>Tỉnh/TP:(*)</label>
                                                         <!-- <input type="text" class="form-control" name="txtGender"> -->
                                                         <select id="province" class="form-control form-control-select2" color="red" data-fouc>
                                                             @foreach($data_reg as $reg)
@@ -193,7 +193,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Thành Phố/Huyện/Xã:(*)</label>
+                                                        <label>Quận/Huyện:(*)</label>
                                                         <select id="district" class="form-control form-control-select2" name="txtRegional" color="red" data-fouc>
                                                             @foreach($data_district as $district)
                                                                 <option value="{{$district['id']}}">{{ $district['name'] }}</option>
@@ -234,6 +234,11 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                             <div class="form-group">
                                                 <label>CMND:(*)</label>
                                                 <input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" value="{{ old('txtIDNumber') }}">
+                                            </div>
+                                        
+                                            <div class="form-group">
+                                                <label>Ngày cấp:(*)</label>
+                                                <input type="text" class="form-control daterange-single" name="txtIssue" value="{{ old('txtIssue') }}">
                                             </div>
 
                                             <div class="form-group">

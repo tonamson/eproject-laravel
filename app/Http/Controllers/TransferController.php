@@ -34,7 +34,17 @@ class TransferController extends Controller
         $body_department = json_decode($response->body(), true);
         $data_department = $body_department['data'];
 
+        $response_contract = Http::get(config('app.api_url') . '/contract/list', [
+            'del' => boolval(0)
+        ]);
+        $body_contract = json_decode($response_contract->body(), false);
+        $data_contract = [];
+        if ($body_contract->isSuccess) {
+            $data_contract = $body_contract->data ?? [];
+        }
+        // dd($data_contract);
         return view('main.transfer.list', [
+            'listContact'=>$data_contract,
             'listStaff' => $listStaff->data,
             'listDepartment' => $data_department,
             'year' => $year,
@@ -42,6 +52,7 @@ class TransferController extends Controller
             'data' => $body['data'] ?? [],
             'breadcrumbs' => [['text' => 'Điều chuyển', 'url' => '../view-menu/transfer']]
         ]);
+
     }
 
     public function loadOldDepartment(Request $request) {

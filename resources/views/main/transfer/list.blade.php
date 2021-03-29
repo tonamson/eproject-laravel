@@ -157,6 +157,7 @@
                     <th>Tên nhân viên</th>
                     <th>Phòng ban hiện tại</th>
                     <th>Phòng ban điều chuyển</th>
+                    <th>Lương hiện tại</th>
                     <th>Lương đề xuất</th>
                     <th>Quản lý phòng ban hiện tại phê duyệt</th>
                     <th>Quản lý phòng ban điều chuyển phê duyệt</th>
@@ -175,8 +176,20 @@
                         <td><?php echo $transfer['staff_transfer'] ?></td>
                         <td><?php echo $transfer['old_department_name'] ?></td>
                         <td><?php echo $transfer['new_department_name'] ?></td>
-                        
-                        <td><?php echo $transfer['new_salary'] ?></td>
+                        <td>
+                            @php
+                                $salary = 0;
+                            @endphp
+                            @foreach($listContact as $contract)
+                                @if($transfer['staff_id'] == $contract->staffId)
+                                    @php
+                                        $salary = $contract->baseSalary;
+                                    @endphp
+                                @endif
+                            @endforeach
+                            {{ number_format($salary) }}
+                        </td>
+                        <td><?php echo number_format($transfer['new_salary']) ?></td>
                         <td>
                             <?php echo $transfer['old_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
                         </td>
@@ -507,9 +520,9 @@
                     }],
                     dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
                     language: {
-                        search: '<span>Filter:</span> _INPUT_',
-                        searchPlaceholder: 'Type to filter...',
-                        lengthMenu: '<span>Show:</span> _MENU_',
+                        search: '<span>Tìm kiếm:</span> _INPUT_',
+                        searchPlaceholder: 'Nhập từ khóa cần tìm...',
+                        lengthMenu: '<span>Hiển thị:</span> _MENU_',
                         paginate: { 'first': 'First', 'last': 'Last', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;' }
                     }
                 });

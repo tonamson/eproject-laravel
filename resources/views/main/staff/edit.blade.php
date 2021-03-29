@@ -236,6 +236,10 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                 <label>CMND:(*)</label>
                                                 <input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" value="{{ $data['idNumber'] }}">
                                             </div>
+                                            <div class="form-group">
+                                                <label>Ngày cấp:(*)</label>
+                                                <input type="text" class="form-control daterange-single" name="txtIssue" value="{{ old('txtIssue') }}">
+                                            </div>
 
                                             <div class="form-group" hidden>
                                                 <label>Hình ảnh:</label>

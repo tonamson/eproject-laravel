@@ -99,6 +99,7 @@ class StaffController extends Controller
         $email = $request->input('txtEmail');
         $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
+        $identity_issue_date = $request->input('txtIssue');
         $photo = null;
         $idPhoto = null;
         $idPhotoBack = null;
@@ -167,6 +168,7 @@ class StaffController extends Controller
             'email' => $email,
             'password' => $password,
             'idNumber' => $idNumber,
+            'identity_issue_date'=>$identity_issue_date,
             'photo' => $photo,
             'idPhoto' => $idPhoto,
             'idPhotoBack' => $idPhotoBack,
@@ -175,7 +177,7 @@ class StaffController extends Controller
             "createdBy" => $user->id,
             "status" => 0,
         ];
-
+// dd($data_staff);
         $response = Http::post('http://localhost:8888/staff/add', $data_staff);
         $staffBody = json_decode($response->body(), true);
         if ($staffBody['isSuccess']) {
@@ -419,6 +421,7 @@ class StaffController extends Controller
         $password_old = $request->input('txtPassOld');
         $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
+        $identity_issue_date = $request->input('txtIssue');
         $photo = $request->input('txtImagesOld') ? $request->input('txtImagesOld') : '';
         $idPhoto = $request->input('txtImagesOld2') ? $request->input('txtImagesOld2') : '';
         $idPhotoBack = $request->input('txtImagesOld3') ? $request->input('txtImagesOld3') : '';
@@ -489,6 +492,7 @@ class StaffController extends Controller
             'phoneNumber' => $phoneNumber,
             'email' => $email,
             'idNumber' => $idNumber,
+            'identity_issue_date' =>$identity_issue_date,
             'photo' => $photo,
             'idPhoto' => $idPhoto,
             'idPhotoBack' => $idPhotoBack,
