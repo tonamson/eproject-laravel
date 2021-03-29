@@ -351,7 +351,8 @@ class StaffController extends Controller
             'txtCode' => 'required|min:3|max:20',
             'txtFname' => 'required',
             'txtDob' => 'required|date_format:Y-m-d|before:' . now()->format('Y-m-d'),
-            'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
+//            'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
+            'txtJoinat' => 'required',
             'txtIDNumber' => 'bail|required',
             'txtEmail' => 'required|email',
             'txtPhone' => 'required|numeric',
@@ -419,9 +420,9 @@ class StaffController extends Controller
         $password_old = $request->input('txtPassOld');
         $password = $request->input('txtPass');
         $idNumber = $request->input('txtIDNumber');
-        $photo = null;
-        $idPhoto = null;
-        $idPhotoBack = null;
+        $photo = $request->input('txtImagesOld') ? $request->input('txtImagesOld') : '';
+        $idPhoto = $request->input('txtImagesOld2') ? $request->input('txtImagesOld2') : '';
+        $idPhotoBack = $request->input('txtImagesOld3') ? $request->input('txtImagesOld3') : '';
         $note = $request->input('txtNote');
         $createdBy = $request->input('txtCreateBy');
         $createdAt = $request->input('txtCreatedAt');
@@ -490,7 +491,7 @@ class StaffController extends Controller
             'email' => $email,
             'idNumber' => $idNumber,
             'photo' => $photo,
-            'idPhoto' => $idPhoto ?? null,
+            'idPhoto' => $idPhoto,
             'idPhotoBack' => $idPhotoBack,
             "dayOfLeave" => 0,
             'note' => $note,
