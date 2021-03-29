@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use ZipArchive;
 
 class ContractController extends Controller
 {
@@ -118,5 +121,82 @@ class ContractController extends Controller
             return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa hợp đồng thành công.']);
         }
         return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Xóa hợp đồng thất bại.']);
+    }
+
+    public function exportWord($id)
+    {
+        $template = 'HDLD.docx';
+        $disk = Storage::disk('public_folder');
+        $zip_val = new ZipArchive;
+
+        if ($disk->exists($template)) {
+            //copy ra file khác để replace
+            $random_name = ((string)Str::uuid()) . '.docx';
+            $disk->copy($template, 'contract_words/' . $random_name);
+
+            // mở file vừa copy ra để replace keyword
+            if ($zip_val->open($disk->path('contract_words/' . $random_name))) {
+
+                $response = Http::get(config('app.api_url') . '/contract/detail', [
+                    'id' => $id
+                ]);
+
+                $contract_json = json_decode($response->body(), false);
+                $contract = $contract_json->data;
+
+                $key_file_name = 'word/document.xml';
+                $message = $zip_val->getFromName($key_file_name);
+//                dump($contract);
+//                dd($message);
+
+                $contract_startdate = Carbon::createFromFormat('Y-m-d', $contract->startDate);
+                $contract_enddate = Carbon::createFromFormat('Y-m-d', $contract->endDate);
+
+                // department
+                $response = Http::get(config('app.api_url') . '/department/detail', [
+                    'id' => $id
+                ]);
+
+                $department_json = json_decode($response->body(), false);
+                $department = $department_json->data;
+
+
+                $message = str_replace('[STAFF_NAME]', $contract->staff->firstname . ' ' . $contract->staff->lastname, $message);
+                $message = str_replace('[STAFF_BIRTHDAY]', Carbon::createFromFormat('Y-m-d', $contract->staff->dob)->format('d/m/Y'), $message);
+                $message = str_replace('[STAFF_ADDRESS1]', '', $message);
+                $message = str_replace('[STAFF_ADDRESS2]', '', $message);
+                $message = str_replace('[STAFF_PHONE]', $contract->staff->phoneNumber, $message);
+                $message = str_replace('[STAFF_EMAIL]', $contract->staff->email, $message);
+                $message = str_replace('[STAFF_ID_NUMBER]', $contract->staff->idNumber, $message);
+                $message = str_replace('[STAFF_ID_DATE]', '', $message);
+                $message = str_replace('[STAFF_ID_ADDRESS]', '', $message);
+                $message = str_replace('[CONTRACT_EXPIRE]', $contract_startdate->diffInMonths($contract_enddate), $message);
+                $message = str_replace('[CONTRACT_FROM]', $contract_startdate->format('d/m/Y'), $message);
+                $message = str_replace('[CONTRACT_TO]', $contract_enddate->format('d/m/Y'), $message);
+                $message = str_replace('[DEPARTMENT_NAME]', $department->name, $message);
+                $message = str_replace('[POSITION]', $contract->staff->isManager ? 'Trưởng nhóm' : 'Nhân viên', $message);
+                $message = str_replace('[SALARY_BASE]', number_format($contract->baseSalary), $message);
+
+                $zip_val->addFromString($key_file_name, $message);
+                $zip_val->close();
+
+                return $disk->download('contract_words/' . $random_name);
+            } else {
+                return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy mẫu hợp đồng.']);
+            }
+        } else {
+            return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy mẫu hợp đồng.']);
+        }
+    }
+
+    private function latestContractByStaffId($staff_id)
+    {
+        $response = Http::get(config('app.api_url') . '/contract/last-contract', ['staff_id' => $staff_id]);
+        $editContractResponse = json_decode($response->body(), false);
+        $contract = null;
+        if ($editContractResponse->isSuccess) {
+            $contract = $editContractResponse->data;
+        }
+        return $contract;
     }
 }

@@ -15,6 +15,7 @@ Route::group(['prefix' => 'contract'], function () {
     Route::post('save','ContractController@postSave')->name('postSaveContract');
     Route::get('stop/{id?}','ContractController@stopContract')->name('stopContractContract');
     Route::get('delete/{id}','ContractController@getDelete')->name('getDeleteContract');
+    Route::get('export-word/{id}','ContractController@exportWord')->name('exportWord');
 });
 
 Route::group(['prefix' => 'salary'], function () {

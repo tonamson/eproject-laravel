@@ -53,6 +53,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a href="{{ route('getDetailContract', ['id' => $item->id]) }}" class="dropdown-item">Chi tiết</a>
+                                    <a href="{{ route('exportWord', ['id' => $item->id]) }}" class="dropdown-item">Xuất hợp đồng</a>
                                     @php
                                         $endDate = \Carbon\Carbon::createFromFormat('Y-m-d', $item->endDate);
                                         $stopDate = \Carbon\Carbon::createFromFormat('Y-m-d', $item->stopDate);
