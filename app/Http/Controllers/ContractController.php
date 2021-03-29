@@ -189,14 +189,4 @@ class ContractController extends Controller
         }
     }
 
-    private function latestContractByStaffId($staff_id)
-    {
-        $response = Http::get(config('app.api_url') . '/contract/last-contract', ['staff_id' => $staff_id]);
-        $editContractResponse = json_decode($response->body(), false);
-        $contract = null;
-        if ($editContractResponse->isSuccess) {
-            $contract = $editContractResponse->data;
-        }
-        return $contract;
-    }
 }
