@@ -76,6 +76,7 @@ class TransferController extends Controller
         $old_department = $request->input('old_department');
         $new_department = $request->input('new_department');
         $hr_approved =$request->input('txthr');
+        $new_salary =$request->input('txtNewSalary');
         $note = $request->input('note');      
 
         if(!$id_staff_transfer) {
@@ -109,6 +110,7 @@ class TransferController extends Controller
             'newManagerApproved'=>"0",
             'managerApproved'=>"0",
             'hr_approved'=>$hr_approved,
+            'new_salary'=>$new_salary,
             'del'=>"0",
             'note' => $note,
             'created_at' => date('Y-m-d')
@@ -238,16 +240,28 @@ class TransferController extends Controller
                 </select>
             </div>   
             </div>
-
-            
-
+           
             <div class="form-group row">
+            <label class="col-lg-3 col-form-label">Lương đề xuất:</label>
+            <div class="col-lg-9">
+            <textarea class="form-control" name="txtNewSalary" id="txtNewSalary" cols="1" rows="1">'.$body['data']['newSalary'].'</textarea> 
+            </div>   
+            </div>
+
+            <div class="form-group row" hidden>
+            <label class="col-lg-3 col-form-label">Ý kiến Giám đốc:(*)</label>
+            <div class="col-lg-9">
+                <textarea class="form-control" name="txtnoteManager" id="txtnoteManager" cols="2" rows="3" placeholder="VD: Giám đốc nhập ý kiến...">'.$body['data']['noteManager'].'</textarea>
+            </div>   
+            </div>         
+
+            <div class="form-group row" >
                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                 <div class="col-lg-9">
                     <textarea class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
                 </div>
             </div>
-        </div>
+        
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
             <button type="submit" class="btn btn-primary">Sửa</button>
@@ -255,7 +269,137 @@ class TransferController extends Controller
         ';
        
         echo $html;
-        die;
+        die;  
+    }
+
+    public function detailC(Request $request)
+    {
+        $id = $request->input('id');
+        
+        $data_request = [
+            "id" => $id
+        ];
+
+        $response = Http::get('http://localhost:8888/transfer/detail', $data_request);
+        $body = json_decode($response->body(), true);
+
+        $data_request_staff = [
+            "id" => $body['data']['staffId']
+        ];
+
+        $response_staff = Http::get('http://localhost:8888/staff/one', $data_request_staff);
+        $body_staff = json_decode($response_staff->body(), true);
+
+        $data_request_old_department = ['id' => $body_staff['data']['department']];
+
+        $response_old_department = Http::get('http://localhost:8888/department/detail', $data_request_old_department);
+        $department_old = json_decode($response_old_department->body(), true);
+        $department_old_name = $department_old['data']['name'];
+
+        $response = Http::get(config('app.api_url') . '/staff/list', []);
+        $listStaff = json_decode($response->body(), false);
+
+        $response = Http::get('http://localhost:8888/department/list');
+        $body_department = json_decode($response->body(), true);
+        $data_department = $body_department['data'];
+
+        $html_list_staff = '';
+        foreach ($listStaff->data as $staff) {
+            if($body['data']['staffId'] == $staff->id) {
+                $html_list_staff .= '<option value="'.$staff->id.'" selected>'.$staff->firstname .' '. $staff->lastname.'</option>';
+            }
+        }
+
+        $html_list_department = '';
+        foreach ($data_department as $department) {
+            if($body['data']['newDepartment'] == $department['id']) {
+                $html_list_department .= '<option value="'.$department['id'].'" selected>'.$department['name'].'</option>';
+            } else {
+                $html_list_department .= '<option value="'.$department['id'].'">'.$department['name'].'</option>';
+            }
+        }
+
+        $html_hr = '';
+         
+                $html_hr .= '<option value="0" selected>Xác nhận</option>';
+            
+                $html_hr .= '<option value="1">Không xác nhận</option>';
+           
+
+        $html = '<input type="hidden" name="id_update" value="'.$id.'">';
+        $html.= '
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Từ Chối Điều Chuyển Mới</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Tên nhân viên</label>
+                <div class="col-lg-9">
+                    <select class="form-control select-search select_staff_transfer" name="staff_id_update"  id="selected_staff" readonly="true">
+                        '.$html_list_staff.'
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Phòng ban hiện tại:</label>
+                <div class="col-lg-9">
+                    <select class="form-control old_department" name="old_department_update" readonly="true">
+                        <option value="'.$id.'">'.$department_old_name.'</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" hidden>
+                <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
+                <div class="col-lg-9">
+                    <select class="form-control new_department" name="new_department_update">
+                        '.$html_list_department.'
+                    </select>
+                </div>   
+            </div>
+
+            <div class="form-group row" hidden>
+            <label class="col-lg-3 col-form-label">Xác nhận:(*)</label>
+            <div class="col-lg-9">
+                <select class="form-control txthr" name="txthr">
+                '.$html_hr.'
+                </select>
+            </div>   
+            </div>
+
+            <div class="form-group row" hidden>
+            <label class="col-lg-3 col-form-label">Lương đề xuất:</label>
+            <div class="col-lg-9">
+            <textarea class="form-control" name="txtNewSalary" id="txtNewSalary" cols="1" rows="1">'.$body['data']['newSalary'].'</textarea> 
+            </div>   
+            </div>
+           
+            <div class="form-group row">
+            <label class="col-lg-3 col-form-label">Ý kiến Giám đốc:(*)</label>
+            <div class="col-lg-9">
+                <textarea class="form-control" name="txtnoteManager" id="txtnoteManager" cols="2" rows="3" placeholder="VD: Giám đốc nhập ý kiến...">'.$body['data']['noteManager'].'</textarea>
+            </div>   
+            </div>         
+
+            <div class="form-group row" hidden>
+                <label class="col-lg-3 col-form-label">Ghi chú:</label>
+                <div class="col-lg-9">
+                    <textarea class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
+                </div>
+            </div>
+        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary">Từ chối</button>
+        </div>
+        ';
+       
+        echo $html;
+        die;  
     }
 
     public function detail1(Request $request)
@@ -365,6 +509,8 @@ class TransferController extends Controller
         $old_department = $request->input('old_department_update');
         $new_department = $request->input('new_department_update');
         $hr_approved =$request->input('txthr');
+        $new_salary =$request->input('txtNewSalary');
+        $note_manager =$request->input('txtnoteManager');
         $note = $request->input('note_update');
 
         if($old_department == $new_department) {
@@ -379,9 +525,12 @@ class TransferController extends Controller
             'id' => $id_update,
             'new_department' => $new_department,
             'hr_approved'=>$hr_approved,
+            'new_salary'=>$new_salary,
+            'note_manager'=>$note_manager,
             'note' => $note
         ];
 
+        // dd($data_request);
 
         $response = Http::post('http://localhost:8888/transfer/update', $data_request);
         $body = json_decode($response->body(), true);
@@ -407,13 +556,17 @@ class TransferController extends Controller
 
         $response = Http::get('http://localhost:8888/transfer/approve', $data_request);
         $body = json_decode($response->body(), true);
-        dd($data_request);
+        // dd($data_request);
 
         if($body['data'] == "Approve Success") {
             return redirect()->back()->with('success', 'Phê duyệt thành công, khi quản lý còn lại và Giám đốc phê duyệt, nhân viên sẽ chuyển phòng ban!');
-        } else if($body['data'] == "Staff changed department") {
+        }
+         else if($body['data'] == "Approve manager") {
             return redirect()->back()->with('success', 'Phê duyệt thành công, nhân viên đã chuyển phòng ban!');
-        } else {
+        }else if($body['data'] == "Staff changed department") {
+            return redirect()->back()->with('success', 'Phê duyệt thành công, nhân viên đã chuyển phòng ban!'); 
+        }
+        else {
             return redirect()->back()->with('error', 'Phê duyệt điều chuyển thất bại!');
         }
     }
