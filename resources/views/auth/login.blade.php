@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="form-group form-group-feedback form-group-feedback-left">
-                        <input type="text" class="form-control" placeholder="CMND" name="id_number" value="{{ old('id_number') }}">
+                        <input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}">
                         <div class="form-control-feedback">
                             <i class="icon-user text-muted"></i>
                         </div>

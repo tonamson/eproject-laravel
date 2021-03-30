@@ -22,7 +22,7 @@ class AuthenticateController extends Controller
     {
         $data = $request->all();
         $rule = [
-            'id_number' => 'required|exists:staff,id_number',
+            'email' => 'required|exists:staff,email',
             'password' => 'required',
         ];
         $message = [];
@@ -30,9 +30,9 @@ class AuthenticateController extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate)->withInput();
         }
-        $id_number = $data['id_number'];
+        $email = $data['email'];
         $password = md5($data['password']);
-        $user = Staff::where(['id_number' => $id_number, 'password' => $password])->first();
+        $user = Staff::where(['email' => $email, 'password' => $password])->first();
 
         if($user) {
             $params_get_department = [
@@ -40,11 +40,11 @@ class AuthenticateController extends Controller
             ];
             $response_get_department = Http::get('http://localhost:8888/staff/findOneStaffDepartment', $params_get_department);
             $body_get_department = json_decode($response_get_department->body(), true);
-    
+
             $request->session()->put('department_name', $body_get_department['data'][0][2]);
         }
 
-        if ($user && $auth = Auth::login($user)) {
+        if ($user && Auth::login($user)) {
              // login thành công thì redirect tới trang nào đó tùy
             //return response(auth()->user()); // thông tin user
             return redirect('/');

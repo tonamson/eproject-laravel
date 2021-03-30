@@ -73,9 +73,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Lương cơ bản:</label>
-                            <input type="number" class="form-control" name="baseSalary" value="0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Lương cơ bản:</label>
+                                    <input type="number" class="form-control" name="baseSalary" value="0">
+                                </div>
+                            </div>
                         </div>
                         <button class="btn btn-success" type="submit">Lưu</button>
                     </div>
