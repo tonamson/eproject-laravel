@@ -363,14 +363,14 @@
                 </a>
             </div>
         </div>
-        <div class="col-6 col-md-3 text-center col-max">
+        {{-- <div class="col-6 col-md-3 text-center col-max">
             <div class="outer">
                 <a href="{{ action('ViewmenuController@kpi') }}">
                     <i class="icon-8x icon-racing"></i>
                     <p>Kpi</p> 
                 </a>
             </div>
-        </div>
+        </div> --}}
         <div class="col-6 col-md-3 text-center col-max">
             <div class="outer">
                 <a href="{{ action('AboutcompanyController@index') }}">
