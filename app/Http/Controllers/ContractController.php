@@ -146,7 +146,7 @@ class ContractController extends Controller
 
                 $key_file_name = 'word/document.xml';
                 $message = $zip_val->getFromName($key_file_name);
-//                dump($contract);
+//                dd($contract);
 //                dd($message);
 
                 $contract_startdate = Carbon::createFromFormat('Y-m-d', $contract->startDate);
@@ -154,26 +154,31 @@ class ContractController extends Controller
 
                 // department
                 $response = Http::get(config('app.api_url') . '/department/detail', [
-                    'id' => $id
+                    'id' => $contract->staff->department
                 ]);
 
+                // phòng ban
                 $department_json = json_decode($response->body(), false);
                 $department = $department_json->data;
 
+                $responseCity = Http::get('http://localhost:8888/regional/get-one', ['id' => $contract->staff->regional]);
+                $bodyCity = json_decode($responseCity->body(), false);
+
+                $responseDistrict = Http::get('http://localhost:8888/regional/get-one', ['id' => $bodyCity->data->parent]);
+                $bodyDistrict = json_decode($responseDistrict->body(), false);
 
                 $message = str_replace('[STAFF_NAME]', $contract->staff->firstname . ' ' . $contract->staff->lastname, $message);
                 $message = str_replace('[STAFF_BIRTHDAY]', Carbon::createFromFormat('Y-m-d', $contract->staff->dob)->format('d/m/Y'), $message);
                 $message = str_replace('[STAFF_ADDRESS1]', '', $message);
-                $message = str_replace('[STAFF_ADDRESS2]', '', $message);
                 $message = str_replace('[STAFF_PHONE]', $contract->staff->phoneNumber, $message);
                 $message = str_replace('[STAFF_EMAIL]', $contract->staff->email, $message);
                 $message = str_replace('[STAFF_ID_NUMBER]', $contract->staff->idNumber, $message);
-                $message = str_replace('[STAFF_ID_DATE]', '', $message);
-                $message = str_replace('[STAFF_ID_ADDRESS]', '', $message);
+                $message = str_replace('[STAFF_ID_DATE]', Carbon::createFromFormat('Y-m-d', $contract->staff->identity_issue_date)->format('d/m/Y'), $message);
+                $message = str_replace('[STAFF_ID_ADDRESS]', $bodyDistrict->data->name . ', ' . $bodyCity->data->name, $message);
                 $message = str_replace('[CONTRACT_EXPIRE]', $contract_startdate->diffInMonths($contract_enddate), $message);
                 $message = str_replace('[CONTRACT_FROM]', $contract_startdate->format('d/m/Y'), $message);
                 $message = str_replace('[CONTRACT_TO]', $contract_enddate->format('d/m/Y'), $message);
-                $message = str_replace('[DEPARTMENT_NAME]', $department->name, $message);
+                $message = str_replace('[DEPARTMENT_NAME]', $department->nameVn, $message);
                 $message = str_replace('[POSITION]', $contract->staff->isManager ? 'Trưởng nhóm' : 'Nhân viên', $message);
                 $message = str_replace('[SALARY_BASE]', number_format($contract->baseSalary), $message);
 
