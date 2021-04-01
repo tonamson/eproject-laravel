@@ -69,17 +69,7 @@
                             <tr>
                                 <td>{{ $item->staff->id }}</td>
                                 <td>{{ $item->staff->firstname . ' '. $item->staff->lastname }}</td>
-                                <td>
-                                    @php
-                                        $total_working_of_day = 0;
-                                        if(isset($item->details)) {
-                                            foreach($item->details as $detail){
-                                                $total_working_of_day += $detail->total_working_of_day;
-                                            }
-                                        }
-                                    @endphp
-                                    {{ number_format($total_working_of_day) }}
-                                </td>
+                                <td>{{ number_format($item->totalDayWork, 1) }}</td>
                                 <td>{{ number_format($item->baseSalaryContract) }}</td> <!-- lương cơ bản -->
                                 <td>{{ number_format($item->salary) }}</td> <!-- lương cơ bản -->
                                 <td>{{ number_format($item->salaryOt) }}</td> <!-- lương tăng ca -->

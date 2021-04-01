@@ -79,6 +79,8 @@ class SalaryController extends Controller
             'to_date.date_format' => 'Ngày kết thúc sai định dạng: YYYY-MM-DD',
         ];
         $data = $request->all();
+
+        return response()->json($data);
         $data['staffs'] = array_values($data['staffs']);
 
         $validate = Validator::make($data, $rule, $message);
