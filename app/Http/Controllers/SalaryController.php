@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\PayrollImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Excel;
 
 class SalaryController extends Controller
 {
@@ -80,7 +82,6 @@ class SalaryController extends Controller
         ];
         $data = $request->all();
 
-        return response()->json($data);
         $data['staffs'] = array_values($data['staffs']);
 
         $validate = Validator::make($data, $rule, $message);
@@ -156,5 +157,23 @@ class SalaryController extends Controller
             }
         }
         return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy bảng tính lương']);
+    }
+
+    public function exportPayroll(Request $request)
+    {
+        $responseSalaryDetail = Http::get(config('app.api_url') . '/salary/details', [
+            'id' => $request->id
+        ]);
+        $bodySalaryDetail = json_decode($responseSalaryDetail->body(), false);
+        $dataSalaryDetail = [];
+        if ($bodySalaryDetail->isSuccess) {
+            $dataSalaryDetail = $bodySalaryDetail->data;
+        }
+
+        $responseDepartment = Http::get('http://localhost:8888/department/list');
+        $bodyDepartment = json_decode($responseDepartment->body(), true);
+        $data_department = $bodyDepartment['data'];
+
+        return Excel::download(new PayrollImport($dataSalaryDetail, $data_department), 'payroll.xlsx');
     }
 }

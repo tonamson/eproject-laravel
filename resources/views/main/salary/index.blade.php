@@ -53,6 +53,7 @@
                                         <a href="javascript:void(0)" onclick="deleteSalary({{ $item->id }})" class="dropdown-item">Xóa bảng tính</a>
                                         <a href="javascript:void(0)" onclick="setSuccessSalary({{ $item->id }})" class="dropdown-item">Hoàn tất bảng lương</a>
                                     @endif
+                                    <a href="{{ route('exportPayroll',['id' => $item->id]) }}" class="dropdown-item">Xuất bảng lương</a>
                                 </div>
                             </div>
                         </div>
@@ -74,6 +75,7 @@
                 window.location.href = '{{ route('getDeleteSalary') }}/' + id;
             }
         }
+
         function setSuccessSalary(id) {
             let conf = confirm('Bạn có chắc muốn chuyển sang hoàn tất bảng lương ID: ' + id);
             if (conf) {
