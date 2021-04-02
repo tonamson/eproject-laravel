@@ -105,6 +105,9 @@ class CheckInOutController extends Controller
         $body_staff = json_decode($response_staff->body(), true);
 
         $month = $request->input('month');
+        if($month && strlen($month) == 1) {
+            $month = "0" . $month;
+        }
         $year = $request->input('year');
         if(!$month) {
             $month = date("m");
@@ -112,6 +115,8 @@ class CheckInOutController extends Controller
         if(!$year) {
             $year = date("Y");
         }
+        $start_date = $year . '-' . $month . '-' . '01';
+        $end_date = date("Y-m-t", strtotime($start_date));
         $date_special = $year . '-' . $month . '-' . '01';
         $data_request_special = ['special_date_from' => $date_special, 'staff_request' => auth()->user()->id, 'department_request' => auth()->user()->department];
 
@@ -125,14 +130,14 @@ class CheckInOutController extends Controller
         $body = json_decode($response->body(), true);
 
 
-        $month_2 = $month + 1;
-        $month_2 .= "";
-        if(strlen($month_2) == 1) {
-            $month_2 = "0" . $month_2;
-        }
+        // $month_2 = $month + 1;
+        // $month_2 .= "";
+        // if(strlen($month_2) == 1) {
+        //     $month_2 = "0" . $month_2;
+        // }
 
-        $date2 = $year . '-' . $month_2 . '-' . '01';
-        $data_request_high = ['from_date' => $date, 'to_date' => $date2];
+        // $date2 = $year . '-' . $month_2 . '-' . '01';
+        $data_request_high = ['from_date' => $date, 'to_date' => $end_date];
 
         $response = Http::get('http://localhost:8888/time-leave/get-time-leave-from-to', $data_request_high);
         $time_leave = json_decode($response->body(), true);
@@ -143,6 +148,9 @@ class CheckInOutController extends Controller
 
         $response = Http::get('http://localhost:8888/leave-other/get-leave-other-from-to', $data_request_high);
         $leave_other_table = json_decode($response->body(), true);
+
+        $response = Http::get('http://localhost:8888/time-special/get-time-special-from-to', $data_request_high);
+        $time_special = json_decode($response->body(), true);
 
         $calendar = array();
         foreach ($body_special['data'] as $value) {
@@ -182,6 +190,15 @@ class CheckInOutController extends Controller
         $summary['total_soon'] = "00:00:00";
         $summary['total_day_add'] = 0;
         $summary['total_day_leave'] = 0;
+        $summary['total_time_special'] = 0;
+
+        foreach ($time_special['data'] as $value) {
+            if($value['staff_id'] == $user->id) {
+                $summary['total_time_special']++;
+                $summary['total_number_time'] += 1;
+                $summary['total_number_time_all'] += 1;
+            }
+        }
 
         foreach ($time_leave['data'] as $value) {
             if($value['is_approved'] == 1 && $value['staff_id'] == $user->id) {
@@ -236,9 +253,10 @@ class CheckInOutController extends Controller
 
                 array_push($calendar, $arr);
 
-                $day_from_check = $value['fromDate'];
-                while($day_from_check <= $value['toDate']) {
-                    $summary['total_day_leave'] += $num;
+                $day_from_check = $value['fromDate'] > $start_date ? $value['fromDate'] : $start_date;
+                $day_to_check = $value['toDate'] > $end_date ? $end_date : $value['toDate'];
+                while($day_from_check <= $day_to_check) {
+                    $summary['total_day_leave'] += 1;
                     if($value['typeLeave'] == 6 or $value['typeLeave'] == 7) {
                         $summary['total_number_time'] += 1;
                         $summary['total_number_time_all'] += 1;
@@ -280,7 +298,7 @@ class CheckInOutController extends Controller
             } else if($value['multiply'] == 2) {
                 $summary['total_day_off'] += $value['number_time'];
             } else {
-                $summary['total_day_normal'] += $value['number_time'];
+                $summary['total_day_normal'] += 1;
             }
 
             if($value['in_late']) {
