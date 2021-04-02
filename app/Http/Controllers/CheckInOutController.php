@@ -137,6 +137,13 @@ class CheckInOutController extends Controller
         $response = Http::get('http://localhost:8888/time-leave/get-time-leave-from-to', $data_request_high);
         $time_leave = json_decode($response->body(), true);
 
+        $data_request_leave_other = ['staff_id' => $user->id, 'month_get' => $date];
+        $response = Http::get('http://localhost:8888/leave-other/list', $data_request_leave_other);
+        $leave_other = json_decode($response->body(), true);
+
+        $response = Http::get('http://localhost:8888/leave-other/get-leave-other-from-to', $data_request_high);
+        $leave_other_table = json_decode($response->body(), true);
+
         $calendar = array();
         foreach ($body_special['data'] as $value) {
             $check = false;
@@ -179,7 +186,7 @@ class CheckInOutController extends Controller
         foreach ($time_leave['data'] as $value) {
             if($value['is_approved'] == 1 && $value['staff_id'] == $user->id) {
                 $arr = array();
-                $value['type'] == 0 ? $arr['title'] = "Bổ sung công: " . $value['time'] : $arr['title'] = "Đăng kí phép: " . $value['time'];
+                $value['type'] == 0 ? $arr['title'] = "Bổ sung công: " . $value['time'] : $arr['title'] = "Phép năm tính lương: " . $value['time'];
                 $arr['start'] = $value['day_time_leave'];
                 $arr['end'] = $value['day_time_leave'];
                 $arr['color'] = '#68683c';
@@ -195,6 +202,49 @@ class CheckInOutController extends Controller
 
                 $summary['total_number_time'] += $num;
                 $summary['total_number_time_all'] += ($num * $value['multiply']);
+            }
+        }
+
+        foreach ($leave_other['data'] as $value) {
+            if($value['isApproved'] == 1 && $value['staffId'] == $user->id) {
+                $arr = array();
+
+                switch ($value['typeLeave']) {
+                    case 3:
+                        $arr['title'] = "Phép nghỉ ốm đau ngắn ngày: 0 công";
+                        break;
+                    case 4:
+                        $arr['title'] = "Phép nghỉ ốm đau dài ngày: 0 công";
+                        break;
+                    case 5:
+                        $arr['title'] = "Phép thai sản: 0 công";
+                        break;
+                    case 6:
+                        $arr['title'] = "Phép kết hôn: Có công";
+                        break;
+                    case 7:
+                        $arr['title'] = "Phép ma chay: Có công";
+                        break;
+                    default:
+                        $arr['title'] = "Phép nghỉ không lương: 0 công";
+                        break;
+                }
+
+                $arr['start'] = $value['fromDate'];
+                $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['toDate'])));
+                $arr['color'] = '#68683c';
+
+                array_push($calendar, $arr);
+
+                $day_from_check = $value['fromDate'];
+                while($day_from_check <= $value['toDate']) {
+                    $summary['total_day_leave'] += $num;
+                    if($value['typeLeave'] == 6 or $value['typeLeave'] == 7) {
+                        $summary['total_number_time'] += 1;
+                        $summary['total_number_time_all'] += 1;
+                    }
+                    $day_from_check = date('Y-m-d', strtotime($day_from_check. ' + 1 days'));
+                }
             }
         }
 
@@ -252,6 +302,7 @@ class CheckInOutController extends Controller
         return view('main.check_in_out.staff_time')
             ->with('data', $body['data'])
             ->with('time_leave', $time_leave['data'])
+            ->with('leave_other_table', $leave_other_table['data'])
             ->with('summary', $summary)
             ->with('year', $year)
             ->with('month', $month)
