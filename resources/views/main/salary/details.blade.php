@@ -26,23 +26,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    @php
-                        $total_salary = 0;
-                    @endphp
-                    @foreach($data as $item)
-                        @if($total_salary += $item->salary) @endif
-                    @endforeach
-                    <h3>Tổng chi lương: <b class="text-success">{{ number_format($total_salary) }} VND</b></h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
                     <table class="table datatable-basic">
                         <thead>
                         <tr>
                             <th>Mã nhân viên</th>
                             <th>Tên nhân viên</th>
-                            <th>Tổng công</th>
+                            <th>Công thường</th>
+                            <th>Công lễ</th>
                             <th>Lương CB (1)</th>
                             <th>Lương trong tháng (2)</th>
                             <th>Lương tăng ca (3)</th>
@@ -70,6 +60,7 @@
                                 <td>{{ $item->staff->id }}</td>
                                 <td>{{ $item->staff->firstname . ' '. $item->staff->lastname }}</td>
                                 <td>{{ number_format($item->totalDayWork, 1) }}</td>
+                                <td>{{ number_format($item->totalSpecialDay, 1) }}</td>
                                 <td>{{ number_format($item->baseSalaryContract) }}</td> <!-- lương cơ bản -->
                                 <td>{{ number_format($item->salary) }}</td> <!-- lương cơ bản -->
                                 <td>{{ number_format($item->salaryOt) }}</td> <!-- lương tăng ca -->
@@ -80,15 +71,17 @@
                                 <td>{{ number_format($item->personalTax) }}</td>
                                 <td>{{ number_format($item->salaryActuallyReceived) }}</td>
                                 <td>
-                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})">
-                                        Chi tiết lương
-                                    </button>
-                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetailAllowance" onclick="loadDetailAllowanceStaff({{ $item->staff->id }})">
-                                        Chi tiết phụ cấp
-                                    </button>
-                                    <button class="btn btn-info btn-sm mr-1" data-toggle="modal" data-target="#modalDetailInsurance" onclick="loadDetailInsuranceStaff({{ $item->staff->id }})">
-                                        Chi tiết khấu trừ
-                                    </button>
+                                    <div class="dropdown">
+                                        <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                            <i class="icon-menu9"></i>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})" class="dropdown-item">Chi tiết lương</a>
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#modalDetailAllowance" onclick="loadDetailAllowanceStaff({{ $item->staff->id }})" class="dropdown-item">Chi tiết phụ cấp</a>
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#modalDetailInsurance" onclick="loadDetailInsuranceStaff({{ $item->staff->id }})" class="dropdown-item">Chi tiết khấu trừ</a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
