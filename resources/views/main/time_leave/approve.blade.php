@@ -8,7 +8,7 @@
 @section('css')
     <link href="{{ asset('assets/css/components_datatables.min.css') }}" rel="stylesheet" type="text/css">
     <style>
-        #tb_dkp_wrapper {
+        #tb_dkp_wrapper, #tb_leave_other_wrapper {
             display: none;
         }
         .swal2-icon.swal2-warning:before {
