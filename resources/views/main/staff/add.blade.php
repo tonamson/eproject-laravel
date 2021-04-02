@@ -230,10 +230,15 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                 <label>Mật Khẩu:(*)</label>
                                                 <input type="password" class="form-control" name="txtPass"  value="<?php echo md5(123456);?>" require>
                                             </div>
-    
+
                                             <div class="form-group">
                                                 <label>CMND:(*)</label>
                                                 <input type="text" class="form-control" name="txtIDNumber" placeholder="Nhập số CMND" value="{{ old('txtIDNumber') }}">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Ngày cấp:(*)</label>
+                                                <input type="text" class="form-control daterange-single" name="txtIssue" value="{{ old('txtIssue') }}">
                                             </div>
 
                                             <div class="form-group">
