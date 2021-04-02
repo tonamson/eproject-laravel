@@ -139,13 +139,20 @@
                                         <input type="number" class="form-control" name="txtNewSalary" id="txtNewSalary" placeholder="Nhập mức lương đề xuất..." />
                                     </div>
                                 </div>
-
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                                 <div class="col-lg-9">
                                     <textarea class="form-control" name="note" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required></textarea>
                                 </div>
                             </div>
+
+                            <div class="form-group row" hidden>
+                                <label class="col-lg-3 col-form-label">Ý kiến GĐ:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="txtnoteManager" id="txtnoteManager" placeholder="Nhập mức lương đề xuất..." />
+                                </div>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -199,13 +206,13 @@
                         </td>
                         <td><?php echo number_format($transfer['new_salary']) ?></td>
                         <td>
-                            <?php echo $transfer['old_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            <?php echo $transfer['old_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa duyệt</span>' : '<span class="badge badge-success">Đã duyệt</span>' ?>
                         </td>
                         <td>
-                            <?php echo $transfer['new_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            <?php echo $transfer['new_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa duyệt</span>' : '<span class="badge badge-success">Đã duyệt</span>' ?>
                         </td>
                         <td>
-                            <?php echo $transfer['manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            <?php echo $transfer['manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa duyệt</span>' : '<span class="badge badge-success">Đã duyệt</span>' ?>
                         </td>
                         @if(auth()->user()->department == 2 )
                             @if($transfer['old_manager_approved'] == 0 && $transfer['new_manager_approved'] == 0)
@@ -215,29 +222,31 @@
                                         <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                     @if(auth()->user()->is_manager == 1)
-                                        <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                        <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                                     @endif
                                 </td>
                             @elseif($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1 && $transfer['manager_approved'] == 1)
                                 <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
                             @else
-                                @if(auth()->user()->is_manager == 1)
+                                @if($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1)
+                                <td style="max-width: 160px;">Chờ Giám đốc duyệt</td>
+                                @elseif(auth()->user()->is_manager == 1)
                                     <td>
                                         <div class="from-group d-flex">
-                                            <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                            <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                                         </div>
                                     </td>
                                 @else
-                                    <td style="max-width: 160px;">Đã có ít nhất một quản lý phê duyệt, không thể chỉnh sửa</td>
+                                    <td style="max-width: 160px;">Đã có ít nhất một quản lý duyệt, không thể chỉnh sửa</td>
                                 @endif
                             @endif
                         <!-- Hth     -->
                         @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 and $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Các Quản lý chưa phê duyệt</td>
+                                <td style="max-width: 160px;">Các Quản lý chưa duyệt</td>
                         @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 )
-                                <td style="max-width: 160px;">Quản lý cũ chưa phê duyệt</td>
+                                <td style="max-width: 160px;">Quản lý cũ chưa duyệt</td>
                         @elseif(auth()->user()->department == 5 and  $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Quản lý mới chưa phê duyệt</td>
+                                <td style="max-width: 160px;">Quản lý mới chưa duyệt</td>
                         @elseif(auth()->user()->department == 5 and $transfer['manager_approved'] == 1)
                                 <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
                         @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
@@ -287,13 +296,13 @@
                         </td>
                         <td><?php echo number_format($transfer['new_salary']) ?></td>
                         <td>
-                            <?php echo $transfer['old_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            <?php echo $transfer['old_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa duyệt</span>' : '<span class="badge badge-success">Đã duyệt</span>' ?>
                         </td>
                         <td>
-                            <?php echo $transfer['new_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            <?php echo $transfer['new_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa duyệt</span>' : '<span class="badge badge-success">Đã duyệt</span>' ?>
                         </td>
                         <td>
-                            <?php echo $transfer['manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            <?php echo $transfer['manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa duyệt</span>' : '<span class="badge badge-success">Đã duyệt</span>' ?>
                         </td>
                         @if(auth()->user()->department == 2 )
                             @if($transfer['old_manager_approved'] == 0 && $transfer['new_manager_approved'] == 0)
@@ -303,45 +312,49 @@
                                         <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                     @if(auth()->user()->is_manager == 1)
-                                        <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                        <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                                     @endif
                                 </td>
                             @elseif($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1 && $transfer['manager_approved'] == 1)
-                                <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
+                                <td style="max-width: 160px;">Đã duyệt, nhân viên đã chuyển phòng ban</td>
                             @else
                                 @if(auth()->user()->is_manager == 1)
                                     <td>
                                         <div class="from-group d-flex">
-                                            <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                            <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                                         </div>
                                     </td>
                                 @else
-                                    <td style="max-width: 160px;">Đã có ít nhất một quản lý phê duyệt, không thể chỉnh sửa</td>
+                                    <td style="max-width: 160px;">Đã có ít nhất một quản lý duyệt, không thể chỉnh sửa</td>
                                 @endif
                             @endif
                         <!-- Hth     -->
                         @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 and $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Các Quản lý chưa phê duyệt</td>
+                                <td style="max-width: 160px;">Các Quản lý chưa duyệt</td>
                         @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 )
-                                <td style="max-width: 160px;">Quản lý cũ chưa phê duyệt</td>
+                                <td style="max-width: 160px;">Quản lý cũ chưa duyệt</td>
                         @elseif(auth()->user()->department == 5 and  $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Quản lý mới chưa phê duyệt</td>
+                                <td style="max-width: 160px;">Quản lý mới chưa duyệt</td>
                         @elseif(auth()->user()->department == 5 and $transfer['manager_approved'] == 1)
-                                <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
+                                <td style="max-width: 160px;">Đã duyệt, nhân viên đã chuyển phòng ban</td>
                         @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
                         <td>
                             <div class="from-group d-flex">
-                                <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                             </div>
                             <div class="from-group d-flex">
                                 <a class="btn btn-info open-detail-transferC ml-2" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Từ chối</a>
                             </div>
                         </td>
-                        <!-- Hth     -->
+                        <!-- Hth bat o day    -->
+                        @elseif(auth()->user()->department == 1 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
+                        <td style="max-width: 160px;">Đã duyệt, nhân viên đã chuyển phòng ban</td>
+                        @elseif($transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
+                        <td style="max-width: 160px;">Chờ Giám đốc duyệt</td>
                         @else
                             <td>
                                 <div class="from-group d-flex">
-                                    <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                    <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                                 </div>
                             </td>
                         @endif
@@ -349,6 +362,12 @@
                             <div class="from-group d-flex">
                                 <a class="btn btn-info open-detail-transfer1" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
                             </div>
+                        </td>
+                        <td style="max-width: 160px; color: red;"> 
+                            <?php 
+                                if(strlen($transfer['note_manager']) > 10) echo substr($transfer['note_manager'], 0, 10) . '...';
+                                else echo $transfer['note_manager'];
+                            ?>
                         </td>
                     </tr>
                     @endif
@@ -383,13 +402,13 @@
                         </td>
                         <td><?php echo number_format($transfer['new_salary']) ?></td>
                         <td>
-                            <?php echo $transfer['old_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            <?php echo $transfer['old_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa duyệt</span>' : '<span class="badge badge-success">Đã duyệt</span>' ?>
                         </td>
                         <td>
-                            <?php echo $transfer['new_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            <?php echo $transfer['new_manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa duyệt</span>' : '<span class="badge badge-success">Đã duyệt</span>' ?>
                         </td>
                         <td>
-                            <?php echo $transfer['manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa phê duyệt</span>' : '<span class="badge badge-success">Đã phê duyệt</span>' ?>
+                            <?php echo $transfer['manager_approved'] == 0 ? '<span class="badge badge-warning">Chưa duyệt</span>' : '<span class="badge badge-success">Đã duyệt</span>' ?>
                         </td>
                         @if(auth()->user()->department != 5 )
                             @if($transfer['old_manager_approved'] == 0 && $transfer['new_manager_approved'] == 0)
@@ -400,7 +419,7 @@
                                     </div>
                                 </td>
                             @elseif($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1 && $transfer['manager_approved'] == 1)
-                                <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
+                                <td style="max-width: 160px;">Đã duyệt, nhân viên đã chuyển phòng ban</td>
                             @else
                                 @if($transfer['note_manager'] != null)
                                     <td>
@@ -410,29 +429,29 @@
                                         </div>
                                     </td>
                                 @else
-                                    <td style="max-width: 160px;">Đã có ít nhất một quản lý phê duyệt, không thể chỉnh sửa</td>
+                                    <td style="max-width: 160px;">Đã có ít nhất một quản lý duyệt, không thể chỉnh sửa</td>
                                 @endif
                             @endif
                         <!-- Hth     -->
                         @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 and $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Các Quản lý chưa phê duyệt</td>
+                                <td style="max-width: 160px;">Các Quản lý chưa duyệt</td>
                         @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 )
-                                <td style="max-width: 160px;">Quản lý cũ chưa phê duyệt</td>
+                                <td style="max-width: 160px;">Quản lý cũ chưa duyệt</td>
                         @elseif(auth()->user()->department == 5 and  $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Quản lý mới chưa phê duyệt</td>
+                                <td style="max-width: 160px;">Quản lý mới chưa duyệt</td>
                         @elseif(auth()->user()->department == 5 and $transfer['manager_approved'] == 1)
-                                <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
+                                <td style="max-width: 160px;">Đã duyệt, nhân viên đã chuyển phòng ban</td>
                         @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
                         <td>
                             <div class="from-group d-flex">
-                                <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                             </div>
                         </td>
                         <!-- Hth     -->
                         @else
                             <td>
                                 <div class="from-group d-flex">
-                                    <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
+                                    <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                                 </div>
                             </td>
                         @endif
@@ -441,7 +460,12 @@
                                 <a class="btn btn-info open-detail-transfer1" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
                             </div>
                         </td>
-                        <td><?php echo $transfer['note_manager'] ?></td>
+                        <td style="max-width: 160px; color: red;"> 
+                            <?php 
+                                if(strlen($transfer['note_manager']) > 10) echo substr($transfer['note_manager'], 0, 10) . '...';
+                                else echo $transfer['note_manager'];
+                            ?>
+                        </td>
               
                     </tr>
                 @endif
