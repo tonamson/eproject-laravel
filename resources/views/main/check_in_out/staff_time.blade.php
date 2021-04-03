@@ -75,6 +75,9 @@
                     </div>
                 </div>
             </form>
+            <div class="export">
+                <a href ="{{ action('pdfController@index') }}?y_m={{ $y_m }}" class="btn btn-danger export" id="export-button"> Xuất PDF </a>
+           </div>
         </div>
 
         <div class="table-responsive">
@@ -85,13 +88,15 @@
                         <th>Ngày thường làm việc</th>
                         <th>Ngày lễ làm việc</th>
                         <th>Ngày nghỉ làm việc</th>
-                        <th>Tổng ngày bổ sung công</th>
-                        <th>Tổng ngày đăng kí phép</th>
-                        <th>Tổng thời gian đi trễ</th>
-                        <th>Tổng thời gian về sớm</th>
+                        <th>Bổ sung công</th>
+                        <th>Đăng kí phép</th>
                         <th>Công nghỉ lễ</th>
-                        <th>Tổng công</th>
-                        <th>Tổng công được tính</th>
+                        <th>Làm việc</th>
+                        <th>Tăng ca</th>
+                        <th>Đi trễ</th>
+                        <th>Về sớm</th>
+                        <th>Công</th>
+                        <th>Công được tính</th>
                     </tr>
                 </thead>
                 <tbody id="tbody">
@@ -102,9 +107,11 @@
                         <td>{{ $summary['total_day_off'] }}</td>
                         <td>{{ $summary['total_day_add'] }}</td>
                         <td>{{ $summary['total_day_leave'] }}</td>
+                        <td>{{ $summary['total_time_special'] }}</td>
+                        <td>{{ $summary['total_time'] }}</td>
+                        <td>{{ $summary['total_ot'] }}</td>
                         <td>{{ $summary['total_late'] }}</td>
                         <td>{{ $summary['total_soon'] }}</td>
-                        <td>{{ $summary['total_time_special'] }}</td>
                         <td>{{ $summary['total_number_time'] }}</td>                
                         <td>{{ $summary['total_number_time_all'] }}</td>
                     </tr>
@@ -226,7 +233,7 @@
                             </td>
                             <td></td>
                             <td></td>
-                            <td>{{ $item['time'] }}</td>
+                            <td></td>
                             <td>
                                 <?php 
                                     echo $item['time'] == "08:00:00" ? '1' : '0.5' 
@@ -237,7 +244,7 @@
                                     echo $item['time'] == "08:00:00" ? '1' * $item['multiply'] : '0.5' * $item['multiply']
                                 ?>
                             </td>
-                            <td><?php echo $item['type'] == "0" ? 'Bổ sung công đã được duyệt' : 'Phép năm tính lương đã được duyệt' ?></td>
+                            <td><?php echo $item['type'] == "0" ? 'Bổ sung công' : 'Phép năm tính lương' ?></td>
                         </tr>
                     @endif
                 @endforeach    
@@ -321,7 +328,32 @@
                             </td>
                         </tr>
                     @endif
-                @endforeach    
+                @endforeach   
+                
+                @foreach ($time_special as $item)
+                    @if($item['staff_id'] == auth()->user()->id)
+                        <tr style="background-color: #ffe7e7">
+                            <td>
+                                <?php
+                                    $date = date_create($item['day_time_special']);
+                                    echo date_format($date,"d-m-Y");
+                                ?>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                Công ngày lễ
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach  
             </tbody>
         </table>
     </div>

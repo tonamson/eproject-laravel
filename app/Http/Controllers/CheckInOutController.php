@@ -188,6 +188,8 @@ class CheckInOutController extends Controller
         $summary['total_day_normal'] = 0;
         $summary['total_late'] = "00:00:00";
         $summary['total_soon'] = "00:00:00";
+        $summary['total_time'] = "00:00:00";
+        $summary['total_ot'] = "00:00:00";
         $summary['total_day_add'] = 0;
         $summary['total_day_leave'] = 0;
         $summary['total_time_special'] = 0;
@@ -300,21 +302,23 @@ class CheckInOutController extends Controller
             } else {
                 $summary['total_day_normal'] += 1;
             }
+        }
 
-            if($value['in_late']) {
-                $explode_time_late = explode(":", $value['in_late']);
-                $summary['total_late'] = date('H:i:s',strtotime('+'.$explode_time_late[0].' hour',strtotime($summary['total_late'])));
-                $summary['total_late'] = date('H:i:s',strtotime('+'.$explode_time_late[1].' minutes',strtotime($summary['total_late'])));
-                $summary['total_late'] = date('H:i:s',strtotime('+'.$explode_time_late[2].' seconds',strtotime($summary['total_late'])));
+        $data_request = ['y_m' => $date];
+        $response = Http::get('http://localhost:8888/time-leave/summary-staff-time', $data_request);
+        $summary_all_staff = json_decode($response->body(), true);
+
+        foreach ($summary_all_staff['data'] as $value) {
+            if($value['staff_id'] == $user->id) {
+                if($value['sum_time'])
+                    $summary['total_time'] = $value['sum_time'];
+                if($value['sum_in_late'])
+                    $summary['total_late'] = $value['sum_in_late'];
+                if($value['sum_out_soon'])
+                    $summary['total_soon'] = $value['sum_out_soon'];
+                if($value['sum_ot'])
+                    $summary['total_ot'] = $value['sum_ot'];
             }
-
-            if($value['out_soon']) {
-                $explode_time_soon = explode(":", $value['out_soon']);
-                $summary['total_soon'] = date('H:i:s',strtotime('+'.$explode_time_soon[0].' hour',strtotime($summary['total_soon'])));
-                $summary['total_soon'] = date('H:i:s',strtotime('+'.$explode_time_soon[1].' minutes',strtotime($summary['total_soon'])));
-                $summary['total_soon'] = date('H:i:s',strtotime('+'.$explode_time_soon[2].' seconds',strtotime($summary['total_soon'])));
-            }
-
         }
 
         return view('main.check_in_out.staff_time')
@@ -326,6 +330,8 @@ class CheckInOutController extends Controller
             ->with('month', $month)
             ->with('staff', $body_staff['data'])
             ->with('calendar', json_encode($calendar))
+            ->with('y_m', $start_date)
+            ->with('time_special', $time_special['data'])
             ->with('breadcrumbs', [['text' => 'Công phép', 'url' => '../view-menu/time-leave'], ['text' => 'Lịch sử chấm công', 'url' => '#']]);
     }
 }
