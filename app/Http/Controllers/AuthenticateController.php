@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
+use Mail;
+use DB;
+use Illuminate\Support\Str;
 
 class AuthenticateController extends Controller
 {
@@ -57,5 +61,79 @@ class AuthenticateController extends Controller
         Auth::logout();
         $request->session()->flush();
         return redirect('auth/login');
+    }
+
+    public function getForgot()
+    {
+        if (auth()->user()) {
+            return redirect('/forgot-password');
+        }
+        return view('auth.forgot');
+    }
+
+    public function postForgot(Request $request)
+    {
+        $email = $request->input('email');
+
+        if(!DB::table('staff')->where('email', $email)->value('id')) {
+            return redirect()->back()->with('error', 'Email không phải là email của nhân viên');
+        }
+
+        $token = Str::random(60);
+
+        DB::table('reset_password')->insert(
+            ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
+        );
+
+        Mail::send('auth.email',['token' => $token], function($message) use ($request) {
+            $message->from('nfsred2406@gmail.com');
+            $message->to($request->email);
+            $message->subject('Reset Password Notification');
+        });
+        return back()->with('success', 'Chúng tôi đã gửi hướng dẫn tới địa chỉ email của bạn!');
+    }
+
+    public function getReset(Request $request)
+    {
+        $token = $request->input('token');
+
+        return view('auth.reset' ,['token' => $token]);
+    }
+
+    public function postReset(Request $request)
+    {
+        $token = $request->input('token');
+        $password = md5($request->input('password'));
+        $password_confirm = md5($request->input('password_confirm'));
+
+        if ($request->input('password') != $request->input('password_confirm')) {
+            return redirect()->back()->with('error', 'Mật khẩu mới và xác nhận mật khẩu không giống nhau');
+        }
+
+        if (strlen($request->input('pass_new')) > 20) {
+            return redirect()->back()->with('error', 'Mật khẩu mới không được dài quá 20 kí tự');
+        }
+
+        $email = DB::table('reset_password')->where('token', $token)->value('email');
+
+        if(!$email) {
+            return back()->with('error', 'Lỗi sai token');
+        }
+
+        $id_staff = DB::table('staff')->where('email', $email)->value('id');
+
+        $params = [
+            'id' => $id_staff,
+            'pass_new' => $password
+        ];
+
+        $response = Http::post('http://localhost:8888/staff/change-pass-forgot', $params);
+        $body = json_decode($response->body(), true);
+
+        if ($body['data'] == "Change password Success") {
+            return redirect()->back()->with('success', 'Đổi mật khẩu thành công');
+        } else {
+            return redirect()->back()->with('success', 'Đổi mật khẩu thất bại');
+        }
     }
 }

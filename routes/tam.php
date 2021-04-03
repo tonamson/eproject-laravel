@@ -1,6 +1,13 @@
 <?php 
 use Illuminate\Support\Facades\Route;
 
+Route::group(['prefix' => 'auth'], function () {
+    Route::get('forgot', 'AuthenticateController@getForgot');
+    Route::post('forgot', 'AuthenticateController@postForgot');
+    Route::get('reset', 'AuthenticateController@getReset');
+    Route::post('reset', 'AuthenticateController@postReset');
+});
+
 Route::middleware(['check_login'])->group(function () {
     Route::get('/', 'ViewmenuController@index');
 

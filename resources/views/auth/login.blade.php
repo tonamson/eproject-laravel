@@ -44,6 +44,10 @@
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Đăng nhập <i class="icon-circle-right2 ml-2"></i></button>
                     </div>
+
+                    <div class="text-center">
+                        <a href="{{ action('AuthenticateController@getForgot') }}">Quên mật khẩu?</a>
+                    </div>
                 </div>
             </div>
         </form>
