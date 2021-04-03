@@ -177,9 +177,7 @@
                 @endforeach   
 
                 <tr style="background-color: rgb(231, 231, 231)">
-                    <td>Tổng kết</td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="3">Tổng kết</td>
                     <td>{{ $summary['total_time'] }}</td>
                     <td>{{ $summary['total_number_time_all'] }}</td>
                     <td>
