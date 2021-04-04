@@ -77,6 +77,7 @@ class TransferController extends Controller
         $new_department = $request->input('new_department');
         $hr_approved =$request->input('txthr');
         $new_salary =$request->input('txtNewSalary');
+        // $note_manager = null;
         $note = $request->input('note');      
 
         if(!$id_staff_transfer) {
@@ -113,13 +114,14 @@ class TransferController extends Controller
             'new_salary'=>$new_salary,
             'del'=>"0",
             'note' => $note,
+            // 'note_manager'=>$note_manager,
             'created_at' => date('Y-m-d')
         ];
 
-
+        // dd($data_request);
         $response = Http::post('http://localhost:8888/transfer/create', $data_request);
         $body = json_decode($response->body(), true);
-// dd($body);
+
        
         if($body['message'] == "Save success") {
             return redirect()->back()->with('success', 'Tạo điều chuyển thành công!');
@@ -251,7 +253,7 @@ class TransferController extends Controller
             <div class="form-group row" hidden>
             <label class="col-lg-3 col-form-label">Ý kiến Giám đốc:(*)</label>
             <div class="col-lg-9">
-                <textarea class="form-control" name="txtnoteManager" id="txtnoteManager" cols="2" rows="3" placeholder="VD: Giám đốc nhập ý kiến...">'.$body['data']['noteManager'].'</textarea>
+            <textarea class="form-control" name="txtnoteManager" id="txtnoteManager" cols="2" rows="3" placeholder="VD: Giám đốc nhập ý kiến...">'.$body['data']['noteManager'].'</textarea>
             </div>   
             </div>         
 
@@ -485,6 +487,12 @@ class TransferController extends Controller
                     </select>
                 </div>   
             </div>
+            <div class="form-group row">
+            <label class="col-lg-3 col-form-label">Ý kiến Giám đốc:(*)</label>
+            <div class="col-lg-9">
+                <textarea class="form-control" name="txtnoteManager" id="txtnoteManager" cols="2" rows="3" placeholder="VD: Giám đốc nhập ý kiến...">'.$body['data']['noteManager'].'</textarea>
+            </div>   
+            </div>  
             <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                 <div class="col-lg-9" >

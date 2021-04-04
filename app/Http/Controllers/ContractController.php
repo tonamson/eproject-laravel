@@ -146,7 +146,6 @@ class ContractController extends Controller
 
                 $key_file_name = 'word/document.xml';
                 $message = $zip_val->getFromName($key_file_name);
-//                dd($contract);
 //                dd($message);
 
                 $contract_startdate = Carbon::createFromFormat('Y-m-d', $contract->startDate);

@@ -90,14 +90,16 @@
                                     <tr>
                                         <th>Mã nhân viên</th>
                                         <th>Tên nhân viên</th>
+                                        <th>Ngày vào</th>
                                         <th>Chọn</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($listStaff as $index => $staff)
                                         <tr>
-                                            <td>{{ $staff->id }}</td>
+                                            <td>{{ $staff->code }}</td>
                                             <td>{{ $staff->firstname . ' '. $staff->lastname }}</td>
+                                            <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $staff->joinedAt)->format('d/m/Y') }}</td>
                                             <td>
                                                 <input type="checkbox" name="staffs[{{ $index }}]" value="{{ $staff->id }}" checked>
                                             </td>
