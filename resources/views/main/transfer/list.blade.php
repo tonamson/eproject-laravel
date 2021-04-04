@@ -68,13 +68,13 @@
                 </div>
             </form>
             
-            @if(auth()->user()->department == 2 & auth()->user()->is_manager !=0 )
+            {{-- @if(auth()->user()->department == 2 & auth()->user()->is_manager !=0 )
                 <div class="form-group d-flex">
                     <div class="">
                         <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Tạo mới</button>
                     </div>
                 </div>
-            @endif
+            @endif --}}
         </div>
         <!-- Modal bsc -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -189,7 +189,11 @@
                      <tr>
                         <td><?php echo $count; $count++ ?></td>
                         <td><?php echo $transfer['staff_transfer'] ?></td>
-                        <td><?php echo $transfer['old_department_name'] ?></td>
+                        @foreach ($listDepartment as $depart)
+                        @if($transfer['old_department'] == $depart['id'])
+                        <td><?php echo $depart['name'] ?></td>
+                        @endif
+                        @endforeach
                         <td><?php echo $transfer['new_department_name'] ?></td>
                         <td>
                             @php
@@ -279,7 +283,11 @@
                      <tr>
                         <td><?php echo $count; $count++ ?></td>
                         <td><?php echo $transfer['staff_transfer'] ?></td>
-                        <td><?php echo $transfer['old_department_name'] ?></td>
+                        @foreach ($listDepartment as $depart)
+                        @if($transfer['old_department'] == $depart['id'])
+                        <td><?php echo $depart['name'] ?></td>
+                        @endif
+                        @endforeach
                         <td><?php echo $transfer['new_department_name'] ?></td>
                         <td>
                             @php
@@ -385,7 +393,12 @@
                      <tr>
                         <td><?php echo $count; $count++ ?></td>
                         <td><?php echo $transfer['staff_transfer'] ?></td>
-                        <td><?php echo $transfer['old_department_name'] ?></td>
+                        @foreach ($listDepartment as $depart)
+                        @if($transfer['old_department'] == $depart['id'])
+                        <td><?php echo $depart['name'] ?></td>
+                        @endif
+                        @endforeach
+                     
                         <td><?php echo $transfer['new_department_name'] ?></td>
                         <td>
                             @php
