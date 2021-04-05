@@ -64,6 +64,7 @@ class TransferController extends Controller
         $department_old = json_decode($response->body(), true);
         $department_old_name = $department_old['data']['name'];
 
+
         $html = "<option value='$id' selected>$department_old_name</option>";
 
         echo $html;die;
@@ -105,6 +106,7 @@ class TransferController extends Controller
         
         $data_request = [
             'staff_id' => $id_staff_transfer,
+            'old_department' => $old_department,
             'new_department' => $new_department,
             'created_by' => $id_staff_create,
             'oldManagerApproved'=>"0",
@@ -499,6 +501,7 @@ class TransferController extends Controller
                     <textarea class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
                 </div>
             </div>
+       
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -546,10 +549,10 @@ class TransferController extends Controller
         // dd($data_request);
 
         if($body['message'] == "Update success") {
-            return redirect()->back()->with('success', 'Chỉnh sửa điều chuyển thành công!');
+            return redirect()->back()->with('success', 'Đã thực hiện thành công!');
         } 
         else {
-            return redirect()->back()->with('error', 'Chỉnh sửa điều chuyển thất bại!');
+            return redirect()->back()->with('error', 'Thực hiện thất bại!');
         }
     }
 
