@@ -98,5 +98,13 @@ class pdfController extends Controller
             'time_special' => $time_special['data']
             ]);
         return $pdf->download('data_check_in.pdf');
+        return view('data_check_in', [
+            'date' => date("m-Y", strtotime($date)), 
+            'check_in' => $body['data'], 
+            'time_leave' => $time_leave['data'], 
+            'leave_other_table' => $leave_other_table['data'],
+            'summary' => $summary,
+            'time_special' => $time_special['data']
+        ]);
     }
 }
