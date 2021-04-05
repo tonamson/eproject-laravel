@@ -355,7 +355,7 @@
                             </div>
                         </td>
                         <!-- Hth bat o day    -->
-                        @elseif(auth()->user()->department == 1 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
+                        @elseif(auth()->user()->department == 1 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1 and  $transfer['manager_approved'] == 1)
                         <td style="max-width: 160px;">Đã duyệt, nhân viên đã chuyển phòng ban</td>
                         @elseif($transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
                         <td style="max-width: 160px;">Chờ Giám đốc duyệt</td>

@@ -63,6 +63,7 @@ class StaffController extends Controller
             'txtIDNumber.required' => 'Số CMND không để rỗng',
             'txtIDNumber.unique' => 'Số CMND đã tồn tại',
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
+            'txtEmail.require' => 'Email không được trống',
             'txtPhone.required' => 'Số điện thoại không để rỗng',
             'txtPhone.numeric' => 'Số điện thoại chỉ chấp nhận số',
             'txtNote.max' => 'Ghi chú không quá 500 ký tự',

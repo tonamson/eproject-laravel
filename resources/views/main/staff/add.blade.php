@@ -213,7 +213,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Email:</label>
+                                                        <label>Email:(*)</label>
                                                         <input type="text" class="form-control" name="txtEmail" value="{{ old('txtEmail') }}" placeholder="Nhập Email abc12@exam.com">
                                                     </div>
                                                 </div>

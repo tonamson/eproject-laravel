@@ -79,8 +79,53 @@ class TransferController extends Controller
         $hr_approved =$request->input('txthr');
         $new_salary =$request->input('txtNewSalary');
         // $note_manager = null;
-        $note = $request->input('note');      
+        $note = $request->input('note');  
+//
 
+        $month = $request->input('month');
+        $year = $request->input('year');
+        if(!$month) {
+            $month = date("m");
+        }
+        if(!$year) {
+            $year = date("Y");
+        }
+
+        $date = $year . '-' . $month . '-' . '01';
+        $data_request = ['day_get' => $date, 'department' => auth()->user()->department];
+
+        $response = Http::get('http://localhost:8888/transfer/list', $data_request);
+        $body = json_decode($response->body(), true);
+          //var_dump($body);die;
+        $temp_date = null;
+        
+        foreach ($body['data'] as $tran) {
+            if($tran['staff_id'] == auth()->user()->id) {
+                if($temp_date == null)
+                    $temp_date = $tran['created_at'];
+                else {
+                    if($temp_date < $tran['created_at']) 
+                        $temp_date = $tran['created_at'];
+                }
+                
+            }
+        }
+
+        // var_dump($temp_date);die;
+        if($temp_date != null) {
+            $date1=date_create($temp_date);
+            $date2=date_create(date('Y-m-d'));
+            $diff=date_diff($date1,$date2);
+            if($diff->format("%a") < 30) {
+                return redirect()->back()->with('error', 'Điều chuyển cách điều chuyển trước chưa quá 30 ngày');
+            }   
+        }
+
+
+        //$date1=date_create($create_at);
+        
+
+//
         if(!$id_staff_transfer) {
             return redirect()->back()->with('error', 'Vui lòng chọn nhân viên điều chuyển!');
         }
