@@ -89,6 +89,7 @@
                         <th>Tổng ngày đăng kí phép</th>
                         <th>Tổng thời gian đi trễ</th>
                         <th>Tổng thời gian về sớm</th>
+                        <th>Công nghỉ lễ</th>
                         <th>Tổng công</th>
                         <th>Tổng công được tính</th>
                     </tr>
@@ -103,7 +104,8 @@
                         <td>{{ $summary['total_day_leave'] }}</td>
                         <td>{{ $summary['total_late'] }}</td>
                         <td>{{ $summary['total_soon'] }}</td>
-                        <td>{{ $summary['total_number_time'] }}</td>
+                        <td>{{ $summary['total_time_special'] }}</td>
+                        <td>{{ $summary['total_number_time'] }}</td>                
                         <td>{{ $summary['total_number_time_all'] }}</td>
                     </tr>
                 </tbody>
@@ -235,10 +237,91 @@
                                     echo $item['time'] == "08:00:00" ? '1' * $item['multiply'] : '0.5' * $item['multiply']
                                 ?>
                             </td>
-                            <td><?php echo $item['type'] == "0" ? 'Bổ sung công đã được duyệt' : 'Đăng kí phép đã được duyệt' ?></td>
+                            <td><?php echo $item['type'] == "0" ? 'Bổ sung công đã được duyệt' : 'Phép năm tính lương đã được duyệt' ?></td>
                         </tr>
                     @endif
-                @endforeach      
+                @endforeach    
+                
+                @foreach ($leave_other_table as $item)
+                    @if($item['is_approved'] == 1 && $item['staff_id'] == auth()->user()->id)
+                        <tr style="background-color: #ffffe7">
+                            <td>
+                                <?php
+                                    $date = date_create($item['day_leave_other']);
+                                    $dayofweek = date('w', strtotime($item['day_leave_other']));
+                                    $day = '';
+
+                                    switch ($dayofweek) {
+                                        case '0':
+                                            $day = "Chủ Nhật";
+                                            break;
+                                        case '1':
+                                            $day = "Thứ 2";
+                                            break;
+                                        case '2':
+                                            $day = "Thứ 3";
+                                            break;
+                                        case '3':
+                                            $day = "Thứ 4";
+                                            break;
+                                        case '4':
+                                            $day = "Thứ 5";
+                                            break;
+                                        case '5':
+                                            $day = "Thứ 6";
+                                            break;
+                                        case '6':
+                                            $day = "Thứ 7";
+                                            break;
+                                        default:
+                                            # code...
+                                            break;
+                                    }
+                                    echo date_format($date,"d-m-Y") . ', ' . $day;
+                                ?>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <?php 
+                                    if($item['type_leave'] == 6 or $item['type_leave'] == 7) echo '1';
+                                    else echo '0';
+                                ?>
+                            </td>
+                            <td>
+                                <?php 
+                                    if($item['type_leave'] == 6 or $item['type_leave'] == 7) echo '1';
+                                    else echo '0';
+                                ?>
+                            </td>
+                            <td>
+                                <?php 
+                                    switch ($item['type_leave']) {
+                                        case 3:
+                                            echo "Phép nghỉ ốm đau ngắn ngày";
+                                            break;
+                                        case 4:
+                                            echo "Phép nghỉ ốm đau dài ngày";
+                                            break;
+                                        case 5:
+                                            echo "Phép thai sản";
+                                            break;
+                                        case 6:
+                                            echo "Phép kết hôn";
+                                            break;
+                                        case 7:
+                                            echo "Phép ma chay";
+                                            break;
+                                        default:
+                                            echo "Phép nghỉ không lương";
+                                            break;
+                                    }    
+                                ?>
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach    
             </tbody>
         </table>
     </div>

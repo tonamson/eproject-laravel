@@ -77,7 +77,6 @@
                 <th>Ngày thường</th>
                 <th>Ngày nghỉ</th>
                 <th>Ngày lễ</th>
-                <th>Tổng công</th>
                 <th style="background-color: #ffffe7">Tổng công được tính</th>
                 <th>Chi tiết</th>
             </tr>
@@ -95,7 +94,6 @@
                     <td>{{ $item['total_normal'] }}</td>
                     <td>{{ $item['total_day_off'] }}</td>
                     <td>{{ $item['total_day_special'] }}</td>
-                    <td>{{ $item['total_number_time'] }}</td>
                     <td style="background-color: #ffffe7">{{ $item['total_number_time_all'] }}</td>
                     <td><button id="{{ $item['staff_id'] }}" class="btn btn-primary open-detail">Chi tiết</button></td>
                 </tr>

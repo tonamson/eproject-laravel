@@ -105,6 +105,9 @@ class CheckInOutController extends Controller
         $body_staff = json_decode($response_staff->body(), true);
 
         $month = $request->input('month');
+        if($month && strlen($month) == 1) {
+            $month = "0" . $month;
+        }
         $year = $request->input('year');
         if(!$month) {
             $month = date("m");
@@ -112,6 +115,8 @@ class CheckInOutController extends Controller
         if(!$year) {
             $year = date("Y");
         }
+        $start_date = $year . '-' . $month . '-' . '01';
+        $end_date = date("Y-m-t", strtotime($start_date));
         $date_special = $year . '-' . $month . '-' . '01';
         $data_request_special = ['special_date_from' => $date_special, 'staff_request' => auth()->user()->id, 'department_request' => auth()->user()->department];
 
@@ -125,17 +130,27 @@ class CheckInOutController extends Controller
         $body = json_decode($response->body(), true);
 
 
-        $month_2 = $month + 1;
-        $month_2 .= "";
-        if(strlen($month_2) == 1) {
-            $month_2 = "0" . $month_2;
-        }
+        // $month_2 = $month + 1;
+        // $month_2 .= "";
+        // if(strlen($month_2) == 1) {
+        //     $month_2 = "0" . $month_2;
+        // }
 
-        $date2 = $year . '-' . $month_2 . '-' . '01';
-        $data_request_high = ['from_date' => $date, 'to_date' => $date2];
+        // $date2 = $year . '-' . $month_2 . '-' . '01';
+        $data_request_high = ['from_date' => $date, 'to_date' => $end_date];
 
         $response = Http::get('http://localhost:8888/time-leave/get-time-leave-from-to', $data_request_high);
         $time_leave = json_decode($response->body(), true);
+
+        $data_request_leave_other = ['staff_id' => $user->id, 'month_get' => $date];
+        $response = Http::get('http://localhost:8888/leave-other/list', $data_request_leave_other);
+        $leave_other = json_decode($response->body(), true);
+
+        $response = Http::get('http://localhost:8888/leave-other/get-leave-other-from-to', $data_request_high);
+        $leave_other_table = json_decode($response->body(), true);
+
+        $response = Http::get('http://localhost:8888/time-special/get-time-special-from-to', $data_request_high);
+        $time_special = json_decode($response->body(), true);
 
         $calendar = array();
         foreach ($body_special['data'] as $value) {
@@ -175,11 +190,20 @@ class CheckInOutController extends Controller
         $summary['total_soon'] = "00:00:00";
         $summary['total_day_add'] = 0;
         $summary['total_day_leave'] = 0;
+        $summary['total_time_special'] = 0;
+
+        foreach ($time_special['data'] as $value) {
+            if($value['staff_id'] == $user->id) {
+                $summary['total_time_special']++;
+                $summary['total_number_time'] += 1;
+                $summary['total_number_time_all'] += 1;
+            }
+        }
 
         foreach ($time_leave['data'] as $value) {
             if($value['is_approved'] == 1 && $value['staff_id'] == $user->id) {
                 $arr = array();
-                $value['type'] == 0 ? $arr['title'] = "Bổ sung công: " . $value['time'] : $arr['title'] = "Đăng kí phép: " . $value['time'];
+                $value['type'] == 0 ? $arr['title'] = "Bổ sung công: " . $value['time'] : $arr['title'] = "Phép năm tính lương: " . $value['time'];
                 $arr['start'] = $value['day_time_leave'];
                 $arr['end'] = $value['day_time_leave'];
                 $arr['color'] = '#68683c';
@@ -195,6 +219,50 @@ class CheckInOutController extends Controller
 
                 $summary['total_number_time'] += $num;
                 $summary['total_number_time_all'] += ($num * $value['multiply']);
+            }
+        }
+
+        foreach ($leave_other['data'] as $value) {
+            if($value['isApproved'] == 1 && $value['staffId'] == $user->id) {
+                $arr = array();
+
+                switch ($value['typeLeave']) {
+                    case 3:
+                        $arr['title'] = "Phép nghỉ ốm đau ngắn ngày: 0 công";
+                        break;
+                    case 4:
+                        $arr['title'] = "Phép nghỉ ốm đau dài ngày: 0 công";
+                        break;
+                    case 5:
+                        $arr['title'] = "Phép thai sản: 0 công";
+                        break;
+                    case 6:
+                        $arr['title'] = "Phép kết hôn: Có công";
+                        break;
+                    case 7:
+                        $arr['title'] = "Phép ma chay: Có công";
+                        break;
+                    default:
+                        $arr['title'] = "Phép nghỉ không lương: 0 công";
+                        break;
+                }
+
+                $arr['start'] = $value['fromDate'];
+                $arr['end'] = date("Y-m-d", strtotime('+1 days', strtotime($value['toDate'])));
+                $arr['color'] = '#68683c';
+
+                array_push($calendar, $arr);
+
+                $day_from_check = $value['fromDate'] > $start_date ? $value['fromDate'] : $start_date;
+                $day_to_check = $value['toDate'] > $end_date ? $end_date : $value['toDate'];
+                while($day_from_check <= $day_to_check) {
+                    $summary['total_day_leave'] += 1;
+                    if($value['typeLeave'] == 6 or $value['typeLeave'] == 7) {
+                        $summary['total_number_time'] += 1;
+                        $summary['total_number_time_all'] += 1;
+                    }
+                    $day_from_check = date('Y-m-d', strtotime($day_from_check. ' + 1 days'));
+                }
             }
         }
 
@@ -230,7 +298,7 @@ class CheckInOutController extends Controller
             } else if($value['multiply'] == 2) {
                 $summary['total_day_off'] += $value['number_time'];
             } else {
-                $summary['total_day_normal'] += $value['number_time'];
+                $summary['total_day_normal'] += 1;
             }
 
             if($value['in_late']) {
@@ -252,6 +320,7 @@ class CheckInOutController extends Controller
         return view('main.check_in_out.staff_time')
             ->with('data', $body['data'])
             ->with('time_leave', $time_leave['data'])
+            ->with('leave_other_table', $leave_other_table['data'])
             ->with('summary', $summary)
             ->with('year', $year)
             ->with('month', $month)

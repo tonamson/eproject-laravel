@@ -167,9 +167,18 @@ class SpecialDateController extends Controller
         $body = json_decode($response->body(), true);
 
         $title = "Lễ";
+        $select2 = "";
 
         if($body['data']['typeDay'] == 2) {
             $title = "Tăng Ca";
+            $select2 = '$(".select").select2({
+                            minimumResultsForSearch: Infinity
+                        });
+
+                        $(".multiselect-full-featured").multiselect({
+                            includeSelectAllOption: true,
+                            enableFiltering: true
+                        });';
         }
 
         $param_request = ['department' => auth()->user()->department];
@@ -235,14 +244,7 @@ class SpecialDateController extends Controller
             </div>
 
             <script>
-                $(".select").select2({
-                    minimumResultsForSearch: Infinity
-                });
-
-                $(".multiselect-full-featured").multiselect({
-                    includeSelectAllOption: true,
-                    enableFiltering: true
-                });
+                '.$select2.'
                 
                 $(".day_leave").daterangepicker({
                     singleDatePicker: true,

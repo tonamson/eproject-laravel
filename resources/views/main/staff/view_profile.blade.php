@@ -47,7 +47,7 @@
         <div class="wrapper" style="border: 1px solid gray">
             {{-- @dd($data[0]); --}}
             <div class="image text-center">
-                <img src="{{ asset('images/user/avatar/'.$staff['photo']) }}" alt="" width="50%" height="auto">
+                <img src="{{ asset($staff['photo']) }}" alt="" width="50%" height="auto">
                 <h3 class="text-green font-weight-bold"><?php echo $staff['firstname'] . ' ' . $staff['lastname'] ?></h3>
                 <h4 class="text-green font-weight-bold">-- <?php echo $staff['department_name'] ?> --</h4>
             </div>
@@ -76,11 +76,11 @@
             </div>
             <div class="image text-center mt-5">
                 <div class="front">
-                    <img src="{{ asset('images/user/cmnd/'.$staff['id_photo']) }}" alt="" width="60%" height="auto">
+                    <img src="{{ asset($staff['id_photo']) }}" alt="" width="60%" height="auto">
                     <h6 class="text-green">Ảnh CMND/CCCD mặt trước</h6>
                 </div>
                 <div class="back mt-4">
-                    <img src="{{ asset('images/user/cmnd/'.$staff['id_photo_back']) }}" alt="" width="60%" height="auto">
+                    <img src="{{ asset($staff['id_photo_back']) }}" alt="" width="60%" height="auto">
                     <h6 class="text-green">Ảnh CMND/CCCD mặt sau</h6>
                 </div>
             </div>

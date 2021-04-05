@@ -209,6 +209,8 @@
                                         <div class="from-group d-flex">
                                             <a class="btn btn-info open-detail-approve-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
                                         </div>
+                                    @else
+                                        <span class="badge badge-warning">Đã hết hạn!</span>
                                     @endif
                                 @endif
                             </td>

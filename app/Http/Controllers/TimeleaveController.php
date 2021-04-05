@@ -434,7 +434,7 @@ class TimeleaveController extends Controller
                 }
                 while($day_from_check <= $day_leave_to) {
                     if(date('w', strtotime($day_from_check)) == 6 or date('w', strtotime($day_from_check)) == 0) {
-                        return redirect()->back()->with('error', 'Không được đặt ngày lễ có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
+                        return redirect()->back()->with('error', 'Không được đặt ngày phép có chứa Thứ 7 / Chủ nhật! Vui lòng chỉnh sửa');
                     }
                     $day_from_check = date('Y-m-d', strtotime($day_from_check. ' + 1 days'));
                 }            
@@ -1604,9 +1604,9 @@ class TimeleaveController extends Controller
                 $time_leave['day_of_week'] == null ? $day_of_week = "" : $day_of_week = $day_of_week;
                 $time_leave['special_date_id'] !== null ? $day_of_week .= "(Ngày lễ)" : '';
                 $time_leave['time'] == "08:00:00" ? $time = '1' : $time = '0.5';
-                $time_leave['time'] == null ? $time = '' : $time = $time;
+                $time_leave['time'] == null ? $time = '0' : $time = $time;
                 $time_leave['time'] == "08:00:00" ? $time_multi = 1 * $time_leave['multiply'] . '' : $time_multi = 0.5 * $time_leave['multiply'];
-                $time_leave['time'] == null ? $time_multi = '' : $time_multi = $time_multi;
+                $time_leave['time'] == null ? $time_multi = '0' : $time_multi = $time_multi;
 
                 switch ($time_leave['type']) {
                     case '1':
@@ -1626,9 +1626,31 @@ class TimeleaveController extends Controller
                         break;
                     case '6':
                         $type = "Đăng kí phép (Nghỉ kết hôn)";
+
+                        $arr_from_to = explode(' đến ', $time_leave['day_time_leave']);
+
+                        $day_from_check = $arr_from_to[0];
+                        $time = 0;
+                        $time_multi = 0;
+                        while($day_from_check <= $arr_from_to[1]) {
+                            $time += 1;
+                            $time_multi += 1;
+                            $day_from_check = date('Y-m-d', strtotime($day_from_check. ' + 1 days'));
+                        }
                         break;
                     case '7':
                         $type = "Đăng kí phép (Nghỉ ma chay)";
+
+                        $arr_from_to = explode(' đến ', $time_leave['day_time_leave']);
+                        
+                        $day_from_check = $arr_from_to[0];
+                        $time = 0;
+                        $time_multi = 0;
+                        while($day_from_check <= $arr_from_to[1]) {
+                            $time += 1;
+                            $time_multi += 1;
+                            $day_from_check = date('Y-m-d', strtotime($day_from_check. ' + 1 days'));
+                        }
                         break;
                     default:
                         $type = "Bổ sung công";
