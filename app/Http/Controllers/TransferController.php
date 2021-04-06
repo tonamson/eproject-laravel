@@ -443,7 +443,7 @@ class TransferController extends Controller
         
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-            <button type="submit" class="btn btn-primary">Từ chối</button>
+            <button type="submit" class="btn btn-primary">Gửi</button>
         </div>
         ';
        

@@ -373,7 +373,7 @@
                         </td>
                         <td style="max-width: 160px; color: red;"> 
                             <?php 
-                                if(strlen($transfer['note_manager']) > 10) echo substr($transfer['note_manager'], 0, 10) . '...';
+                                if(strlen($transfer['note_manager']) > 100) echo substr($transfer['note_manager'], 0, 100) . '...';
                                 else echo $transfer['note_manager'];
                             ?>
                         </td>
@@ -475,7 +475,7 @@
                         </td>
                         <td style="max-width: 160px; color: red;"> 
                             <?php 
-                                if(strlen($transfer['note_manager']) > 10) echo substr($transfer['note_manager'], 0, 10) . '...';
+                                if(strlen($transfer['note_manager']) > 100) echo substr($transfer['note_manager'], 0, 100) . '...';
                                 else echo $transfer['note_manager'];
                             ?>
                         </td>

@@ -91,6 +91,7 @@
                                 <div class="dropdown-menu dropdown-menu-right">
                                         <a href="{{ action('StaffController@getEditStaff') }}?id={{ $staff['id'] }}" class="dropdown-item">Cập nhật</a>
                                         <a href="{{ action('StaffController@getDetail') }}?id={{ $staff['id'] }}" class="dropdown-item">Chi tiết</a>
+                                        <a href="{{ route('exportWord1', ['id' => $staff['id']]) }}" class="dropdown-item">Xuất file nhân viên</a>
                                         <a href="{{ action('StaffController@getDeleteStaff') }}?id={{ $staff['id'] }}" class="dropdown-item">Xóa</a>
                                 </div>
                             </div>

@@ -28,6 +28,7 @@ Route::group(['prefix' => 'staff'], function () {
     Route::get('/undo', 'StaffController@listUndo')->name('listUndo');
     Route::get('/delete', 'StaffController@getDeleteStaff')->name('getDeleteStaff');
     Route::get('/getundo', 'StaffController@getUndoStaff')->name('getUndoStaff');
+    Route::get('export-word1/{id}','StaffController@exportWord1')->name('exportWord1');
 });
 
 //Education
