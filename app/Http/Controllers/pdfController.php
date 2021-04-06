@@ -17,6 +17,12 @@ class pdfController extends Controller
         $start_date = $y_m;
         $end_date = date("Y-m-t", strtotime($start_date));
 
+        $params_get_department = [
+            'id' => auth()->user()->id,
+        ];
+        $response_get_department = Http::get('http://localhost:8888/staff/findOneStaffDepartment', $params_get_department);
+        $body_get_department = json_decode($response_get_department->body(), true);
+
         $response = Http::post('http://localhost:8888/check-in-out/get-staff-time', $data_request);
         $body = json_decode($response->body(), true);
 
@@ -91,6 +97,7 @@ class pdfController extends Controller
 
     	$pdf = PDF::loadView('data_check_in',  
             ['date' => date("m-Y", strtotime($date)), 
+            'department_of_staff' => $body_get_department['data'][0][2],
             'check_in' => $body['data'], 
             'time_leave' => $time_leave['data'], 
             'leave_other_table' => $leave_other_table['data'],
@@ -98,13 +105,14 @@ class pdfController extends Controller
             'time_special' => $time_special['data']
             ]);
         return $pdf->download('data_check_in.pdf');
-        return view('data_check_in', [
-            'date' => date("m-Y", strtotime($date)), 
-            'check_in' => $body['data'], 
-            'time_leave' => $time_leave['data'], 
-            'leave_other_table' => $leave_other_table['data'],
-            'summary' => $summary,
-            'time_special' => $time_special['data']
-        ]);
+        // return view('data_check_in', [
+        //     'department_of_staff' => $body_get_department['data'][0][2],
+        //     'date' => date("m-Y", strtotime($date)), 
+        //     'check_in' => $body['data'], 
+        //     'time_leave' => $time_leave['data'], 
+        //     'leave_other_table' => $leave_other_table['data'],
+        //     'summary' => $summary,
+        //     'time_special' => $time_special['data']
+        // ]);
     }
 }

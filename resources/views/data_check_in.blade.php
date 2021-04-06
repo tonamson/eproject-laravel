@@ -22,25 +22,33 @@
 </head>
 <body>
     <div class="container-fluid" style="height: 500px">
-        {{-- <caption><img style="width: 400px;" src="{{ asset('images/logo.png') }}" alt=""></caption> --}}
+        <caption>
+            <h3>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h3>
+            <div style="margin: 0 auto"><h4 style="text-decoration: underline">Độc lập - Tự do - Hạnh phúc</h4></div>
+        </caption>
+        
         <caption><h1>Danh sách chấm công {{ $date }}</h1></caption>
         <div style="width: 100%; display: flex; height: 250px">
             <div style="width: 50%; float: left">
                 <table>
                     <tr>
-                        <th style="text-align: left">Họ và tên nhân viên: </th>
+                        <th style="text-align: left; vertical-align: text-top;">Mã nhân viên: </th>
+                        <td>{{ auth()->user()->code }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left; vertical-align: text-top;">Họ và tên: </th>
                         <td>{{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</td>
                     </tr>
                     <tr>
-                        <th style="text-align: left">Phòng ban: </th>
-                        <td></td>
+                        <th style="text-align: left; vertical-align: text-top;">Phòng ban: </th>
+                        <td> {{ $department_of_staff }}</td>
                     </tr>
                     <tr>
-                        <th style="text-align: left">Chức danh: </th>
+                        <th style="text-align: left; vertical-align: text-top;">Chức danh: </th>
                         <td>{{ auth()->user()->is_manager == 1 ? "Quản lý" : "Nhân viên" }}</td>
                     </tr>
                     <tr>
-                        <th style="text-align: left">Ngày xuất dữ liệu: </th>
+                        <th style="text-align: left; vertical-align: text-top;">Ngày xuất dữ liệu: </th>
                         <td>{{ date("d/m/Y") }}</td>
                     </tr>
                 </table>
@@ -48,19 +56,19 @@
             <div style="width: 50%; float: left">
                 <table>
                     <tr>
-                        <th style="text-align: left">Công ty: </th>
-                        <td>Tân Thành Nam</td>
+                        <th style="text-align: left; width:100px; vertical-align: text-top;">Công ty: </th>
+                        <td>CÔNG TY TNHH XUẤT NHẬP KHẨU TÂN THÀNH NAM AGRICULTURE</td>
                     </tr>
                     <tr>
-                        <th style="text-align: left">Địa chỉ: </th>
+                        <th style="text-align: left; vertical-align: text-top;">Địa chỉ: </th>
                         <td>82/1C Hoàng Bật Đạt, Phường 15, Quận Tân Bình, Thành Phố Hồ Chí Minh.</td>
                     </tr>
                     <tr>
-                        <th style="text-align: left">Email: </th>
+                        <th style="text-align: left; vertical-align: text-top;">Email: </th>
                         <td>Tanthanhnam.agriculture@gmail.com</td>
                     </tr>
                     <tr>
-                        <th style="text-align: left">Điện thoại: </th>
+                        <th style="text-align: left; width:110px; vertical-align: text-top;">Điện thoại: </th>
                         <td>02633.797.676</td>
                     </tr>
                 </table>
