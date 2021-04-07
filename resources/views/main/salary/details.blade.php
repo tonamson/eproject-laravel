@@ -32,7 +32,7 @@
                             <th>Mã nhân viên</th>
                             <th>Tên nhân viên</th>
                             <th>Công thường</th>
-                            <th>Công lễ</th>
+                            <th>Nghỉ có công</th>
                             <th>Lương CB (1)</th>
                             <th>Lương trong tháng (2)</th>
                             <th>Lương tăng ca (3)</th>
@@ -80,6 +80,7 @@
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#modalDetail" onclick="loadDetailStaff({{ $item->staff->id }})" class="dropdown-item">Chi tiết lương</a>
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#modalDetailAllowance" onclick="loadDetailAllowanceStaff({{ $item->staff->id }})" class="dropdown-item">Chi tiết phụ cấp</a>
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#modalDetailInsurance" onclick="loadDetailInsuranceStaff({{ $item->staff->id }})" class="dropdown-item">Chi tiết khấu trừ</a>
+                                            <a href="{{ route('exportStaffPayroll', ['id' => $item->id]) }}" class="dropdown-item">Xuất phiếu lương</a>
                                         </div>
                                     </div>
                                 </td>
@@ -101,7 +102,7 @@
                                     <table class="table datatable-detail">
                                         <thead>
                                         <tr>
-                                            <th>Tên nhân viên</th>
+{{--                                            <th>Tên nhân viên</th>--}}
                                             <th>Ngày chấm công</th>
                                             <th>Ghi chú</th>
                                             <th>Công chuẩn của tháng (1)</th>
@@ -201,7 +202,7 @@
                 if (item.staffId === id && item.details != null && item.details.length > 0) {
                     item.details.forEach(detail => {
                         dataTable.row.add([
-                            `${detail.contract.staff.firstname + ' ' + detail.contract.staff.lastname}`,
+                            // `${detail.contract.staff.firstname + ' ' + detail.contract.staff.lastname}`,
                             `${detail.day_detail}`,
                             `${detail.type_note}`,
                             `${detail.standard_days}`,

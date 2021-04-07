@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StaffPayrollExport;
 use App\Imports\PayrollImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -104,7 +105,7 @@ class SalaryController extends Controller
 
     public function getDeleteSalary($id)
     {
-        $response = Http::get(config('app.api_url') . '/salary/detail', [
+        $response = Http::get(config('app.api_url') . '/salary/find-salary', [
             'id' => $id
         ]);
         $body = json_decode($response->body(), false);
@@ -175,5 +176,28 @@ class SalaryController extends Controller
         $data_department = $bodyDepartment['data'];
 
         return Excel::download(new PayrollImport($dataSalaryDetail, $data_department), 'payroll.xlsx');
+    }
+
+    public function exportStaffPayroll(Request $request)
+    {
+        $responseSalaryDetail = Http::get(config('app.api_url') . '/salary/detail', [
+            'id' => $request->id
+        ]);
+        $bodySalaryDetail = json_decode($responseSalaryDetail->body(), false);
+        $dataSalaryDetail = null;
+        if ($bodySalaryDetail->isSuccess) {
+            $dataSalaryDetail = $bodySalaryDetail->data;
+        }
+
+        $responseDepartment = Http::get('http://localhost:8888/department/list');
+        $bodyDepartment = json_decode($responseDepartment->body(), true);
+        $data_department = $bodyDepartment['data'];
+
+//        return view('main.salary.exports.payroll_personal', [
+//            'dataSalaryDetail' => $dataSalaryDetail,
+//            'data_department' => $data_department,
+//        ]);
+
+        return Excel::download(new StaffPayrollExport($dataSalaryDetail, $data_department), now()->format('Y_m_d') . '_' . $dataSalaryDetail->staff->code . '.xlsx');
     }
 }
