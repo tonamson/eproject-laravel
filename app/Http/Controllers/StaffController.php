@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class StaffController extends Controller
 {
@@ -63,6 +65,7 @@ class StaffController extends Controller
             'txtIDNumber.required' => 'Số CMND không để rỗng',
             'txtIDNumber.unique' => 'Số CMND đã tồn tại',
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
+            'txtEmail.require' => 'Email không được trống',
             'txtPhone.required' => 'Số điện thoại không để rỗng',
             'txtPhone.numeric' => 'Số điện thoại chỉ chấp nhận số',
             'txtNote.max' => 'Ghi chú không quá 500 ký tự',
@@ -240,6 +243,7 @@ class StaffController extends Controller
         if ($body['isSuccess']) {
             $staff = $body['data'];
         }
+      
 
         $response = Http::get('http://localhost:8888/regional/get-one', ['id' => $staff['regional']]);
         $body = json_decode($response->body(), true);
@@ -275,7 +279,7 @@ class StaffController extends Controller
         if ($body['isSuccess']) {
             $data_education = $body['data'];
         }
-
+    
         if ($body['isSuccess']) {
             return view('main/staff/detail', [
                 'data' => $staff,
@@ -333,6 +337,7 @@ class StaffController extends Controller
         ]);
         $body_edu = json_decode($response_edu->body(), true);
 
+     
         if ($body['isSuccess']) {
             return view('main/staff/edit', [
                 'data' => $staff,
@@ -637,5 +642,100 @@ class StaffController extends Controller
             return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Khôi phục nhân viên thành công.']);
         }
         return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Khôi phục nhân viên thất bại.']);
+    }
+
+    public function exportWord1($id)
+    {
+        $template = 'NHANVIEN.docx';
+        $disk = Storage::disk('public_folder');
+        $zip_val = new ZipArchive;
+
+        if ($disk->exists($template)) {
+            //copy ra file khác để replace
+            $random_name = ((string)Str::uuid()) . '.docx';
+            $disk->copy($template, 'staff_words/' . $random_name);
+
+            // mở file vừa copy ra để replace keyword
+            if ($zip_val->open($disk->path('staff_words/' . $random_name))) {
+
+                $response = Http::get(config('app.api_url') . '/staff/one', [
+                    'id' => $id
+                ]);
+
+                $staff_json = json_decode($response->body(), false);
+                $staff = $staff_json->data;
+
+                $key_file_name = 'word/document.xml';
+                $message = $zip_val->getFromName($key_file_name);
+//                dd($message);
+
+                // department
+                $response = Http::get(config('app.api_url') . '/department/detail', [
+                    'id' => $staff->department
+                ]);
+                // phòng ban
+                $department_json = json_decode($response->body(), false);
+                $department = $department_json->data;
+
+                //education
+                $response_edu = Http::get('http://localhost:8888/education/get-education-by-staff-id', [
+                'staff_id' => $id
+                ]);
+                $education_json = json_decode($response_edu->body(), false);
+                $body_edu = $education_json->data;
+
+                foreach($body_edu as $edu){
+                    if('staff_id' == $id){
+                        $edu;
+                    }
+                }
+
+                // $response = Http::get('http://localhost:8888/education/list', []);
+                // $education_json = json_decode($response->body(), false);
+                // $body_edu = $education_json->data;
+                    
+                //         foreach($body_edu as $edu){
+                //         $edu;
+                //         }
+                    
+                // dd($edu);
+
+                $responseCity = Http::get('http://localhost:8888/regional/get-one', ['id' => $staff->regional]);
+                $bodyCity = json_decode($responseCity->body(), false);
+
+                $responseDistrict = Http::get('http://localhost:8888/regional/get-one', ['id' => $bodyCity->data->parent]);
+                $bodyDistrict = json_decode($responseDistrict->body(), false);
+
+                $message = str_replace('[STAFF_NAME]', $staff->firstname . ' ' . $staff->lastname, $message);
+                $message = str_replace('[STAFF_BIRTHDAY]', Carbon::createFromFormat('Y-m-d', $staff->dob)->format('d/m/Y'), $message);
+                $message = str_replace('[STAFF_ADDRESS1]', '', $message);
+                $message = str_replace('[STAFF_PHONE]', $staff->phoneNumber, $message);
+                $message = str_replace('[STAFF_EMAIL]', $staff->email, $message);
+                $message = str_replace('[STAFF_ID_NUMBER]', $staff->idNumber, $message);
+                $message = str_replace('[STAFF_ID_DATE]', Carbon::createFromFormat('Y-m-d', $staff->identity_issue_date)->format('d/m/Y'), $message);
+                $message = str_replace('[STAFF_ID_ADDRESS]', $bodyDistrict->data->name . ', ' . $bodyCity->data->name, $message);
+                $message = str_replace('[DEPARTMENT_NAME]', $department->nameVn, $message);
+                $message = str_replace('[POSITION]', $staff->isManager ? 'Trưởng nhóm' : 'Nhân viên', $message);
+                $message = str_replace('[SCHOOL]', $edu->school, $message);
+                $message = str_replace('[CODE]', $staff->code, $message);
+                $message = str_replace('[DATEJOIN]', $staff->joinedAt, $message);
+                $message = str_replace('[LEVEL_NAME]', $edu->levelName, $message);
+                $message = str_replace('[STUDY]', $edu->fieldOfStudy, $message);
+                $message = str_replace('[GRAND]', $edu->grade, $message);
+                $message = str_replace('[YEAR]', $edu->graduatedYear, $message);
+                
+               
+                
+
+                $zip_val->addFromString($key_file_name, $message);
+                $zip_val->close();
+
+                return $disk->download('staff_words/' . $random_name);
+            } else {
+                return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy mẫu hợp đồng.']);
+            }
+        } else {
+            return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy mẫu hợp đồng.']);
+        }
     }
 }

@@ -61,6 +61,7 @@ Route::middleware(['check_login'])->group(function () {
         Route::post('/update-transfer', 'TransferController@update');
 
         Route::get('/approve-transfer', 'TransferController@approve');
+        Route::get('/delete', 'TransferController@getDeleteTransfer')->name('getDeleteTransfer');
     });
 
     Route::middleware(['check_hr'])->group(function () {

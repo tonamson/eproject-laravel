@@ -223,7 +223,7 @@
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                        <a href="{{ action('TransferController@getDeleteTransfer') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                     @if(auth()->user()->is_manager == 1)
                                         <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
@@ -317,7 +317,7 @@
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                        <a href="{{ action('TransferController@getDeleteTransfer') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                     @if(auth()->user()->is_manager == 1)
                                         <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
@@ -355,7 +355,7 @@
                             </div>
                         </td>
                         <!-- Hth bat o day    -->
-                        @elseif(auth()->user()->department == 1 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
+                        @elseif(auth()->user()->department == 1 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1 and  $transfer['manager_approved'] == 1)
                         <td style="max-width: 160px;">Đã duyệt, nhân viên đã chuyển phòng ban</td>
                         @elseif($transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
                         <td style="max-width: 160px;">Chờ Giám đốc duyệt</td>
@@ -373,7 +373,7 @@
                         </td>
                         <td style="max-width: 160px; color: red;"> 
                             <?php 
-                                if(strlen($transfer['note_manager']) > 10) echo substr($transfer['note_manager'], 0, 10) . '...';
+                                if(strlen($transfer['note_manager']) > 100) echo substr($transfer['note_manager'], 0, 100) . '...';
                                 else echo $transfer['note_manager'];
                             ?>
                         </td>
@@ -428,7 +428,7 @@
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                        <a href="{{ action('TransferController@getDeleteTransfer') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                 </td>
                             @elseif($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1 && $transfer['manager_approved'] == 1)
@@ -475,7 +475,7 @@
                         </td>
                         <td style="max-width: 160px; color: red;"> 
                             <?php 
-                                if(strlen($transfer['note_manager']) > 10) echo substr($transfer['note_manager'], 0, 10) . '...';
+                                if(strlen($transfer['note_manager']) > 100) echo substr($transfer['note_manager'], 0, 100) . '...';
                                 else echo $transfer['note_manager'];
                             ?>
                         </td>
