@@ -402,7 +402,7 @@ class TransferController extends Controller
                 </div>
             </div>
 
-            <div class="form-group row" hidden>
+            <div class="form-group row" >
                 <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
                 <div class="col-lg-9">
                     <select class="form-control new_department" name="new_department_update">
@@ -625,5 +625,17 @@ class TransferController extends Controller
         else {
             return redirect()->back()->with('error', 'Phê duyệt điều chuyển thất bại!');
         }
+    }
+
+    public function getDeleteTransfer(Request $request)
+    {
+        $id = $request->id;
+        $response = Http::get(config('app.api_url') . '/transfer/delete', ['id' => $id]);
+        $body = json_decode($response->body(), false);
+      // dd($body);
+        if ($body->isSuccess) {
+            return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa Phòng ban thành công.']);
+        }
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Xóa Phòng ban thất bại.']);
     }
 }
