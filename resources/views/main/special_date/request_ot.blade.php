@@ -199,6 +199,8 @@
                                             <a class="btn btn-info open-detail-special-date" id="{{ $special_date['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
                                             <a href="{{ action('SpecialDateController@deleteSpecialDate') }}?id={{ $special_date['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                         </div>
+                                    @else
+                                        <span class="badge badge-warning">Đã hết hạn!</span>
                                     @endif
                                 @else
                                     @if($special_date['is_approved'] == 1)
