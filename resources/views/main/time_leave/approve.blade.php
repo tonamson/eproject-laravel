@@ -154,7 +154,7 @@
                     <th>Ngày </th>
                     <th>Ngày công</th>
                     <th>Ngày công được tính</th>
-                    <th>Ghi chú</th>
+                    <th>Loại</th>
                     <th>Phê duyệt</th>
                     <th>Hành động</th>
                 </tr>
@@ -189,10 +189,7 @@
                             <td><?php echo $time_leave['time'] == "08:00:00" ? '1' : '0.5' ?></td>
                             <td><?php echo $time_leave['time'] == "08:00:00" ? 1 * $time_leave['multiply'] . '' : 0.5 * $time_leave['multiply'] . '' ?></td>
                             <td>
-                                <?php 
-                                    if(strlen($time_leave['note']) > 20) echo substr($time_leave['note'], 0, 30) . '...';
-                                    else echo $time_leave['note'];    
-                                ?>
+                                Bổ sung công
                             </td>
                             <td>
                                 @if($time_leave['is_approved'] == 0)
@@ -263,7 +260,7 @@
                     <th>Chức vụ</th>
                     <th>Ngày </th>
                     <th>Ngày công</th>
-                    <th>Ghi chú</th>
+                    <th>Loại</th>
                     <th>Phê duyệt</th>
                     <th>Hành động</th>
                 </tr>
@@ -292,10 +289,7 @@
                             </td>
                             <td><?php echo $time_leave['time'] == "08:00:00" ? '1 ngày công' : '0.5 ngày công' ?></td>
                             <td>
-                                <?php 
-                                    if(strlen($time_leave['note']) > 20) echo substr($time_leave['note'], 0, 30) . '...';
-                                    else echo $time_leave['note'];    
-                                ?>
+                                Nghỉ phép tính lương
                             </td>
                             <td>
                                 @if($time_leave['is_approved'] == 0)
@@ -334,7 +328,6 @@
                     <th>Từ ngày </th>
                     <th>Đến ngày</th>
                     <th>Loại phép</th>
-                    <th>Ghi chú</th>
                     <th>Phê duyệt</th>
                     <th>Hành động</th>
                 </tr>
@@ -356,12 +349,6 @@
                                 else if($item['type_leave'] == 5) echo "Nghỉ thai sản";
                                 else if($item['type_leave'] == 6) echo "Nghỉ kết hôn";
                                 else if($item['type_leave'] == 7) echo "Nghỉ ma chay";
-                            ?>
-                        </td>
-                        <td>
-                            <?php 
-                                if(strlen($item['note']) > 20) echo substr($item['note'], 0, 30) . '...';
-                                else echo $item['note'];    
                             ?>
                         </td>
                         <td>
