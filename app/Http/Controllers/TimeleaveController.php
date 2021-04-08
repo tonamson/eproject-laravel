@@ -167,6 +167,7 @@ class TimeleaveController extends Controller
         
 
         $html = "<input type='hidden' name='id_update' value='". $id ."'>";
+        $html.= "<input type='hidden' name='type_update' value='". $body['data']['type'] ."'>";
         $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Bổ Sung Công</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
         $html.= '<span aria-hidden="true">&times;</span></button></div>';
         $html.= '
@@ -259,16 +260,19 @@ class TimeleaveController extends Controller
         $number_day_leave = $request->input('number_day_leave_update');
         $note_bsc = $request->input('note_bsc_update');
         $image_time = $request->input('txtImageOld') ? $request->input('txtImageOld') : '';
+        $type = $request->input('type_update');
 
-        if($day_leave > date('Y-m-d')) {
-            return redirect()->back()->with('error', 'Không được bổ sung công trước ngày hiện tại');
-        }
+        if($type == 0) {
+            if($day_leave > date('Y-m-d')) {
+                return redirect()->back()->with('error', 'Không được bổ sung công trước ngày hiện tại');
+            }
 
-        $date1=date_create($day_leave);
-        $date2=date_create(date('Y-m-d'));
-        $diff=date_diff($date1,$date2);
-        if($diff->format("%a") > 1) {
-            return redirect()->back()->with('error', 'Không được bổ sung công cách quá 2 ngày hiện tại');
+            $date1=date_create($day_leave);
+            $date2=date_create(date('Y-m-d'));
+            $diff=date_diff($date1,$date2);
+            if($diff->format("%a") > 1) {
+                return redirect()->back()->with('error', 'Không được bổ sung công cách quá 2 ngày hiện tại');
+            }
         }
 
         if(strlen($note_bsc) > 300) {
@@ -584,6 +588,7 @@ class TimeleaveController extends Controller
         
 
         $html = "<input type='hidden' name='id_update' value='". $id ."'>";
+        $html.= "<input type='hidden' name='type_update' value='". $body['data']['type'] ."'>";
         $html.= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Đăng Kí Phép</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close">';
         $html.= '<span aria-hidden="true">&times;</span></button></div>';
         $html.= '

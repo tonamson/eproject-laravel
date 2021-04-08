@@ -564,6 +564,8 @@
                                 else if($item['typeLeave'] == 3) echo "Nghỉ ốm đau ngắn ngày";
                                 else if($item['typeLeave'] == 4) echo "Nghỉ ốm đau dài ngày";
                                 else if($item['typeLeave'] == 5) echo "Nghỉ thai sản";
+                                else if($item['typeLeave'] == 6) echo "Nghỉ kết hôn";
+                                else if($item['typeLeave'] == 7) echo "Nghỉ ma chay";
                             ?>
                         </td>
                         <td>
