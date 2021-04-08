@@ -133,7 +133,7 @@ class SalaryController extends Controller
 
     public function getChangeStatusSuccessSalary($id)
     {
-        $response = Http::get(config('app.api_url') . '/salary/detail', [
+        $response = Http::get(config('app.api_url') . '/salary/find-salary', [
             'id' => $id
         ]);
         $body = json_decode($response->body(), false);
