@@ -315,14 +315,6 @@
                     </a>
                 </div>
             </div>
-            <div class="col-6 col-md-3 text-center col-max">
-                <div class="outer">
-                    <a href="{{ action('ViewmenuController@education') }}">
-                        <i class="icon-8x icon-graduation"></i>
-                        <p>Bằng Cấp</p> 
-                    </a>
-                </div>
-            </div>
         @endif
 
         <div class="col-6 col-md-3 text-center col-max">
