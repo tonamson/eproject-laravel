@@ -151,14 +151,14 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                                 <div class="col-lg-9">
-                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" max="300" placeholder="VD: Quản lý yêu cầu, đặc thù công việc, ..."></textarea>
+                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" max="300" required placeholder="VD: Quản lý yêu cầu, đặc thù công việc, ..."></textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row" hidden>
                                 <label class="col-lg-3 col-form-label">Ý kiến GĐ:</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="txtnoteManager" id="txtnoteManager" placeholder="Nhập mức lương đề xuất,..." />
+                                    <input type="text" class="form-control" name="txtnoteManager" id="txtnoteManager"  placeholder="Nhập mức lương đề xuất,..." />
                                 </div>
                             </div>
 

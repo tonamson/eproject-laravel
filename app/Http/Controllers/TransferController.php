@@ -236,7 +236,7 @@ class TransferController extends Controller
             }
         }
 
-        $html_hr = '';
+            $html_hr = '';
          
                 $html_hr .= '<option value="0" selected>Xác nhận</option>';
                 $html_hr .= '<option value="1">Không xác nhận</option>';
@@ -718,12 +718,13 @@ class TransferController extends Controller
             return redirect()->back()->with('error', 'Phòng ban hiện tại và phòng ban điều chuyển phải khác nhau!');
         }
 
-        // if( '1000000' <$new_salary < '200000000') {
-        //     return redirect()->back()->with('error', 'Ghi chú không được vượt quá 300 kí tự');
-        // }
-
+        // 'age'=>'between:18,30'
         if(strlen($note) > 300) {
             return redirect()->back()->with('error', 'Ghi chú không được vượt quá 300 kí tự');
+        }
+        
+        if(strlen($note_manager) > 300) {
+            return redirect()->back()->with('error', 'Ý kiến không được vượt quá 300 kí tự');
         }
         
         $data_request = [
@@ -791,8 +792,8 @@ class TransferController extends Controller
                 foreach ($tran as $toi) {
                         if($toi->id == $id){
                             if($toi->new_manager_approved ==0){
-                                if(auth()->user()->department=2){
-                                    if($toi->old_department !=2){
+                                if(auth()->user()->department==2){
+                                    if($toi->old_department !=2 && $toi->new_department !=2){
                                         return redirect()->back()->with('error', 'Nhân viên không thuộc phòng HR');
                                     }
                                 }  
