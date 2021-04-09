@@ -49,6 +49,19 @@
                     </div>
                 </div>
             @endif
+
+            @if($errors->any())
+            <div class="alert alert-danger border-0 alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                <p><b>Dữ liệu đầu vào không chính xác:</b></p>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif 
+
             <form action="{{ action('TransferController@list') }}" method="GET">
                 @csrf
                 <div class="form-group d-flex">
@@ -132,20 +145,20 @@
                                  <div class="form-group row">
                                     <label class="col-lg-3 col-form-label">Lương đề xuất:</label>
                                     <div class="col-lg-9">
-                                        <input type="number" class="form-control" name="txtNewSalary" min="1000000" max="100000000" id="txtNewSalary" placeholder="Nhập mức lương đề xuất..." />
+                                        <input type="number" class="form-control" name="txtNewSalary" min="1000000" max="200000000" id="txtNewSalary" placeholder="Nhập mức lương đề xuất..." />
                                     </div>
                                 </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                                 <div class="col-lg-9">
-                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, đặc thù công việc, ..."></textarea>
+                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" max="300" required placeholder="VD: Quản lý yêu cầu, đặc thù công việc, ..."></textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row" hidden>
                                 <label class="col-lg-3 col-form-label">Ý kiến GĐ:</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="txtnoteManager" id="txtnoteManager" placeholder="Nhập mức lương đề xuất,..." />
+                                    <input type="text" class="form-control" name="txtnoteManager" id="txtnoteManager"  placeholder="Nhập mức lương đề xuất,..." />
                                 </div>
                             </div>
 
@@ -282,8 +295,9 @@
 
            {{-- modoul1     <!-- tach theo phong ban va id --> --}}
 
-        @elseif(auth()->user()->is_manager == 1 and auth()->user()->department !=2)
+        @elseif(auth()->user()->department != 2 and auth()->user()->is_manager == 1)
             @foreach ($data as $transfer)
+            dd($transfer);
                     @if($transfer['hr_approved'] == 0)
                      <tr>
                         <td><?php echo $count; $count++ ?></td>
@@ -360,7 +374,8 @@
                             </div>
                         </td>
                         <!-- Hth bat o day    -->
-                        @elseif(auth()->user()->department == 1 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1 and  $transfer['manager_approved'] == 1)
+                        {{-- @elseif(auth()->user()->department == 1 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1 and  $transfer['manager_approved'] == 1) --}}
+                        @elseif($transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1 and  $transfer['manager_approved'] == 1)
                         <td style="max-width: 160px;">Đã duyệt, nhân viên đã chuyển phòng ban</td>
                         @elseif($transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
                         <td style="max-width: 160px;">Chờ Giám đốc duyệt</td>

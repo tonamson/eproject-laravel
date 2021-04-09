@@ -236,7 +236,7 @@ class TransferController extends Controller
             }
         }
 
-        $html_hr = '';
+            $html_hr = '';
          
                 $html_hr .= '<option value="0" selected>Xác nhận</option>';
                 $html_hr .= '<option value="1">Không xác nhận</option>';
@@ -300,7 +300,7 @@ class TransferController extends Controller
             <div class="form-group row" >
                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                 <div class="col-lg-9">
-                    <textarea class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
+                    <textarea class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ...">'.$body['data']['note'].'</textarea>
                 </div>
             </div>
         
@@ -686,6 +686,24 @@ class TransferController extends Controller
 
     public function update(Request $request)
     {
+        // $rule = [
+        //     'txtNewSalary' => 'min:1000000|max:200000000',
+        //     'note_update' => 'max:300',
+        //     'txtnoteManager' => 'max:300',
+        // ];
+        // $message = [
+        //     'txtNewSalary.min' => 'Lương đề nghị phải lớn hơn 1,000,000 và nhỏ hơn 200,000,000đ',
+        //     'txtNewSalary.max' => 'Lương đề nghị phải lớn hơn 1,000,000 và nhỏ hơn 200,000,000đ',
+        //     'note_update.max' => 'Ghi chú không quá 300 ký tự',
+        //     'txtnoteManager.min' => 'Không được nhập quá 300 ký tự',
+        // ];
+        // $data = $request->all();
+        // $validate = Validator::make($data, $rule, $message);
+
+        // if ($validate->fails()) {
+        //     return redirect()->back()->withErrors($validate->errors())->withInput();
+        // }
+
         $user = auth()->user();
 
         $id_update = $request->input('id_update');
@@ -700,8 +718,13 @@ class TransferController extends Controller
             return redirect()->back()->with('error', 'Phòng ban hiện tại và phòng ban điều chuyển phải khác nhau!');
         }
 
+        // 'age'=>'between:18,30'
         if(strlen($note) > 300) {
             return redirect()->back()->with('error', 'Ghi chú không được vượt quá 300 kí tự');
+        }
+        
+        if(strlen($note_manager) > 300) {
+            return redirect()->back()->with('error', 'Ý kiến không được vượt quá 300 kí tự');
         }
         
         $data_request = [
@@ -759,10 +782,24 @@ class TransferController extends Controller
                 //    dd($toi['id']);
                     if($toi->id == $id){
                         if($toi->old_manager_approved ==0){
-                            return redirect()->back()->with('error', 'Trưởng phòng hiện tại chưa phê duyệt');
+                            if($toi->old_department != auth()->user()->department){
+                                return redirect()->back()->with('error', 'Trưởng phòng hiện tại chưa phê duyệt');
+                            }  
                         }
                     }  
                 }
+
+                foreach ($tran as $toi) {
+                        if($toi->id == $id){
+                            if($toi->new_manager_approved ==0){
+                                if(auth()->user()->department==2){
+                                    if($toi->old_department !=2 && $toi->new_department !=2){
+                                        return redirect()->back()->with('error', 'Nhân viên không thuộc phòng HR');
+                                    }
+                                }  
+                            }
+                        }  
+                    }
  
 
         $response = Http::get('http://localhost:8888/transfer/approve', $data_request);
