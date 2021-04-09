@@ -295,8 +295,9 @@
 
            {{-- modoul1     <!-- tach theo phong ban va id --> --}}
 
-        @elseif(auth()->user()->is_manager == 1 and auth()->user()->department !=2)
+        @elseif(auth()->user()->department != 2 and auth()->user()->is_manager == 1)
             @foreach ($data as $transfer)
+            dd($transfer);
                     @if($transfer['hr_approved'] == 0)
                      <tr>
                         <td><?php echo $count; $count++ ?></td>
@@ -373,7 +374,8 @@
                             </div>
                         </td>
                         <!-- Hth bat o day    -->
-                        @elseif(auth()->user()->department == 1 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1 and  $transfer['manager_approved'] == 1)
+                        {{-- @elseif(auth()->user()->department == 1 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1 and  $transfer['manager_approved'] == 1) --}}
+                        @elseif($transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1 and  $transfer['manager_approved'] == 1)
                         <td style="max-width: 160px;">Đã duyệt, nhân viên đã chuyển phòng ban</td>
                         @elseif($transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
                         <td style="max-width: 160px;">Chờ Giám đốc duyệt</td>
