@@ -684,9 +684,11 @@ class StaffController extends Controller
                 $education_json = json_decode($response_edu->body(), false);
                 $body_edu = $education_json->data;
 
+                // dd('staff_id');
                 foreach($body_edu as $edu){
+         
                     if('staff_id' == $id){
-                        $edu;
+                      $edu;
                     }
                 }
 

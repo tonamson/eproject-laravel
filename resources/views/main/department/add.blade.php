@@ -8,10 +8,13 @@
                 </div>
             </div>
         </div>
+       
+
          <!-- Modal dkp -->
         <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
+                    
                     <form action="{{action('DepartmentController@CreateDepartment')}}" method="post">
                         @csrf
                         <div class="modal-header">

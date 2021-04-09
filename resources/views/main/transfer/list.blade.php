@@ -93,8 +93,8 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Tên nhân viên</label>
                                 <div class="col-lg-9">
-                                    <select class="form-control select-search select_staff_transfer" name="staff_id" id="selected_staff">
-                                        <option value="">Chọn nhân viên</option>
+                                    <select class="form-control select_staff_transfer" name="staff_id" id="selected_staff">
+                                        <option selected hidden value="">Chọn nhân viên</option>
                                         @if(auth()->user()->is_manager == 0)
                                             <option value="{{ auth()->user()->id }}" old_department="{{ auth()->user()->department }}">{{auth()->user()->firstname.' '.auth()->user()->lastname }}</option>
                                         @else
@@ -116,7 +116,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
+                                <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:(*)</label>
                                 <div class="col-lg-9">
                                     <select class="form-control new_department" name="new_department">
                                         @foreach($listDepartment as $department)
@@ -126,30 +126,26 @@
                                 </div>
                                         <div class="form-group" hidden>
                                             <label>Hr approved:(*)</label>
-                                            @if(auth()->user()->is_manager == 1)
-											<input type="hidden" class="form-control" name="txthr" value="0" >
-                                            @else
 											<input type="hidden" class="form-control" name="txthr" value="1" >
-                                            @endif
 										</div>
                                  </div>
                                  <div class="form-group row">
                                     <label class="col-lg-3 col-form-label">Lương đề xuất:</label>
                                     <div class="col-lg-9">
-                                        <input type="number" class="form-control" name="txtNewSalary" id="txtNewSalary" placeholder="Nhập mức lương đề xuất..." />
+                                        <input type="number" class="form-control" name="txtNewSalary" min="1000000" max="100000000" id="txtNewSalary" placeholder="Nhập mức lương đề xuất..." />
                                     </div>
                                 </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                                 <div class="col-lg-9">
-                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required></textarea>
+                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, đặc thù công việc, ..."></textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row" hidden>
                                 <label class="col-lg-3 col-form-label">Ý kiến GĐ:</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="txtnoteManager" id="txtnoteManager" placeholder="Nhập mức lương đề xuất..." />
+                                    <input type="text" class="form-control" name="txtnoteManager" id="txtnoteManager" placeholder="Nhập mức lương đề xuất,..." />
                                 </div>
                             </div>
 
@@ -176,7 +172,7 @@
                     <th>Trưởng phòng điều chuyển</th>
                     <th>Giám đốc phê duyệt</th>
                     <th class="text-center">Sửa / Xóa</th>
-                    <th>Chi tiết</th>
+                    <th>Thao tác</th>
                     <th>Giám đốc</th>
                 </tr>
             </thead>
@@ -184,7 +180,14 @@
        
             <?php $count = 1; ?>
     {{-- if chinh --}}
-        @if(auth()->user()->is_manager == 1 and auth()->user()->department ==2)
+        @if(auth()->user()->department ==2)
+            @if(auth()->user()->is_manager == 0)
+            <div class="form-group d-flex">
+                <div class="">
+                &emsp;&nbsp;&nbsp;<button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Tạo mới</button>
+                </div>
+            </div>
+            @endif
             @foreach ($data as $transfer)
                      <tr>
                         <td><?php echo $count; $count++ ?></td>
@@ -221,12 +224,14 @@
                         @if(auth()->user()->department == 2 )
                             @if($transfer['old_manager_approved'] == 0 && $transfer['new_manager_approved'] == 0)
                                 <td>
+                                    @if($transfer['hr_approved'] ==1)
                                     <div class="from-group d-flex">
-                                        <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('TransferController@getDeleteTransfer') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                       &nbsp;&nbsp; <a class="btn btn-info open-detail-approvedHR" id="{{ $transfer['id'] }}" style="padding: 5px;color: white;cursor: pointer;">Xác nhận</a>
                                     </div>
-                                    @if(auth()->user()->is_manager == 1)
+                                    @elseif(auth()->user()->is_manager == 1 && $transfer['hr_approved'] ==0 &&($transfer['old_department']==2 ||$transfer['new_department']==2))
                                         <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
+                                    @elseif($transfer['hr_approved'] ==0)
+                                        <td style="max-width: 160px;">Đã xác nhận</td>
                                     @endif
                                 </td>
                             @elseif($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1 && $transfer['manager_approved'] == 1)
@@ -317,7 +322,7 @@
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('TransferController@getDeleteTransfer') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                        <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                     @if(auth()->user()->is_manager == 1)
                                         <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
@@ -383,11 +388,13 @@
 
               {{-- modoul2  <!-- Tach theo id nhan vien dang nhap -->  --}}
         @elseif(auth()->user()->is_manager == 0 || $data['note_manager'] != null)
+              
                 <div class="form-group d-flex">
                     <div class="">
                     &emsp;&nbsp;&nbsp;<button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Tạo mới</button>
                     </div>
                 </div>
+               
             @foreach ($data as $transfer)
                 @if($transfer['staff_id'] == auth()->user()->id )
                      <tr>
@@ -428,7 +435,7 @@
                                 <td>
                                     <div class="from-group d-flex">
                                         <a class="btn btn-info open-detail-transfer" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Sửa</a>
-                                        <a href="{{ action('TransferController@getDeleteTransfer') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
+                                        <a href="{{ action('TransferController@delete') }}?id={{ $transfer['id'] }}" class="btn btn-danger ml-2" style="color: white; cursor: pointer;">Xóa</a>
                                     </div>
                                 </td>
                             @elseif($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1 && $transfer['manager_approved'] == 1)
@@ -483,7 +490,15 @@
                     </tr>
                 @endif
             @endforeach 
-        @endif
+
+            {{-- @elseif(auth()->user()->is_manager == 0 && auth()->user()->department == 2)
+            <div class="form-group d-flex">
+                <div class="">
+                &emsp;&nbsp;&nbsp;<button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Tạo mới</button>
+                </div>
+            </div> --}}
+
+         @endif
             </tbody>
         </table>
 
@@ -554,6 +569,26 @@
 
                 $.ajax({
                     url: '{{ action('TransferController@detailC') }}',
+                    Type: 'POST',
+                    datatype: 'text',
+                    data:
+                    {
+                        id: id,
+                    },
+                    cache: false,
+                    success: function (data)
+                    {
+                        console.log(data);
+                        $('#html_pending').empty().append(data);
+                        $('#bsc-modal').modal();
+                    }
+                });
+            });
+            $('.open-detail-approvedHR').click(function() {
+                var id = $(this).attr('id');
+
+                $.ajax({
+                    url: '{{ action('TransferController@approvedHR') }}',
                     Type: 'POST',
                     datatype: 'text',
                     data:

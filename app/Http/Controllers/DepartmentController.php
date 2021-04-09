@@ -48,15 +48,19 @@ class DepartmentController extends Controller
 
     public function createDepartment(Request $request)
     {
-        $rule = [
-            'txtName' => 'required',
-            'txtName1' => 'required',
+         $rule = [
+            'txtName' => 'bail|required|unique:department,name|min:2|max:50',
+            'txtName1' => 'bail|required|unique:department,name_vn|min:2|max:50',
         ];
         $message = [
             'txtName.required' => 'Tên Phòng Ban không để rỗng',
-           
-            'txtName1.required' => 'Tên Tiếng Việt không để rỗng',
-           
+            'txtName.unique' => 'Tên Phòng Ban đã tồn tại',
+            'txtName.max' => 'Tên Phòng Ban tối đa 20 ký tự',
+            'txtName.min' => 'Tên Phòng Ban tối thiểu 2 ký tự',
+            'txtName1.required' => 'Tên Phòng Ban Tiếng Việt không để rỗng',
+            'txtName1.unique' => 'Tên Phòng Ban Tiếng Việt đã tồn tại',
+            'txtName1.max' => 'Tên Phòng Ban Tiếng Việt tối đa 20 ký tự',
+            'txtName1.min' => 'Tên Phòng Ban Tiếng Việt tối thiểu 2 ký tự',
         ];
         $data = $request->all();
         $validate = Validator::make($data, $rule, $message);
@@ -73,6 +77,7 @@ class DepartmentController extends Controller
             'nameVn' =>$nameVn,
         ];
 
+        // dd($data_request);
         $response = Http::post('http://localhost:8888/department/add', $data_request);
         $body = json_decode($response->body(), true);
 
@@ -105,14 +110,16 @@ class DepartmentController extends Controller
         // $data_request = $request->all();
         $rule = [
             'txtName' => 'bail|required|min:2|max:50',
-            'txtName1' => 'bail|required',
+            'txtName1' => 'bail|required|min:2|max:50',
         ];
         $message = [
             'txtName.required' => 'Tên Phòng Ban không để rỗng',
             // 'txtName.unique' => 'Tên Phòng Ban đã tồn tại',
             'txtName.max' => 'Tên Phòng Ban tối đa 20 ký tự',
             'txtName.min' => 'Tên Phòng Ban tối thiểu 2 ký tự',
-            'txtName1.required' => 'Tên Phòng Ban Tiếng Việt không để rỗng',  
+            'txtName1.required' => 'Tên Phòng Ban Tiếng Việt không để rỗng',
+            'txtName1.max' => 'Tên Phòng Ban Tiếng Việt tối đa 20 ký tự',
+            'txtName1.min' => 'Tên Phòng Ban Tiếng Việt tối thiểu 2 ký tự',
         ];
         $data = $request->all();
         $validate = Validator::make($data, $rule, $message);
