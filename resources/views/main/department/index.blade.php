@@ -25,9 +25,23 @@
     <div class="card">
         <div class="card-header header-elements-inline">
             <div class="text-left">
+                {{-- alert --}}
+                @if($errors->any())
+                <div class="alert alert-danger border-0 alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                    <p><b>Dữ liệu đầu vào không chính xác:</b></p>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+                {{-- alert --}}
                 <h1 class="pt-3 pl-3 pr-3">Danh Sách Phòng Ban</h1><br>
                 &nbsp; &nbsp; &nbsp;<button  class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">Thêm Mới Phòng Ban <i class="icon-paperplane ml-2"></i></button>
             </div> 
+           
             <div class="header-elements">
                 <div class="list-icons">
                     <a class="list-icons-item" data-action="collapse"></a>

@@ -136,7 +136,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" hidden>
                                                     <div class="form-group">
                                                         <label>Phòng Ban:(*)</label>
                                                         <select class="form-control" name="txtDepartment">
@@ -154,9 +154,6 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                     </div>
                                                 </div>
 
-                                            </div>
-
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Ngày Vào:(*)</label>
@@ -164,7 +161,10 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                     </div>
                                                 </div>
 
+                                            </div>
 
+                                            <div class="row">
+                                             
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Giới tính:(*)</label>
@@ -174,9 +174,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Khu vực:(*)</label>
@@ -188,7 +186,10 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                         </select>
                                                     </div>
                                                 </div>
+                                            </div>
 
+                                            <div class="row">
+                                            
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Thành Phố/Huyện/Xã:(*)</label>
@@ -199,15 +200,17 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Điện thoại:</label>
                                                         <input type="number" class="form-control" name="txtPhone" value="{{ $data['phoneNumber'] }}" placeholder="Nhập số điện thoại">
                                                     </div>
                                                 </div>
+                                            </div>
+
+                                            <div class="row">
+                                                
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -215,8 +218,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                         <input type="text" class="form-control" name="txtEmail" value="{{ $data['email'] }}" placeholder="Nhập Email abc12@exam.com">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Mật khẩu:</label>
@@ -225,6 +227,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                     </div>
                                                 </div>
                                             </div>
+                                           
 
                                         </fieldset>
                                     </div>

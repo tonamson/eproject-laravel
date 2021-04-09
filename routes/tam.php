@@ -50,6 +50,7 @@ Route::middleware(['check_login'])->group(function () {
         Route::get('/detail-transfer', 'TransferController@detail');
         Route::get('/detail-transfer1', 'TransferController@detail1');
         Route::get('/detail-transferC', 'TransferController@detailC');
+        Route::get('/detail-aprrovedHR', 'TransferController@approvedHR');
 
         Route::post('/update-transfer', 'TransferController@update');
 

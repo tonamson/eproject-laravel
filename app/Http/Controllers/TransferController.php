@@ -122,10 +122,6 @@ class TransferController extends Controller
         }
 
 
-        //$date1=date_create($create_at);
-        
-
-//
         if(!$id_staff_transfer) {
             return redirect()->back()->with('error', 'Vui lòng chọn nhân viên điều chuyển!');
         }
@@ -191,6 +187,7 @@ class TransferController extends Controller
         return redirect()->back()->with('success', 'Xóa thành công!');
     }
 
+    // update
     public function detail(Request $request)
     {
         $id = $request->input('id');
@@ -225,7 +222,8 @@ class TransferController extends Controller
         $html_list_staff = '';
         foreach ($listStaff->data as $staff) {
             if($body['data']['staffId'] == $staff->id) {
-                $html_list_staff .= '<option value="'.$staff->id.'" selected>'.$staff->firstname .' '. $staff->lastname.'</option>';
+                $html_list_staff .= '<textarea class="form-control select-search select_staff_transfer" cols="1" rows="1" name="staff_id_update"  id="selected_staff" readonly="true" 
+                value="'.$staff->id.'">'.$staff->firstname .' '. $staff->lastname.'</textarea>';
             }
         }
 
@@ -241,9 +239,7 @@ class TransferController extends Controller
         $html_hr = '';
          
                 $html_hr .= '<option value="0" selected>Xác nhận</option>';
-            
                 $html_hr .= '<option value="1">Không xác nhận</option>';
-           
 
         $html = '<input type="hidden" name="id_update" value="'.$id.'">';
         $html.= '
@@ -254,34 +250,31 @@ class TransferController extends Controller
             </button>
         </div>
         <div class="modal-body">
-            <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Tên nhân viên</label>
-                <div class="col-lg-9">
-                    <select class="form-control select-search select_staff_transfer" name="staff_id_update"  id="selected_staff" readonly="true">
-                        '.$html_list_staff.'
-                    </select>
-                </div>
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label">Tên nhân viên</label>
+            <div class="col-lg-9">
+                '.$html_list_staff.'
             </div>
+        </div>
 
-            <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Phòng ban hiện tại:</label>
-                <div class="col-lg-9">
-                    <select class="form-control old_department" name="old_department_update" readonly="true">
-                        <option value="'.$id.'">'.$department_old_name.'</option>
-                    </select>
-                </div>
-            </div>
+        <div class="form-group row">
+        <label class="col-lg-3 col-form-label">Phòng ban hiện tại:</label>
+        <div class="col-lg-9">
+            <textarea class="form-control old_department" cols="1" rows="1" name="old_department_update" readonly="true" 
+            value="'.$id.'">'.$department_old_name.'</textarea>
+        </div>
+         </div>
 
-            <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
-                <div class="col-lg-9">
-                    <select class="form-control new_department" name="new_department_update">
-                        '.$html_list_department.'
-                    </select>
-                </div>   
-            </div>
+         <div class="form-group row">
+         <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
+         <div class="col-lg-9">
+             <select class="form-control new_department" name="new_department_update">
+                 '.$html_list_department.'
+             </select>
+         </div>   
+         </div>
 
-            <div class="form-group row">
+            <div class="form-group row" hidden>
             <label class="col-lg-3 col-form-label">Xác nhận:(*)</label>
             <div class="col-lg-9">
                 <select class="form-control txthr" name="txthr">
@@ -321,6 +314,132 @@ class TransferController extends Controller
         die;  
     }
 
+    // HR Approved
+    public function approvedHR(Request $request)
+    {
+        $id = $request->input('id');
+        
+        $data_request = [
+            "id" => $id
+        ];
+
+        $response = Http::get('http://localhost:8888/transfer/detail', $data_request);
+        $body = json_decode($response->body(), true);
+
+        $data_request_staff = [
+            "id" => $body['data']['staffId']
+        ];
+
+        $response_staff = Http::get('http://localhost:8888/staff/one', $data_request_staff);
+        $body_staff = json_decode($response_staff->body(), true);
+
+        $data_request_old_department = ['id' => $body_staff['data']['department']];
+
+        $response_old_department = Http::get('http://localhost:8888/department/detail', $data_request_old_department);
+        $department_old = json_decode($response_old_department->body(), true);
+        $department_old_name = $department_old['data']['name'];
+
+        $response = Http::get(config('app.api_url') . '/staff/list', []);
+        $listStaff = json_decode($response->body(), false);
+
+        $response = Http::get('http://localhost:8888/department/list');
+        $body_department = json_decode($response->body(), true);
+        $data_department = $body_department['data'];
+
+        $html_list_staff = '';
+        foreach ($listStaff->data as $staff) {
+            if($body['data']['staffId'] == $staff->id) {
+                $html_list_staff .= '<textarea class="form-control select-search select_staff_transfer" cols="1" rows="1" name="staff_id_update"  id="selected_staff" readonly="true" 
+                value="'.$staff->id.'">'.$staff->firstname .' '. $staff->lastname.'</textarea>';
+            }
+        }
+
+        $html_list_department = '';
+        foreach ($data_department as $department) {
+            if($body['data']['newDepartment'] == $department['id']) {
+                $html_list_department .= '<textarea class="form-control" cols="1" rows="1" 
+                name="new_department_update" id="new_department_update" readonly="true" value="'.$department['id'].'">'.$department['id'].'</textarea>';
+            }
+        }
+
+
+        $html_hr = '';
+                $html_hr .= '<option value="0" selected>Xác nhận</option>';
+                $html_hr .= '<option value="1">Không xác nhận</option>';
+           
+
+        $html = '<input type="hidden" name="id_update" value="'.$id.'">';
+        $html.= '
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Xác Nhận Điều Chuyển Mới</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Tên nhân viên</label>
+                <div class="col-lg-9">
+                    '.$html_list_staff.'
+                </div>
+            </div>
+
+            <div class="form-group row" hidden>
+                <label class="col-lg-3 col-form-label">Phòng ban hiện tại:</label>
+                <div class="col-lg-9">
+                    <textarea class="form-control old_department" cols="1" rows="1" name="old_department_update" readonly="true" 
+                    value="'.$id.'">'.$department_old_name.'</textarea>
+                </div>
+            </div>
+
+            <div class="form-group row" hidden>
+                <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
+                <div class="col-lg-9"  readonly="true">
+                '.$html_list_department.'    
+                </div>   
+            </div>
+
+            <div class="form-group row">
+            <label class="col-lg-3 col-form-label">Xác nhận:(*)</label>
+            <div class="col-lg-9">
+                <select class="form-control txthr" name="txthr">
+                '.$html_hr.'
+                </select>
+            </div>   
+            </div>
+           
+            <div class="form-group row" hidden>
+            <label class="col-lg-3 col-form-label">Lương đề xuất:</label>
+            <div class="col-lg-9">
+            <textarea class="form-control" name="txtNewSalary" id="txtNewSalary" cols="1" rows="1"  readonly="true">'.$body['data']['newSalary'].'</textarea> 
+            </div>   
+            </div>
+
+            <div class="form-group row" hidden>
+            <label class="col-lg-3 col-form-label">Ý kiến Giám đốc:(*)</label>
+            <div class="col-lg-9">
+            <textarea class="form-control" name="txtnoteManager" id="txtnoteManager" require cols="2" rows="3" placeholder="VD: Giám đốc nhập ý kiến...">'.$body['data']['noteManager'].'</textarea>
+            </div>   
+            </div>         
+
+            <div class="form-group row" hidden >
+                <label class="col-lg-3 col-form-label">Ghi chú:</label>
+                <div class="col-lg-9">
+                    <textarea class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
+                </div>
+            </div>
+        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary">Xác nhận</button>
+        </div>
+        ';
+       
+        echo $html;
+        die;  
+    }
+
+    // GD Tu choi
     public function detailC(Request $request)
     {
         $id = $request->input('id');
@@ -359,6 +478,14 @@ class TransferController extends Controller
             }
         }
 
+        // $html_list_department = '';
+        // foreach ($data_department as $department) {
+        //     if($body['data']['newDepartment'] == $department['id']) {
+        //         $html_list_department .= '<input class="form-control" cols="1" rows="1" 
+        //         name="new_department_update" id="new_department_update" readonly="true" value="'.$department['id'].'" "'.$department['name'].'"/>';
+        //     }
+        // }
+
         $html_list_department = '';
         foreach ($data_department as $department) {
             if($body['data']['newDepartment'] == $department['id']) {
@@ -371,7 +498,6 @@ class TransferController extends Controller
         $html_hr = '';
          
                 $html_hr .= '<option value="0" selected>Xác nhận</option>';
-            
                 $html_hr .= '<option value="1">Không xác nhận</option>';
            
 
@@ -387,28 +513,28 @@ class TransferController extends Controller
             <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Tên nhân viên</label>
                 <div class="col-lg-9">
-                    <select class="form-control select-search select_staff_transfer" name="staff_id_update"  id="selected_staff" readonly="true">
+                    <select  disabled class="form-control select-search select_staff_transfer" name="staff_id_update"  id="selected_staff" readonly="true">
                         '.$html_list_staff.'
                     </select>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" hidden>
                 <label class="col-lg-3 col-form-label">Phòng ban hiện tại:</label>
                 <div class="col-lg-9">
-                    <select class="form-control old_department" name="old_department_update" readonly="true">
+                    <select  class="form-control old_department" name="old_department_update" readonly="true">
                         <option value="'.$id.'">'.$department_old_name.'</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group row" >
-                <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
-                <div class="col-lg-9">
-                    <select class="form-control new_department" name="new_department_update">
-                        '.$html_list_department.'
-                    </select>
-                </div>   
+            <div class="form-group row" hidden>
+            <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
+            <div class="col-lg-9">
+                <select class="form-control new_department" name="new_department_update">
+                '.$html_list_department.'
+                </select>
+            </div>   
             </div>
 
             <div class="form-group row" hidden>
@@ -451,6 +577,7 @@ class TransferController extends Controller
         die;  
     }
 
+    // detail
     public function detail1(Request $request)
     {
         $id = $request->input('id');
@@ -529,7 +656,7 @@ class TransferController extends Controller
             <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Phòng ban điều chuyển:</label>
                 <div class="col-lg-9">
-                    <select class="form-control new_department" name="new_department_update">
+                    <select disabled class="form-control new_department" name="new_department_update">
                         '.$html_list_department.'
                     </select>
                 </div>   
@@ -537,13 +664,13 @@ class TransferController extends Controller
             <div class="form-group row">
             <label class="col-lg-3 col-form-label">Ý kiến Giám đốc:(*)</label>
             <div class="col-lg-9">
-                <textarea class="form-control" name="txtnoteManager" id="txtnoteManager" cols="2" rows="3" placeholder="VD: Giám đốc nhập ý kiến...">'.$body['data']['noteManager'].'</textarea>
+                <textarea readonly class="form-control" name="txtnoteManager" id="txtnoteManager" cols="2" rows="3" placeholder="VD: Giám đốc nhập ý kiến...">'.$body['data']['noteManager'].'</textarea>
             </div>   
             </div>  
             <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                 <div class="col-lg-9" >
-                    <textarea class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
+                    <textarea readonly class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
                 </div>
             </div>
        
@@ -579,7 +706,7 @@ class TransferController extends Controller
         
         $data_request = [
             'id' => $id_update,
-            'new_department' => $new_department,
+            'new_department' => $new_department,    
             'hr_approved'=>$hr_approved,
             'new_salary'=>$new_salary,
             'note_manager'=>$note_manager,
@@ -610,9 +737,39 @@ class TransferController extends Controller
             'department' => $department
         ];
 
+        //validae
+        $month = $request->input('month');
+        $year = $request->input('year');
+        if(!$month) {
+            $month = date("m");
+        }
+        if(!$year) {
+            $year = date("Y");
+        }
+
+        $date = $year . '-' . $month . '-' . '01';
+        $data_request1 = ['day_get' => $date, 'department' => auth()->user()->department];
+
+        $response1 = Http::get('http://localhost:8888/transfer/list', $data_request1);
+        $transfer_json = json_decode($response1->body(), false);
+        $tran = $transfer_json->data;
+
+        // dd($body1);
+               foreach ($tran as $toi) {
+                //    dd($toi['id']);
+                    if($toi->id == $id){
+                        if($toi->old_manager_approved ==0){
+                            return redirect()->back()->with('error', 'Trưởng phòng hiện tại chưa phê duyệt');
+                        }
+                    }  
+                }
+ 
+
         $response = Http::get('http://localhost:8888/transfer/approve', $data_request);
         $body = json_decode($response->body(), true);
         // dd($data_request);
+          
+      
 
         if($body['data'] == "Approve Success") {
             return redirect()->back()->with('success', 'Phê duyệt thành công, khi quản lý còn lại và Giám đốc phê duyệt, nhân viên sẽ chuyển phòng ban!');
@@ -627,15 +784,15 @@ class TransferController extends Controller
         }
     }
 
-    public function getDeleteTransfer(Request $request)
-    {
-        $id = $request->id;
-        $response = Http::get(config('app.api_url') . '/transfer/delete', ['id' => $id]);
-        $body = json_decode($response->body(), false);
-      // dd($body);
-        if ($body->isSuccess) {
-            return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa Phòng ban thành công.']);
-        }
-        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Xóa Phòng ban thất bại.']);
-    }
+    // public function getDeleteTransfer(Request $request)
+    // {
+    //     $id = $request->id;
+    //     $response = Http::get(config('app.api_url') . '/transfer/delete', ['id' => $id]);
+    //     $body = json_decode($response->body(), false);
+    //   // dd($body);
+    //     if ($body->isSuccess) {
+    //         return redirect()->back()->with('message', ['type' => 'success', 'message' => 'Xóa Phòng ban thành công.']);
+    //     }
+    //     return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Xóa Phòng ban thất bại.']);
+    // }
 }
