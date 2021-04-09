@@ -22,11 +22,6 @@
 </head>
 <body>
     <div class="container-fluid" style="height: 500px">
-        <caption>
-            <h3>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h3>
-            <div style="margin: 0 auto"><h4 style="text-decoration: underline">Độc lập - Tự do - Hạnh phúc</h4></div>
-        </caption>
-        
         <caption><h1>Danh sách chấm công {{ $date }}</h1></caption>
         <div style="width: 100%; display: flex; height: 250px">
             <div style="width: 50%; float: left">
