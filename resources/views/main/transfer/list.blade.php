@@ -49,6 +49,19 @@
                     </div>
                 </div>
             @endif
+
+            @if($errors->any())
+            <div class="alert alert-danger border-0 alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                <p><b>Dữ liệu đầu vào không chính xác:</b></p>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif 
+
             <form action="{{ action('TransferController@list') }}" method="GET">
                 @csrf
                 <div class="form-group d-flex">
@@ -132,13 +145,13 @@
                                  <div class="form-group row">
                                     <label class="col-lg-3 col-form-label">Lương đề xuất:</label>
                                     <div class="col-lg-9">
-                                        <input type="number" class="form-control" name="txtNewSalary" min="1000000" max="100000000" id="txtNewSalary" placeholder="Nhập mức lương đề xuất..." />
+                                        <input type="number" class="form-control" name="txtNewSalary" min="1000000" max="200000000" id="txtNewSalary" placeholder="Nhập mức lương đề xuất..." />
                                     </div>
                                 </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                                 <div class="col-lg-9">
-                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, đặc thù công việc, ..."></textarea>
+                                    <textarea class="form-control" name="note" id="note" cols="20" rows="10" max="300" placeholder="VD: Quản lý yêu cầu, đặc thù công việc, ..."></textarea>
                                 </div>
                             </div>
 
