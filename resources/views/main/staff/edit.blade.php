@@ -308,7 +308,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                 <input type="hidden" class="form-control" name="education[{{ $index }}][id]" value="{{ $education['id'] }}">
 
                                                 <div class="row">
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-2" hidden>
                                                         <div class="form-group">
                                                             <label>Cấp Bậc:</label>
                                                             <input type="text" class="form-control" name="education[{{ $index }}][level]" value="{{ $education['level'] }}">
@@ -360,6 +360,10 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                             <input type="text" class="form-control" name="education[{{ $index }}][modeOfStudy]" value="{{ $education['modeOfStudy'] }}">
                                                         </div>
                                                     </div>
+                                                        <div class="col-md-2">
+                                                            <a href="{{ action('EducationController@deleteEducation') }}?id={{ $education['id'] }}" class="btn btn-success" onclick="return confirm('Bạn chắc chắn muốn xóa?')" style="
+                                                            margin-top: -15px;">Xóa</a>
+                                                        </div>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -394,10 +398,10 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                     <input type="hidden" value="{{$data['id']}}" name="education[${optionIndex}][staffId]"/>
 
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-2" hidden>
                             <div class="form-group">
                                 <label>Cấp Bậc:</label>
-                                <input type="text" class="form-control" name="education[${optionIndex}][level]">
+                                <input type="text" class="form-control" value="2" name="education[${optionIndex}][level]">
                             </div>
                         </div>
                         <div class="col-md-2">

@@ -276,8 +276,8 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                         <legend class="font-weight-semibold"><i class="icon-reading mr-2"></i> Thông tin</legend>
                                         <div id="education">
                                             <div class="row">
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
+                                                <div class="col-md-2"hidden>
+                                                    <div class="form-group" >
                                                         <label>Cấp Bậc:</label>
                                                         <input type="text" class="form-control" name="education[0][level]" value="1">
                                                     </div>
