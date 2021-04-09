@@ -30,8 +30,6 @@ class CheckInOutController extends Controller
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
         $image = $request->input('image_64');
-        $latitude = '10.7863823';
-        $longitude = '106.6641083';
 
         if(empty($image)) {
             return redirect()->back()->with('error', 'Vui lòng chụp hình!');
