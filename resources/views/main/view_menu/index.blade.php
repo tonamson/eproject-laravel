@@ -325,16 +325,14 @@
             </div>
         @endif
 
-        @if(auth()->user()->department == 2 or auth()->user()->is_manager == 1 || auth()->user()->department == 5)
-            <div class="col-6 col-md-3 text-center col-max">
-                <div class="outer">
-                    <a href="{{ action('TransferController@list') }}">
-                        <i class="icon-8x icon-transmission"></i>
-                        <p>Điều Chuyển</p> 
-                    </a>
-                </div>
+        <div class="col-6 col-md-3 text-center col-max">
+            <div class="outer">
+                <a href="{{ action('TransferController@list') }}">
+                    <i class="icon-8x icon-transmission"></i>
+                    <p>Điều Chuyển</p> 
+                </a>
             </div>
-        @endif
+        </div>
 
         @if(auth()->user()->department == 2 || auth()->user()->department == 5)
             <div class="col-6 col-md-3 text-center col-max">
