@@ -17,8 +17,9 @@
 @section('content')
 
     <div class="card">
+        <h1 class="pt-3 pl-3 pr-3">Danh sách hợp đồng</h1>
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Danh sách hợp đồng</h5>
+           
         </div>
         <div class="card-body">
             <form action="{{ route('postSaveContract') }}" method="post">

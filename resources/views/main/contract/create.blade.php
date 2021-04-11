@@ -20,8 +20,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
+                    <h1 class="pt-3 pl-3 pr-3">Tạo Mới Hợp Đồng</h1>
                     <div class="card-header header-elements-inline">
-                        <h5 class="card-title">Tạo mới hợp đồng</h5>
                     </div>
                     <div class="card-body">
                         @if(session('message'))

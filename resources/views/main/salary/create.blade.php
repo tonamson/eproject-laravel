@@ -19,8 +19,9 @@
 @section('content')
 
     <div class="card">
+        <h1 class="pt-3 pl-3 pr-3">Tạo Tính Lương</h1>
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Tạo tính lương</h5>
+            
         </div>
         <div class="card-body">
             <form action="{{ route('postCalculatedSalary') }}" method="post">

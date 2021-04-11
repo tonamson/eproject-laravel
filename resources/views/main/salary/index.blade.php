@@ -12,8 +12,9 @@
 @section('content')
 
     <div class="card">
+        <h1 class="pt-3 pl-3 pr-3">Danh sách kì lương</h1>
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Danh sách kì lương</h5>
+            
         </div>
         <div class="card-body">
             @if(session('message'))
