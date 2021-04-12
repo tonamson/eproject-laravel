@@ -50,15 +50,9 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
     <!-- Basic datatable -->
     <!-- 2 columns form -->
     <div class="card">
+        <h1 class="pt-3 pl-3 pr-3">Thêm Nhân Viên Mới</h1>
         <div class="card-header header-elements-inline">
-            <h1 class="pt-3 pl-3 pr-3">Thêm Nhân Viên Mới</h1>
-            <div class="header-elements">
-                <div class="list-icons">
-                    <a class="list-icons-item" data-action="collapse"></a>
-                    <a class="list-icons-item" data-action="reload"></a>
-                    <a class="list-icons-item" data-action="remove"></a>
-                </div>
-            </div>
+
         </div>
         <div class="card-body">
             <form action="{{ route('postAddStaff') }}" method="post" enctype="multipart/form-data">

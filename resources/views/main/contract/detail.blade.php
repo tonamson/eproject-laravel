@@ -18,8 +18,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card">
+                <h1 class="pt-3 pl-3 pr-3">Chi tiết hợp đồng</h1>
                 <div class="card-header header-elements-inline">
-                    <h5 class="card-title">Chi tiết hợp đồng</h5>
+                    
                 </div>
                 <div class="card-body">
                     <div class="form-group">

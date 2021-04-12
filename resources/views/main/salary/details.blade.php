@@ -20,8 +20,9 @@
 
 @section('content')
     <div class="card">
+        <h1 class="pt-3 pl-3 pr-3">Chi tiết bảng tính lương</h1>
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Chi tiết bảng tính lương</h5>
+            
         </div>
         <div class="card-body">
             <div class="row">
