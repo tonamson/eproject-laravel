@@ -23,6 +23,7 @@ Route::group(['prefix' => 'contract'], function () {
 
 Route::group(['prefix' => 'salary'], function () {
     Route::get('list','SalaryController@getIndex')->name('getIndexSalary');
+    Route::get('my-salary','SalaryController@mySalary')->name('mySalary');
     Route::get('details','SalaryController@getDetail')->name('getDetailSalary');
     Route::get('create','SalaryController@getCreate')->name('getCreateSalary');
     Route::get('change-status-success/{id?}','SalaryController@getChangeStatusSuccessSalary')->name('getChangeStatusSuccessSalary');

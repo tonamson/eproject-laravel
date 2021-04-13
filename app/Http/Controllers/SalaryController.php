@@ -200,4 +200,25 @@ class SalaryController extends Controller
 
         return Excel::download(new StaffPayrollExport($dataSalaryDetail, $data_department), now()->format('Y_m_d') . '_' . $dataSalaryDetail->staff->code . '.xlsx');
     }
+
+    public function mySalary(Request $request)
+    {
+
+        $response = Http::get(config('app.api_url') . '/salary/find-salary-by-staff', [
+            'staff_id' => $request->id
+        ]);
+        $body = json_decode($response->body(), false);
+        $data = [];
+        if ($body->isSuccess) {
+            $data = $body->data;
+        }
+
+        if (count($data) > 0) {
+            return view('main.salary.my_salary', [
+                'data' => $data,
+            ]);
+        }
+
+        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy ID']);
+    }
 }

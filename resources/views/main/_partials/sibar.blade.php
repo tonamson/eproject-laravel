@@ -1,5 +1,5 @@
 <?php
-    $url = request()->segments() ? request()->segments() : $url = ['abc', 'zxc'];
+$url = request()->segments() ? request()->segments() : $url = ['abc', 'zxc'];
 ?>
 
 <div class="sidebar sidebar-dark sidebar-main sidebar-expand-md">
@@ -63,7 +63,7 @@
                     <li class="nav-item nav-item-submenu <?php echo $url[0] == "deparment" || $url[1] == "department" ? "nav-item-open" : "" ?>">
                         <a href="#" class="nav-link"><i class="icon-credit-card"></i> <span>Phòng Ban</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "deparment" || $url[1] == "department" ? "block" : "none" ?> ">
-                        <li class="nav-item">
+                            <li class="nav-item">
                                 <a href="{{ action('DepartmentController@index') }}" class="nav-link">
                                     <i class="icon-list"></i>
                                     <span>Danh sách Phòng Ban</span>
@@ -106,7 +106,7 @@
                     <li hidden class="nav-item nav-item-submenu <?php echo $url[0] == "education" || $url[1] == "education" ? "nav-item-open" : "" ?>">
                         <a href="#" class="nav-link"><i class="icon-graduation"></i> <span>Bằng Cấp</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "education" || $url[1] == "education" ? "block" : "none" ?>">
-                        <li class="nav-item">
+                            <li class="nav-item">
                                 <a href="{{ action('EducationController@index') }}" class="nav-link">
                                     <i class="icon-list"></i>
                                     <span>Danh sách</span>
@@ -122,14 +122,14 @@
                     </li>
                 @endif
 
-                
-                    <li class="nav-item">
-                        <a href="{{ action('TransferController@list') }}" class="nav-link">
-                            <i class="icon-transmission"></i>
-                            <span>Điều Chuyển</span>
-                        </a>
-                    </li>
-               
+
+                <li class="nav-item">
+                    <a href="{{ action('TransferController@list') }}" class="nav-link">
+                        <i class="icon-transmission"></i>
+                        <span>Điều Chuyển</span>
+                    </a>
+                </li>
+
 
                 @if(auth()->user()->department == 2 or auth()->user()->department == 5)
                     <li class="nav-item nav-item-submenu <?php echo $url[0] == "contract" || $url[1] == "contract" ? "nav-item-open" : "" ?>">
@@ -151,17 +151,17 @@
                     </li>
                 @endif
                 <?php
-                    $active = "";
-                    $display = "none";
-                    if($url[0] == "special-date" or $url[0] == "over-time" or $url[0] == "check-in-gps" or $url[0] == "staff-time" or $url[0] == "time-leave" or $url[0] == "approve-time-leave" or $url[0] == "staff-time") {
-                        $active = "nav-item-open";
-                        $display = "block";
-                    }
+                $active = "";
+                $display = "none";
+                if ($url[0] == "special-date" or $url[0] == "over-time" or $url[0] == "check-in-gps" or $url[0] == "staff-time" or $url[0] == "time-leave" or $url[0] == "approve-time-leave" or $url[0] == "staff-time") {
+                    $active = "nav-item-open";
+                    $display = "block";
+                }
 
-                    if($url[1] == "time-leave") {
-                        $active = "nav-item-open";
-                        $display = "block";
-                    }
+                if ($url[1] == "time-leave") {
+                    $active = "nav-item-open";
+                    $display = "block";
+                }
 
                 ?>
                 <li class="nav-item nav-item-submenu <?php echo $active ?>">
@@ -243,24 +243,31 @@
                 </li>
 
                 @if(auth()->user()->department == 2 or auth()->user()->department == 5)
-                <li class="nav-item nav-item-submenu <?php echo $url[0] == "salary" || $url[1] == "salary" ? "nav-item-open" : "" ?>">
-                    <a href="#" class="nav-link"><i class="icon-cash3"></i> <span>Lương</span></a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "salary" || $url[1] == "salary" ? "block" : "none" ?>">
-                        <li class="nav-item">
-                            <a href="{{ route('getIndexSalary') }}" class="nav-link">
-                                <i class="icon-list"></i>
-                                <span>Danh sách</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('getCreateSalary') }}" class="nav-link">
-                                <i class="icon-plus2"></i>
-                                <span>Tính lương</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                    <li class="nav-item nav-item-submenu <?php echo $url[0] == "salary" || $url[1] == "salary" ? "nav-item-open" : "" ?>">
+                        <a href="#" class="nav-link"><i class="icon-cash3"></i> <span>Lương</span></a>
+                        <ul class="nav nav-group-sub" data-submenu-title="Starter kit" style="display: <?php echo $url[0] == "salary" || $url[1] == "salary" ? "block" : "none" ?>">
+                            <li class="nav-item">
+                                <a href="{{ route('getIndexSalary') }}" class="nav-link">
+                                    <i class="icon-list"></i>
+                                    <span>Danh sách</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('getCreateSalary') }}" class="nav-link">
+                                    <i class="icon-plus2"></i>
+                                    <span>Tính lương</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 @endif
+
+                <li class="nav-item">
+                    <a href="{{ route('mySalary', ['id' => auth()->id()]) }}" class="nav-link">
+                        <i class="icon-cash3"></i>
+                        <span>Bảng lương cá nhân</span>
+                    </a>
+                </li>
 
                 {{-- <li class="nav-item nav-item-submenu <?php echo $url[0] == "kpi" || $url[1] == "kpi" ? "nav-item-open" : "" ?>">
                     <a href="#" class="nav-link"><i class="icon-racing"></i> <span>KPI</span></a>
