@@ -190,6 +190,21 @@ class StaffController extends Controller
 
             foreach ($educations as $education) {
                 $education['staffId'] = $staffDetail['id'];
+
+                $education_check = [
+                    'school' => $education['school'],
+                    'field_of_study' => $education['fieldOfStudy'],
+                    'staff_id' => $education['staffId'],
+                    'id' => 0
+                ];
+
+                $response_check = Http::get('http://localhost:8888/education/check-education', $education_check);
+                $body_check = json_decode($response_check->body(), true);
+
+                if($body_check['data']) {
+                    return redirect()->back()->withErrors("Tên Trường và Chuyên Ngành của nhân viên không được trùng")->withInput();
+                }
+
                 Http::post('http://localhost:8888/education/add', $education);
             }
 
@@ -519,8 +534,30 @@ class StaffController extends Controller
         $response = Http::post('http://localhost:8888/staff/update', $data_request);
         $body = json_decode($response->body(), true);
 
+        if($body['message'] == "Duplicate email") {
+            return redirect()->back()->withErrors("Email không được trùng với nhân viên khác")->withInput();
+        }
+
+        if($body['message'] == "Duplicate id number") {
+            return redirect()->back()->withErrors("CMND/CCCD không được trùng với nhân viên khác")->withInput();
+        }
+
         if ($body['isSuccess']) {
-            foreach ($data['education'] as $education) {
+            foreach ($data['education'] as $education) { 
+                $education_check = [
+                    'school' => $education['school'],
+                    'field_of_study' => $education['fieldOfStudy'],
+                    'staff_id' => $education['staffId'],
+                    'id' => isset($education['id']) ? $education['id'] : 0
+                ];
+
+                $response_check = Http::get('http://localhost:8888/education/check-education', $education_check);
+                $body_check = json_decode($response_check->body(), true);
+
+                if($body_check['data']) {
+                    return redirect()->back()->withErrors("Tên Trường và Chuyên Ngành của nhân viên không được trùng")->withInput();
+                }
+
                 $response = Http::post('http://localhost:8888/education/update', $education);
                 $body = json_decode($response->body(), true);
             }
