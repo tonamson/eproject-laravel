@@ -263,15 +263,17 @@
                                 @endif
                             @endif
                         <!-- Hth     -->
-                        @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 and $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Các Quản lý chưa duyệt</td>
-                        @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 )
-                                <td style="max-width: 160px;">Quản lý cũ chưa duyệt</td>
-                        @elseif(auth()->user()->department == 5 and  $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Quản lý mới chưa duyệt</td>
-                        @elseif(auth()->user()->department == 5 and $transfer['manager_approved'] == 1)
-                                <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
-                        @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
+                        <td style="max-width: 160px;">
+                            @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 and $transfer['new_manager_approved'] == 0)
+                                    Các Quản lý chưa duyệt
+                            @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 )
+                                    Quản lý cũ chưa duyệt
+                            @elseif(auth()->user()->department == 5 and  $transfer['new_manager_approved'] == 0)
+                                    Quản lý mới chưa duyệt
+                            @elseif(auth()->user()->department == 5 and $transfer['manager_approved'] == 1)
+                                    Đã phê duyệt, nhân viên đã chuyển phòng ban
+                            @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
+                        </td>
                         <td>
                             <div class="from-group d-flex">
                                 <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
@@ -297,7 +299,6 @@
 
         @elseif(auth()->user()->department != 2 and auth()->user()->is_manager == 1)
             @foreach ($data as $transfer)
-            {{-- dd($transfer); --}}
                     @if($transfer['hr_approved'] == 0)
                      <tr>
                         <td><?php echo $count; $count++ ?></td>

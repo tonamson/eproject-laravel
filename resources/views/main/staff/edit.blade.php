@@ -288,7 +288,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
                                                 <textarea  class="form-control" name="txtCreatedAt" >{{ $data['createdAt'] }}</textarea>
                                             </div>
                                         </fieldset>
-                                    </div>v
+                                    </div>
                                 </div>
                             </div>
                             {{-- TAB 2 --}}
