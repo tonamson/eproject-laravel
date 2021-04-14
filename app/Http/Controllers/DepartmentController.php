@@ -132,6 +132,20 @@ class DepartmentController extends Controller
         $name = $request->input('txtName');
         $nameVn = $request->input('txtName1');
         $del =$request->input('txtDel');
+
+        //Check department name
+        $data_check = [
+            'id'=>$id,
+            'name' => $name,
+            'name_vn' =>$nameVn,
+        ];
+
+        $response_check = Http::get('http://localhost:8888/department/check-department', $data_check);
+        $departments = json_decode($response_check->body(), true);
+
+        if($departments['data']) {
+            return redirect()->back()->withErrors('Tên phòng ban/tên phòng ban tiếng việt đã tồn tại')->withInput();
+        }
         
         $data_request = [
             'id'=>$id,

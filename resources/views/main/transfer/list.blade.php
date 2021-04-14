@@ -14,7 +14,7 @@
     </style>
 @endsection
 
-@section('js')    
+@section('js')
     <script src="{{ asset('global_assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/ui/moment/moment.min.js') }}"></script>
     <script src="{{ asset('global_assets/js/plugins/pickers/daterangepicker.js') }}"></script>
@@ -31,7 +31,7 @@
     <div class="card">
         <h1 class="pt-3 pl-3 pr-3">Danh Sách Nhân Viên Điều Chuyển Phòng Ban</h1>
         <div class="card-header header-elements-inline">
-            
+
         </div>
         <div class="card-body">
             @if (\Session::has('success'))
@@ -60,7 +60,7 @@
                     @endforeach
                 </ul>
             </div>
-        @endif 
+        @endif
 
             <form action="{{ action('TransferController@list') }}" method="GET">
                 @csrf
@@ -80,7 +80,7 @@
                     </div>
                 </div>
             </form>
-            
+
             {{-- @if(auth()->user()->department == 2 & auth()->user()->is_manager !=0 )
                 <div class="form-group d-flex">
                     <div class="">
@@ -167,7 +167,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                             <button type="submit" class="btn btn-primary">Tạo mới</button>
                         </div>
-                    </form>  
+                    </form>
                 </div>
             </div>
         </div>
@@ -190,7 +190,7 @@
                 </tr>
             </thead>
             <tbody>
-       
+
             <?php $count = 1; ?>
     {{-- if chinh --}}
         @if(auth()->user()->department ==2)
@@ -263,15 +263,17 @@
                                 @endif
                             @endif
                         <!-- Hth     -->
-                        @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 and $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Các Quản lý chưa duyệt</td>
-                        @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 )
-                                <td style="max-width: 160px;">Quản lý cũ chưa duyệt</td>
-                        @elseif(auth()->user()->department == 5 and  $transfer['new_manager_approved'] == 0)
-                                <td style="max-width: 160px;">Quản lý mới chưa duyệt</td>
-                        @elseif(auth()->user()->department == 5 and $transfer['manager_approved'] == 1)
-                                <td style="max-width: 160px;">Đã phê duyệt, nhân viên đã chuyển phòng ban</td>
-                        @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
+                        <td style="max-width: 160px;">
+                            @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 and $transfer['new_manager_approved'] == 0)
+                                    Các Quản lý chưa duyệt
+                            @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 0 )
+                                    Quản lý cũ chưa duyệt
+                            @elseif(auth()->user()->department == 5 and  $transfer['new_manager_approved'] == 0)
+                                    Quản lý mới chưa duyệt
+                            @elseif(auth()->user()->department == 5 and $transfer['manager_approved'] == 1)
+                                    Đã phê duyệt, nhân viên đã chuyển phòng ban
+                            @elseif(auth()->user()->department == 5 and $transfer['old_manager_approved'] == 1 and $transfer['new_manager_approved'] == 1)
+                        </td>
                         <td>
                             <div class="from-group d-flex">
                                 <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Phê duyệt</a>
@@ -291,7 +293,7 @@
                             </div>
                         </td>
                     </tr>
-            @endforeach 
+            @endforeach
 
            {{-- modoul1     <!-- tach theo phong ban va id --> --}}
 
@@ -391,25 +393,25 @@
                                 <a class="btn btn-info open-detail-transfer1" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
                             </div>
                         </td>
-                        <td style="max-width: 160px; color: red;"> 
-                            <?php 
+                        <td style="max-width: 160px; color: red;">
+                            <?php
                                 if(strlen($transfer['note_manager']) > 100) echo substr($transfer['note_manager'], 0, 100) . '...';
                                 else echo $transfer['note_manager'];
                             ?>
                         </td>
                     </tr>
                     @endif
-                @endforeach 
+                @endforeach
 
               {{-- modoul2  <!-- Tach theo id nhan vien dang nhap -->  --}}
         @elseif(auth()->user()->is_manager == 0 || $data['note_manager'] != null)
-              
+
                 <div class="form-group d-flex">
                     <div class="">
                     &emsp;&nbsp;&nbsp;<button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Tạo mới</button>
                     </div>
                 </div>
-               
+
             @foreach ($data as $transfer)
                 @if($transfer['staff_id'] == auth()->user()->id )
                      <tr>
@@ -420,7 +422,7 @@
                         <td><?php echo $depart['name'] ?></td>
                         @endif
                         @endforeach
-                     
+
                         <td><?php echo $transfer['new_department_name'] ?></td>
                         <td>
                             @php
@@ -495,16 +497,16 @@
                                 <a class="btn btn-info open-detail-transfer1" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
                             </div>
                         </td>
-                        <td style="max-width: 160px; color: red;"> 
-                            <?php 
+                        <td style="max-width: 160px; color: red;">
+                            <?php
                                 if(strlen($transfer['note_manager']) > 100) echo substr($transfer['note_manager'], 0, 100) . '...';
                                 else echo $transfer['note_manager'];
                             ?>
                         </td>
-              
+
                     </tr>
                 @endif
-            @endforeach 
+            @endforeach
 
             {{-- @elseif(auth()->user()->is_manager == 0 && auth()->user()->department == 2)
             <div class="form-group d-flex">
@@ -523,13 +525,13 @@
                 <form action="{{ action('TransferController@update') }}" method="post" class="form-horizontal">
                     @csrf
                     <div id="html_pending">
-                        
+
                     </div>
                 </form> <!-- end form -->
               </div>
             </div>
         </div> <!-- end modal bsc -->
-          
+
     </div>
     <!-- /basic datatable -->
 @endsection
@@ -619,8 +621,8 @@
                     }
                 });
             });
-       
-           
+
+
 
             $( ".select_staff_transfer" ).change(function() {
                 var old_department = $('option:selected', this).attr('old_department');
@@ -640,7 +642,7 @@
                     }
                 });
 
-            }); 
+            });
         });
 
         var DatatableBasic = function() {
@@ -655,7 +657,7 @@
                 // Setting datatable defaults
                 $.extend( $.fn.dataTable.defaults, {
                     autoWidth: false,
-                    columnDefs: [{ 
+                    columnDefs: [{
                         orderable: false,
                         width: 100,
                         targets: [ 5 ]
@@ -725,7 +727,7 @@
             DatatableBasic.init();
         });
 
-        
+
 
     </script>
 @endsection
