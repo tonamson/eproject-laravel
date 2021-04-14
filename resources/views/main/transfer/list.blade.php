@@ -299,7 +299,6 @@
 
         @elseif(auth()->user()->department != 2 and auth()->user()->is_manager == 1)
             @foreach ($data as $transfer)
-            dd($transfer);
                     @if($transfer['hr_approved'] == 0)
                      <tr>
                         <td><?php echo $count; $count++ ?></td>
