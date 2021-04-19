@@ -212,13 +212,8 @@ class SalaryController extends Controller
         if ($body->isSuccess) {
             $data = $body->data;
         }
-
-        if (count($data) > 0) {
-            return view('main.salary.my_salary', [
-                'data' => $data,
-            ]);
-        }
-
-        return redirect()->back()->with('message', ['type' => 'danger', 'message' => 'Không tìm thấy ID']);
+        return view('main.salary.my_salary', [
+            'data' => $data,
+        ]);
     }
 }
