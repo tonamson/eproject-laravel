@@ -662,6 +662,12 @@ class TransferController extends Controller
                 </div>   
             </div>
             <div class="form-group row">
+            <label class="col-lg-3 col-form-label">Ngày nhân viên tạo:</label>
+            <div class="col-lg-9" >
+                <textarea readonly class="form-control" name="note_update" id="note" cols="1" rows="1">'.$body['data']['createdAt'].'</textarea>
+            </div>
+             </div>
+            <div class="form-group row">
             <label class="col-lg-3 col-form-label">Ngày Giám đốc duyệt:</label>
             <div class="col-lg-9" >
                 <textarea readonly class="form-control" name="note_update" id="note" cols="1" rows="1">'.$body['data']['updateAt'].'</textarea>
