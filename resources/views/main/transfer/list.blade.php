@@ -372,7 +372,7 @@
                                 <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                             </div>
                             <div class="from-group d-flex">
-                                <a class="btn btn-info open-detail-transferC ml-2" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Từ chối</a>
+                                <a class="btn btn-info open-detail-transferC ml-2" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Yêu cầu</a>
                             </div>
                         </td>
                         <!-- Hth bat o day    -->
