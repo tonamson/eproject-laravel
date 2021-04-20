@@ -373,7 +373,7 @@ class StaffController extends Controller
             'txtCode' => 'required|min:3|max:20',
             'txtFname' => 'required',
             'txtDob' => 'required|date_format:Y-m-d|before:' . now()->format('Y-m-d'),
-//            'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
+           'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
             'txtJoinat' => 'required',
             'txtIDNumber' => 'bail|required',
             'txtEmail' => 'required|email',
