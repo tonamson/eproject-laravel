@@ -588,7 +588,7 @@ class TransferController extends Controller
 
         $response = Http::get('http://localhost:8888/transfer/detail', $data_request);
         $body = json_decode($response->body(), true);
-
+        // dd($body);
         $data_request_staff = [
             "id" => $body['data']['staffId']
         ];
@@ -644,7 +644,7 @@ class TransferController extends Controller
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" hidden>
                 <label class="col-lg-3 col-form-label">Phòng ban hiện tại:</label>
                 <div class="col-lg-9">
                     <select class="form-control old_department" name="old_department_update" readonly="true">
@@ -662,6 +662,13 @@ class TransferController extends Controller
                 </div>   
             </div>
             <div class="form-group row">
+            <label class="col-lg-3 col-form-label">Ngày Giám đốc duyệt:</label>
+            <div class="col-lg-9" >
+                <textarea readonly class="form-control" name="note_update" id="note" cols="1" rows="1">'.$body['data']['updateAt'].'</textarea>
+            </div>
+             </div>
+
+            <div class="form-group row">
             <label class="col-lg-3 col-form-label">Ý kiến Giám đốc:(*)</label>
             <div class="col-lg-9">
                 <textarea readonly class="form-control" name="txtnoteManager" id="txtnoteManager" cols="2" rows="3" placeholder="VD: Giám đốc nhập ý kiến...">'.$body['data']['noteManager'].'</textarea>
@@ -670,10 +677,10 @@ class TransferController extends Controller
             <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Ghi chú:</label>
                 <div class="col-lg-9" >
-                    <textarea readonly class="form-control" name="note_update" id="note" cols="20" rows="10" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
+                    <textarea readonly class="form-control" name="note_update" id="note" cols="5" rows="5" placeholder="VD: Quản lý yêu cầu, ..." required>'.$body['data']['note'].'</textarea>
                 </div>
             </div>
-       
+
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>

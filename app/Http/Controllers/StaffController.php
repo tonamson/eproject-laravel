@@ -41,7 +41,7 @@ class StaffController extends Controller
             'txtDob' => 'required|date_format:Y-m-d|before:' . now()->format('Y-m-d'),
             'txtJoinat' => 'required|date_format:Y-m-d|after:' . now()->subDay()->format('Y-m-d'),
             'txtIDNumber' => 'bail|required|unique:staff,id_number',
-            'txtEmail' => 'required|email',
+            'txtEmail' => 'required|unique:staff,email|email',
             'txtPhone' => 'required|numeric',
             'txtNote' => 'bail|max:500',
 
@@ -64,6 +64,7 @@ class StaffController extends Controller
             'txtDob.before' => 'Ngày sinh nhật phải trước ngày: ' . now()->format('Y-m-d'),
             'txtIDNumber.required' => 'Số CMND không để rỗng',
             'txtIDNumber.unique' => 'Số CMND đã tồn tại',
+            'txtEmail.unique' => 'Email không được trùng',
             'txtEmail.email' => 'Email phải đúng định dang abc123@examp.com',
             'txtEmail.require' => 'Email không được trống',
             'txtPhone.required' => 'Số điện thoại không để rỗng',
