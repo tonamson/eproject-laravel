@@ -357,14 +357,16 @@
             </div>
         @endif
 
-        <div class="col-6 col-md-3 text-center col-max">
-            <div class="outer">
-                <a href="{{ route('mySalary', ['id' => auth()->id()]) }}">
-                    <i class="icon-8x icon-cash3"></i>
-                    <p>Bảng Lương Cá Nhân</p> 
-                </a>
+        @if(auth()->user()->id != 7 || auth()->user()->department != 5)
+            <div class="col-6 col-md-3 text-center col-max">
+                <div class="outer">
+                    <a href="{{ route('mySalary', ['id' => auth()->id()]) }}">
+                        <i class="icon-8x icon-cash3"></i>
+                        <p>Bảng Lương Cá Nhân</p> 
+                    </a>
+                </div>
             </div>
-        </div>
+        @endif
 
         {{-- <div class="col-6 col-md-3 text-center col-max">
             <div class="outer">
