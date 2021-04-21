@@ -89,7 +89,7 @@
                         </div>
                     </div>
 
-                    @if(auth()->user()->id == 7 or auth()->user()->department == 2)
+                    @if(auth()->user()->id == 7)
                         <div class="col-12 col-md-6">
                             <div class="float-right">
                                 <input type="button" class="form-control btn btn-danger"  data-toggle="modal" data-target="#exampleModalCenter" value="Chốt công phép">
