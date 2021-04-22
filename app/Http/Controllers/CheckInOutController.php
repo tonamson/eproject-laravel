@@ -270,7 +270,7 @@ class CheckInOutController extends Controller
 
             if($value['check_out']) {
                 $arr = array();
-                $title = 'Check out: ' . $value['check_out'];
+                $title = 'Kết thúc: ' . $value['check_out'];
 
                 $arr['title'] = $title;
                 $arr['start'] = $value['check_in_day_no_format'];
@@ -281,7 +281,7 @@ class CheckInOutController extends Controller
 
             if($value['check_in']) {
                 $arr = array();
-                $title = 'Check in: ' . $value['check_in'];
+                $title = 'Bắt đầu: ' . $value['check_in'];
 
                 $arr['title'] = $title;
                 $arr['start'] = $value['check_in_day_no_format'];

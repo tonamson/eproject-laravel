@@ -244,7 +244,7 @@
                                     @elseif(auth()->user()->is_manager == 1 && $transfer['hr_approved'] ==0 &&($transfer['old_department']==2 ||$transfer['new_department']==2))
                                         <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                                     @elseif($transfer['hr_approved'] ==0)
-                                        <td style="max-width: 160px;">Đã xác nhận</td>
+                                        <a>Đã xác nhận</a>
                                     @endif
                                 </td>
                             @elseif($transfer['old_manager_approved'] == 1 && $transfer['new_manager_approved'] == 1 && $transfer['manager_approved'] == 1)
@@ -292,6 +292,7 @@
                                 <a class="btn btn-info open-detail-transfer1" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Chi tiết</a>
                             </div>
                         </td>
+                
                     </tr>
             @endforeach
 
@@ -371,7 +372,7 @@
                                 <a href="{{ action('TransferController@approve') }}?id={{ $transfer['id'] }}" class="btn btn-primary ml-2" style="color: white; cursor: pointer;">Duyệt</a>
                             </div>
                             <div class="from-group d-flex">
-                                <a class="btn btn-info open-detail-transferC ml-2" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Từ chối</a>
+                                <a class="btn btn-info open-detail-transferC ml-2" id="{{ $transfer['id'] }}" style="color: white; cursor: pointer;">Yêu cầu</a>
                             </div>
                         </td>
                         <!-- Hth bat o day    -->
@@ -398,6 +399,7 @@
                                 else echo $transfer['note_manager'];
                             ?>
                         </td>
+                
                     </tr>
                     @endif
                 @endforeach
@@ -502,7 +504,7 @@
                                 else echo $transfer['note_manager'];
                             ?>
                         </td>
-
+                     
                     </tr>
                 @endif
             @endforeach

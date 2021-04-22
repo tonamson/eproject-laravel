@@ -262,12 +262,14 @@ $url = request()->segments() ? request()->segments() : $url = ['abc', 'zxc'];
                     </li>
                 @endif
 
-                <li class="nav-item">
-                    <a href="{{ route('mySalary', ['id' => auth()->id()]) }}" class="nav-link">
-                        <i class="icon-cash3"></i>
-                        <span>Bảng lương cá nhân</span>
-                    </a>
-                </li>
+                @if(auth()->user()->id != 7 || auth()->user()->department != 5)
+                    <li class="nav-item">
+                        <a href="{{ route('mySalary', ['id' => auth()->id()]) }}" class="nav-link">
+                            <i class="icon-cash3"></i>
+                            <span>Bảng lương cá nhân</span>
+                        </a>
+                    </li>
+                @endif
 
                 {{-- <li class="nav-item nav-item-submenu <?php echo $url[0] == "kpi" || $url[1] == "kpi" ? "nav-item-open" : "" ?>">
                     <a href="#" class="nav-link"><i class="icon-racing"></i> <span>KPI</span></a>
