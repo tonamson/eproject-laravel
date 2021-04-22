@@ -73,13 +73,14 @@ class SalaryController extends Controller
         // tài liệu https://laravel.com/docs/8.x/validation#available-validation-rules
         $rule = [
             'from_date' => 'required|date_format:Y-m-d',
-            'to_date' => 'required|date_format:Y-m-d',
+            'to_date' => 'required|date_format:Y-m-d|after_or_equal:from_date',
         ];
         $message = [
             'from_date.required' => 'Ngày bắt đầu không để rỗng',
             'from_date.date_format' => 'Ngày bắt đầu sai định dạng: YYYY-MM-DD',
             'to_date.required' => 'Ngày kết thúc không để rỗng',
             'to_date.date_format' => 'Ngày kết thúc sai định dạng: YYYY-MM-DD',
+            'to_date.after_or_equal' => 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
         ];
         $data = $request->all();
 
