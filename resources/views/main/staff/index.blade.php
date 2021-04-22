@@ -56,7 +56,7 @@
                         <td>{{ $staff['lastname'] }}</td>
                         @foreach ($data_department as $department)
                                     @if ($staff['department'] == $department['id'])
-                                        <td>{{$department['name']}}</td>
+                                        <td>{{$department['nameVn']}}</td>
                                     @endif
                         @endforeach
                         <td>@if($staff['isManager'] == 0)
