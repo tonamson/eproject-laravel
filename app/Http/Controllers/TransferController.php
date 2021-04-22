@@ -235,11 +235,15 @@ class TransferController extends Controller
                 $html_list_department .= '<option value="'.$department['id'].'">'.$department['name'].'</option>';
             }
         }
-
+// dd($body['data']['hrApproved'] );
             $html_hr = '';
-         
+            if($body['data']['hrApproved'] == 0){
                 $html_hr .= '<option value="0" selected>Xác nhận</option>';
-                $html_hr .= '<option value="1">Không xác nhận</option>';
+            }
+            else{
+                    $html_hr .= '<option value="1">Không xác nhận</option>';
+                }
+               
 
         $html = '<input type="hidden" name="id_update" value="'.$id.'">';
         $html.= '
