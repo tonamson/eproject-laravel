@@ -35,9 +35,9 @@ class CheckInOutController extends Controller
             return redirect()->back()->with('error', 'Vui lòng chụp hình!');
         }
 
-        if(empty($latitude) || empty($longitude)) {
-            return redirect()->back()->with('error', 'Vui lòng bật GPS theo hướng dẫn!');
-        }
+        // if(empty($latitude) || empty($longitude)) {
+        //     return redirect()->back()->with('error', 'Vui lòng bật GPS!');
+        // }
 
         //Converting to radians
         // 590 cmt8
@@ -56,9 +56,9 @@ class CheckInOutController extends Controller
 
         $res2 = 6378.8 * (2 * asin(sqrt($val))); //for kilomet
 
-        if($res2 > 0.5) {
-            return redirect()->back()->with('error', 'Bạn cách xa văn phòng quá 500m!');
-        }
+        // if($res2 > 0.5) {
+        //     return redirect()->back()->with('error', 'Bạn cách xa văn phòng quá 500m!');
+        // }
 
         $image_name = "";
 

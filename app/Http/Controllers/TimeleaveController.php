@@ -577,12 +577,10 @@ class TimeleaveController extends Controller
         if($body['data']['time'] == '08:00:00') {
             $option = '
                 <option value="1" selected>Một ngày</option>
-                <option value="0.5">Nửa ngày</option>
             ';
         } else {
             $option = '
                 <option value="1">Một ngày</option>
-                <option value="0.5" selected>Nửa ngày</option>
             ';
         }
         
